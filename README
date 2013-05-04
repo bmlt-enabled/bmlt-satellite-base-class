@@ -25,7 +25,7 @@ INSTALLATION
 
 CHANGELIST
 ----------
-= 3.0.10 =
+= 3.0.9 =
 * May 4, 2013
 * Removed some PHP warnings.
 
