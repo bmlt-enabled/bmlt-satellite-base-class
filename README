@@ -25,6 +25,10 @@ INSTALLATION
 
 CHANGELIST
 ----------
+= 3.0.10 =
+* May 4, 2013
+* Removed some PHP warnings.
+
 = 3.0.8 =
 * April 28, 2013
 * Added support for display of military time.
