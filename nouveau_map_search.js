@@ -9,7 +9,7 @@
 *   little is done before execution time. A great deal of care has been taken to allow      *
 *   robust, complete CSS presentation management.                                           *
 *                                                                                           *
-*   \version 3.0.8                                                                          *
+*   \version 3.0.10                                                                         *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -127,6 +127,7 @@ function NouveauMapSearch ( in_unique_id,           ///< The UID of the containe
     
     /// The Map Options
     var m_advanced_map_options_div = null;
+    var m_results_map_loaded = null;
 
     /// Weekdays
     var m_advanced_weekdays_div = null;
@@ -434,6 +435,7 @@ function NouveauMapSearch ( in_unique_id,           ///< The UID of the containe
 	    {
         if ( this.m_map_search_results_map_div && !this.m_map_search_results_map )
             {
+            this.m_results_map_loaded = false;
             var myOptions = {
                             'center': new google.maps.LatLng ( this.m_current_lat, this.m_current_long ),
                             'zoom': this.m_current_zoom,
@@ -465,6 +467,7 @@ function NouveauMapSearch ( in_unique_id,           ///< The UID of the containe
                 var id = this.m_uid;
                 
                 google.maps.event.addListener ( this.m_map_search_results_map, 'zoom_changed', function(in_event) { NouveauMapSearch.prototype.sMapZoomChanged( in_event, id ); } );
+                google.maps.event.addListener ( this.m_map_search_results_map, 'tilesloaded', function() { NouveauMapSearch.prototype.sMapTilesLoaded( id ); } );
 
                 this.m_map_search_results_map.fitBounds ( new google.maps.LatLngBounds ( this.m_long_lat_southwest, this.m_long_lat_northeast ) );
                 this.m_current_zoom = this.m_map_search_results_map.getZoom();
@@ -474,6 +477,7 @@ function NouveauMapSearch ( in_unique_id,           ///< The UID of the containe
             {
             this.m_map_search_results_map.setCenter ( new google.maps.LatLng ( this.m_current_lat, this.m_current_long ) );
             this.m_map_search_results_map.setZoom ( this.m_current_zoom );
+            this.redrawResultMapMarkers();
             };
         
         if ( this.m_main_map )
@@ -2300,35 +2304,38 @@ function NouveauMapSearch ( in_unique_id,           ///< The UID of the containe
     ****************************************************************************************/
     this.redrawResultMapMarkers = function()
         {
-        this.clearMarkerHighlight();    // Get rid of selected meetings.
+        if ( this.m_results_map_loaded )
+            {
+            this.clearMarkerHighlight();    // Get rid of selected meetings.
         
-        // First, get rid of the old ones.
-        if ( this.m_map_search_results_map.main_marker )
-            {
-            this.m_map_search_results_map.main_marker.setMap(null);
-            this.m_map_search_results_map.main_marker = null;
-            };
-
-        // Next, get rid of all the meeting markers.
-        for ( var c = 0; this.m_map_search_results_map.meeting_marker_array && (c < this.m_map_search_results_map.meeting_marker_array.length); c++ )
-            {
-            if ( this.m_map_search_results_map.meeting_marker_array[c] )
+            // First, get rid of the old ones.
+            if ( this.m_map_search_results_map.main_marker )
                 {
-                this.m_map_search_results_map.meeting_marker_array[c].setMap(null);
-                this.m_map_search_results_map.meeting_marker_array[c] = null;
+                this.m_map_search_results_map.main_marker.setMap(null);
+                this.m_map_search_results_map.main_marker = null;
                 };
-            };
-        
-        this.m_map_search_results_map.meeting_marker_array = new Array;
-        
-        this.displayMainMarkerInResults();
- 
-        // Recalculate the new batch.
-        this.m_map_search_results_map.meeting_marker_object_array = NouveauMapSearch.prototype.sMapOverlappingMarkers ( this.m_search_results, this.m_map_search_results_map );
 
-        for ( var c = 0; this.m_map_search_results_map.meeting_marker_object_array && (c < this.m_map_search_results_map.meeting_marker_object_array.length); c++ )
-            {
-            this.displayMeetingMarkerInResults ( this.m_map_search_results_map.meeting_marker_object_array[c] );
+            // Next, get rid of all the meeting markers.
+            for ( var c = 0; this.m_map_search_results_map.meeting_marker_array && (c < this.m_map_search_results_map.meeting_marker_array.length); c++ )
+                {
+                if ( this.m_map_search_results_map.meeting_marker_array[c] )
+                    {
+                    this.m_map_search_results_map.meeting_marker_array[c].setMap(null);
+                    this.m_map_search_results_map.meeting_marker_array[c] = null;
+                    };
+                };
+        
+            this.m_map_search_results_map.meeting_marker_array = new Array;
+        
+            this.displayMainMarkerInResults();
+ 
+            // Recalculate the new batch.
+            this.m_map_search_results_map.meeting_marker_object_array = NouveauMapSearch.prototype.sMapOverlappingMarkers ( this.m_search_results, this.m_map_search_results_map );
+
+            for ( var c = 0; this.m_map_search_results_map.meeting_marker_object_array && (c < this.m_map_search_results_map.meeting_marker_object_array.length); c++ )
+                {
+                this.displayMeetingMarkerInResults ( this.m_map_search_results_map.meeting_marker_object_array[c] );
+                };
             };
         };
 
@@ -2995,7 +3002,6 @@ function NouveauMapSearch ( in_unique_id,           ///< The UID of the containe
         this.m_listResultsDisplayed = true;
         this.setDisplayedSearchResults();
         this.loadResultsMap();
-        this.redrawResultMapMarkers();
         this.validateGoButtons();
         if ( this.m_single_meeting_id )
             {
@@ -3973,6 +3979,7 @@ function NouveauMapSearch ( in_unique_id,           ///< The UID of the containe
     this.m_advanced_service_bodies_shown = false;
     this.m_mapResultsDisplayed = false;
     this.m_listResultsDisplayed = false;
+    this.m_results_map_loaded = false;
     this.m_search_results_shown = false;         ///< If this is true, then the results div is displayed.
     this.m_search_radius = g_Nouveau_default_geo_width;
     this.m_default_duration = g_Nouveau_default_duration;
@@ -4226,7 +4233,7 @@ NouveauMapSearch.prototype.sResultsMarkerClicked = function (   in_marker,      
     };
 
 /****************************************************************************************//**
-*	\brief Responds to a click in the map.                                                  *
+*	\brief Responds to the map's zoom changing.                                             *
 ********************************************************************************************/
 NouveauMapSearch.prototype.sMapZoomChanged = function ( in_event,   ///< The map event
                                                         in_id       ///< The unique ID of the object (establishes context).
@@ -4236,7 +4243,20 @@ NouveauMapSearch.prototype.sMapZoomChanged = function ( in_event,   ///< The map
     
     context.redrawResultMapMarkers();
     };
-	
+
+/****************************************************************************************//**
+*	\brief Responds to the map's tiles being loaded.                                        *
+********************************************************************************************/
+NouveauMapSearch.prototype.sMapTilesLoaded = function ( in_id       ///< The unique ID of the object (establishes context).
+                                                        )
+    {
+    eval ('var context = g_instance_' + in_id + '_js_handler');
+    
+    context.m_results_map_loaded = true;
+    context.redrawResultMapMarkers();
+    };
+
+
 /****************************************************************************************//**
 *	\brief This is the AJAX callback from a search request.                                 *
 ********************************************************************************************/

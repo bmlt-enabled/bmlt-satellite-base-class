@@ -25,6 +25,10 @@ INSTALLATION
 
 CHANGELIST
 ----------
+= 3.0.10 =
+* May 5, 2013
+* Fixed a bug, in which the first set of results for a search would display too many "red" map icons.
+
 = 3.0.9 =
 * May 4, 2013
 * Removed some PHP warnings.
