@@ -25,6 +25,10 @@ INSTALLATION
 
 CHANGELIST
 ----------
+= 3.0.11 =
+* TBD
+* Reduced the number of times that the marker redraw is called in the standard [[bmlt]] shortcode handler.
+
 = 3.0.10 =
 * May 5, 2013
 * Fixed a bug, in which the first set of results for a search would display too many "red" map icons.

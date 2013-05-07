@@ -9,7 +9,7 @@
 *   little is done before execution time. A great deal of care has been taken to allow      *
 *   robust, complete CSS presentation management.                                           *
 *                                                                                           *
-*   \version 3.0.10                                                                         *
+*   \version 3.0.11                                                                         *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -467,7 +467,7 @@ function NouveauMapSearch ( in_unique_id,           ///< The UID of the containe
                 var id = this.m_uid;
                 
                 google.maps.event.addListener ( this.m_map_search_results_map, 'zoom_changed', function(in_event) { NouveauMapSearch.prototype.sMapZoomChanged( in_event, id ); } );
-                google.maps.event.addListener ( this.m_map_search_results_map, 'tilesloaded', function() { NouveauMapSearch.prototype.sMapTilesLoaded( id ); } );
+                google.maps.event.addListenerOnce ( this.m_map_search_results_map, 'tilesloaded', function() { NouveauMapSearch.prototype.sMapTilesLoaded( id ); } );
 
                 this.m_map_search_results_map.fitBounds ( new google.maps.LatLngBounds ( this.m_long_lat_southwest, this.m_long_lat_northeast ) );
                 this.m_current_zoom = this.m_map_search_results_map.getZoom();
