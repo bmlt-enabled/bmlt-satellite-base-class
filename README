@@ -26,7 +26,7 @@ INSTALLATION
 CHANGELIST
 ----------
 = 3.0.11 =
-* TBD
+* May 13, 2013
 * Reduced the number of times that the marker redraw is called in the standard [[bmlt]] shortcode handler.
 * Fixed an issue with CSS that caused displayed maps to get funky.
 
