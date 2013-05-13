@@ -764,3 +764,11 @@ div.bmlt_nouveau_text_inner_div
 {
     display:table;
 }
+
+div.bmlt_nouveau_map_div,
+div.bmlt_nouveau_map_div img,
+div.bmlt_map_container_div,
+div.bmlt_search_map_div div img
+{
+    max-width:none; /* Hack to prevent the problems with the controls disappearing. */
+}
