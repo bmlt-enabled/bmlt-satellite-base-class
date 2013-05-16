@@ -3,7 +3,7 @@
 *   \file   bmlt-cms-satellite-plugin.php                                                   *
 *                                                                                           *
 *   \brief  This is a generic CMS plugin class for a BMLT satellite client.                 *
-*   \version 3.0.11                                                                         *
+*   \version 3.0.12                                                                         *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -347,12 +347,15 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                             
                             foreach ( $val as $v )
                                 {
-                                if ( $val_ar )
+                                if ( !is_array ( $v ) ) // This makes sure that we ignore any nested arrays, which can happen for some CMS implementations.
                                     {
-                                    $val_ar .= ',';
-                                    }
+                                    if ( $val_ar )
+                                        {
+                                        $val_ar .= ',';
+                                        }
                                 
-                                $val_ar .= $v;
+                                    $val_ar .= $v;
+                                    }
                                 }
                                 
                             $val = strval ( $val_ar );
