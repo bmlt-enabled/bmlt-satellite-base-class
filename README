@@ -26,7 +26,7 @@ INSTALLATION
 CHANGELIST
 ----------
 = 3.0.12 =
-* TBD
+* May 16, 2013
 * Added some code to reduce warnings in Drupal 7, if modules use nested arrays in the parameters.
 
 = 3.0.11 =
