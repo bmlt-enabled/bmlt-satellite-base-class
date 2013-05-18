@@ -25,6 +25,10 @@ INSTALLATION
 
 CHANGELIST
 ----------
+= 3.0.14 =
+* May 18, 2013
+* Fixed a possible issue with some initial calls being pooched by ampersands being represented as '&amp;' in the URI.
+
 = 3.0.12 =
 * May 16, 2013
 * Added some code to reduce warnings in Drupal 7, if modules use nested arrays in the parameters.
