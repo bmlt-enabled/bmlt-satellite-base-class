@@ -25,6 +25,10 @@ INSTALLATION
 
 CHANGELIST
 ----------
+= 3.0.15 =
+* May 19, 2013
+* Fixed a small issue with the admin sheet, where entering text into the CSS box would not immediately trigger a "dirty" sheet.
+
 = 3.0.14 =
 * May 18, 2013
 * Fixed a possible issue with some initial calls being pooched by ampersands being represented as '&amp;' in the URI.
