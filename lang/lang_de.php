@@ -1,10 +1,10 @@
 <?php
 // English
 /****************************************************************************************//**
-*   \file   lang_en.php                                                                     *
+*   \file   lang_de.php                                                                     *
 *                                                                                           *
 *   \brief  This file contains English localizations.                                       *
-*   \version 3.0.16                                                                         *
+*   \version 3.0.17                                                                         *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -42,7 +42,7 @@ class BMLT_Localized_BaseClass
     static  $local_options_delete_option = 'Diese Einstellungen löschen';           ///< The string displayed in the "Delete Option" button.
     static  $local_options_delete_failure = 'Löschen dieser Einstellungen fehlgeschlagen.'; ///< The string displayed upon unsuccessful deletion of an option page.
     static  $local_options_create_failure = 'Erstellen dieser Einstellungen fehlgeschlagen.'; ///< The string displayed upon unsuccessful creation of an option page.
-    static  $local_options_delete_option_confirm = 'Sicher loeschen der Einstellungen?';    ///< The string displayed in the "Are you sure?" confirm.
+    static  $local_options_delete_option_confirm = 'Sicher Einstellungen löschen?';    ///< The string displayed in the "Are you sure?" confirm.
     static  $local_options_delete_success = 'Löschen dieser Einstellungen erfolgreich.';                        ///< The string displayed upon successful deletion of an option page.
     static  $local_options_create_success = 'Erstellen dieser Einstellungen erfolgreich.';                        ///< The string displayed upon successful creation of an option page.
     static  $local_options_save_success = 'Ändern dieser Einstellungen erfolgreich.';                        ///< The string displayed upon successful update of an option page.
@@ -64,9 +64,9 @@ class BMLT_Localized_BaseClass
     static  $local_options_no_gkey_string = 'Enter a New API Key';          ///< The Value to use for a new search with no URL.
     static  $local_options_test_server = 'Test';                            ///< This is the title for the "test server" button.
     static  $local_options_test_server_success = 'Version ';                ///< This is a prefix for the version, on success.
-    static  $local_options_test_server_failure = 'Diese Root Server URL ist unueltig.';                       ///< This is a prefix for the version, on failure.
+    static  $local_options_test_server_failure = 'Diese Root Server URL ist unültig.';                       ///< This is a prefix for the version, on failure.
     static  $local_options_test_server_tooltip = 'Dieses testet den root server, um zu sehen ob er OK ist.';         ///< This is the tooltip text for the "test server" button.
-    static  $local_options_map_label = 'Waehle einen Mittelpunkt und Zoom Level der Kartenanzeige';             ///< The Label for the map.
+    static  $local_options_map_label = 'Wähle einen Mittelpunkt und Zoom Level der Kartenanzeige';             ///< The Label for the map.
     static  $local_options_mobile_legend = 'Dies beeinflusst die Various Interactive Searches (wie Map, Mobile und Advanced)';  ///< This indicates that the enclosed settings are for the fast mobile lookup.
     static  $local_options_mobile_grace_period_label = 'Frist:';     ///< When you do a "later today" search, you get a "Grace Period."
     static  $local_options_mobile_default_duration_label = 'Standart Meetingsdauer:';     ///< If the meeting has no duration, use this as a default.
@@ -74,12 +74,12 @@ class BMLT_Localized_BaseClass
     static  $local_options_initial_view = array (                           ///< The list of choices for presentation in the popup.
                                                 'map' => 'karte', 'text' => 'Text', 'advanced_map' => 'Erweiterte karte', 'advanced_text' => 'Erweiterter Text'
                                                 );
-    static  $local_options_initial_view_prompt = 'Initialer Suchtyp:';    ///< The label for the initial view popup.
+    static  $local_options_initial_view_prompt = 'Anfänglicher Suchtyp:';    ///< The label for the initial view popup.
     static  $local_options_theme_prompt = 'Wähle ein Farbschema:';          ///< The label for the theme selection popup.
     static  $local_options_more_styles_label = 'Füge CSS Styles zum Plugin hinzu:';                             ///< The label for the Additional CSS textarea.
     static  $local_options_distance_prompt = 'Entfernungseinheit:';             ///< This is for the distance units select.
     static  $local_options_distance_disclaimer = 'Dies wird nicht alle Anzeigen beeinflussen.';               ///< This tells the admin that only some stuff will be affected.
-    static  $local_options_grace_period_disclaimer = 'Verstrichene Minuten, bevor ein Meeting als "vergangen" angesehen wird (Fuer schnelle Suche nach Begriffen).';      ///< This explains what the grace period means.
+    static  $local_options_grace_period_disclaimer = 'Verstrichene Minuten, bevor ein Meeting als "vergangen" angesehen wird (Für schnelle Suche nach Begriffen).';      ///< This explains what the grace period means.
     static  $local_options_time_offset_disclaimer = 'Stunden an Unterschied zum Main Server (Dies ist meistens nicht erforderlich).';            ///< This explains what the time offset means.
     static  $local_options_miles = 'Milen';                                 ///< The string for miles.
     static  $local_options_kilometers = 'Kilometer';                       ///< The string for kilometers.
@@ -92,23 +92,23 @@ class BMLT_Localized_BaseClass
     static  $local_no_root_server = 'Damit das funktioniert, muss man eine root server URI angeben.';    ///< Displayed if there was no root server provided.
 
     /// These are for the actual search displays
-    static  $local_select_search = 'Eine achnelle Suche auswaehlen';                 ///< Used for the "filler" in the quick search popup.
-    static  $local_clear_search = 'Zuruecksetzen der Suchergebnisse';                   ///< Used for the "Clear" item in the quick search popup.
+    static  $local_select_search = 'Eine achnelle Suche auswählen';                 ///< Used for the "filler" in the quick search popup.
+    static  $local_clear_search = 'Suchergebnisse zurücksetzen';                   ///< Used for the "Clear" item in the quick search popup.
     static  $local_menu_new_search_text = 'Neue Suche';                     ///< For the new search menu in the old-style BMLT search.
     static  $local_cant_find_meetings_display = 'Keine Meetings in dieser Suche gefunden'; ///< When the new map search cannot find any meetings.
-    static  $local_single_meeting_tooltip = 'Folge diesem Link zu Details dieses Meetings.'; ///< The tooltip shown for a single meeting.
+    static  $local_single_meeting_tooltip = 'Folge diesem Link zu Details zu diesem Meeting.'; ///< The tooltip shown for a single meeting.
     static  $local_gm_link_tooltip = 'Folge diesem Link um zu einer Google Maps Location dieses Meetings zu gelangen.';    ///< The tooltip shown for the Google Maps link.
     
     /// These are for the change display
-    static  $local_change_label_date =  'Datum Aendern:';                     ///< The date when the change was made.
+    static  $local_change_label_date =  'Datum Ändern:';                     ///< The date when the change was made.
     static  $local_change_label_meeting_name =  'Meetingsname:';            ///< The name of the changed meeting.
     static  $local_change_label_service_body_name =  'Service Body:';       ///< The name of the meeting's Service body.
-    static  $local_change_label_admin_name =  'Geaendert von:';                ///< The name of the Service Body Admin that made the change.
+    static  $local_change_label_admin_name =  'Geändert von:';                ///< The name of the Service Body Admin that made the change.
     static  $local_change_label_description =  'Beschreibung:';              ///< The description of the change.
     static  $local_change_date_format = 'G:i, j.n.Y';                ///< The format in which the change date/time is displayed.
     
     /// A simple message for most <noscript> elements. We have a different one for the older interactive search (below).
-    static  $local_noscript = 'Dies funktioniert nicht, denn JavaScript ist nicht activiert.';             ///< The string displayed in a <noscript> element.
+    static  $local_noscript = 'Dies funktioniert nicht, denn JavaScript ist nicht aktiviert.';             ///< The string displayed in a <noscript> element.
     
     /************************************************************************************//**
     *                   NEW SHORTCODE STATIC DATA MEMBERS (LOCALIZABLE)                     *
@@ -122,7 +122,7 @@ class BMLT_Localized_BaseClass
     static  $local_nouveau_text_item_default_text = 'Text zum Suchen eingeben';    ///< The text that fills an empty text item.
     static  $local_nouveau_text_location_label_text = 'Dies ist ein Ort oder eine PLZ';         ///< The label text for the location checkbox.
     static  $local_nouveau_advanced_map_radius_label_1 = 'Zeige Meetings innerhalb von';                ///< The label text for the radius popup.
-    static  $local_nouveau_advanced_map_radius_label_2 = 'der Marker Position.';             ///< The second part of the label.
+    static  $local_nouveau_advanced_map_radius_label_2 = 'der Marker-Position.';             ///< The second part of the label.
     static  $local_nouveau_advanced_map_radius_value_auto = 'Ein automatisch gewählter Radius';   ///< The second part of the label, if Miles
     static  $local_nouveau_advanced_map_radius_value_km = 'Km';                                 ///< The second part of the popup value, if Kilometers
     static  $local_nouveau_advanced_map_radius_value_mi = 'Milen';                              ///< The second part of the popup value, if Miles
@@ -135,7 +135,7 @@ class BMLT_Localized_BaseClass
     static  $local_nouveau_cant_lookup_display = 'Ort nicht bestimmbar.';          ///< Displayed if the app is unable to determine the location.
     static  $local_nouveau_display_map_results_text = 'Zeige Suchergebnisse in Karte';    ///< The text for the display map results disclosure link.
     static  $local_nouveau_display_list_results_text = 'Zeige Suchergebnisse als Liste';  ///< The text for the display list results disclosure link.
-    static  $local_nouveau_table_header_array = array ( 'Nation', 'Bundesland', 'Landkreis', 'Staat', 'Meetingsname', 'Wochentag', 'Start Zeit', 'Location', 'Format', ' ' );
+    static  $local_nouveau_table_header_array = array ( 'Nation', 'Land', 'Bundesland', 'Stadt', 'Meetingsname', 'Wochentag', 'Start', 'Institution', 'Format', ' ' );
     static  $local_nouveau_weekday_long_array = array ( 'Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag' );
     static  $local_nouveau_weekday_short_array = array ( 'So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa' );
     
@@ -218,18 +218,18 @@ class BMLT_Localized_BaseClass
     static  $local_nouveau_location_sprintf_format_duration_hour_only_and_minutes_title = 'Dieses Meeting dauert 1 Stunde und %s Minuten.';
     static  $local_nouveau_location_sprintf_format_duration_hours_only_title = 'Dieses Meeting dauert %s Stunden.';
     static  $local_nouveau_lookup_location_failed = "Die Suche nach Adresse wurde nicht erfolgreich durchgeführt.";
-    static  $local_nouveau_lookup_location_server_error = "Die Suche nach Adresse wurde nicht erfolgreich durchgeführt, wegen eines Serverfehlers.";
+    static  $local_nouveau_lookup_location_server_error = "Die Suche nach Adresse wurde wegen eines Serverfehlers nicht erfolgreich durchgeführt.";
     static  $local_nouveau_time_sprintf_format = '%d:%02d %s';
     static  $local_nouveau_am = 'AM';
     static  $local_nouveau_pm = 'PM';
     static  $local_nouveau_noon = '12:00';
     static  $local_nouveau_midnight = '00:00';
     static  $local_nouveau_advanced_map_radius_value_array = "0.25, 0.5, 1.0, 2.0, 5.0, 10.0, 15.0, 20.0, 50.0, 100.0, 200.0";
-    static  $local_nouveau_meeting_details_link_title = 'Get more details about this meeting.';
+    static  $local_nouveau_meeting_details_link_title = 'Mehr Details zu diesem Meeting.';
     static  $local_nouveau_meeting_details_map_link_uri_format = 'https://maps.google.com/maps?q=%f,%f';
-    static  $local_nouveau_meeting_details_map_link_text = 'Map To Meeting';
+    static  $local_nouveau_meeting_details_map_link_text = 'Karte zum Meeting';
 
-    static  $local_nouveau_single_formats_label = 'Meeting Formats:';
+    static  $local_nouveau_single_formats_label = 'Meetings-Formate:';
     static  $local_nouveau_single_service_body_label = 'Service Body:';
 
     static  $local_nouveau_prompt_array = array (
@@ -240,7 +240,7 @@ class BMLT_Localized_BaseClass
                                                 'distance_in_miles' => 'Entfernung in Meilen',
                                                 'distance_in_km' => 'Entfernung In Kilometern',
                                                 'meeting_name' => 'Meetingsname',
-                                                'location_text' => 'LInstitution',
+                                                'location_text' => 'Institution',
                                                 'location_street' => 'Straße, Nr',
                                                 'location_city_subsection' => 'Stadtteil',
                                                 'location_neighborhood' => 'Nachbarschaft',
@@ -267,13 +267,13 @@ class BMLT_Localized_BaseClass
     static  $local_new_map_weekdays = 'Meetings finden an diesen Wochentagen stadt:';
     static  $local_new_map_all_weekdays = 'Alle';
     static  $local_new_map_all_weekdays_title = 'Finde Meetings an jedem Tag.';
-    static  $local_new_map_weekdays_title = 'Finde Meetings die stattfinden an ';
-    static  $local_new_map_formats = 'Meetings haben dieses format:';
+    static  $local_new_map_weekdays_title = 'Finde Meetings, die stattfinden an ';
+    static  $local_new_map_formats = 'Meetings haben dieses Format:';
     static  $local_new_map_all_formats = 'Alle';
     static  $local_new_map_all_formats_title = 'Finde Meetings für jedes Format.';
     static  $local_new_map_js_center_marker_current_radius_1 = 'Der Kreis ist etwa ';
     static  $local_new_map_js_center_marker_current_radius_2_km = ' Kilometer weit.';
-    static  $local_new_map_js_center_marker_current_radius_2_mi = ' Milem weit.';
+    static  $local_new_map_js_center_marker_current_radius_2_mi = ' Milen weit.';
     static  $local_new_map_js_diameter_choices = array ( 0.25, 0.5, 1.0, 1.5, 2.0, 3.0, 5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 50.0, 100.0 );
     static  $local_new_map_js_new_search = 'Neue Suche';
     static  $local_new_map_option_loc_label = 'Trage einen Ort ein:';
@@ -281,8 +281,8 @@ class BMLT_Localized_BaseClass
     static  $local_new_map_option_loc_popup_label_2 = 'um diese Position.';
     static  $local_new_map_option_loc_popup_km = 'Km';
     static  $local_new_map_option_loc_popup_mi = 'Milen';
-    static  $local_new_map_option_loc_popup_auto = 'eine automatisch gewählte Distanz';
-    static  $local_new_map_center_marker_distance_suffix = ' von dem Mittelpunkt Marker.';
+    static  $local_new_map_option_loc_popup_auto = 'eine automatisch gewählte Entfernung';
+    static  $local_new_map_center_marker_distance_suffix = ' von dem Mittelpunkt-Marker.';
     static  $local_new_map_center_marker_description = 'Dies ist Ihre gewählte Position.';
     static  $local_new_map_text_entry_fieldset_label = 'Füge eine Adresse, PLZ oder Ort ein';
     static  $local_new_map_text_entry_default_text = 'Füge eine Adresse, PLZ oder Ort ein';
@@ -304,12 +304,12 @@ class BMLT_Localized_BaseClass
     /// The fast GPS lookup links.
     static  $local_GPS_banner = 'Wähle eine schnelle Meetingssuche zum Nachschlagen';
     static  $local_GPS_banner_subtext = 'Diese Links für noch schnellere zuküpnftige Suchen merken.';
-    static  $local_search_all = 'Search for all meetings near my present location.';
+    static  $local_search_all = 'Suche nach allen Meetings nahe meiner aktuellen Position.';
     static  $local_search_today = 'Später heute';
     static  $local_search_tomorrow = 'Morgen';
     
     /// The search for an address form.
-    static  $local_list_check = 'Wenn Sie Probleme mit der Interaktiven Karte haben oder die Resultate als Liste wünschen, haken Sie diese Box an und geben Sie eine Adresse ein.';
+    static  $local_list_check = 'Wenn Sie Probleme mit der Interaktiven Karte haben oder die Ergebnisse als Liste wünschen, haken Sie diese Box an und geben Sie eine Adresse ein.';
     static  $local_search_address_single = 'Suche nach Meetings in der Nähe einer Adresse';
     
     /// Used instead of "near my present location."
@@ -335,8 +335,8 @@ class BMLT_Localized_BaseClass
     
     /// Used for the info and list windows.
     static  $local_formats = 'Format';
-    static  $local_noon = '12:00 Uhr';
-    static  $local_midnight = '00:00 Uhr';
+    static  $local_noon = '12:00';
+    static  $local_midnight = '00:00';
     
     /// This array has the weekdays, spelled out. Since weekdays start at 1 (Sunday), we consider 0 to be an error.
     static	$local_weekdays = array ( 'ERROR', 'Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag' );
