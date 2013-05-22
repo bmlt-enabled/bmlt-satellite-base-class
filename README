@@ -25,6 +25,10 @@ INSTALLATION
 
 CHANGELIST
 ----------
+= 3.0.16 =
+* May 22, 2013
+* Added German localization.
+
 = 3.0.15 =
 * May 19, 2013
 * Fixed a small issue with the admin sheet, where entering text into the CSS box would not immediately trigger a "dirty" sheet.
