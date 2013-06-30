@@ -212,6 +212,7 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
     static  $default_time_offset = 0;                                       ///< The default time offset from the main server (in hours).
     static  $default_duration = '1:30';                                     ///< The default duration of meetings.
     static  $default_military_time = false;                                 ///< If this is true, then time displays will be in military time.
+    static  $default_startWeekday = 1;                                      ///< The default starting weekday (Sunday)
 
     /************************************************************************************//**
     *                               STATIC DATA MEMBERS (MISC)                              *
@@ -491,7 +492,8 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                         'grace_period' => self::$default_grace_period,
                         'default_duration' => self::$default_duration,
                         'time_offset' => self::$default_time_offset,
-                        'military_time' => self::$default_military_time
+                        'military_time' => self::$default_military_time,
+                        'startWeekday' => self::$default_startWeekday
                         );
         }
     
@@ -1219,6 +1221,28 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                         $ret .= '</select>';
                     $ret .= '</div>';
                     $ret .= '<div class="BMLTPlugin_option_sheet_line_div">';
+                        $id = 'BMLTPlugin_option_sheet_week_begins_'.$in_options_index;
+                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( self::$local_options_week_begins_on_prompt ).'</label>';
+                        $ret .= '<select id="'.htmlspecialchars ( $id ).'" onchange="BMLTPlugin_DirtifyOptionSheet()">';
+                            $sel_weekday = intval ( (isset ( $options['startWeekday']) && $options['startWeekday']) ? $options['startWeekday'] : self::$default_startWeekday );
+                            
+                            $counter = 1;
+                            $weekdays = self::$local_nouveau_weekday_long_array;
+                            
+                            foreach ( $weekdays as $weekday_text )
+                                {
+                                $ret .= '<option';
+                                    $ret .= ' value="'.$counter.'"';
+                                    if ( $options['startWeekday'] == $counter )
+                                        {
+                                        $ret .= ' selected="selected"';
+                                        }
+                                    $counter++;
+                                $ret .= '>'.$this->process_text ( $weekday_text ).'</option>';
+                                }
+                        $ret .= '</select>';
+                    $ret .= '</div>';
+                    $ret .= '<div class="BMLTPlugin_option_sheet_line_div">';
                         $id = 'BMLTPlugin_option_sheet_grace_period_'.$in_options_index;
                         $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( self::$local_options_mobile_grace_period_label ).'</label>';
                         $ret .= '<select id="'.htmlspecialchars ( $id ).'" onchange="BMLTPlugin_DirtifyOptionSheet()">';
@@ -1416,6 +1440,11 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                         if ( isset ( $this->my_http_vars['BMLTPlugin_option_sheet_time_format_'.$i] ) )
                             {
                             $options['military_time'] = (intval ( $this->my_http_vars['BMLTPlugin_option_sheet_time_format_'.$i] ) != 0);
+                            }
+                        
+                        if ( isset ( $this->my_http_vars['BMLTPlugin_option_sheet_week_begins_'.$i] ) )
+                            {
+                            $options['startWeekday'] = intval ( $this->my_http_vars['BMLTPlugin_option_sheet_week_begins_'.$i] );
                             }
                         
                         if ( isset ( $this->my_http_vars['BMLTPlugin_option_sheet_grace_period_'.$i] ) )
@@ -1895,6 +1924,7 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                         }
                 $the_new_content .= "};";
                 $the_new_content .= 'var g_Nouveau_military_time = '.((isset ( $options['military_time'] ) && $options['military_time']) ? 'true' : 'false' ).';';
+                $the_new_content .= 'var g_Nouveau_start_week = '.((isset ( $options['startWeekday'] ) && $options['startWeekday']) ? $options['startWeekday'] : self::$default_startWeekday ).';';
                 $the_new_content .= 'var g_Nouveau_array_header_text = new Array ( "'.join ( '","', self::$local_nouveau_table_header_array ).'");';
                 $the_new_content .= 'var g_Nouveau_weekday_long_array = new Array ( "'.join ( '","', self::$local_nouveau_weekday_long_array ).'");';
                 $the_new_content .= 'var g_Nouveau_weekday_short_array = new Array ( "'.join ( '","', self::$local_nouveau_weekday_short_array ).'");';
@@ -2011,7 +2041,7 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                 $the_new_content .= '</div>';
                 $the_new_content .= '<div class="bmlt_search_map_div" id="'.$uid.'_bmlt_search_map_div"></div>';
                 $the_new_content .= '<div class="bmlt_search_map_new_search_div" id="'.$uid.'_bmlt_search_map_new_search_div" style="display:none"><a href="javascript:c_ms_'.$uid.'.newSearchExt();">'.$this->process_text ( self::$local_new_map_js_new_search ).'</a></div>';
-                $the_new_content .= '<script type="text/javascript">var g_military_time = '.($options['military_time'] ? 'true' : 'false' ).';g_no_meetings_found="'.htmlspecialchars ( self::$local_cant_find_meetings_display ).'";document.getElementById(\''.$uid.'\').style.display=\'block\';c_ms_'.$uid.' = new MapSearch ( \''.htmlspecialchars ( $uid ).'\',\''.htmlspecialchars ( $options_id ).'\', document.getElementById(\''.$uid.'_bmlt_search_map_div\'), {\'latitude\':'.$options['map_center_latitude'].',\'longitude\':'.$options['map_center_longitude'].',\'zoom\':'.$options['map_zoom'].'} )</script>';
+                $the_new_content .= '<script type="text/javascript">var g_military_time = '.($options['military_time'] ? 'true' : 'false' ).';g_no_meetings_found="'.htmlspecialchars ( self::$local_cant_find_meetings_display ).'";document.getElementById(\''.$uid.'\').style.display=\'block\';c_ms_'.$uid.' = new MapSearch ( \''.htmlspecialchars ( $uid ).'\',\''.htmlspecialchars ( $options_id ).'\', document.getElementById(\''.$uid.'_bmlt_search_map_div\'), {\'latitude\':'.$options['map_center_latitude'].',\'longitude\':'.$options['map_center_longitude'].',\'zoom\':'.$options['map_zoom'].'} );var g_Nouveau_start_week = '.((isset ( $options['startWeekday'] ) && $options['startWeekday']) ? $options['startWeekday'] : self::$default_startWeekday ).';</script>';
             $the_new_content .= '</div>';
             
             $in_content = self::replace_shortcode ( $in_content, 'bmlt_map', $the_new_content );
@@ -2503,6 +2533,7 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
         $ret .= 'var c_g_hour = '.intval ( $h ).';';
         $ret .= 'var c_g_min = '.intval ( $m ).';';
         $ret .= 'var c_g_military_time = '.($options['military_time'] ? 'true' : 'false' ).';';
+        $ret .= 'var c_g_Nouveau_start_week = '.((isset ( $options['startWeekday'] ) && $options['startWeekday']) ? $options['startWeekday'] : self::$default_startWeekday ).';';
         $ret .= 'var c_g_distance_prompt = \''.$this->process_text ( self::$local_mobile_distance ).'\';';
         $ret .= 'var c_g_distance_units_are_km = '.((strtolower ($options['distance_units']) == 'km' ) ? 'true' : 'false').';';
         $ret .= 'var c_g_distance_units = \''.((strtolower ($options['distance_units']) == 'km' ) ? $this->process_text ( self::$local_mobile_kilometers ) : $this->process_text ( self::$local_mobile_miles ) ).'\';';

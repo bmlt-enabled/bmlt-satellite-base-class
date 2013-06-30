@@ -88,6 +88,8 @@ class BMLT_Localized_BaseClass
     static  $local_options_time_format_prompt = 'Zeit Format:';             ///< The label for the time format selection popup.
     static  $local_options_time_format_ampm = 'Ante Meridian (HH:MM AM/PM)';    ///< Ante Meridian Format Option
     static  $local_options_time_format_military = 'Military (HH:MM)';           ///< Military Time Format Option
+    
+    static  $local_options_week_begins_on_prompt = 'Weeks begin on:';       ///< This is the label for the week start popup menu.
 
     static  $local_no_root_server = 'Damit das funktioniert, muss man eine root server URI angeben.';    ///< Displayed if there was no root server provided.
 
