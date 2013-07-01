@@ -4600,11 +4600,24 @@ NouveauMapSearch.prototype.sSortCallback = function( in_obj_a,
         default:    // 'time' is default
             if ( ret == 0 )
                 {
-                if ( in_obj_a.weekday_tinyint < in_obj_b.weekday_tinyint )
+                var weekday_score_a = parseInt ( in_obj_a.weekday_tinyint, 10 );
+                var weekday_score_b = parseInt ( in_obj_b.weekday_tinyint, 10 );
+                
+                if ( weekday_score_a < g_Nouveau_start_week )
+                    {
+                    weekday_score_a += 7;
+                    }
+                
+                if ( weekday_score_b < g_Nouveau_start_week )
+                    {
+                    weekday_score_a += 7;
+                    }
+                    
+                if ( weekday_score_a < weekday_score_b )
                     {
                     ret = -1;
                     }
-                else if ( in_obj_a.weekday_tinyint > in_obj_b.weekday_tinyint )
+                else if ( weekday_score_a > weekday_score_b )
                     {
                     ret = 1;
                     }
