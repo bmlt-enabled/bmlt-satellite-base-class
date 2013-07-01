@@ -832,22 +832,27 @@ function NouveauMapSearch ( in_unique_id,           ///< The UID of the containe
         
         for ( var c = 0; c < 7; c++ )
             {
-            var weekday_index = c + 1;
-
+            var weekday_index = c + g_Nouveau_start_week;
+            
+            if ( weekday_index > 7 )
+                {
+                weekday_index -= 7;
+                }
+            
             var enclosure = document.createElement ( 'div' );
             enclosure.className = 'bmlt_nouveau_advanced_weekdays_content_one_weekday_enclosure_div';
 
-            this.m_advanced_weekdays_array[c] = document.createElement ( 'input' );
-            this.m_advanced_weekdays_array[c].type = 'checkbox';
-            this.m_advanced_weekdays_array[c].className = 'bmlt_nouveau_advanced_weekdays_checkbox bmlt_nouveau_advanced_weekdays_checkbox_' + weekday_index;
-            this.m_advanced_weekdays_array[c].id = this.m_uid + '_weekdays_checkbox_' + weekday_index;
-            enclosure.appendChild ( this.m_advanced_weekdays_array[c] );
+            this.m_advanced_weekdays_array[weekday_index - 1] = document.createElement ( 'input' );
+            this.m_advanced_weekdays_array[weekday_index - 1].type = 'checkbox';
+            this.m_advanced_weekdays_array[weekday_index - 1].className = 'bmlt_nouveau_advanced_weekdays_checkbox bmlt_nouveau_advanced_weekdays_checkbox_' + weekday_index;
+            this.m_advanced_weekdays_array[weekday_index - 1].id = this.m_uid + '_weekdays_checkbox_' + weekday_index;
+            enclosure.appendChild ( this.m_advanced_weekdays_array[weekday_index - 1] );
 
             var weekday_text = g_Nouveau_weekday_long_array[c];
             var label = document.createElement ( 'label' );
             label.className = 'bmlt_nouveau_advanced_weekdays_label bmlt_nouveau_advanced_weekdays_label_' + weekday_index;
             label.setAttribute ( 'for', this.m_uid + '_weekdays_checkbox_' + weekday_index );
-            label.appendChild ( document.createTextNode ( g_Nouveau_weekday_long_array[c] ) );
+            label.appendChild ( document.createTextNode ( g_Nouveau_weekday_long_array[weekday_index - 1] ) );
             enclosure.appendChild ( label );
             
             inner.appendChild ( enclosure );

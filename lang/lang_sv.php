@@ -85,11 +85,11 @@ class BMLT_Localized_BaseClass
     static $local_options_kilometers = 'Kilometer'; ///< The string for kilometers.
     static $local_options_selectLocation_checkbox_text = 'Visa endast positioneringsfunktioner för mobila enhet'; ///< The label for the location services checkbox.
     
-    static  $local_options_time_format_prompt = 'Format För Tid:';  ///< The label for the time format selection popup.
-    static  $local_options_time_format_ampm = 'HH:MM AM/PM';        ///< Ante Meridian Format Option
-    static  $local_options_time_format_military = 'HH:MM';          ///< Military Time Format Option
+    static $local_options_time_format_prompt = 'Format För Tid:';  ///< The label for the time format selection popup.
+    static $local_options_time_format_ampm = 'HH:MM AM/PM';        ///< Ante Meridian Format Option
+    static $local_options_time_format_military = 'HH:MM';          ///< Military Time Format Option
     
-    static  $local_options_week_begins_on_prompt = 'Weeks begin on:';       ///< This is the label for the week start popup menu.
+    static $local_options_week_begins_on_prompt = 'Veckor börjar på:';       ///< This is the label for the week start popup menu.
     
     static $local_no_root_server = 'sökvägen till servern saknas. kontakta webmaster'; ///< Displayed if there was no root server provided.
 

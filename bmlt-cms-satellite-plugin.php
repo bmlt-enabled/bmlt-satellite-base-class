@@ -2105,6 +2105,7 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                                                     $in_uid         ///< This is the UID of the enclosing div.
                                                     )
         {
+        $options = $this->getBMLTOptions_by_id ( $in_options_id );
         $ret = '<div class="bmlt_map_container_div_search_options_div" id="'.$in_uid.'_options">';
             $ret .= '<div class="bmlt_map_options_1">';
                 $ret .= '<a class="bmlt_map_reveal_options" id="'.$in_uid.'_options_1_a" href="javascript:var a=document.getElementById(\''.$in_uid.'_options_1_a\');var b=document.getElementById(\''.$in_uid.'_options_1\');if(b &amp;&amp; a){if(b.style.display==\'none\'){a.className=\'bmlt_map_hide_options\';b.style.display=\'block\'}else{a.className=\'bmlt_map_reveal_options\';b.style.display=\'none\'}};c_ms_'.$in_uid.'.recalculateMapExt()"><span>'.$this->process_text ( self::$local_new_map_option_1_label ).'</span></a>';
@@ -2116,10 +2117,17 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                             $ret .= '<label title="'.$this->process_text ( self::$local_new_map_all_weekdays_title ).'" for="weekday_'.$in_uid.'_0">'.$this->process_text ( self::$local_new_map_all_weekdays ).'</label></div>';
                             for ( $index = 1;  $index < count ( self::$local_weekdays ); $index++ )
                                 {
-                                $weekday = self::$local_weekdays[$index];
+                                $weekday_index = ($index - 1) + $options['startWeekday'];
+            
+                                if ( $weekday_index > 7 )
+                                    {
+                                    $weekday_index -= 7;
+                                    }
+            
+                                $weekday = self::$local_weekdays[$weekday_index];
                                 $ret .= '<div class="bmlt_map_container_div_search_options_weekday_checkbox_div">';
-                                    $ret .= '<input title="'.$this->process_text ( self::$local_new_map_weekdays_title.$weekday ).'." type="checkbox" id="weekday_'.$in_uid.'_'.htmlspecialchars ( $index ).'" onchange="c_ms_'.$in_uid.'.recalculateMapExt(this)" />';
-                                    $ret .= '<label title="'.$this->process_text ( self::$local_new_map_weekdays_title.$weekday ).'." for="weekday_'.$in_uid.'_'.htmlspecialchars ( $index ).'">'.$this->process_text ( $weekday ).'</label>';
+                                    $ret .= '<input title="'.$this->process_text ( self::$local_new_map_weekdays_title.$weekday ).'." type="checkbox" id="weekday_'.$in_uid.'_'.htmlspecialchars ( $weekday_index ).'" onchange="c_ms_'.$in_uid.'.recalculateMapExt(this)" />';
+                                    $ret .= '<label title="'.$this->process_text ( self::$local_new_map_weekdays_title.$weekday ).'." for="weekday_'.$in_uid.'_'.htmlspecialchars ( $weekday_index ).'">'.$this->process_text ( $weekday ).'</label>';
                                 $ret .= '</div>';
                                 }
                         $ret .= '</fieldset>';
@@ -2129,7 +2137,6 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                                 $ret .= '<input title="'.$this->process_text ( self::$local_new_map_all_formats_title ).'" type="checkbox" id="formats_'.$in_uid.'_0" checked="checked" onchange="c_ms_'.$in_uid.'.recalculateMapExt(this)" />';
                                 $ret .= '<label title="'.$this->process_text ( self::$local_new_map_all_formats_title ).'" for="formats_'.$in_uid.'_0">'.$this->process_text ( self::$local_new_map_all_formats ).'</label>';
                             $ret .= '</div>';
-                            $options = $this->getBMLTOptions_by_id ( $in_options_id );
                             $this->my_driver->set_m_root_uri ( $options['root_server'] );
                             $error = $this->my_driver->get_m_error_message();
                             
