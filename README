@@ -26,7 +26,7 @@ INSTALLATION
 CHANGELIST
 ----------
 = 3.0.17 =
-* TBD
+* July 1, 2013
 * Corrected German localization.
 * Added the ability to specify which day weeks begin (in Europe, it is common for weeks to begin on Monday).
 
