@@ -573,12 +573,46 @@ function MapSearch (
 			{
 			if ( tmp[c].matches )
 				{
-				tmp[c].matches.sort ( function(a,b){return a.weekday_tinyint-b.weekday_tinyint});
+				tmp[c].matches.sort ( sortMeetingSearchResponseCallback );
 				ret[ret.length] = tmp[c].matches;
 				};
 			};
 		
 		return ret;
+	};
+	
+	/************************************************************************************//**
+	*	 \brief	Callback used to sort the meeting response by weekday.                      *
+	*    \returns 1 if a>b, -1 if a<b or 0 if they are equal.                               *
+	****************************************************************************************/
+	function sortMeetingSearchResponseCallback (    in_mtg_obj_a,   ///< Meeting object A
+	                                                in_mtg_obj_b    ///< Meeting Object B
+	                                            )
+	{
+	    var ret = 0;
+        var weekday_score_a = parseInt ( in_mtg_obj_a.weekday_tinyint, 10 );
+        var weekday_score_b = parseInt ( in_mtg_obj_b.weekday_tinyint, 10 );
+        
+        if ( weekday_score_a < g_Nouveau_start_week )
+            {
+            weekday_score_a += 7;
+            }
+        
+        if ( weekday_score_b < g_Nouveau_start_week )
+            {
+            weekday_score_a += 7;
+            }
+            
+        if ( weekday_score_a < weekday_score_b )
+            {
+            ret = -1;
+            }
+        else if ( weekday_score_a > weekday_score_b )
+            {
+            ret = 1;
+            };
+        
+        return ret;
 	};
 	
 	/************************************************************************************//**
@@ -625,12 +659,18 @@ function MapSearch (
 				
 				for ( var wd = 1; wd < 8; wd++ )
 					{
+					var weekday_int = (parseInt ( wd ) - 1) + g_Nouveau_start_week;
+					if ( weekday_int > 7 )
+					    {
+					    weekday_int -= 7;
+					    };
+					
 					for ( var c = 0; c < included_weekdays.length; c++ )
 						{
-						if ( included_weekdays[c] == wd )
+						if ( included_weekdays[c] == weekday_int )
 							{
-							marker_html += '<li id="'+g_main_map.uid+'_'+meeting_id+'_'+wd.toString()+'_li" class="'+((c == 0) ? 'bmlt_selected_weekday_info' : 'bmlt_unselected_weekday_info')+'">';
-							marker_html += '<a class="bmlt_info_win_day_a" href="javascript:expose_weekday(document.getElementById(\'wd_'+g_main_map.uid+'_'+meeting_id+'_div\'),'+wd.toString()+',\''+meeting_id+'\',\''+g_main_map.uid+'\')">'+c_g_weekdays_short[included_weekdays[c]]+'</a></li>';
+							marker_html += '<li id="'+g_main_map.uid+'_'+meeting_id+'_'+included_weekdays[c].toString()+'_li" class="'+((c == 0) ? 'bmlt_selected_weekday_info' : 'bmlt_unselected_weekday_info')+'">';
+							marker_html += '<a class="bmlt_info_win_day_a" href="javascript:expose_weekday(document.getElementById(\'wd_'+g_main_map.uid+'_'+meeting_id+'_div\'),'+included_weekdays[c].toString()+',\''+meeting_id+'\',\''+g_main_map.uid+'\')">'+c_g_weekdays_short[included_weekdays[c]]+'</a></li>';
 							};
 						};
 					};
