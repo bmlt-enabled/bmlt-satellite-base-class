@@ -25,6 +25,11 @@ INSTALLATION
 
 CHANGELIST
 ----------
+= 3.0.18 =
+* TBD
+* Minor German localization corrections.
+* Removed the useless "New Search URL" text box from the admin.
+
 = 3.0.17 =
 * July 1, 2013
 * Corrected German localization.

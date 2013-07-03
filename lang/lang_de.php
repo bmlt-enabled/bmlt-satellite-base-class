@@ -4,7 +4,7 @@
 *   \file   lang_de.php                                                                     *
 *                                                                                           *
 *   \brief  This file contains English localizations.                                       *
-*   \version 3.0.17                                                                         *
+*   \version 3.0.18                                                                         *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -89,7 +89,7 @@ class BMLT_Localized_BaseClass
     static  $local_options_time_format_ampm = 'Ante Meridian (HH:MM AM/PM)';    ///< Ante Meridian Format Option
     static  $local_options_time_format_military = 'Military (HH:MM)';           ///< Military Time Format Option
     
-    static  $local_options_week_begins_on_prompt = 'Die Woche beginnt am:';       ///< This is the label for the week start popup menu.
+    static  $local_options_week_begins_on_prompt = 'Wochen beginnen am:';       ///< This is the label for the week start popup menu.
 
     static  $local_no_root_server = 'Damit das funktioniert, muss man eine root server URI angeben.';    ///< Displayed if there was no root server provided.
 

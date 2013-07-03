@@ -3,7 +3,7 @@
 *   \file   bmlt-cms-satellite-plugin.php                                                   *
 *                                                                                           *
 *   \brief  This is a generic CMS plugin class for a BMLT satellite client.                 *
-*   \version 3.0.17                                                                         *
+*   \version 3.0.18                                                                         *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -1119,15 +1119,15 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                         $ret .= '<div class="BMLTPlugin_option_sheet_Version" id="BMLTPlugin_option_sheet_version_indicator_'.$in_options_index.'"></div>';
                     $ret .= '</div>';
                 $ret .= '</div>';
-                $ret .= '<div class="BMLTPlugin_option_sheet_line_div">';
-                    $id = 'BMLTPlugin_option_sheet_new_search_'.$in_options_index;
-                    $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( self::$local_options_new_search_label ).'</label>';
-                        $string = (isset ( $options['bmlt_new_search_url'] ) && $options['bmlt_new_search_url'] ? $options['bmlt_new_search_url'] : $this->process_text ( self::$local_options_no_new_search_string ) );
-                    $ret .= '<input class="BMLTPlugin_option_sheet_line_new_search_text" id="'.htmlspecialchars ( $id ).'" type="text" value="'.htmlspecialchars ( $string ).'"';
-                    $ret .= ' onfocus="BMLTPlugin_ClickInText(this.id,\''.$this->process_text ( self::$local_options_no_new_search_string).'\',false)"';
-                    $ret .= ' onblur="BMLTPlugin_ClickInText(this.id,\''.$this->process_text ( self::$local_options_no_new_search_string).'\',true)"';
-                    $ret .= ' onchange="BMLTPlugin_DirtifyOptionSheet()" onkeyup="BMLTPlugin_DirtifyOptionSheet()" />';
-                $ret .= '</div>';
+//                 $ret .= '<div class="BMLTPlugin_option_sheet_line_div">';
+//                     $id = 'BMLTPlugin_option_sheet_new_search_'.$in_options_index;
+//                     $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( self::$local_options_new_search_label ).'</label>';
+//                         $string = (isset ( $options['bmlt_new_search_url'] ) && $options['bmlt_new_search_url'] ? $options['bmlt_new_search_url'] : $this->process_text ( self::$local_options_no_new_search_string ) );
+//                     $ret .= '<input class="BMLTPlugin_option_sheet_line_new_search_text" id="'.htmlspecialchars ( $id ).'" type="text" value="'.htmlspecialchars ( $string ).'"';
+//                     $ret .= ' onfocus="BMLTPlugin_ClickInText(this.id,\''.$this->process_text ( self::$local_options_no_new_search_string).'\',false)"';
+//                     $ret .= ' onblur="BMLTPlugin_ClickInText(this.id,\''.$this->process_text ( self::$local_options_no_new_search_string).'\',true)"';
+//                     $ret .= ' onchange="BMLTPlugin_DirtifyOptionSheet()" onkeyup="BMLTPlugin_DirtifyOptionSheet()" />';
+//                 $ret .= '</div>';
                 $dir_res = opendir ( dirname ( __FILE__ ).'/themes' );
                 if ( $dir_res )
                     {
@@ -1364,17 +1364,17 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                                 }
                             }
                         
-                        if ( isset ( $this->my_http_vars['BMLTPlugin_option_sheet_new_search_'.$i] ) )
-                            {
-                            if ( trim ( $this->my_http_vars['BMLTPlugin_option_sheet_new_search_'.$i] ) )
-                                {
-                                $options['bmlt_new_search_url'] = trim ( $this->my_http_vars['BMLTPlugin_option_sheet_new_search_'.$i] );
-                                }
-                            else
-                                {
-                                $options['bmlt_new_search_url'] = self::$default_new_search;
-                                }
-                            }
+//                         if ( isset ( $this->my_http_vars['BMLTPlugin_option_sheet_new_search_'.$i] ) )
+//                             {
+//                             if ( trim ( $this->my_http_vars['BMLTPlugin_option_sheet_new_search_'.$i] ) )
+//                                 {
+//                                 $options['bmlt_new_search_url'] = trim ( $this->my_http_vars['BMLTPlugin_option_sheet_new_search_'.$i] );
+//                                 }
+//                             else
+//                                 {
+//                                 $options['bmlt_new_search_url'] = self::$default_new_search;
+//                                 }
+//                             }
                         
                         if ( isset ( $this->my_http_vars['BMLTPlugin_option_sheet_initial_view_'.$i] ) )
                             {
