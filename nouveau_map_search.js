@@ -2854,8 +2854,10 @@ function NouveauMapSearch ( in_unique_id,           ///< The UID of the containe
 	        this.m_ajax_request.abort();
 	        this.m_ajax_request = null;
 	        };
+	        
+	    var uri = this.createSearchURI_Formats();
 	    
-        this.m_ajax_request = BMLTPlugin_AjaxRequest ( this.createSearchURI_Formats(), NouveauMapSearch.prototype.sFormatCallback, 'get', this.m_uid );
+        this.m_ajax_request = BMLTPlugin_AjaxRequest ( uri, NouveauMapSearch.prototype.sFormatCallback, 'get', this.m_uid );
 	    };
 	
 	/************************************************************************************//**
@@ -2875,7 +2877,9 @@ function NouveauMapSearch ( in_unique_id,           ///< The UID of the containe
 	        this.m_ajax_request = null;
 	        };
 	    
-        this.m_ajax_request = BMLTPlugin_AjaxRequest ( this.createSearchURI_ServiceBodies(), NouveauMapSearch.prototype.sServiceBodiesCallback, 'get', this.m_uid );
+	    var uri = this.createSearchURI_ServiceBodies();
+	    
+        this.m_ajax_request = BMLTPlugin_AjaxRequest ( uri, NouveauMapSearch.prototype.sServiceBodiesCallback, 'get', this.m_uid );
 	    };
     
     /************************************************************************************//**

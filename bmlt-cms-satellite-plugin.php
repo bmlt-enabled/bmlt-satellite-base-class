@@ -1119,15 +1119,15 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                         $ret .= '<div class="BMLTPlugin_option_sheet_Version" id="BMLTPlugin_option_sheet_version_indicator_'.$in_options_index.'"></div>';
                     $ret .= '</div>';
                 $ret .= '</div>';
-//                 $ret .= '<div class="BMLTPlugin_option_sheet_line_div">';
-//                     $id = 'BMLTPlugin_option_sheet_new_search_'.$in_options_index;
-//                     $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( self::$local_options_new_search_label ).'</label>';
-//                         $string = (isset ( $options['bmlt_new_search_url'] ) && $options['bmlt_new_search_url'] ? $options['bmlt_new_search_url'] : $this->process_text ( self::$local_options_no_new_search_string ) );
-//                     $ret .= '<input class="BMLTPlugin_option_sheet_line_new_search_text" id="'.htmlspecialchars ( $id ).'" type="text" value="'.htmlspecialchars ( $string ).'"';
-//                     $ret .= ' onfocus="BMLTPlugin_ClickInText(this.id,\''.$this->process_text ( self::$local_options_no_new_search_string).'\',false)"';
-//                     $ret .= ' onblur="BMLTPlugin_ClickInText(this.id,\''.$this->process_text ( self::$local_options_no_new_search_string).'\',true)"';
-//                     $ret .= ' onchange="BMLTPlugin_DirtifyOptionSheet()" onkeyup="BMLTPlugin_DirtifyOptionSheet()" />';
-//                 $ret .= '</div>';
+                $ret .= '<div class="BMLTPlugin_option_sheet_line_div">';
+                    $id = 'BMLTPlugin_option_sheet_new_search_'.$in_options_index;
+                    $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( self::$local_options_new_search_label ).'</label>';
+                        $string = (isset ( $options['bmlt_new_search_url'] ) && $options['bmlt_new_search_url'] ? $options['bmlt_new_search_url'] : $this->process_text ( self::$local_options_no_new_search_string ) );
+                    $ret .= '<input class="BMLTPlugin_option_sheet_line_new_search_text" id="'.htmlspecialchars ( $id ).'" type="text" value="'.htmlspecialchars ( $string ).'"';
+                    $ret .= ' onfocus="BMLTPlugin_ClickInText(this.id,\''.$this->process_text ( self::$local_options_no_new_search_string).'\',false)"';
+                    $ret .= ' onblur="BMLTPlugin_ClickInText(this.id,\''.$this->process_text ( self::$local_options_no_new_search_string).'\',true)"';
+                    $ret .= ' onchange="BMLTPlugin_DirtifyOptionSheet()" onkeyup="BMLTPlugin_DirtifyOptionSheet()" />';
+                $ret .= '</div>';
                 $dir_res = opendir ( dirname ( __FILE__ ).'/themes' );
                 if ( $dir_res )
                     {
@@ -1364,17 +1364,17 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                                 }
                             }
                         
-//                         if ( isset ( $this->my_http_vars['BMLTPlugin_option_sheet_new_search_'.$i] ) )
-//                             {
-//                             if ( trim ( $this->my_http_vars['BMLTPlugin_option_sheet_new_search_'.$i] ) )
-//                                 {
-//                                 $options['bmlt_new_search_url'] = trim ( $this->my_http_vars['BMLTPlugin_option_sheet_new_search_'.$i] );
-//                                 }
-//                             else
-//                                 {
-//                                 $options['bmlt_new_search_url'] = self::$default_new_search;
-//                                 }
-//                             }
+                        if ( isset ( $this->my_http_vars['BMLTPlugin_option_sheet_new_search_'.$i] ) )
+                            {
+                            if ( trim ( $this->my_http_vars['BMLTPlugin_option_sheet_new_search_'.$i] ) )
+                                {
+                                $options['bmlt_new_search_url'] = trim ( $this->my_http_vars['BMLTPlugin_option_sheet_new_search_'.$i] );
+                                }
+                            else
+                                {
+                                $options['bmlt_new_search_url'] = self::$default_new_search;
+                                }
+                            }
                         
                         if ( isset ( $this->my_http_vars['BMLTPlugin_option_sheet_initial_view_'.$i] ) )
                             {
@@ -1745,14 +1745,14 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                 $display .= '</select></div></form>';
                 
                 $display .= '<script type="text/javascript">';
-                $display .= 'document.getElementById(\'interactive_form_div\').style.display=\'block\';';
-                $display .= 'document.getElementById(\'meeting_search_select\').selectedIndex=0;';
+                $display .= 'document.getElementById(\'interactive_form_div\').style.display=\'block\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+                $display .= 'document.getElementById(\'meeting_search_select\').selectedIndex=0;' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
 
                 $options = $this->getBMLTOptions_by_id ( $this->cms_get_page_settings_id($in_content) );
                 $url = $this->get_plugin_path();
                 $img_url .= htmlspecialchars ( $url.'themes/'.$options['theme'].'/images/' );
                 
-                $display .= "var c_g_BMLTPlugin_images = '$img_url';";
+                $display .= "var c_g_BMLTPlugin_images = '$img_url';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
                 $display .= '</script>';
                 $display .= '<div id="simple_search_container"></div></div>';
                 }
@@ -2178,32 +2178,32 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
         $ret = '<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>';
         $ret .= '<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=geometry"></script>';       
         // Declare the various globals and display strings. This is how we pass strings to the JavaScript, as opposed to the clunky way we do it in the root server.
-        $ret .= '<script type="text/javascript">';
-        $ret .= 'var c_g_cannot_determine_location = \''.$this->process_text ( self::$local_cannot_determine_location ).'\';';
-        $ret .= 'var c_g_no_meetings_found = \''.$this->process_text ( self::$local_mobile_fail_no_meetings ).'\';';
-        $ret .= 'var c_g_server_error = \''.$this->process_text ( self::$local_server_fail ).'\';';
-        $ret .= 'var c_g_address_lookup_fail = \''.$this->process_text ( self::$local_cant_find_address ).'\';';
-        $ret .= 'var c_g_center_marker_curent_radius_1 = \''.$this->process_text ( self::$local_new_map_js_center_marker_current_radius_1 ).'\';';
-        $ret .= 'var c_g_center_marker_curent_radius_2_km = \''.$this->process_text ( self::$local_new_map_js_center_marker_current_radius_2_km ).'\';';
-        $ret .= 'var c_g_center_marker_curent_radius_2_mi = \''.$this->process_text ( self::$local_new_map_js_center_marker_current_radius_2_mi ).'\';';
-        $ret .= 'var c_g_map_link_text = \''.$this->process_text ( self::$local_map_link ).'\';';
+        $ret .= '<script type="text/javascript">' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_cannot_determine_location = \''.$this->process_text ( self::$local_cannot_determine_location ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_no_meetings_found = \''.$this->process_text ( self::$local_mobile_fail_no_meetings ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_server_error = \''.$this->process_text ( self::$local_server_fail ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_address_lookup_fail = \''.$this->process_text ( self::$local_cant_find_address ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_center_marker_curent_radius_1 = \''.$this->process_text ( self::$local_new_map_js_center_marker_current_radius_1 ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_center_marker_curent_radius_2_km = \''.$this->process_text ( self::$local_new_map_js_center_marker_current_radius_2_km ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_center_marker_curent_radius_2_mi = \''.$this->process_text ( self::$local_new_map_js_center_marker_current_radius_2_mi ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_map_link_text = \''.$this->process_text ( self::$local_map_link ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $ret .= 'var c_g_weekdays = [';
         $ret .= "'".$this->process_text ( join ( "','", self::$local_weekdays ) )."'";
-        $ret .= '];';
+        $ret .= '];' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $ret .= 'var c_g_weekdays_short = [';
         $ret .= "'".$this->process_text ( join ( "','", self::$local_weekdays_short ) )."'";
-        $ret .= '];';
-        $ret .= 'var c_g_diameter_choices = ['.join ( ",", self::$local_new_map_js_diameter_choices ).'];';
-        $ret .= 'var c_g_formats = \''.$this->process_text ( self::$local_formats ).'\';';
-        $ret .= 'var c_g_Noon = \''.$this->process_text ( self::$local_noon ).'\';';
-        $ret .= 'var c_g_Midnight = \''.$this->process_text ( self::$local_midnight ).'\';';
-        $ret .= 'var c_g_debug_mode = '.( defined ( 'DEBUG_MODE' ) ? 'true' : 'false' ).';';
-        $ret .= 'var c_g_distance_prompt = \''.$this->process_text ( self::$local_mobile_distance ).'\';';
-        $ret .= 'var c_g_distance_prompt_suffix = \''.$this->process_text ( self::$local_new_map_center_marker_distance_suffix ).'\';';
-        $ret .= 'var c_g_distance_center_marker_desc = \''.$this->process_text ( self::$local_new_map_center_marker_description ).'\';';
-        $ret .= 'var c_BMLTPlugin_files_uri = \''.htmlspecialchars ( $this->get_ajax_mobile_base_uri() ).'?\';';
-        $ret .= "var c_g_BMLTPlugin_images = '".htmlspecialchars ( $this->get_plugin_path()."/google_map_images" )."';";
-        $ret .= "var c_g_BMLTPlugin_default_location_text = '".$this->process_text ( self::$local_new_map_text_entry_default_text )."';";
+        $ret .= '];' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_diameter_choices = ['.join ( ",", self::$local_new_map_js_diameter_choices ).'];' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_formats = \''.$this->process_text ( self::$local_formats ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_Noon = \''.$this->process_text ( self::$local_noon ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_Midnight = \''.$this->process_text ( self::$local_midnight ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_debug_mode = '.( defined ( 'DEBUG_MODE' ) ? 'true' : 'false' ).';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_distance_prompt = \''.$this->process_text ( self::$local_mobile_distance ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_distance_prompt_suffix = \''.$this->process_text ( self::$local_new_map_center_marker_distance_suffix ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_distance_center_marker_desc = \''.$this->process_text ( self::$local_new_map_center_marker_description ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_BMLTPlugin_files_uri = \''.htmlspecialchars ( $this->get_ajax_mobile_base_uri() ).'?\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= "var c_g_BMLTPlugin_images = '".htmlspecialchars ( $this->get_plugin_path()."/google_map_images" )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= "var c_g_BMLTPlugin_default_location_text = '".$this->process_text ( self::$local_new_map_text_entry_default_text )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $ret .= '</script>';
         $ret .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'javascript.js" type="text/javascript"></script>';
         $ret .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'map_search.js" type="text/javascript"></script>';
@@ -2431,17 +2431,17 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
         {
         $ret = '';
         
-        function isDeviceWML1()
+        function isDeviceWML1($in_http_vars)
         {
             return BMLTPlugin::mobile_sniff_ua($in_http_vars) == 'wml';
         }
     
-        function isDeviceWML2()
+        function isDeviceWML2($in_http_vars)
         {
             return BMLTPlugin::mobile_sniff_ua($in_http_vars) == 'xhtml_mp';
         }
             
-        function isMobileDevice()
+        function isMobileDevice($in_http_vars)
         {
             $language = BMLTPlugin::mobile_sniff_ua($in_http_vars);
             return ($language != 'xhtml') && ($language != 'smartphone');
@@ -2450,15 +2450,15 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
         // If we aren't deliberately forcing an emulation, we figure it out for ourselves.
         if ( !isset ( $in_http_vars['WML'] ) )
             {
-            if ( isDeviceWML1() )
+            if ( isDeviceWML1($in_http_vars) )
                 {
                 $in_http_vars['WML'] = 1;
                 }
-            elseif ( isDeviceWML2() )
+            elseif ( isDeviceWML2($in_http_vars) )
                 {
                 $in_http_vars['WML'] = 2;
                 }
-            elseif ( isMobileDevice() )
+            elseif ( isMobileDevice($in_http_vars) )
                 {
                 $in_http_vars['WML'] = 1;
                 }
@@ -2521,38 +2521,38 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
         $ret .= '<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor='.$sensor.'"></script>';
         
         // Declare the various globals and display strings. This is how we pass strings to the JavaScript, as opposed to the clunky way we do it in the root server.
-        $ret .= '<script type="text/javascript">';
-        $ret .= 'var c_g_cannot_determine_location = \''.$this->process_text ( self::$local_cannot_determine_location ).'\';';
-        $ret .= 'var c_g_no_meetings_found = \''.$this->process_text ( self::$local_mobile_fail_no_meetings ).'\';';
-        $ret .= 'var c_g_server_error = \''.$this->process_text ( self::$local_server_fail ).'\';';
-        $ret .= 'var c_g_address_lookup_fail = \''.$this->process_text ( self::$local_cant_find_address ).'\';';
-        $ret .= 'var c_g_map_link_text = \''.$this->process_text ( self::$local_map_link ).'\';';
+        $ret .= '<script type="text/javascript">' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_cannot_determine_location = \''.$this->process_text ( self::$local_cannot_determine_location ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_no_meetings_found = \''.$this->process_text ( self::$local_mobile_fail_no_meetings ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_server_error = \''.$this->process_text ( self::$local_server_fail ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_address_lookup_fail = \''.$this->process_text ( self::$local_cant_find_address ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_map_link_text = \''.$this->process_text ( self::$local_map_link ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $ret .= 'var c_g_weekdays = [';
         $ret .= "'".$this->process_text ( join ( "','", self::$local_weekdays ) )."'";
-        $ret .= '];';
-        $ret .= 'var c_g_formats = \''.$this->process_text ( self::$local_formats ).'\';';
-        $ret .= 'var c_g_Noon = \''.$this->process_text ( self::$local_noon ).'\';';
-        $ret .= 'var c_g_Midnight = \''.$this->process_text ( self::$local_midnight ).'\';';
-        $ret .= 'var c_g_debug_mode = '.( defined ( 'DEBUG_MODE' ) ? 'true' : 'false' ).';';
+        $ret .= '];' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_formats = \''.$this->process_text ( self::$local_formats ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_Noon = \''.$this->process_text ( self::$local_noon ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_Midnight = \''.$this->process_text ( self::$local_midnight ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_debug_mode = '.( defined ( 'DEBUG_MODE' ) ? 'true' : 'false' ).';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $h = null;
         $m = null;
         list ( $h, $m ) = explode ( ':', date ( "G:i", time() + ($options['time_offset'] * 60 * 60) - ($options['grace_time'] * 60) ) );
-        $ret .= 'var c_g_hour = '.intval ( $h ).';';
-        $ret .= 'var c_g_min = '.intval ( $m ).';';
-        $ret .= 'var c_g_military_time = '.($options['military_time'] ? 'true' : 'false' ).';';
-        $ret .= 'var c_g_Nouveau_start_week = '.((isset ( $options['startWeekday'] ) && $options['startWeekday']) ? $options['startWeekday'] : self::$default_startWeekday ).';';
-        $ret .= 'var c_g_distance_prompt = \''.$this->process_text ( self::$local_mobile_distance ).'\';';
-        $ret .= 'var c_g_distance_units_are_km = '.((strtolower ($options['distance_units']) == 'km' ) ? 'true' : 'false').';';
-        $ret .= 'var c_g_distance_units = \''.((strtolower ($options['distance_units']) == 'km' ) ? $this->process_text ( self::$local_mobile_kilometers ) : $this->process_text ( self::$local_mobile_miles ) ).'\';';
-        $ret .= 'var c_BMLTPlugin_files_uri = \''.htmlspecialchars ( $this->get_ajax_mobile_base_uri() ).'?\';';
-        $ret .= 'var c_bmlt_settings_id='.$this->my_http_vars['bmlt_settings_id'].';';        
+        $ret .= 'var c_g_hour = '.intval ( $h ).';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_min = '.intval ( $m ).';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_military_time = '.($options['military_time'] ? 'true' : 'false' ).';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_Nouveau_start_week = '.((isset ( $options['startWeekday'] ) && $options['startWeekday']) ? $options['startWeekday'] : self::$default_startWeekday ).';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_distance_prompt = \''.$this->process_text ( self::$local_mobile_distance ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_distance_units_are_km = '.((strtolower ($options['distance_units']) == 'km' ) ? 'true' : 'false').';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_distance_units = \''.((strtolower ($options['distance_units']) == 'km' ) ? $this->process_text ( self::$local_mobile_kilometers ) : $this->process_text ( self::$local_mobile_miles ) ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_BMLTPlugin_files_uri = \''.htmlspecialchars ( $this->get_ajax_mobile_base_uri() ).'?\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_bmlt_settings_id='.intVal ( ((isset( $this->my_http_vars['bmlt_settings_id'] ) && $this->my_http_vars['bmlt_settings_id']) ? $this->my_http_vars['bmlt_settings_id'] : '')) .';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');        
         $url = $this->get_plugin_path();
 
-        $img_url = "$url/google_map_images";
+        $img_url = $url."google_map_images";
 
         $img_url = htmlspecialchars ( $img_url );
         
-        $ret .= "var c_g_BMLTPlugin_images = '$img_url';";
+        $ret .= "var c_g_BMLTPlugin_images = '$img_url';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $ret .= '</script>';
        
         $ret .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'javascript.js" type="text/javascript"></script>';

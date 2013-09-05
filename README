@@ -26,9 +26,10 @@ INSTALLATION
 CHANGELIST
 ----------
 = 3.0.18 =
-* TBD
+* September 5, 2013
 * Minor German localization corrections.
 * Removed the useless "New Search URL" text box from the admin.
+* Fixed some JavaScript issues with the [[bmlt_mobile]] shortcode.
 
 = 3.0.17 =
 * July 1, 2013
