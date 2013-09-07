@@ -2580,7 +2580,7 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
             // Various meta tags we need.
             $ret .= '<meta http-equiv="Content-Script-Type" content="text/javascript" />';      // Set the types for inline styles and scripts.
             $ret .= '<meta http-equiv="Content-Style-Type" content="text/css" />';
-            $ret .= '<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;" />'; // Make sure iPhone screens stay humble.
+            $ret .= '<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />'; // Make sure iPhone screens stay humble.
             
             $url = $this->get_plugin_path();
             

@@ -2909,7 +2909,7 @@ function NouveauMapSearch ( in_unique_id,           ///< The UID of the containe
         };
 
 	/************************************************************************************//**
-	*	\brief  
+	*	\brief  Looks up the users's location, using the browser's JavaScript API
 	****************************************************************************************/
     this.lookupMyLocation = function()
         {

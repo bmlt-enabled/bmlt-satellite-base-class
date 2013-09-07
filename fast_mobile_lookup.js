@@ -27,15 +27,12 @@ function WhereAmI ( in_qualifier_day,	/**< A string. This determines whether to 
 	*										CLASS VARIABLES									*
 	****************************************************************************************/
 	
-	var	g_geo = null;					///< Used for the Google Gears (Android) location functionality.
 	var	g_location_coords = null;		///< Will hold the longitude and latitude result.
 	var	g_main_map = null;				///< This will hold the Google Map object.
 	var	g_qualifier_day = null;			///< This holds any "qualifier" for the day of the search.
-	var	g_watch_position = null;		///< Used by the W3C lookup.
 	var	g_last_response = null;			///< Caches the last AJAX response.
 	var	g_allMarkers = [];				///< Holds all the markers.
 	var	g_callback_count = 0;			///< To prevent us from trying too hard.
-	var	g_last_accuracy = null;			///< This, too.
 	var	g_default_style_sheet = null;	///< A reference to the standard stylesheet object.
 	var	g_custom_style_sheet = null;	///< A reference to the custom stylesheet object (if any).
 
@@ -656,29 +653,6 @@ function WhereAmI ( in_qualifier_day,	/**< A string. This determines whether to 
 			}
 		else
 			{
-			// Make sure we terminate any watches...
-			if( window.blackberry && blackberry.location.GPSSupported )
-				{
-				blackberry.location.removeLocationUpdate();
-				}
-			else
-				{
-				if ( g_watch_position && navigator && navigator.geolocation && navigator.geolocation.clearWatch )
-					{
-					navigator.geolocation.clearWatch ( g_watch_position );
-					}
-				else
-					{
-					if ( g_geo )
-						{
-						g_geo.clearWatch ( g_watch_position );
-						};
-					};
-				};
-			
-			g_geo = null;
-			g_watch_position = null;
-		
 			alert ( c_g_address_lookup_fail );
 			window.history.back();
 			};
@@ -688,25 +662,20 @@ function WhereAmI ( in_qualifier_day,	/**< A string. This determines whether to 
 	*	\brief If an address lookup fails, it comes here.									*
 	****************************************************************************************/
 	
-	function WhereAmI_Fail_Final ()
-	{
-		if ( g_watch_position && navigator && navigator.geolocation && navigator.geolocation.clearWatch )
-			{
-			navigator.geolocation.clearWatch ( g_watch_position );
-			}
-		else
-			{
-			if ( g_geo )
-				{
-				g_geo.clearWatch ( g_watch_position );
-				};
-			};
-		
-		g_geo = null;
-		g_watch_position = null;
-		
-		alert ( c_g_cannot_determine_location );
-		window.history.back();
+	function WhereAmI_Fail_Final ( in_error    ///< The error that caused the failure.
+                                )
+    {
+        switch ( in_error.code )
+            {
+            case in_error.TIMEOUT:
+			    navigator.geolocation.getCurrentPosition ( WhereAmI_CallBack, WhereAmI_Fail_Final, {enableHighAccuracy:true, maximumAge:600000, timeout:100} );
+            break;
+            
+            default:
+		        alert ( c_g_cannot_determine_location );
+		        window.history.back();
+            break;
+            };
 	};
 	
 	/************************************************************************************//**
@@ -756,43 +725,10 @@ function WhereAmI ( in_qualifier_day,	/**< A string. This determines whether to 
 	function WhereAmI_CallBack ( in_position	///< The position object.
 								)
 	{
-		if ( in_position.coords && in_position.coords.accuracy )
-			{
-			g_last_accuracy = in_position.coords.accuracy;
-			};
-
-		// The first line is a hideous kludge for Firefox. Yuch.
-		if ( (typeof ( google ) == 'object') && (typeof ( google.gears ) == 'object') && in_position.coords && ((in_position.coords.accuracy == 95000) || (in_position.coords.accuracy == 43000))
-			|| in_position.coords
-			&& (!in_position.coords.accuracy || (in_position.coords.accuracy < 200) || (g_callback_count++ > 2) || ((in_position.coords.accuracy == g_last_accuracy) && (g_callback_count > 1))) )	// Wait until we're pretty durn accurate.
+		if ( in_position.coords )
 			{
 			g_callback_count = 0;
-			g_last_accuracy = null;
-			// We "normalize" the response, so the reponse from both Gears and the Navigator object are the same.
-			if ( !in_position.coords )
-				{		
-				g_location_coords = new google.maps.LatLng ( in_position.latitude, in_position.longitude );
-				}
-			else
-				{
-				g_location_coords = new google.maps.LatLng ( in_position.coords['latitude'], in_position.coords['longitude'] );
-				};
-	
-			// Make sure we terminate any watches...
-			if ( g_watch_position && navigator && navigator.geolocation && navigator.geolocation.clearWatch )
-				{
-				navigator.geolocation.clearWatch ( g_watch_position );
-				}
-			else
-				{
-				if ( g_geo )
-					{
-					g_geo.clearWatch ( g_watch_position );
-					};
-				};
-			
-			g_geo = null;
-			g_watch_position = null;
+			g_location_coords = new google.maps.LatLng ( in_position.coords.latitude, in_position.coords.longitude );
 				
 			// This is the basic URI.
 			var uri = c_BMLTPlugin_files_uri+'BMLTPlugin_mobile_ajax_router=1&bmlt_settings_id='+c_bmlt_settings_id+'&request=';
@@ -828,7 +764,6 @@ function WhereAmI ( in_qualifier_day,	/**< A string. This determines whether to 
 				};
 			
 			uri += encodeURIComponent ( request );
-
 			AjaxRequest ( uri, WhereAmI_Meeting_Search_CallBack, 'GET' );
 			};
 	};
@@ -911,31 +846,7 @@ function WhereAmI ( in_qualifier_day,	/**< A string. This determines whether to 
 			}
 		else
 			{
-			if( typeof ( google ) == 'object' && typeof ( google.gears ) == 'object' )
-				{
-				if ( !g_geo )
-					{
-					g_geo = google.gears.factory.create ('beta.geolocation');
-					};
-				
-				g_watch_position = g_geo.watchPosition ( WhereAmI_CallBack, WhereAmI_Fail_Final, { 'enableHighAccuracy' : true, 'maximumAge' : 30000, 'timeout' : 27000 } );
-				}
-			else
-				{
-				if( typeof ( navigator ) == 'object' && typeof ( navigator.geolocation ) == 'object' )
-					{
-					g_watch_position = navigator.geolocation.watchPosition ( WhereAmI_CallBack, WhereAmI_Fail_Final, { 'enableHighAccuracy' : true, 'maximumAge' : 30000, 'timeout' : 27000 } );
-					}
-				else
-					{
-					if( window.blackberry && blackberry.location.GPSSupported )
-						{
-						blackberry.location.onLocationUpdate ( "WhereAmI.blackberry_callback()" );
-						blackberry.location.setAidMode(2);
-						blackberry.location.refreshLocation();
-						};
-					};
-				};
+			navigator.geolocation.getCurrentPosition ( WhereAmI_CallBack, WhereAmI_Fail_Final, {enableHighAccuracy:true, maximumAge:600000, timeout:0} );
 			};
 		};
 };
@@ -967,14 +878,6 @@ WhereAmI.marker_change_day = function ( in_id	///< The base ID of the element.
 				};
 			};
 		};
-};
-
-WhereAmI.blackberry_callback = function ()
-{
-	blackberry.location.removeLocationUpdate();
-	var	coords = { 'accuracy' : 1, 'latitude' : blackberry.location.latitude, 'longitude' : blackberry.location.longitude };
-	WhereAmI ( null, null, coords );
-    return true;
 };
 
 /********************************************************************************************
