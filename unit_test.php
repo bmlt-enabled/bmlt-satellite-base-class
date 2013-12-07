@@ -32,9 +32,11 @@
 * disabled in actual implementation, so calls to the file will return nothing.				*
 ********************************************************************************************/
 
+define ( '_DEBUG_MODE_', 1 );
+
 global $bmlt_localization;  ///< Use this to control the localization.
 
-$bmlt_localization = 'en';
+$bmlt_localization = 'fr';
 
 require_once ( 'bmlt-unit-test-satellite-plugin.php' );
 

@@ -26,12 +26,6 @@
 *   along with this code.  If not, see <http://www.gnu.org/licenses/>.                      *
 ********************************************************************************************/
 
-define ( '_DEBUG_MODE_', 1 ); //Uncomment for easier JavaScript debugging.
-
-global $bmlt_localization;  ///< Use this to control the localization.
-
-$bmlt_localization = 'en';  ///< This is the code for the appropriate localization.
-
 // Include the satellite driver class.
 require_once ( dirname ( __FILE__ ).'/bmlt-cms-satellite-plugin.php' );
 

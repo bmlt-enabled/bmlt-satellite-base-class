@@ -40,7 +40,9 @@ if ( isset ( $bmlt_localization ) && $bmlt_localization && file_exists ( dirname
     $tmp_local = $bmlt_localization;
     }
 
-require_once ( dirname ( __FILE__ )."/lang/lang_".$tmp_local.".php" );
+$tmp_local = dirname ( __FILE__ )."/lang/lang_".$tmp_local.".php";
+
+require_once ( $tmp_local );
 
 /***********************************************************************/
 /** \brief	This is an open-source JSON encoder that allows us to support
