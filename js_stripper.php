@@ -43,7 +43,7 @@
 			$opt = preg_replace( "|\/\*.*?\*\/|s", "", $opt );
 			$opt = preg_replace( '#(?<!:)\/\/.*?\n#s', "", $opt );
 			$opt = preg_replace( "|\s+|s", " ", $opt );
-			header ( "Content-type: text/javascript" );
+			header ( "Content-type: text/javascript;charset=utf-8" );
             
             $handler = null;
             

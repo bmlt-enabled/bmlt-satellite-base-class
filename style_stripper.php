@@ -43,7 +43,7 @@
             $opt = preg_replace( "|\/\*.*?\*\/|s", "", $opt );
             $opt = preg_replace( "|\s+|s", " ", $opt );
             
-            header ( "Content-type: text/css" );
+            header ( "Content-type: text/css;charset=utf-8" );
             
             $handler = null;
             

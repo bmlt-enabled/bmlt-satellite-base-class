@@ -3,7 +3,7 @@
 *   \file   bmlt-cms-satellite-plugin.php                                                   *
 *                                                                                           *
 *   \brief  This is a generic CMS plugin class for a BMLT satellite client.                 *
-*   \version 3.0.19                                                                         *
+*   \version 3.0.20                                                                         *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -40,9 +40,7 @@ if ( isset ( $bmlt_localization ) && $bmlt_localization && file_exists ( dirname
     $tmp_local = $bmlt_localization;
     }
 
-$tmp_local = dirname ( __FILE__ )."/lang/lang_".$tmp_local.".php";
-
-require_once ( $tmp_local );
+require_once ( dirname ( __FILE__ )."/lang/lang_".$tmp_local.".php" );
 
 /***********************************************************************/
 /** \brief	This is an open-source JSON encoder that allows us to support
@@ -1528,6 +1526,7 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                 }
             
             if ( ob_get_level () ) ob_end_clean(); // Just in case we are in an OB
+            header( "Content-type: text/html; charset=ISO-8859-1" );
             die ( $ret );
             }
         }
@@ -1593,6 +1592,7 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                         $handler = "ob_gzhandler";
                         }
                     
+                    header( "Content-type: text/html; charset=ISO-8859-1" );
                     ob_start($handler);
                         echo $ret;
                     ob_end_flush();
@@ -1612,6 +1612,7 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                         $handler = "ob_gzhandler";
                         }
                     
+                    header( "Content-type: text/json; charset=ISO-8859-1" );
                     ob_start($handler);
                         echo $ret;
                     ob_end_flush();
@@ -1653,6 +1654,7 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                         $handler = "ob_gzhandler";
                         }
                     
+                    header( "Content-type: text/html; charset=ISO-8859-1" );
                     ob_start($handler);
                         echo $result;
                     ob_end_flush();
