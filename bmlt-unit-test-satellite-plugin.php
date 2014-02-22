@@ -3,7 +3,7 @@
 *   \file   bmlt-unit-test-satellite-plugin.php                                             *
 *                                                                                           *
 *   \brief  This is a standalone unit test plugin of a BMLT satellite client.               *
-*   \version 3.0.20                                                                         *
+*   \version 3.0.21                                                                         *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -81,7 +81,7 @@ class BMLTUTestPlugin extends BMLTPlugin
     ****************************************************************************************/
     protected function get_ajax_base_uri()
         {
-        $ret = 'http://'.$_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME'];
+        $ret = 'http://'.$_SERVER['SERVER_NAME'].(($_SERVER['SERVER_PORT'] != 80) ? ':'.$_SERVER['SERVER_PORT'] : '').$_SERVER['SCRIPT_NAME'];
 
         return $ret;
         }
@@ -271,14 +271,14 @@ class BMLTUTestPlugin extends BMLTPlugin
                     {
                     $my_option_id = intval ( $this->my_http_vars['bmlt_settings_id'] );
                     }
-                elseif ( $in_content = $in_content ? $in_content : $in_text )
+                elseif ( $in_content = (isset ( $in_content ) && $in_content) ? $in_content : $in_text )
                     {
                     $my_option_id_content = parent::cms_get_page_settings_id ( $in_content, $in_check_mobile );
                     
-                    $my_option_id = $my_option_id_content ? $my_option_id_content : $my_option_id;
+                    $my_option_id = $my_option_id_content ? $my_option_id_content : isset ( $my_option_id ) ? $my_option_id : null;
                     }
                 
-                if ( !$my_option_id )   // If nothing else gives, we go for the default (first) settings.
+                if ( !isset ( $my_option_id ) || !$my_option_id )   // If nothing else gives, we go for the default (first) settings.
                     {
                     $options = $this->getBMLTOptions ( 1 );
                     $my_option_id = $options['id'];
@@ -286,7 +286,7 @@ class BMLTUTestPlugin extends BMLTPlugin
                 }
             }
         
-        return $my_option_id;
+        return (isset ( $my_option_id ) ? $my_option_id : null);
         }
         
     /************************************************************************************//**
@@ -360,7 +360,7 @@ class BMLTUTestPlugin extends BMLTPlugin
             $head_content .= 'style_stripper.php?filename=';
             }
         
-        $head_content .= 'styles.css" />';
+        $head_content .= 'styles.css" />'.(defined ('_DEBUG_MODE_' ) ? "\n" : '');
         
         $head_content .= '<link rel="stylesheet" type="text/css" href="';
         

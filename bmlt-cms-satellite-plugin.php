@@ -3,7 +3,7 @@
 *   \file   bmlt-cms-satellite-plugin.php                                                   *
 *                                                                                           *
 *   \brief  This is a generic CMS plugin class for a BMLT satellite client.                 *
-*   \version 3.0.20                                                                         *
+*   \version 3.0.21                                                                         *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -1001,7 +1001,7 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                                 {
                                 $html .= '<div class="BMLTPlugin_toolbar_button_line_left">';
                                     $html .= '<script type="text/javascript">';
-                                        $html .= "var c_g_delete_confirm_message='".$this->process_text ( self::$local_options_delete_option_confirm )."';";
+                                        $html .= "var c_g_delete_confirm_message='".$this->process_text ( self::$local_options_delete_option_confirm ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
                                     $html .= '</script>';
                                     $html .= '<input type="button" id="BMLTPlugin_toolbar_button_del" class="BMLTPlugin_delete_button" value="'.$this->process_text ( self::$local_options_delete_option ).'" onclick="BMLTPlugin_DeleteOptionSheet()" />';
                                 $html .= '</div>';
@@ -1025,7 +1025,7 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                         $html .= "var c_g_BMLTPlugin_no_name = '".$this->process_text ( self::$local_options_no_name_string )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
                         $html .= "var c_g_BMLTPlugin_no_root = '".$this->process_text ( self::$local_options_no_root_server_string )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
                         $html .= "var c_g_BMLTPlugin_no_search = '".$this->process_text ( self::$local_options_no_new_search_string )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-                        $html .= "var c_g_BMLTPlugin_root_canal = '".self::$local_options_url_bad."';";
+                        $html .= "var c_g_BMLTPlugin_root_canal = '".self::$local_options_url_bad.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
                         $html .= "var c_g_BMLTPlugin_success_message = '".$this->process_text ( self::$local_options_save_success )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
                         $html .= "var c_g_BMLTPlugin_failure_message = '".$this->process_text ( self::$local_options_save_failure )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
                         $html .= "var c_g_BMLTPlugin_success_time = ".intval ( self::$local_options_success_time ).";" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
@@ -1748,7 +1748,7 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                 $display .= '<option disabled="disabled" value="">'.$this->process_text ( self::$local_clear_search ).'</option>';
                 $display .= '</select></div></form>';
                 
-                $display .= '<script type="text/javascript">';
+                $display .= '<script type="text/javascript">' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
                 $display .= 'document.getElementById(\'interactive_form_div\').style.display=\'block\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
                 $display .= 'document.getElementById(\'meeting_search_select\').selectedIndex=0;' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
 
@@ -1806,114 +1806,114 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                 // These are the basic global JavaScript properties.
                 $the_new_content .= $this->BMLTPlugin_nouveau_map_search_global_javascript_stuff ( );
                 // Most of the display is built in DOM, but this is how we get our localized strings into JS. We put them in globals.
-                $the_new_content .= '<script type="text/javascript">';
-                $the_new_content .= "var g_NouveauMapSearch_advanced_name_string ='".$this->process_text ( self::$local_nouveau_advanced_button )."';";
-                $the_new_content .= "var g_NouveauMapSearch_map_name_string ='".$this->process_text ( self::$local_nouveau_map_button )."';";
-                $the_new_content .= "var g_NouveauMapSearch_text_name_string ='".$this->process_text ( self::$local_nouveau_text_button )."';";
-                $the_new_content .= "var g_Nouveau_text_go_button_string ='".$this->process_text ( self::$local_nouveau_text_go_button )."';";
-                $the_new_content .= "var g_Nouveau_text_location_label_text ='".$this->process_text ( self::$local_nouveau_text_location_label_text )."';";
-                $the_new_content .= "var g_Nouveau_text_item_default_text ='".$this->process_text ( self::$local_nouveau_text_item_default_text )."';";
-                $the_new_content .= "var g_Nouveau_advanced_weekdays_disclosure_text ='".$this->process_text ( self::$local_nouveau_advanced_weekdays_disclosure_text )."';";
-                $the_new_content .= "var g_Nouveau_advanced_formats_disclosure_text ='".$this->process_text ( self::$local_nouveau_advanced_formats_disclosure_text )."';";
-                $the_new_content .= "var g_Nouveau_advanced_service_bodies_disclosure_text ='".$this->process_text ( self::$local_nouveau_advanced_service_bodies_disclosure_text )."';";
-                $the_new_content .= "var g_Nouveau_no_search_results_text ='".$this->process_text ( self::$local_nouveau_cant_find_meetings_display )."';";
-                $the_new_content .= "var g_Nouveau_cant_lookup_display ='".$this->process_text ( self::$local_nouveau_cant_lookup_display )."';";
-                $the_new_content .= "var g_Nouveau_select_search_spec_text ='".$this->process_text ( self::$local_nouveau_select_search_spec_text )."';";
-                $the_new_content .= "var g_Nouveau_select_search_results_text ='".$this->process_text ( self::$local_nouveau_select_search_results_text )."';";
-                $the_new_content .= "var g_Nouveau_display_map_results_text ='".$this->process_text ( self::$local_nouveau_display_map_results_text )."';";
-                $the_new_content .= "var g_Nouveau_display_list_results_text ='".$this->process_text ( self::$local_nouveau_display_list_results_text )."';";
+                $the_new_content .= '<script type="text/javascript">' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+                $the_new_content .= "var g_NouveauMapSearch_advanced_name_string ='".$this->process_text ( self::$local_nouveau_advanced_button ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_NouveauMapSearch_map_name_string ='".$this->process_text ( self::$local_nouveau_map_button ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_NouveauMapSearch_text_name_string ='".$this->process_text ( self::$local_nouveau_text_button ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_text_go_button_string ='".$this->process_text ( self::$local_nouveau_text_go_button ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_text_location_label_text ='".$this->process_text ( self::$local_nouveau_text_location_label_text ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_text_item_default_text ='".$this->process_text ( self::$local_nouveau_text_item_default_text ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_advanced_weekdays_disclosure_text ='".$this->process_text ( self::$local_nouveau_advanced_weekdays_disclosure_text ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_advanced_formats_disclosure_text ='".$this->process_text ( self::$local_nouveau_advanced_formats_disclosure_text ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_advanced_service_bodies_disclosure_text ='".$this->process_text ( self::$local_nouveau_advanced_service_bodies_disclosure_text ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_no_search_results_text ='".$this->process_text ( self::$local_nouveau_cant_find_meetings_display ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_cant_lookup_display ='".$this->process_text ( self::$local_nouveau_cant_lookup_display ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_select_search_spec_text ='".$this->process_text ( self::$local_nouveau_select_search_spec_text ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_select_search_results_text ='".$this->process_text ( self::$local_nouveau_select_search_results_text ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_display_map_results_text ='".$this->process_text ( self::$local_nouveau_display_map_results_text ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_display_list_results_text ='".$this->process_text ( self::$local_nouveau_display_list_results_text ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
             
-                $the_new_content .= "var g_Nouveau_location_services_set_my_location_advanced_button ='".$this->process_text ( self::$local_nouveau_location_services_set_my_location_advanced_button )."';";
-                $the_new_content .= "var g_Nouveau_location_services_find_all_meetings_nearby_button ='".$this->process_text ( self::$local_nouveau_location_services_find_all_meetings_nearby_button )."';";
-                $the_new_content .= "var g_Nouveau_location_services_find_all_meetings_nearby_later_today_button ='".$this->process_text ( self::$local_nouveau_location_services_find_all_meetings_nearby_later_today_button )."';";
-                $the_new_content .= "var g_Nouveau_location_services_find_all_meetings_nearby_tomorrow_button ='".$this->process_text ( self::$local_nouveau_location_services_find_all_meetings_nearby_tomorrow_button )."';";
+                $the_new_content .= "var g_Nouveau_location_services_set_my_location_advanced_button ='".$this->process_text ( self::$local_nouveau_location_services_set_my_location_advanced_button ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_services_find_all_meetings_nearby_button ='".$this->process_text ( self::$local_nouveau_location_services_find_all_meetings_nearby_button ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_services_find_all_meetings_nearby_later_today_button ='".$this->process_text ( self::$local_nouveau_location_services_find_all_meetings_nearby_later_today_button ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_services_find_all_meetings_nearby_tomorrow_button ='".$this->process_text ( self::$local_nouveau_location_services_find_all_meetings_nearby_tomorrow_button ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
 
-                $the_new_content .= "var g_Nouveau_meeting_results_count_sprintf_format ='".self:: $local_nouveau_meeting_results_count_sprintf_format."';";
-                $the_new_content .= "var g_Nouveau_meeting_results_selection_count_sprintf_format ='".self:: $local_nouveau_meeting_results_selection_count_sprintf_format."';";
-                $the_new_content .= "var g_Nouveau_meeting_results_single_selection_count_sprintf_format ='".self:: $local_nouveau_meeting_results_single_selection_count_sprintf_format."';";
-                $the_new_content .= "var g_Nouveau_single_time_sprintf_format ='".self:: $local_nouveau_single_time_sprintf_format."';";
-                $the_new_content .= "var g_Nouveau_single_duration_sprintf_format_1_hr ='".self:: $local_nouveau_single_duration_sprintf_format_1_hr."';";
-                $the_new_content .= "var g_Nouveau_single_duration_sprintf_format_mins ='".self:: $local_nouveau_single_duration_sprintf_format_mins."';";
-                $the_new_content .= "var g_Nouveau_single_duration_sprintf_format_hrs ='".self:: $local_nouveau_single_duration_sprintf_format_hrs."';";
-                $the_new_content .= "var g_Nouveau_single_duration_sprintf_format_hr_mins ='".self:: $local_nouveau_single_duration_sprintf_format_hr_mins."';";
-                $the_new_content .= "var g_Nouveau_single_duration_sprintf_format_hrs_mins ='".self:: $local_nouveau_single_duration_sprintf_format_hrs_mins."';";
+                $the_new_content .= "var g_Nouveau_meeting_results_count_sprintf_format ='".self:: $local_nouveau_meeting_results_count_sprintf_format.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_meeting_results_selection_count_sprintf_format ='".self:: $local_nouveau_meeting_results_selection_count_sprintf_format.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_meeting_results_single_selection_count_sprintf_format ='".self:: $local_nouveau_meeting_results_single_selection_count_sprintf_format.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_single_time_sprintf_format ='".self:: $local_nouveau_single_time_sprintf_format.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_single_duration_sprintf_format_1_hr ='".self:: $local_nouveau_single_duration_sprintf_format_1_hr.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_single_duration_sprintf_format_mins ='".self:: $local_nouveau_single_duration_sprintf_format_mins.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_single_duration_sprintf_format_hrs ='".self:: $local_nouveau_single_duration_sprintf_format_hrs.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_single_duration_sprintf_format_hr_mins ='".self:: $local_nouveau_single_duration_sprintf_format_hr_mins.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_single_duration_sprintf_format_hrs_mins ='".self:: $local_nouveau_single_duration_sprintf_format_hrs_mins.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
             
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_loc_street_info = '".self::$local_nouveau_location_sprintf_format_loc_street_info."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_loc_street = '".self::$local_nouveau_location_sprintf_format_loc_street."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_street_info = '".self::$local_nouveau_location_sprintf_format_street_info."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_loc_info = '".self::$local_nouveau_location_sprintf_format_loc_info."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_street = '".self::$local_nouveau_location_sprintf_format_street."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_loc = '".self::$local_nouveau_location_sprintf_format_loc."';";
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_loc_street_info = '".self::$local_nouveau_location_sprintf_format_loc_street_info.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_loc_street = '".self::$local_nouveau_location_sprintf_format_loc_street.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_street_info = '".self::$local_nouveau_location_sprintf_format_street_info.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_loc_info = '".self::$local_nouveau_location_sprintf_format_loc_info.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_street = '".self::$local_nouveau_location_sprintf_format_street.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_loc = '".self::$local_nouveau_location_sprintf_format_loc.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
 
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_info_town_province_zip = '".self::$local_nouveau_location_sprintf_format_single_loc_street_info_town_province_zip."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_town_province_zip = '".self::$local_nouveau_location_sprintf_format_single_loc_street_town_province_zip."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_info_town_province_zip = '".self::$local_nouveau_location_sprintf_format_single_street_info_town_province_zip."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_info_town_province_zip = '".self::$local_nouveau_location_sprintf_format_single_loc_info_town_province_zip."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_town_province_zip = '".self::$local_nouveau_location_sprintf_format_single_street_town_province_zip."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_town_province_zip = '".self::$local_nouveau_location_sprintf_format_single_loc_town_province_zip."';";
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_info_town_province_zip = '".self::$local_nouveau_location_sprintf_format_single_loc_street_info_town_province_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_town_province_zip = '".self::$local_nouveau_location_sprintf_format_single_loc_street_town_province_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_info_town_province_zip = '".self::$local_nouveau_location_sprintf_format_single_street_info_town_province_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_info_town_province_zip = '".self::$local_nouveau_location_sprintf_format_single_loc_info_town_province_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_town_province_zip = '".self::$local_nouveau_location_sprintf_format_single_street_town_province_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_town_province_zip = '".self::$local_nouveau_location_sprintf_format_single_loc_town_province_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
 
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_info_town_province = '".self::$local_nouveau_location_sprintf_format_single_loc_street_info_town_province."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_town_province = '".self::$local_nouveau_location_sprintf_format_single_loc_street_town_province."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_info_town_province = '".self::$local_nouveau_location_sprintf_format_single_street_info_town_province."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_info_town_province = '".self::$local_nouveau_location_sprintf_format_single_loc_info_town_province."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_town_province = '".self::$local_nouveau_location_sprintf_format_single_street_town_province."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_town_province = '".self::$local_nouveau_location_sprintf_format_single_loc_town_province."';";
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_info_town_province = '".self::$local_nouveau_location_sprintf_format_single_loc_street_info_town_province.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_town_province = '".self::$local_nouveau_location_sprintf_format_single_loc_street_town_province.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_info_town_province = '".self::$local_nouveau_location_sprintf_format_single_street_info_town_province.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_info_town_province = '".self::$local_nouveau_location_sprintf_format_single_loc_info_town_province.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_town_province = '".self::$local_nouveau_location_sprintf_format_single_street_town_province.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_town_province = '".self::$local_nouveau_location_sprintf_format_single_loc_town_province.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
 
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_info_town_zip = '".self::$local_nouveau_location_sprintf_format_single_loc_street_info_town_zip."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_town_zip = '".self::$local_nouveau_location_sprintf_format_single_loc_street_town_zip."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_info_town_zip = '".self::$local_nouveau_location_sprintf_format_single_street_info_town_zip."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_info_town_zip = '".self::$local_nouveau_location_sprintf_format_single_loc_info_town_zip."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_town_zip = '".self::$local_nouveau_location_sprintf_format_single_street_town_zip."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_town_zip = '".self::$local_nouveau_location_sprintf_format_single_loc_town_zip."';";
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_info_town_zip = '".self::$local_nouveau_location_sprintf_format_single_loc_street_info_town_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_town_zip = '".self::$local_nouveau_location_sprintf_format_single_loc_street_town_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_info_town_zip = '".self::$local_nouveau_location_sprintf_format_single_street_info_town_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_info_town_zip = '".self::$local_nouveau_location_sprintf_format_single_loc_info_town_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_town_zip = '".self::$local_nouveau_location_sprintf_format_single_street_town_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_town_zip = '".self::$local_nouveau_location_sprintf_format_single_loc_town_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
 
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_info_province_zip = '".self::$local_nouveau_location_sprintf_format_single_loc_street_info_province_zip."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_province_zip = '".self::$local_nouveau_location_sprintf_format_single_loc_street_province_zip."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_info_province_zip = '".self::$local_nouveau_location_sprintf_format_single_street_info_province_zip."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_info_province_zip = '".self::$local_nouveau_location_sprintf_format_single_loc_info_province_zip."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_province_zip = '".self::$local_nouveau_location_sprintf_format_single_street_province_zip."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_province_zip = '".self::$local_nouveau_location_sprintf_format_single_loc_province_zip."';";
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_info_province_zip = '".self::$local_nouveau_location_sprintf_format_single_loc_street_info_province_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_province_zip = '".self::$local_nouveau_location_sprintf_format_single_loc_street_province_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_info_province_zip = '".self::$local_nouveau_location_sprintf_format_single_street_info_province_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_info_province_zip = '".self::$local_nouveau_location_sprintf_format_single_loc_info_province_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_province_zip = '".self::$local_nouveau_location_sprintf_format_single_street_province_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_province_zip = '".self::$local_nouveau_location_sprintf_format_single_loc_province_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
 
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_info_province = '".self::$local_nouveau_location_sprintf_format_single_loc_street_info_province."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_province = '".self::$local_nouveau_location_sprintf_format_single_loc_street_province."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_info_province = '".self::$local_nouveau_location_sprintf_format_single_street_info_province."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_info_province = '".self::$local_nouveau_location_sprintf_format_single_loc_info_province."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_province = '".self::$local_nouveau_location_sprintf_format_single_street_province."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_province = '".self::$local_nouveau_location_sprintf_format_single_loc_province."';";
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_info_province = '".self::$local_nouveau_location_sprintf_format_single_loc_street_info_province.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_province = '".self::$local_nouveau_location_sprintf_format_single_loc_street_province.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_info_province = '".self::$local_nouveau_location_sprintf_format_single_street_info_province.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_info_province = '".self::$local_nouveau_location_sprintf_format_single_loc_info_province.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_province = '".self::$local_nouveau_location_sprintf_format_single_street_province.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_province = '".self::$local_nouveau_location_sprintf_format_single_loc_province.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
 
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_info_zip = '".self::$local_nouveau_location_sprintf_format_single_loc_street_info_zip."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_zip = '".self::$local_nouveau_location_sprintf_format_single_loc_street_zip."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_info_zip = '".self::$local_nouveau_location_sprintf_format_single_street_info_zip."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_info_zip = '".self::$local_nouveau_location_sprintf_format_single_loc_info_zip."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_zip = '".self::$local_nouveau_location_sprintf_format_single_street_zip."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_zip = '".self::$local_nouveau_location_sprintf_format_single_loc_zip."';";
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_info_zip = '".self::$local_nouveau_location_sprintf_format_single_loc_street_info_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_zip = '".self::$local_nouveau_location_sprintf_format_single_loc_street_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_info_zip = '".self::$local_nouveau_location_sprintf_format_single_street_info_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_info_zip = '".self::$local_nouveau_location_sprintf_format_single_loc_info_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_zip = '".self::$local_nouveau_location_sprintf_format_single_street_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_zip = '".self::$local_nouveau_location_sprintf_format_single_loc_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
 
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_info = '".self::$local_nouveau_location_sprintf_format_single_loc_street_info."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street = '".self::$local_nouveau_location_sprintf_format_single_loc_street."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_info = '".self::$local_nouveau_location_sprintf_format_single_street_info."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_info = '".self::$local_nouveau_location_sprintf_format_single_loc_info."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street = '".self::$local_nouveau_location_sprintf_format_single_street."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc = '".self::$local_nouveau_location_sprintf_format_single_loc."';";
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_info = '".self::$local_nouveau_location_sprintf_format_single_loc_street_info.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street = '".self::$local_nouveau_location_sprintf_format_single_loc_street.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_info = '".self::$local_nouveau_location_sprintf_format_single_street_info.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_info = '".self::$local_nouveau_location_sprintf_format_single_loc_info.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street = '".self::$local_nouveau_location_sprintf_format_single_street.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc = '".self::$local_nouveau_location_sprintf_format_single_loc.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
 
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_wtf ='".$this->process_text ( self::$local_nouveau_location_sprintf_format_wtf )."';";
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_wtf ='".$this->process_text ( self::$local_nouveau_location_sprintf_format_wtf ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
 
-                $the_new_content .= "var g_Nouveau_time_sprintf_format = '".self::$local_nouveau_time_sprintf_format."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_duration_title = '".self::$local_nouveau_location_sprintf_format_duration_title."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_duration_hour_only_title = '".self::$local_nouveau_location_sprintf_format_duration_hour_only_title."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_duration_hour_only_and_minutes_title = '".self::$local_nouveau_location_sprintf_format_duration_hour_only_and_minutes_title."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_duration_hours_only_title = '".self::$local_nouveau_location_sprintf_format_duration_hours_only_title."';";
-                $the_new_content .= "var g_Nouveau_am ='".$this->process_text ( self::$local_nouveau_am )."';";
-                $the_new_content .= "var g_Nouveau_pm ='".$this->process_text ( self::$local_nouveau_pm )."';";
-                $the_new_content .= "var g_Nouveau_noon ='".$this->process_text ( self::$local_nouveau_noon )."';";
-                $the_new_content .= "var g_Nouveau_midnight ='".$this->process_text ( self::$local_nouveau_midnight )."';";
-                $the_new_content .= "var g_Nouveau_advanced_map_radius_label_1 ='".$this->process_text ( self::$local_nouveau_advanced_map_radius_label_1 )."';";
-                $the_new_content .= "var g_Nouveau_advanced_map_radius_label_2 ='".$this->process_text ( self::$local_nouveau_advanced_map_radius_label_2 )."';";
-                $the_new_content .= "var g_Nouveau_advanced_map_radius_value_2_km ='".$this->process_text ( self::$local_nouveau_advanced_map_radius_value_km )."';";
-                $the_new_content .= "var g_Nouveau_advanced_map_radius_value_2_mi ='".$this->process_text ( self::$local_nouveau_advanced_map_radius_value_mi )."';";
-                $the_new_content .= "var g_Nouveau_advanced_map_radius_value_auto ='".$this->process_text ( self::$local_nouveau_advanced_map_radius_value_auto )."';";
+                $the_new_content .= "var g_Nouveau_time_sprintf_format = '".self::$local_nouveau_time_sprintf_format.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_duration_title = '".self::$local_nouveau_location_sprintf_format_duration_title.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_duration_hour_only_title = '".self::$local_nouveau_location_sprintf_format_duration_hour_only_title.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_duration_hour_only_and_minutes_title = '".self::$local_nouveau_location_sprintf_format_duration_hour_only_and_minutes_title.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_duration_hours_only_title = '".self::$local_nouveau_location_sprintf_format_duration_hours_only_title.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_am ='".$this->process_text ( self::$local_nouveau_am ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_pm ='".$this->process_text ( self::$local_nouveau_pm ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_noon ='".$this->process_text ( self::$local_nouveau_noon ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_midnight ='".$this->process_text ( self::$local_nouveau_midnight ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_advanced_map_radius_label_1 ='".$this->process_text ( self::$local_nouveau_advanced_map_radius_label_1 ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_advanced_map_radius_label_2 ='".$this->process_text ( self::$local_nouveau_advanced_map_radius_label_2 ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_advanced_map_radius_value_2_km ='".$this->process_text ( self::$local_nouveau_advanced_map_radius_value_km ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_advanced_map_radius_value_2_mi ='".$this->process_text ( self::$local_nouveau_advanced_map_radius_value_mi ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_advanced_map_radius_value_auto ='".$this->process_text ( self::$local_nouveau_advanced_map_radius_value_auto ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
                 $the_new_content .= "var g_Nouveau_advanced_map_radius_value_array = [ ".self::$local_nouveau_advanced_map_radius_value_array." ];";
-                $the_new_content .= "var g_Nouveau_meeting_details_link_title = '".$this->process_text ( self::$local_nouveau_meeting_details_link_title )."';";
-                $the_new_content .= "var g_Nouveau_meeting_details_map_link_uri_format = '".htmlspecialchars ( self::$local_nouveau_meeting_details_map_link_uri_format )."';";
-                $the_new_content .= "var g_Nouveau_meeting_details_map_link_text = '".$this->process_text ( self::$local_nouveau_meeting_details_map_link_text )."';";
+                $the_new_content .= "var g_Nouveau_meeting_details_link_title = '".$this->process_text ( self::$local_nouveau_meeting_details_link_title ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_meeting_details_map_link_uri_format = '".htmlspecialchars ( self::$local_nouveau_meeting_details_map_link_uri_format ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_meeting_details_map_link_text = '".$this->process_text ( self::$local_nouveau_meeting_details_map_link_text ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
                 $the_new_content .= "var g_Nouveau_array_keys = {";
                     $first = true;
                     foreach ( self::$local_nouveau_prompt_array as $key => $value )
@@ -1932,17 +1932,17 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                 $the_new_content .= 'var g_Nouveau_array_header_text = new Array ( "'.join ( '","', self::$local_nouveau_table_header_array ).'");';
                 $the_new_content .= 'var g_Nouveau_weekday_long_array = new Array ( "'.join ( '","', self::$local_nouveau_weekday_long_array ).'");';
                 $the_new_content .= 'var g_Nouveau_weekday_short_array = new Array ( "'.join ( '","', self::$local_nouveau_weekday_short_array ).'");';
-                $the_new_content .= "var g_Nouveau_lookup_location_failed = '".$this->process_text ( self::$local_nouveau_lookup_location_failed )."';";              
-                $the_new_content .= "var g_Nouveau_lookup_location_server_error = '".$this->process_text ( self::$local_nouveau_lookup_location_server_error )."';";              
+                $the_new_content .= "var g_Nouveau_lookup_location_failed = '".$this->process_text ( self::$local_nouveau_lookup_location_failed ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");              
+                $the_new_content .= "var g_Nouveau_lookup_location_server_error = '".$this->process_text ( self::$local_nouveau_lookup_location_server_error ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");              
                 $the_new_content .= "var g_Nouveau_default_geo_width = -10;";
                 $the_new_content .= "var g_Nouveau_default_details_map_zoom = ".self::$default_details_map_zoom.';';
                 $the_new_content .= "var g_Nouveau_default_marker_aggregation_threshold_in_pixels = 8;";
-                $the_new_content .= "var g_Nouveau_default_duration = '".(isset ( $options['default_duration'] ) ? $options['default_duration'] : '')."';";
+                $the_new_content .= "var g_Nouveau_default_duration = '".(isset ( $options['default_duration'] ) ? $options['default_duration'] : '').(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
 
-                $the_new_content .= "var g_Nouveau_single_formats_label = '".$this->process_text ( self::$local_nouveau_single_formats_label )."';";
-                $the_new_content .= "var g_Nouveau_single_service_body_label = '".$this->process_text ( self::$local_nouveau_single_service_body_label )."';";
+                $the_new_content .= "var g_Nouveau_single_formats_label = '".$this->process_text ( self::$local_nouveau_single_formats_label ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_single_service_body_label = '".$this->process_text ( self::$local_nouveau_single_service_body_label ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
                 
-                $the_new_content .= "var g_Nouveau_user_logged_in = '".((isset ( $this->m_is_logged_in_user ) && $this->m_is_logged_in_user) ? "true" : "false" )."';";
+                $the_new_content .= "var g_Nouveau_user_logged_in = '".((isset ( $this->m_is_logged_in_user ) && $this->m_is_logged_in_user) ? "true" : "false" ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
                 
                 $the_new_content .= '</script>';
                 $first = false;
@@ -1955,7 +1955,17 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
             $the_new_content .= '<div id="'.$uid.'_container" class="bmlt_nouveau_container">';
                 $single_meeting_id = isset ( $this->my_http_vars['single_meeting_id'] ) ? intval($this->my_http_vars['single_meeting_id']) : 0;
                 // What we do here, is tell the client to create a global variable (in JS DOM), with a unique handler for this instance of the Nouveau search.
-                $the_new_content .= '<script type="text/javascript">var g_instance_'.$uid.'_js_handler = new NouveauMapSearch ( \''.$uid.'\', \''.$options['bmlt_initial_view'].'\','.$options['map_center_latitude'].",".$options['map_center_longitude'].",".$options['map_zoom'].",'".$options['distance_units']."','".$this->get_plugin_path()."themes/".$options['theme']."','".htmlspecialchars ( $this->get_ajax_base_uri() )."?bmlt_settings_id=$in_options_id&redirect_ajax_json=', '', ".($options['bmlt_location_checked'] ? 'true' : 'false').", ".($options['bmlt_location_services'] == 0 || ($options['bmlt_location_services'] == 1 && BMLTPlugin_weAreMobile($this->my_http_vars)) ? 'true' : 'false').", ".$single_meeting_id.", ".$options['grace_period'].");</script>";
+                $the_new_content .= '<script type="text/javascript">' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '').'var g_instance_'.$uid.'_js_handler = new NouveauMapSearch ( \''.$uid.'\', \''
+                                                                                                                                                                            .$options['bmlt_initial_view'].'\','
+                                                                                                                                                                            .$options['map_center_latitude'].","
+                                                                                                                                                                            .$options['map_center_longitude'].","
+                                                                                                                                                                            .$options['map_zoom'].",'"
+                                                                                                                                                                            .$options['distance_units']."','"
+                                                                                                                                                                            .$this->get_plugin_path()."themes/".$options['theme']."','"
+                                                                                                                                                                            .htmlspecialchars ( $this->get_ajax_base_uri() )."?bmlt_settings_id=$in_options_id&redirect_ajax_json=', '', ".($options['bmlt_location_checked'] ? 'true' : 'false').", "
+                                                                                                                                                                            .($options['bmlt_location_services'] == 0 || ($options['bmlt_location_services'] == 1 && BMLTPlugin_weAreMobile($this->my_http_vars)) ? 'true' : 'false').", "
+                                                                                                                                                                            .$single_meeting_id.", "
+                                                                                                                                                                            .$options['grace_period'].");" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '')."</script>";
             $the_new_content .= '</div>';
 
             $in_content = self::replace_shortcode ( $in_content, $theshortcode, $the_new_content );
@@ -2249,7 +2259,7 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
         $ret .= 'var c_ms_'.$in_uid.' = null;';
         $ret .= 'var c_g_distance_units_are_km_'.$in_uid.' = '.((strtolower ($options['distance_units']) == 'km' ) ? 'true' : 'false').';';
         $ret .= 'var c_g_distance_units_'.$in_uid.' = \''.((strtolower ($options['distance_units']) == 'km' ) ? $this->process_text ( self::$local_mobile_kilometers ) : $this->process_text ( self::$local_mobile_miles ) ).'\';';
-        $ret .= 'var c_g_BMLTPlugin_throbber_img_src_'.$in_uid." = '".htmlspecialchars ( $this->get_plugin_path().'themes/'.$options['theme'].'/images/Throbber.gif' )."';";
+        $ret .= 'var c_g_BMLTPlugin_throbber_img_src_'.$in_uid." = '".htmlspecialchars ( $this->get_plugin_path().'themes/'.$options['theme'].'/images/Throbber.gif' ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
         $ret .= 'var c_g_BMLTRoot_URI_JSON_SearchResults_'.$in_uid." = '".htmlspecialchars ( $this->get_ajax_base_uri() )."?redirect_ajax_json=".urlencode ( 'switcher=GetSearchResults' )."&bmlt_settings_id=$in_options_id';\n";
         $ret .= '</script>';
 
@@ -2594,11 +2604,11 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
             
             if ( defined ( '_DEBUG_MODE_' ) ) // In debug mode, we use unoptimized versions of these files for easier tracking.
                 {
-                $ret .= '<link rel="stylesheet" media="all" href="'.$url.'fast_mobile_lookup.css" type="text/css" />';
+                $ret .= '<link rel="stylesheet" media="all" href="'.$url.'fast_mobile_lookup.css" type="text/css" />'.(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
                 }
             else
                 {
-                $ret .= '<link rel="stylesheet" media="all" href="'.htmlspecialchars($url).'style_stripper.php?filename=fast_mobile_lookup.css" type="text/css" />';
+                $ret .= '<link rel="stylesheet" media="all" href="'.htmlspecialchars($url).'style_stripper.php?filename=fast_mobile_lookup.css" type="text/css" />'.(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
                 }
             
             // If we have a shortcut icon, set it here.

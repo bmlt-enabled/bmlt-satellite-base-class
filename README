@@ -25,6 +25,10 @@ INSTALLATION
 
 CHANGELIST
 ----------
+= 3.0.21 =
+* February 22, 2014
+* Some work to make the code easier to debug, and also to account for non-standard TCP ports.
+
 = 3.0.20 =
 * December 31, 2013
 * Fixed a character set issue that affected Internet Exploder.

@@ -2,7 +2,7 @@
 /****************************************************************************************//**
 * \file unit_test.php																		*
 * \brief A unit test harness for the BMLTPlugin class.						                *
-*   \version 3.0.20                                                                         *
+*   \version 3.0.21                                                                         *
     
     This file is part of the BMLT Common Satellite Base Class Project. The project GitHub
     page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class
@@ -33,6 +33,7 @@
 ********************************************************************************************/
 
 define ( '_DEBUG_MODE_', 1 );
+error_reporting ( E_ERROR | E_WARNING );
 
 global $bmlt_localization;  ///< Use this to control the localization.
 
@@ -160,7 +161,6 @@ function u_test_header()
         break;
         
         case 'clear_session':
-            session_start();
             session_unset();
             session_destroy();
             $ret .= '<title>BMLTPlugin Class Unit Test</title>';
@@ -210,7 +210,7 @@ function u_test_body()
 function u_test_form()
 {
     global $BMLTPluginOp;
-	$ret = '<div class="return_button"><a href="http://'.$_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME'].'?utest_string=admin">Admin Page</a></div>';
+	$ret = '<div class="return_button"><a href="http://'.$_SERVER['SERVER_NAME'].(($_SERVER['SERVER_PORT'] != 80) ? ':'.$_SERVER['SERVER_PORT'] : '').$_SERVER['SCRIPT_NAME'].'?utest_string=admin">Admin Page</a></div>';
     $ret .= '<div class="utest_input_form_container_div">';
         $ret .= '<form onsubmit="utest_onsubmit()" class="utest_input_form" method="get" action="'.htmlspecialchars ( $_SERVER['PHP_SELF'] ).'">';
             $ret .= '<div class="utest_input_div">';
