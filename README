@@ -25,6 +25,10 @@ INSTALLATION
 
 CHANGELIST
 ----------
+= 3.0.22 =
+* February 28, 2014
+* Fixed a small bug in the add new settings handler.
+
 = 3.0.21 =
 * February 22, 2014
 * Some work to make the code easier to debug, and also to account for non-standard TCP ports.

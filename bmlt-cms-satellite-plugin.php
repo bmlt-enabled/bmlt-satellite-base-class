@@ -3,7 +3,7 @@
 *   \file   bmlt-cms-satellite-plugin.php                                                   *
 *                                                                                           *
 *   \brief  This is a generic CMS plugin class for a BMLT satellite client.                 *
-*   \version 3.0.21                                                                         *
+*   \version 3.0.22                                                                         *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -738,7 +738,7 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
         // If we successfully get the options, we save them, in order to put them in place
         if ( is_array ( $opt ) && count ( $opt ) )
             {
-            $this->setBMLTOptions ( $BMLTOptions, $this->get_num_options ( ) + 1 );
+            $this->setBMLTOptions ( $opt, $this->get_num_options ( ) + 1 );
             $ret = $this->get_num_options ( );
             }
         else
