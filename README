@@ -25,6 +25,10 @@ INSTALLATION
 
 CHANGELIST
 ----------
+= 3.0.23
+* TBD
+* Added Danish localization.
+
 = 3.0.22 =
 * February 28, 2014
 * Fixed a small bug in the add new settings handler.
