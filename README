@@ -28,6 +28,7 @@ CHANGELIST
 = 3.0.24
 * July 31, 2014
 * Added a user agent to the cURL call, as some servers filter out cURL.
+* Fixed an annoying admin bug that could cause new options to report an incorrect ID.
 
 = 3.0.23
 * July 17, 2014

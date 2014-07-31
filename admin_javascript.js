@@ -128,6 +128,15 @@ function BMLTPlugin_SaveOptions()
     
     for ( var option_index = 1; option_index <= c_g_BMLTPlugin_coords.length; option_index++ )
         {
+        var options_id = document.getElementById ( 'BMLTPlugin_option_sheet_'+option_index+'_actual_options_id' ).value.toString();
+
+        if ( options_id )
+            {
+            url += '&BMLTPlugin_option_sheet_actual_id_'+option_index+'=';
+
+            url += encodeURIComponent ( options_id );
+            };
+        
         var name = document.getElementById ( 'BMLTPlugin_option_sheet_name_'+option_index ).value.toString();
 
         url += '&BMLTPlugin_option_sheet_name_'+option_index+'=';
