@@ -25,6 +25,10 @@ INSTALLATION
 
 CHANGELIST
 ----------
+= 3.0.24
+* July 31, 2014
+* Added a user agent to the cURL call, as some servers filter out cURL.
+
 = 3.0.23
 * July 17, 2014
 * Added Danish localization.
