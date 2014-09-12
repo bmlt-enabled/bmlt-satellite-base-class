@@ -25,6 +25,10 @@ INSTALLATION
 
 CHANGELIST
 ----------
+= 3.0.25
+* TBD
+* Fixed a CSS issue with the admin display map. Some themes (especially responsive ones) declare a global max-width for images. This hoses Google Maps, and has to be compensated for.
+
 = 3.0.24
 * July 31, 2014
 * Added a user agent to the cURL call, as some servers filter out cURL.

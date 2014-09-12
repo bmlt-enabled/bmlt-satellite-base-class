@@ -1,7 +1,7 @@
 /****************************************************************************************//**
 * \file admin_styles.css                                                                    *
 * \brief The CSS for the BMLTPlugin class (Admin options).                                  *
-*   \version 3.0.23                                                                         *
+*   \version 3.0.25                                                                         *
     
     This file is part of the BMLT Common Satellite Base Class Project. The project GitHub
     page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class
@@ -50,6 +50,11 @@
 {
     margin: 0;
     border-top:1px solid #6cf;
+}
+
+#BMLTPlugin_options_container  .BMLTPlugin_Map_Div img
+{
+    max-width:none;
 }
 
 #BMLTPlugin_options_container .BMLTPlugin_toolbar_line_map
