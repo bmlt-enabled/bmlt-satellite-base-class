@@ -26,8 +26,9 @@ INSTALLATION
 CHANGELIST
 ----------
 = 3.0.25
-* TBD
+* November 22, 2014
 * Fixed a CSS issue with the admin display map. Some themes (especially responsive ones) declare a global max-width for images. This hoses Google Maps, and has to be compensated for.
+* Added full support for arbitrary fields. This was an important capability that was left out after Version 3.X
 
 = 3.0.24
 * July 31, 2014

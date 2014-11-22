@@ -761,26 +761,33 @@ div.bmlt_map_container_div .bmlt_info_win_container .bmlt_selected_weekday_info 
     cursor:default;
 }
 
-div.bmlt_nouveau_details_hidden_element_outer_container_div
+div.bmlt_nouveau_details_hidden_element_outer_container_div,
+div.bmlt_nouveau_details_extra_element_outer_container_div
 {
     margin:0.25em;
     padding:0.1em;
-    background-color:#ffefef;
-    border:1px solid #030;
-    color:#030;
+}
+
+div.bmlt_nouveau_details_hidden_element_outer_container_div
+{
     border-radius: 5px;
 	-moz-border-radius:5px;
 	-webkit-border-radius: 5px;
+    background-color:#ffefef;
+    border:1px solid #555;
+    color:#555;
 }
 
-div.bmlt_nouveau_details_hidden_element_line_div
+div.bmlt_nouveau_details_hidden_element_line_div,
+div.bmlt_nouveau_details_extra_element_line_div
 {
     clear:both;
     margin-top:0.1em;
     margin-bottom:0.1em;
 }
 
-div.bmlt_nouveau_details_hidden_element_prompt_div
+div.bmlt_nouveau_details_hidden_element_prompt_div,
+div.bmlt_nouveau_details_extra_element_prompt_div
 {
     width:49%;
     font-weight:bold;
@@ -788,7 +795,8 @@ div.bmlt_nouveau_details_hidden_element_prompt_div
     float:left;
 }
 
-div.bmlt_nouveau_details_hidden_element_value_div
+div.bmlt_nouveau_details_hidden_element_value_div,
+div.bmlt_nouveau_details_extra_element_value_div
 {
     margin-left: 0.9%;
     width:49%;

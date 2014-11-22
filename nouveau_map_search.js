@@ -9,7 +9,7 @@
 *   little is done before execution time. A great deal of care has been taken to allow      *
 *   robust, complete CSS presentation management.                                           *
 *                                                                                           *
-*   \version 3.0.23                                                                         *
+*   \version 3.0.25                                                                         *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -3208,6 +3208,7 @@ function NouveauMapSearch ( in_unique_id,           ///< The UID of the containe
                             if ( !this.m_details_observer_only_div )
                                 {
                                 this.m_details_observer_only_div = document.createElement ( 'div' );
+                                this.m_details_observer_only_div.className = 'bmlt_nouveau_details_hidden_element_outer_container_div';
                                 this.m_single_meeting_display_div.appendChild ( this.m_details_observer_only_div );
                                 };
                             
@@ -3231,16 +3232,42 @@ function NouveauMapSearch ( in_unique_id,           ///< The UID of the containe
                             };
                         };
                     };
-                
-                if ( this.m_details_observer_only_div )
+                };
+            
+            // Show the rest.
+            for ( var key in in_meeting_object )
+                {
+                if ( in_meeting_object.hasOwnProperty ( key ) )
                     {
-                    if ( has_hidden_fields )
+                    var meeting_property = in_meeting_object[key].split ( '#@-@#' );
+                    
+                    // We only display the non-hidden ones.
+                    if ( meeting_property[1] && (meeting_property.length == 2) )
                         {
-                        this.m_details_observer_only_div.className = 'bmlt_nouveau_details_hidden_element_outer_container_div';
-                        }
-                    else
-                        {
-                        this.m_details_observer_only_div.className = 'item_hidden';
+                        if ( !this.m_details_extra_fields_div )
+                            {
+                            this.m_details_extra_fields_div = document.createElement ( 'div' );
+                            this.m_details_extra_fields_div.className = 'bmlt_nouveau_details_extra_element_outer_container_div';
+                            this.m_single_meeting_display_div.appendChild ( this.m_details_extra_fields_div );
+                            };
+                        
+                        var prompt = meeting_property[0];
+                        var value = meeting_property[1];
+                        var line_container = document.createElement ( 'div' );
+                        line_container.className = 'bmlt_nouveau_details_extra_element_line_div';
+                        var data_prompt = document.createElement ( 'div' );
+                        data_prompt.className = 'bmlt_nouveau_details_extra_element_prompt_div';
+                        data_prompt.appendChild ( document.createTextNode ( prompt ) );
+                        var data_value = document.createElement ( 'div' );
+                        data_value.className = 'bmlt_nouveau_details_extra_element_value_div';
+                        data_value.appendChild ( document.createTextNode ( value ) );
+                        
+                        line_container.appendChild ( data_prompt );
+                        line_container.appendChild ( data_value );
+                        var breaker_breaker = document.createElement ( 'div' );
+                        breaker_breaker.className = 'clear_both';
+                        line_container.appendChild ( breaker_breaker );
+                        this.m_details_extra_fields_div.appendChild ( line_container );
                         };
                     };
                 };
