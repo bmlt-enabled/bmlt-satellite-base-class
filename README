@@ -25,6 +25,10 @@ INSTALLATION
 
 CHANGELIST
 ----------
+= 3.0.26
+* TBD
+* Fixed an issue with the extra fields display in the regular shortcode display details.
+
 = 3.0.25
 * November 22, 2014
 * Fixed a CSS issue with the admin display map. Some themes (especially responsive ones) declare a global max-width for images. This hoses Google Maps, and has to be compensated for.
