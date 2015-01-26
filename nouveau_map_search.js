@@ -3253,33 +3253,36 @@ function NouveauMapSearch ( in_unique_id,           ///< The UID of the containe
                     {
                     var meeting_property = in_meeting_object[key].split ( '#@-@#' );
                     
-                    // We only display the non-hidden ones.
-                    if ( meeting_property[1] && (meeting_property.length == 2) )
-                        {
-                        if ( !this.m_details_extra_fields_div )
+                    if ( !(meeting_property[0] == 'distance_in_km') && !(meeting_property[0] == 'distance_in_miles') )
+                    {
+                        // We only display the non-hidden ones.
+                        if ( meeting_property[1] && (meeting_property.length == 2) )
                             {
-                            this.m_details_extra_fields_div = document.createElement ( 'div' );
-                            this.m_details_extra_fields_div.className = 'bmlt_nouveau_details_extra_element_outer_container_div';
-                            this.m_single_meeting_display_div.appendChild ( this.m_details_extra_fields_div );
+                            if ( !this.m_details_extra_fields_div )
+                                {
+                                this.m_details_extra_fields_div = document.createElement ( 'div' );
+                                this.m_details_extra_fields_div.className = 'bmlt_nouveau_details_extra_element_outer_container_div';
+                                this.m_single_meeting_display_div.appendChild ( this.m_details_extra_fields_div );
+                                };
+                        
+                            var prompt = meeting_property[0];
+                            var value = meeting_property[1];
+                            var line_container = document.createElement ( 'div' );
+                            line_container.className = 'bmlt_nouveau_details_extra_element_line_div';
+                            var data_prompt = document.createElement ( 'div' );
+                            data_prompt.className = 'bmlt_nouveau_details_extra_element_prompt_div';
+                            data_prompt.appendChild ( document.createTextNode ( prompt ) );
+                            var data_value = document.createElement ( 'div' );
+                            data_value.className = 'bmlt_nouveau_details_extra_element_value_div';
+                            data_value.appendChild ( document.createTextNode ( value ) );
+                        
+                            line_container.appendChild ( data_prompt );
+                            line_container.appendChild ( data_value );
+                            var breaker_breaker = document.createElement ( 'div' );
+                            breaker_breaker.className = 'clear_both';
+                            line_container.appendChild ( breaker_breaker );
+                            this.m_details_extra_fields_div.appendChild ( line_container );
                             };
-                        
-                        var prompt = meeting_property[0];
-                        var value = meeting_property[1];
-                        var line_container = document.createElement ( 'div' );
-                        line_container.className = 'bmlt_nouveau_details_extra_element_line_div';
-                        var data_prompt = document.createElement ( 'div' );
-                        data_prompt.className = 'bmlt_nouveau_details_extra_element_prompt_div';
-                        data_prompt.appendChild ( document.createTextNode ( prompt ) );
-                        var data_value = document.createElement ( 'div' );
-                        data_value.className = 'bmlt_nouveau_details_extra_element_value_div';
-                        data_value.appendChild ( document.createTextNode ( value ) );
-                        
-                        line_container.appendChild ( data_prompt );
-                        line_container.appendChild ( data_value );
-                        var breaker_breaker = document.createElement ( 'div' );
-                        breaker_breaker.className = 'clear_both';
-                        line_container.appendChild ( breaker_breaker );
-                        this.m_details_extra_fields_div.appendChild ( line_container );
                         };
                     };
                 };

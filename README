@@ -28,6 +28,7 @@ CHANGELIST
 = 3.0.26
 * TBD
 * Fixed an issue with the extra fields display in the regular shortcode display details.
+* Fixed an issue where the arbitrary fields were actually creating too many results.
 
 = 3.0.25
 * November 22, 2014
