@@ -26,9 +26,10 @@ INSTALLATION
 CHANGELIST
 ----------
 = 3.0.26
-* TBD
+* January 31, 2015
 * Fixed an issue with the extra fields display in the regular shortcode display details.
 * Fixed an issue where the arbitrary fields were actually creating too many results.
+* Now hide the distance_in_km/miles parameters in the meeting details (these are internal parameters).
 
 = 3.0.25
 * November 22, 2014
