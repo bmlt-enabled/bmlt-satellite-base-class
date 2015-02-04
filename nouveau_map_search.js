@@ -9,7 +9,7 @@
 *   little is done before execution time. A great deal of care has been taken to allow      *
 *   robust, complete CSS presentation management.                                           *
 *                                                                                           *
-*   \version 3.0.26                                                                         *
+*   \version 3.0.27                                                                         *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -2923,7 +2923,7 @@ function NouveauMapSearch ( in_unique_id,           ///< The UID of the containe
         
         navigator.geolocation.getCurrentPosition (  function (in_position) { NouveauMapSearch.prototype.sWhereAmI_CallBack(in_position,uid) },
                                                     function(in_error) { NouveauMapSearch.prototype.sWhereAmI_Fail_Final(in_error, uid); },
-                                                    {enableHighAccuracy:true, maximumAge:600000, timeout:0});
+                                                    {enableHighAccuracy:true, maximumAge:600000});
         };
     
     /********************************************************************************************

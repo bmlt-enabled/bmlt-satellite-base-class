@@ -25,6 +25,10 @@ INSTALLATION
 
 CHANGELIST
 ----------
+= 3.0.27
+* TBD
+* Removed the "0" timeout from the location determination code in the basic BML shortcode handler, in an effort to address an IE11 issue.
+
 = 3.0.26
 * January 31, 2015
 * Fixed an issue with the extra fields display in the regular shortcode display details.
