@@ -2644,7 +2644,7 @@ function NouveauMapSearch ( in_unique_id,           ///< The UID of the containe
         
         var ret = this.m_root_server_uri; // We append a question mark, so all the rest can be added without worrying about this.
         
-        ret += escape ( 'switcher=GetSearchResults' );
+        ret += escape ( 'switcher=GetSearchResults&sort_keys=weekday_tinyint,start_time' );
         
         // These will all be appended to the URI (or not).
         var uri_elements = new Array;
