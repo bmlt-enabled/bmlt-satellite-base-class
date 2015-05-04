@@ -3761,6 +3761,10 @@ function NouveauMapSearch ( in_unique_id,           ///< The UID of the containe
         else if ( (duration_array[0] == 1) && (duration_array[1] > 0) )
             {
             duration_string = sprintf ( g_Nouveau_single_duration_sprintf_format_hr_mins, duration_array[1] );
+            }
+        else if ( (duration_array[0] == 0) && (duration_array[1] > 0) )
+            {
+            duration_string = sprintf ( g_Nouveau_single_duration_sprintf_format_mins, duration_array[1] );
             };
 
         ret = sprintf ( g_Nouveau_single_time_sprintf_format, weekday_string, time_string, duration_string );
