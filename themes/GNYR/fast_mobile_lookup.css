@@ -106,8 +106,8 @@ body
 .address_input_form .address_input
 {
 	width:97%;
-	margin-left auto;
-	margin-right auto;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .link_one_line
@@ -224,7 +224,7 @@ input.address_input
 {
 	padding:4px;
 	margin:0;
-	overflow auto;
+	overflow: auto;
 }
 
 .infoWindow_Wrapper_div,

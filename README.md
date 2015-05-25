@@ -29,6 +29,7 @@ CHANGELIST
 * TBD
 * Removed the "0" timeout from the location determination code in the basic BML shortcode handler, in an effort to address an IE11 issue.
 * Fixed an issue with the results of nouveau map searches returning unsorted.
+* Fixed a few CSS errors in the themes.
 
 = 3.0.26
 * January 31, 2015

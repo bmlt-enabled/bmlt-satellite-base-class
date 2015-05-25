@@ -1045,7 +1045,7 @@ div#bmlt_page_items.bmlt_page_items
     div.bmlt_nouveau_div
         div.bmlt_nouveau_search_results_list_start_time_div
 {
-    #efe-space: nowrap;
+    white-space: nowrap;
 }
 
 div#bmlt_page_items.bmlt_page_items
