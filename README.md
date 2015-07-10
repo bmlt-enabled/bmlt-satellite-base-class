@@ -25,6 +25,10 @@ INSTALLATION
 
 CHANGELIST
 ----------
+*3.0.28*
+* TBD
+* Added Portuguese translation (Brazil).
+
 *3.0.27*
 * May 25, 2015
 * Removed the "0" timeout from the location determination code in the basic BML shortcode handler, in an effort to address an IE11 issue.
