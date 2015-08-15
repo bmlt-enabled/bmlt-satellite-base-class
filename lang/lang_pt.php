@@ -3,8 +3,8 @@
 /****************************************************************************************//**
 *   \file   lang_br.php                                                                     *
 *                                                                                           *
-*   \brief  This file contains Brazilian Portuguese localizations.                          *
-*   \version 3.0.28                                                                        *
+*   \brief  This file contains Brazilian Portuguese localizations.                                       *
+*   \version 3.0.26                                                                         *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -49,9 +49,9 @@ class BMLT_Localized_BaseClass
     static  $local_options_save_failure = 'A configuração não foi atualizada.';                             ///< The string displayed upon unsuccessful update of an option page.
     static  $local_options_url_bad = 'O endereço do servidor raiz não funciona com este plugin.';           ///< The string displayed if a root server URI fails to point to a valid root server.
     static  $local_options_access_failure = 'Voçê não tem permissão para realizar esta operação.';          ///< This is displayed if a user attempts a no-no.
-    static  $local_options_unsaved_message = 'Existem alteração não salvas. Deseja sair sem salvar estas alterações?';   ///< This is displayed if a user attempts to leave a page without saving the options.
-    static  $local_options_settings_id_prompt = 'O ID para esta Configuração é';                            ///< This is so that users can see the ID for the setting.
-    static  $local_options_settings_location_checkbox_label = 'Buscas por texto começam com a caixa de seleção "Local" ativa';                              ///< This is so that users can see the ID for the setting.
+    static  $local_options_unsaved_message = 'Existem alterações não salvas. Deseja sair sem salvar estas alterações?';   ///< This is displayed if a user attempts to leave a page without saving the options.
+    static  $local_options_settings_id_prompt = 'O ID para esta Configuração é:';                            ///< This is so that users can see the ID for the setting.
+    static  $local_options_settings_location_checkbox_label = 'Buscas por texto começam com a caixa de seleção "Local" marcada.';                              ///< This is so that users can see the ID for the setting.
     
     /// These are all for the admin page option sheets.
     static  $local_options_name_label = 'Nome da Configuração:';                    ///< The Label for the setting name item.
@@ -62,12 +62,12 @@ class BMLT_Localized_BaseClass
     static  $local_options_no_root_server_string = 'Digite o endereço de um Servidor Raiz:';                               ///< The Value to use for a root with no URL.
     static  $local_options_no_new_search_string = 'Digite um novo endereço de Busca'; ///< The Value to use for a new search with no URL.
     static  $local_options_no_gkey_string = 'Digite uma nova chave API:';          ///< The Value to use for a new search with no URL.
-    static  $local_options_test_server = 'Teste';                            ///< This is the title for the "test server" button.
+    static  $local_options_test_server = 'Teste de conexão';                            ///< This is the title for the "test server" button.
     static  $local_options_test_server_success = 'Versão';                ///< This is a prefix for the version, on success.
     static  $local_options_test_server_failure = 'Este endereço de Servidor Raiz não é válido.';                       ///< This is a prefix for the version, on failure.
     static  $local_options_test_server_tooltip = 'Efetuar teste no servidor raiz, para ver se está OK.';         ///< This is the tooltip text for the "test server" button.
     static  $local_options_map_label = 'Selecione o Ponto Central e Nível de Zoom inicial do Mapa.';             ///< The Label for the map.
-    static  $local_options_mobile_legend = 'Estas configurações afetam as Buscas Interativas (tais como Mapas, Dispositivo Móvel e Avançadas)';  ///< This indicates that the enclosed settings are for the fast mobile lookup.
+    static  $local_options_mobile_legend = 'Estas configurações afetam as Buscas Interativas (tais como Mapas, Dispositivos Móveis e Avançadas)';  ///< This indicates that the enclosed settings are for the fast mobile lookup.
     static  $local_options_mobile_grace_period_label = 'Período de Atraso:';     ///< When you do a "later today" search, you get a "Grace Period."
     static  $local_options_mobile_default_duration_label = 'Duração Padrão das Reuniões:';     ///< If the meeting has no duration, use this as a default.
     static  $local_options_mobile_time_offset_label = 'Diferença de Fuso Horário para o Servidor Raiz:';       ///< This may have an offset (time zone difference) from the main server.
@@ -122,7 +122,7 @@ class BMLT_Localized_BaseClass
     static  $local_nouveau_text_button = 'Busca por Texto';   ///< The button name for the text search in the nouveau search.
     static  $local_nouveau_text_go_button = 'Buscar';                           ///< The button name for the "GO" button in the text search in the nouveau search.
     static  $local_nouveau_text_item_default_text = 'Digite o texto da busca que deseja fazer';    ///< The text that fills an empty text item.
-    static  $local_nouveau_text_location_label_text = 'O texto é um local ou CEP';         ///< The label text for the location checkbox.
+    static  $local_nouveau_text_location_label_text = 'Isto é um endereço ou CEP.';         ///< The label text for the location checkbox.
     static  $local_nouveau_advanced_map_radius_label_1 = 'Encontre Reuniões dentro de um raio de';                ///< The label text for the radius popup.
     static  $local_nouveau_advanced_map_radius_label_2 = 'do Local Marcado.';             ///< The second part of the label.
     static  $local_nouveau_advanced_map_radius_value_auto = 'Um raio automáticamente escolhido';   ///< The second part of the label, if Miles
@@ -147,9 +147,9 @@ class BMLT_Localized_BaseClass
     static  $local_nouveau_single_time_sprintf_format = 'Reuniões ocorrem às %s, às %s, com duração de %s.';
     static  $local_nouveau_single_duration_sprintf_format_1_hr = '1 hora';
     static  $local_nouveau_single_duration_sprintf_format_mins = '%s minutos';
-    static  $local_nouveau_single_duration_sprintf_format_hrs = '%s houras';
+    static  $local_nouveau_single_duration_sprintf_format_hrs = '%s horas';
     static  $local_nouveau_single_duration_sprintf_format_hr_mins = '1 hora e %s minutos';
-    static  $local_nouveau_single_duration_sprintf_format_hrs_mins = '%s houras e %s minutos';
+    static  $local_nouveau_single_duration_sprintf_format_hrs_mins = '%s horas e %s minutos';
     
     /// These are all variants of the text that explains the location of a single meeting (Details View).
     static  $local_nouveau_location_sprintf_format_loc_street_info = '%s, %s (%s)';
@@ -208,12 +208,12 @@ class BMLT_Localized_BaseClass
     static  $local_nouveau_location_sprintf_format_single_street = '%s';
     static  $local_nouveau_location_sprintf_format_single_loc = '%s';
     
-    static  $local_nouveau_location_sprintf_format_wtf = 'Nenhum local informado';
+    static  $local_nouveau_location_sprintf_format_wtf = 'Nenhum local informado!';
     
-    static  $local_nouveau_location_services_set_my_location_advanced_button = 'Definir o Marcardo para meu local atual';
+    static  $local_nouveau_location_services_set_my_location_advanced_button = 'Definir o Marcador para meu local atual';
     static  $local_nouveau_location_services_find_all_meetings_nearby_button = 'Encontre Reuniões perto do meu local atual';
-    static  $local_nouveau_location_services_find_all_meetings_nearby_later_today_button = 'Encontre Reuniões para mais tarde perto do meu local atual ';
-    static  $local_nouveau_location_services_find_all_meetings_nearby_tomorrow_button = 'Encontre Reuniões para amanhã perto do meu local atual ';
+    static  $local_nouveau_location_services_find_all_meetings_nearby_later_today_button = 'Encontre Reuniões perto do meu local atual que começam hoje mais tarde ';
+    static  $local_nouveau_location_services_find_all_meetings_nearby_tomorrow_button = 'Encontre Reuniões perto do meu local atual que começam amanhã  ';
     
     static  $local_nouveau_location_sprintf_format_duration_title = 'Esta Reunião tem duração de %s horas e %s minutos.';
     static  $local_nouveau_location_sprintf_format_duration_hour_only_title = 'Esta Reunião tem duração de 1 hora.';
@@ -266,10 +266,10 @@ class BMLT_Localized_BaseClass
     ****************************************************************************************/
                                     
     static  $local_new_map_option_1_label = 'Opções de Busca (Não disponíveis se este item estiver fechado):';
-    static  $local_new_map_weekdays = 'RDias da semana';
+    static  $local_new_map_weekdays = 'Dias da semana';
     static  $local_new_map_all_weekdays = 'Todos';
-    static  $local_new_map_all_weekdays_title = 'Encontre Reuniões todos os dias.';
-    static  $local_new_map_weekdays_title = 'Encontre Reuniões às(aos) ';
+    static  $local_new_map_all_weekdays_title = 'Encontre Reuniões todos os dias';
+    static  $local_new_map_weekdays_title = 'Encontre Reuniões nos dias';
     static  $local_new_map_formats = 'Formatos:';
     static  $local_new_map_all_formats = 'Todos';
     static  $local_new_map_all_formats_title = 'Encontre Reuniões em todos os formatos.';
@@ -285,7 +285,7 @@ class BMLT_Localized_BaseClass
     static  $local_new_map_option_loc_popup_mi = 'Mi';
     static  $local_new_map_option_loc_popup_auto = 'uma distância automáticamente escolhida';
     static  $local_new_map_center_marker_distance_suffix = ' do marcador central.';
-    static  $local_new_map_center_marker_description = 'Esta é sua localização escohilda.';
+    static  $local_new_map_center_marker_description = 'Esta é sua localização escolhida.';
     static  $local_new_map_text_entry_fieldset_label = 'Digite um endereço, CEP ou Local';
     static  $local_new_map_text_entry_default_text = 'Digite um endereço, CEP ou Local';
     static  $local_new_map_location_submit_button_text = 'Buscar Reuniões nas proximidades deste local';
@@ -324,7 +324,7 @@ class BMLT_Localized_BaseClass
     /// Error messages.
     static  $local_mobile_fail_no_meetings = 'Nenhuma Reunião encontrada!';
     static  $local_server_fail = 'A busca falhou porque o servidor retornou um erro!';
-    static  $local_cant_find_address = 'Não é possível identificar o Local com a informação do endereço!';
+    static  $local_cant_find_address = 'Não é possível identificar o Local com o endereço digitado!';
     static  $local_cannot_determine_location = 'Não é possível identificar sua localização atual!';
     static  $local_enter_address_alert = 'Por favor digite um endereço!';
     

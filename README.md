@@ -26,7 +26,7 @@ INSTALLATION
 CHANGELIST
 ----------
 *3.0.28*
-* TBD
+* August 15, 2015
 * Added Portuguese translation (Brazil).
 
 *3.0.27*
