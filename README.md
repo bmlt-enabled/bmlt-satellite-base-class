@@ -25,6 +25,11 @@ INSTALLATION
 
 CHANGELIST
 ----------
+*3.0.29*
+* TBD
+* Added Italian translation.
+
+----------
 *3.0.28*
 * August 15, 2015
 * Added Portuguese translation (Brazil).
