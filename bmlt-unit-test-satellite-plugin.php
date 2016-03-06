@@ -3,7 +3,7 @@
 *   \file   bmlt-unit-test-satellite-plugin.php                                             *
 *                                                                                           *
 *   \brief  This is a standalone unit test plugin of a BMLT satellite client.               *
-*   \version 3.0.29                                                                         *
+*   \version 3.1.0                                                                         *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -81,9 +81,14 @@ class BMLTUTestPlugin extends BMLTPlugin
     ****************************************************************************************/
     protected function get_ajax_base_uri()
         {
-        $ret = 'http://'.$_SERVER['SERVER_NAME'].(($_SERVER['SERVER_PORT'] != 80) ? ':'.$_SERVER['SERVER_PORT'] : '').$_SERVER['SCRIPT_NAME'];
-
-        return $ret;
+        $port = $_SERVER['SERVER_PORT'] ;
+        // IIS puts "off" in the HTTPS field, so we need to test for that.
+        $https = (!empty ( $_SERVER['HTTPS'] ) && (($_SERVER['HTTPS'] !== 'off') || ($port == 443))); 
+        $server_path = $_SERVER['SERVER_NAME'];
+        $my_path = $_SERVER['PHP_SELF'];
+        $server_path .= trim ( (($https && ($port != 443)) || (!$https && ($port != 80))) ? ':'.$port : '', '/' );
+        $server_path = 'http'.($https ? 's' : '').'://'.$server_path.$my_path;
+        return $server_path;
         }
     
     /************************************************************************************//**
@@ -402,7 +407,7 @@ class BMLTUTestPlugin extends BMLTPlugin
         
         $head_content = $this->standard_head ( );   // We start with the standard stuff.
         
-        $head_content .= '<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>';  // Load the Google Maps stuff for our map.
+        $head_content .= '<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>';  // Load the Google Maps stuff for our map.
         
         $head_content .= '<link rel="stylesheet" type="text/css" href="';
         

@@ -3,7 +3,7 @@
 *   \file   bmlt-cms-satellite-plugin.php                                                   *
 *                                                                                           *
 *   \brief  This is a generic CMS plugin class for a BMLT satellite client.                 *
-*   \version 3.0.29                                                                         *
+*   \version 3.1.0                                                                         *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -2202,8 +2202,8 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
     function BMLTPlugin_map_search_global_javascript_stuff()
         {
         // Include the Google Maps API V3 files.
-        $ret = '<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>';
-        $ret .= '<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=geometry"></script>';       
+        $ret = '<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>';
+        $ret .= '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=geometry"></script>';       
         // Declare the various globals and display strings. This is how we pass strings to the JavaScript, as opposed to the clunky way we do it in the root server.
         $ret .= '<script type="text/javascript">' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $ret .= 'var c_g_cannot_determine_location = \''.$this->process_text ( self::$local_cannot_determine_location ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
@@ -2247,8 +2247,8 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
     function BMLTPlugin_nouveau_map_search_global_javascript_stuff()
         {
         // Include the Google Maps API V3 files.
-        $ret = '<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>';
-        $ret .= '<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=geometry"></script>';       
+        $ret = '<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>';
+        $ret .= '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=geometry"></script>';       
         $ret .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'javascript.js" type="text/javascript"></script>';
         $ret .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'nouveau_map_search.js" type="text/javascript"></script>';
 
@@ -2545,7 +2545,7 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
         $sensor = $in_sensor ? 'true' : 'false';
 
         // Include the Google Maps API V3 files.
-        $ret .= '<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor='.$sensor.'"></script>';
+        $ret .= '<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor='.$sensor.'"></script>';
         
         // Declare the various globals and display strings. This is how we pass strings to the JavaScript, as opposed to the clunky way we do it in the root server.
         $ret .= '<script type="text/javascript">' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
@@ -3226,7 +3226,7 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                                                         $url .= ($comma ? ',+' : '').urlencode($meeting['location_province']);
                                                         }
                                                     
-                                                    $url = 'http://maps.google.com/maps?q='.urlencode($meeting['latitude']).','.urlencode($meeting['longitude']) . '+(%22'.str_replace ( "%28", '-', str_replace ( "%29", '-', $url )).'%22)';
+                                                    $url = 'https://maps.google.com/maps?q='.urlencode($meeting['latitude']).','.urlencode($meeting['longitude']) . '+(%22'.str_replace ( "%28", '-', str_replace ( "%29", '-', $url )).'%22)';
                                                     $url .= '&ll='.urlencode($meeting['latitude']).','.urlencode($meeting['longitude']);
                                                     $ret .= '<a rel="external nofollow" accesskey="'.$index.'" href="'.htmlspecialchars ( $url ).'" title="'.htmlspecialchars($meeting['meeting_name']).'">'.$this->process_text ( self::$local_map_link ).'</a>';
                                                     $ret .= '<script type="text/javascript">document.getElementById(\'maplink_'.intval($meeting['id_bigint']).'\').style.display=\'block\';var c_BMLTPlugin_settings_id = '.htmlspecialchars ( $this->my_http_vars['bmlt_settings_id'] ).';</script>';

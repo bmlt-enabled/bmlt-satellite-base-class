@@ -25,9 +25,10 @@ INSTALLATION
 
 CHANGELIST
 ----------
-*3.0.29*
+*3.1.0*
 * TBD
 * Added Italian translation.
+* Some fairly fundamental changes to support HTTPS.
 
 ----------
 *3.0.28*

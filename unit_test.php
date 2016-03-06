@@ -2,7 +2,7 @@
 /****************************************************************************************//**
 * \file unit_test.php																		*
 * \brief A unit test harness for the BMLTPlugin class.						                *
-*   \version 3.0.29                                                                         *
+*   \version 3.1.0                                                                         *
     
     This file is part of the BMLT Common Satellite Base Class Project. The project GitHub
     page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class
@@ -44,6 +44,24 @@ require_once ( 'bmlt-unit-test-satellite-plugin.php' );
 /// This is an ID for a specific meeting (with some changes) for the meeting changes test.
 define ( 'U_TEST_MEETING_ID', 734 );
 define ( '_TIME_ZONE_', 'America/New_York' );
+
+/****************************************************************************************//**
+*	\brief Gets a cleaned base server path (accounting for SSL and non-standard ports).     *
+*																							*
+*	\returns A string. The Server URI.              										*
+********************************************************************************************/
+function getCleanBaseURI()
+{
+    $port = $_SERVER['SERVER_PORT'] ;
+    // IIS puts "off" in the HTTPS field, so we need to test for that.
+    $https = (!empty ( $_SERVER['HTTPS'] ) && (($_SERVER['HTTPS'] !== 'off') || ($port == 443))); 
+    $server_path = $_SERVER['SERVER_NAME'];
+    $my_path = $_SERVER['PHP_SELF'];
+    $server_path .= trim ( (($https && ($port != 443)) || (!$https && ($port != 80))) ? ':'.$port : '', '/' );
+    $server_path = 'http'.($https ? 's' : '').'://'.$server_path.$my_path;
+    
+    return $server_path;
+}
 
 /****************************************************************************************//**
 *	\brief Runs the unit tests.																*
@@ -210,9 +228,10 @@ function u_test_body()
 function u_test_form()
 {
     global $BMLTPluginOp;
-	$ret = '<div class="return_button"><a href="http://'.$_SERVER['SERVER_NAME'].(($_SERVER['SERVER_PORT'] != 80) ? ':'.$_SERVER['SERVER_PORT'] : '').$_SERVER['SCRIPT_NAME'].'?utest_string=admin">Admin Page</a></div>';
+
+	$ret = '<div class="return_button"><a href="'.getCleanBaseURI().'?utest_string=admin">Admin Page</a></div>';
     $ret .= '<div class="utest_input_form_container_div">';
-        $ret .= '<form onsubmit="utest_onsubmit()" class="utest_input_form" method="get" action="'.htmlspecialchars ( $_SERVER['PHP_SELF'] ).'">';
+        $ret .= '<form onsubmit="utest_onsubmit()" class="utest_input_form" method="get" action="'.getCleanBaseURI().'">';
             $ret .= '<div class="utest_input_div">';
                 $ret .= '<div class="centered_div">';
                 $ret .= '<h1>Enter the Test String</h1>';
