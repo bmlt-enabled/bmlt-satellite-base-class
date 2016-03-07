@@ -2202,8 +2202,8 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
     function BMLTPlugin_map_search_global_javascript_stuff()
         {
         // Include the Google Maps API V3 files.
-        $ret = '<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>';
-        $ret .= '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=geometry"></script>';       
+        $ret = '<script type="text/javascript" src="https://maps.google.com/maps/api/js"></script>';
+        $ret .= '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=geometry"></script>';       
         // Declare the various globals and display strings. This is how we pass strings to the JavaScript, as opposed to the clunky way we do it in the root server.
         $ret .= '<script type="text/javascript">' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $ret .= 'var c_g_cannot_determine_location = \''.$this->process_text ( self::$local_cannot_determine_location ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
@@ -2247,8 +2247,8 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
     function BMLTPlugin_nouveau_map_search_global_javascript_stuff()
         {
         // Include the Google Maps API V3 files.
-        $ret = '<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>';
-        $ret .= '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=geometry"></script>';       
+        $ret = '<script type="text/javascript" src="https://maps.google.com/maps/api/js"></script>';
+        $ret .= '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=geometry"></script>';       
         $ret .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'javascript.js" type="text/javascript"></script>';
         $ret .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'nouveau_map_search.js" type="text/javascript"></script>';
 
