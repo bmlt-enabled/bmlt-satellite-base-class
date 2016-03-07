@@ -26,7 +26,7 @@ INSTALLATION
 CHANGELIST
 ----------
 *3.1.0*
-* TBD
+* March 7, 2016
 * Added Italian translation.
 * Some fairly fundamental changes to support HTTPS.
 
