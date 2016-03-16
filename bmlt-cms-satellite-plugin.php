@@ -28,6 +28,12 @@
 
 // define ( '_DEBUG_MODE_', 1 ); //Uncomment for easier JavaScript debugging.
 
+// This is the cookie (and parameter) name used to explicitly set the language used by the client.
+if ( !defined ( '_LANG_COOKIE_NAME' )
+    {
+    define ( '_LANG_COOKIE_NAME', 'bmlt_admin_lang_pref' );
+    }
+
 // Include the satellite driver class.
 require_once ( dirname ( __FILE__ ).'/BMLT-Satellite-Driver/bmlt_satellite_controller.class.php' );
 
@@ -35,9 +41,9 @@ global $bmlt_localization;  ///< Use this to control the localization.
 $tmp_local = false;         ///< This will hold the selected language as we test for an explicit one.
 
 // We can use a cookie to store the language pref. The name is historical, and comes from an existing cookie for the Root Server.
-if ( isset ( $_COOKIE ) && isset ( $_COOKIE['bmlt_admin_lang_pref'] ) && $_COOKIE['bmlt_admin_lang_pref'] )
+if ( isset ( $_COOKIE ) && isset ( $_COOKIE[_LANG_COOKIE_NAME] ) && $_COOKIE[_LANG_COOKIE_NAME] )
     {
-    $tmp_local = $_COOKIE['bmlt_admin_lang_pref'];
+    $tmp_local = $_COOKIE[_LANG_COOKIE_NAME];
     }
 
 // GET overpowers cookie.
@@ -50,6 +56,19 @@ if ( isset ( $_GET['lang_enum'] ) && $_GET['lang_enum'] )
 if ( isset ( $_POST['lang_enum'] ) && $_POST['lang_enum'] )
     {
     $tmp_local = $_POST['lang_enum'];
+    }
+
+// This allows us a "superparameter" to override the standard 'lang_enum'.
+// GET overpowers cookie.
+if ( isset ( $_GET[_LANG_COOKIE_NAME] ) && $_GET[_LANG_COOKIE_NAME] )
+    {
+    $tmp_local = $_GET[_LANG_COOKIE_NAME];
+    }
+
+// POST overpowers GET.
+if ( isset ( $_POST[_LANG_COOKIE_NAME] ) && $_POST[_LANG_COOKIE_NAME] )
+    {
+    $tmp_local = $_POST[_LANG_COOKIE_NAME];
     }
 
 // If the language is not valid, we fall back on the existing global.
@@ -71,11 +90,11 @@ if ( $tmp_local != $bmlt_localization )
     $bmlt_localization = $tmp_local;
 
     $expires = time() + (60 * 60 * 24 * 365);   // Expire in one year.
-    setcookie ( 'bmlt_admin_lang_pref', $tmp_local, $expires, '/' );
+    setcookie ( _LANG_COOKIE_NAME, $tmp_local, $expires, '/' );
     }
 else    // Otherwise, delete the cookie.
     {
-    setcookie ( 'bmlt_admin_lang_pref', null, -1, '/' );
+    setcookie ( _LANG_COOKIE_NAME, null, -1, '/' );
     }
 
 // Load the language base class.

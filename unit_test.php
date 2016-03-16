@@ -33,6 +33,8 @@
 ********************************************************************************************/
 
 define ( '_DEBUG_MODE_', 1 );
+define ( '_LANG_COOKIE_NAME', 'bmlt_admin_lang_pref' );
+
 error_reporting ( E_ERROR | E_WARNING );
 
 global $bmlt_localization;  ///< Use this to control the localization.
@@ -272,9 +274,9 @@ function u_test_form()
                     $tmp_local = false;         ///< This will hold the selected language as we test for an explicit one.
 
                     // We can use a cookie to store the language pref. The name is historical, and comes from an existing cookie for the Root Server.
-                    if ( isset ( $_COOKIE ) && isset ( $_COOKIE['bmlt_admin_lang_pref'] ) && $_COOKIE['bmlt_admin_lang_pref'] )
+                    if ( isset ( $_COOKIE ) && isset ( $_COOKIE[_LANG_COOKIE_NAME] ) && $_COOKIE[_LANG_COOKIE_NAME] )
                         {
-                        $tmp_local = $_COOKIE['bmlt_admin_lang_pref'];
+                        $tmp_local = $_COOKIE[_LANG_COOKIE_NAME];
                         }
 
                     // GET overpowers cookie.
@@ -287,6 +289,19 @@ function u_test_form()
                     if ( isset ( $_POST['lang_enum'] ) && $_POST['lang_enum'] )
                         {
                         $tmp_local = $_POST['lang_enum'];
+                        }
+
+                    // These use the "power parameter" for language selection, so you can still send the "lang_enum", but still override it.
+                    // GET overpowers cookie.
+                    if ( isset ( $_GET[_LANG_COOKIE_NAME] ) && $_GET[_LANG_COOKIE_NAME] )
+                        {
+                        $tmp_local = $_GET[_LANG_COOKIE_NAME];
+                        }
+
+                    // POST overpowers GET.
+                    if ( isset ( $_POST[_LANG_COOKIE_NAME] ) && $_POST[_LANG_COOKIE_NAME] )
+                        {
+                        $tmp_local = $_POST[_LANG_COOKIE_NAME];
                         }
 
                     // If the language is not valid, we fall back on the existing global.
