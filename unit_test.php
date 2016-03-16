@@ -31,7 +31,6 @@
 * This code is used for testing the class by allowing a direct call of the file. It will be	*
 * disabled in actual implementation, so calls to the file will return nothing.				*
 ********************************************************************************************/
-
 define ( '_DEBUG_MODE_', 1 );
 define ( '_LANG_COOKIE_NAME', 'bmlt_admin_lang_pref' );
 
@@ -185,6 +184,7 @@ function u_test_header()
         case 'clear_session':
             session_unset();
             session_destroy();
+            setcookie ( _LANG_COOKIE_NAME, null, -1, '/' );
             $ret .= '<title>BMLTPlugin Class Unit Test</title>';
         break;
         
@@ -269,7 +269,7 @@ function u_test_form()
                     $ret .= '<div class="mobile_list_div_line"><input name="mobile_simulation" id="mobile_simulation_wml_1" type="radio" value="WML1" /><label for="mobile_simulation_wml_1">Simulate WML 1</label></div>';
                     $ret .= '<div class="mobile_list_div_line"><input name="mobile_simulation" id="mobile_simulation_wml_2" type="radio" value="WML2" /><label for="mobile_simulation_wml_2">Simulate WML 2</label></div>';
                 $ret .= '</div>';
-                $ret .= '<div class="language_div_line"><div class="language_div_wrapper"><label for="cookie_select">Select Language:</label> <select id="lang_select" name="lang_select">';
+                $ret .= '<div class="language_div_line"><div class="language_div_wrapper"><label for="'._LANG_COOKIE_NAME.'">Select Language:</label> <select id="'._LANG_COOKIE_NAME.'" name="'._LANG_COOKIE_NAME.'">';
                     global $bmlt_localization;  ///< Use this to control the localization.
                     $tmp_local = false;         ///< This will hold the selected language as we test for an explicit one.
 

@@ -29,7 +29,7 @@
 // define ( '_DEBUG_MODE_', 1 ); //Uncomment for easier JavaScript debugging.
 
 // This is the cookie (and parameter) name used to explicitly set the language used by the client.
-if ( !defined ( '_LANG_COOKIE_NAME' )
+if ( !defined ( '_LANG_COOKIE_NAME' ) )
     {
     define ( '_LANG_COOKIE_NAME', 'bmlt_admin_lang_pref' );
     }
