@@ -3,7 +3,7 @@
 *   \file   bmlt-cms-satellite-plugin.php                                                   *
 *                                                                                           *
 *   \brief  This is a generic CMS plugin class for a BMLT satellite client.                 *
-*   \version 3.1.0                                                                         *
+*   \version 3.1.1                                                                         *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -32,136 +32,54 @@
 require_once ( dirname ( __FILE__ ).'/BMLT-Satellite-Driver/bmlt_satellite_controller.class.php' );
 
 global $bmlt_localization;  ///< Use this to control the localization.
+$tmp_local = false;         ///< This will hold the selected language as we test for an explicit one.
 
-$tmp_local = 'en';  ///< We will always fall back to English. It is possible that the plugin may not be localized to the desired language.
+// We can use a cookie to store the language pref. The name is historical, and comes from an existing cookie for the Root Server.
+if ( isset ( $_COOKIE ) && isset ( $_COOKIE['bmlt_admin_lang_pref'] ) && $_COOKIE['bmlt_admin_lang_pref'] )
+    {
+    $tmp_local = $_COOKIE['bmlt_admin_lang_pref'];
+    }
 
-if ( isset ( $bmlt_localization ) && $bmlt_localization && file_exists ( dirname ( __FILE__ )."/lang/lang_".$bmlt_localization.".php" ) )
+// GET overpowers cookie.
+if ( isset ( $_GET['lang_enum'] ) && $_GET['lang_enum'] )
+    {
+    $tmp_local = $_GET['lang_enum'];
+    }
+
+// POST overpowers GET.
+if ( isset ( $_POST['lang_enum'] ) && $_POST['lang_enum'] )
+    {
+    $tmp_local = $_POST['lang_enum'];
+    }
+
+// If the language is not valid, we fall back on the existing global.
+if ( (!$tmp_local || !file_exists ( dirname ( __FILE__ )."/lang/lang_".$tmp_local.".php" )) && isset ( $bmlt_localization ) && $bmlt_localization )   // Fall back on a previously set global.
     {
     $tmp_local = $bmlt_localization;
     }
 
-require_once ( dirname ( __FILE__ )."/lang/lang_".$tmp_local.".php" );
-
-/***********************************************************************/
-/** \brief	This is an open-source JSON encoder that allows us to support
-	older versions of PHP (before the <a href="http://us3.php.net/json_encode">json_encode()</a> function
-	was implemented). It uses json_encode() if that function is available.
-	
-	This is from <a href="http://www.bin-co.com/php/scripts/array2json/">Bin-Co.com</a>.
-	
-	This crap needs to be included to be aboveboard and legal. You can still re-use the code, but
-	you need to make sure that the comments below this are included:
-	
-
-	Copyright (c) 2004-2007, Binny V Abraham
-
-	All rights reserved.
-	
-	Redistribution and use in source and binary forms, with or without modification, are permitted provided
-	that the following conditions are met:
-	
-	*	Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-	*	Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer
-		in the documentation and/or other materials provided with the distribution.
-	
-	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
-	BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-	IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
-	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-	PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-	OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
-	EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
-function array2json (
-					$arr	///< An associative string, to be encoded as JSON.
-					)
-	{
-	if(function_exists('json_encode'))
-		{
-		return json_encode($arr); //Lastest versions of PHP already has this functionality.
-		}
-	
-	$parts = array();
-	$is_list = false;
-
-	//Find out if the given array is a numerical array
-	$keys = array_keys($arr);
-	$max_length = count($arr)-1;
-	if(($keys[0] == 0) and ($keys[$max_length] == $max_length))
-		{//See if the first key is 0 and last key is length - 1
-		$is_list = true;
-		for ($i=0; $i<count($keys); $i++)
-			{ //See if each key correspondes to its position
-			if($i != $keys[$i])
-				{ //A key fails at position check.
-				$is_list = false; //It is an associative array.
-				break;
-				}
-			}
-		}
-
-	foreach($arr as $key=>$value)
-		{
-		if(is_array($value))
-			{ //Custom handling for arrays
-			if($is_list)
-				{
-				$parts[] = array2json($value); /* :RECURSION: */
-				}
-			else
-				{
-				$parts[] = '"' . $key . '":' . array2json($value); /* :RECURSION: */
-				}
-				
-			}
-		else
-			{
-			$str = '';
-			if ( !$is_list )
-				{
-				$str = '"' . $key . '":';
-				}
-
-			//Custom handling for multiple data types
-			if ( is_numeric($value) )
-				{
-				$str .= $value; //Numbers
-				}
-			elseif ( $value === false )
-				{
-				$str .= 'false'; //The booleans
-				}
-			elseif ( $value === true )
-				{
-				$str .= 'true';
-				}
-			elseif ( isset ($value) && $value )
-				{
-				$str .= '"' . addslashes($value) . '"'; //All other things
-				}
-			// :TODO: Is there any more datatype we should be in the lookout for? (Object?)
-
-			$parts[] = $str;
-			}
-		}
-	
-	$json = implode ( ',', $parts );
-	
-	if( $is_list )
-		{
-		return '[' . $json . ']'; //Return numerical JSON
-		}
-	else
-		{
-		return '{' . $json . '}'; //Return associative JSON
-		}
-	}
-
-function BMLTPlugin_weAreMobile($in_http_vars)
+// If the language is not valid, we fall back on the existing global.
+if ( !$tmp_local || !file_exists ( dirname ( __FILE__ )."/lang/lang_".$tmp_local.".php" ) )
     {
-    $language = BMLTPlugin::mobile_sniff_ua($in_http_vars);
-    return ($language == 'wml') || ($language == 'xhtml_mp') || ($language == 'smartphone');
+    $tmp_local = 'en';
     }
+
+// If we changed the language from the default, we set it as a cookie for next time.
+if ( $tmp_local != $bmlt_localization )
+    {
+    // We set the global to whatever language we selected.
+    $bmlt_localization = $tmp_local;
+
+    $expires = time() + (60 * 60 * 24 * 365);   // Expire in one year.
+    setcookie ( 'bmlt_admin_lang_pref', $tmp_local, $expires, '/' );
+    }
+else    // Otherwise, delete the cookie.
+    {
+    setcookie ( 'bmlt_admin_lang_pref', null, -1, '/' );
+    }
+
+// Load the language base class.
+require_once ( dirname ( __FILE__ )."/lang/lang_".$bmlt_localization.".php" );
 
 /****************************************************************************************//**
 *   \class BMLTPlugin                                                                       *
@@ -3623,4 +3541,130 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
         {
         }
 };
+
+/***********************************************************************/
+/** \brief	This is an open-source JSON encoder that allows us to support
+	older versions of PHP (before the <a href="http://us3.php.net/json_encode">json_encode()</a> function
+	was implemented). It uses json_encode() if that function is available.
+	
+	This is from <a href="http://www.bin-co.com/php/scripts/array2json/">Bin-Co.com</a>.
+	
+	This crap needs to be included to be aboveboard and legal. You can still re-use the code, but
+	you need to make sure that the comments below this are included:
+	
+
+	Copyright (c) 2004-2007, Binny V Abraham
+
+	All rights reserved.
+	
+	Redistribution and use in source and binary forms, with or without modification, are permitted provided
+	that the following conditions are met:
+	
+	*	Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+	*	Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer
+		in the documentation and/or other materials provided with the distribution.
+	
+	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+	BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+	IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+	PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+	OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+	EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+function array2json (
+					$arr	///< An associative string, to be encoded as JSON.
+					)
+	{
+	if(function_exists('json_encode'))
+		{
+		return json_encode($arr); //Lastest versions of PHP already has this functionality.
+		}
+	
+	$parts = array();
+	$is_list = false;
+
+	//Find out if the given array is a numerical array
+	$keys = array_keys($arr);
+	$max_length = count($arr)-1;
+	if(($keys[0] == 0) and ($keys[$max_length] == $max_length))
+		{//See if the first key is 0 and last key is length - 1
+		$is_list = true;
+		for ($i=0; $i<count($keys); $i++)
+			{ //See if each key correspondes to its position
+			if($i != $keys[$i])
+				{ //A key fails at position check.
+				$is_list = false; //It is an associative array.
+				break;
+				}
+			}
+		}
+
+	foreach($arr as $key=>$value)
+		{
+		if(is_array($value))
+			{ //Custom handling for arrays
+			if($is_list)
+				{
+				$parts[] = array2json($value); /* :RECURSION: */
+				}
+			else
+				{
+				$parts[] = '"' . $key . '":' . array2json($value); /* :RECURSION: */
+				}
+				
+			}
+		else
+			{
+			$str = '';
+			if ( !$is_list )
+				{
+				$str = '"' . $key . '":';
+				}
+
+			//Custom handling for multiple data types
+			if ( is_numeric($value) )
+				{
+				$str .= $value; //Numbers
+				}
+			elseif ( $value === false )
+				{
+				$str .= 'false'; //The booleans
+				}
+			elseif ( $value === true )
+				{
+				$str .= 'true';
+				}
+			elseif ( isset ($value) && $value )
+				{
+				$str .= '"' . addslashes($value) . '"'; //All other things
+				}
+			// :TODO: Is there any more datatype we should be in the lookout for? (Object?)
+
+			$parts[] = $str;
+			}
+		}
+	
+	$json = implode ( ',', $parts );
+	
+	if( $is_list )
+		{
+		return '[' . $json . ']'; //Return numerical JSON
+		}
+	else
+		{
+		return '{' . $json . '}'; //Return associative JSON
+		}
+	}
+
+/************************************************************************************//**
+*   \brief Very quick check for mobile client.                                          *
+*   \returns a Boolean. TRUE, if the client is mobile.                                  *
+****************************************************************************************/
+function BMLTPlugin_weAreMobile($in_http_vars   ///< The HTTP query variables, as an associative array.
+                                )
+    {
+    $language = BMLTPlugin::mobile_sniff_ua($in_http_vars);
+    return ($language == 'wml') || ($language == 'xhtml_mp') || ($language == 'smartphone');
+    }
 ?>

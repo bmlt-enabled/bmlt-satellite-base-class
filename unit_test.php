@@ -2,7 +2,7 @@
 /****************************************************************************************//**
 * \file unit_test.php																		*
 * \brief A unit test harness for the BMLTPlugin class.						                *
-*   \version 3.1.0                                                                         *
+*   \version 3.1.1                                                                         *
     
     This file is part of the BMLT Common Satellite Base Class Project. The project GitHub
     page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class
@@ -82,13 +82,15 @@ function u_test()
         $ret .= 'html,body {width:100%;height:100%}';
         $ret .= 'body{font-family:Courier;font-size:small}';
         $ret .= '.test_container_div{padding-left:20px}';
-        $ret .= '.return_button,.utest_input_form_container_div,.centered_div{text-align:center;margin:8px}';
+        $ret .= '.return_button,.utest_input_form_container_div,.centered_div{clear:both; text-align:center; margin:8px}';
         $ret .= '.return_button{font-size:large}';
         $ret .= '.utest_input_div{width:50%;text-align:left;margin-left:auto;margin-right:auto}';
         $ret .= '.utest_input_textarea{padding:4px;color:#339;border:1px solid #339}';
         $ret .= '.mobile_list_div { text-align:center }';
         $ret .= '.mobile_list_div_line { width: 250px;margin-top:4px;margin-bottom:4px;text-align:left;margin-left:auto;margin-right:auto }';
         $ret .= '.mobile_list_div_line label { margin-left: 8px }';
+        $ret .= '.language_div_line { text-align:center; clear:both; display:block; margin-top: 1em; margin-bottom: 1em }';
+        $ret .= '.language_div_wrapper { margin-left:auto;margin-right:auto;display:table }';
         $ret .= '@media print { div#head_stuff { display:none; } }';
         $ret .= '</style>';
         $ret .= '<script type="text/javascript">';
@@ -265,7 +267,76 @@ function u_test_form()
                     $ret .= '<div class="mobile_list_div_line"><input name="mobile_simulation" id="mobile_simulation_wml_1" type="radio" value="WML1" /><label for="mobile_simulation_wml_1">Simulate WML 1</label></div>';
                     $ret .= '<div class="mobile_list_div_line"><input name="mobile_simulation" id="mobile_simulation_wml_2" type="radio" value="WML2" /><label for="mobile_simulation_wml_2">Simulate WML 2</label></div>';
                 $ret .= '</div>';
-                $ret .= '<div class="centered_div"><input type="submit" value="Submit" /><script type="text/javascript">document.getElementById(\'utest_string\').select()</script></div>';
+                $ret .= '<div class="language_div_line"><div class="language_div_wrapper"><label for="cookie_select">Select Language:</label> <select id="lang_select" name="lang_select">';
+                    global $bmlt_localization;  ///< Use this to control the localization.
+                    $tmp_local = false;         ///< This will hold the selected language as we test for an explicit one.
+
+                    // We can use a cookie to store the language pref. The name is historical, and comes from an existing cookie for the Root Server.
+                    if ( isset ( $_COOKIE ) && isset ( $_COOKIE['bmlt_admin_lang_pref'] ) && $_COOKIE['bmlt_admin_lang_pref'] )
+                        {
+                        $tmp_local = $_COOKIE['bmlt_admin_lang_pref'];
+                        }
+
+                    // GET overpowers cookie.
+                    if ( isset ( $_GET['lang_enum'] ) && $_GET['lang_enum'] )
+                        {
+                        $tmp_local = $_GET['lang_enum'];
+                        }
+
+                    // POST overpowers GET.
+                    if ( isset ( $_POST['lang_enum'] ) && $_POST['lang_enum'] )
+                        {
+                        $tmp_local = $_POST['lang_enum'];
+                        }
+
+                    // If the language is not valid, we fall back on the existing global.
+                    if ( (!$tmp_local || !file_exists ( dirname ( __FILE__ )."/lang/lang_".$tmp_local.".php" )) && isset ( $bmlt_localization ) && $bmlt_localization )   // Fall back on a previously set global.
+                        {
+                        $tmp_local = $bmlt_localization;
+                        }
+
+                    // If the language is not valid, we fall back on the existing global.
+                    if ( !$tmp_local || !file_exists ( dirname ( __FILE__ )."/lang/lang_".$tmp_local.".php" ) )
+                        {
+                        $tmp_local = 'en';
+                        }
+                    
+                    // Point to the language directory.
+                    $dir = new DirectoryIterator ( dirname ( __FILE__ )."/lang/" );
+                    foreach ($dir as $fileinfo)
+                        {
+                        $matches = array();
+                        if ( preg_match ( '|lang_([a-zA-Z0-9]*?)\.php|', $fileinfo->getFilename(), $matches ) )
+                            {
+                            $ret .= '<option value="'.$matches[1].'"';
+                            if ( $matches[1] == $tmp_local )
+                                {
+                                $ret .= ' selected="selected"';
+                                }
+                            
+                            $topline = array ( "", "ERROR" );
+                            $handle = fopen ( dirname ( __FILE__ )."/lang/".'/'.$fileinfo->getFilename(), "r");
+                            if ( $handle )
+                            {
+                                if ( ($line = fgets ( $handle )) !== false )
+                                    {
+                                    $topline[0] = $line;
+                                    }
+
+                                if ( ($line = fgets ( $handle )) !== false )
+                                    {
+                                    $topline[1] = str_replace ( '// ', '', $line );
+                                    }
+
+                                fclose($handle);
+                            }
+                            
+                            $ret .= '>'.htmlspecialchars ( $topline[1] );
+                            $ret .='</option>';
+                            }
+                        }
+                $ret .= '</select></div></div>';
+                $ret .= '<div class="return_button"><input type="submit" value="Submit" /><script type="text/javascript">document.getElementById(\'utest_string\').select()</script></div>';
             $ret .= '</div>';
         $ret .= '</form>';
     $ret .= '</div>';

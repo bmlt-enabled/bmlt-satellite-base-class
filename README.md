@@ -25,6 +25,10 @@ INSTALLATION
 
 CHANGELIST
 ----------
+*3.1.1*
+* TBD
+* Added support for cookie- and HTTP query-based language selection.
+
 *3.1.0*
 * March 7, 2016
 * Added Italian translation.

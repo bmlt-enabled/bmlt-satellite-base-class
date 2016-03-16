@@ -1,10 +1,10 @@
 <?php
-// English
+// Italiano
 /****************************************************************************************//**
 *   \file   lang_it.php                                                                     *
 *                                                                                           *
 *   \brief  This file contains Italian localizations.                                       *
-*   \version 3.1.0                                                                         *
+*   \version 3.1.1                                                                          *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
