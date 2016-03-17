@@ -26,7 +26,7 @@ INSTALLATION
 CHANGELIST
 ----------
 *3.1.1*
-* TBD
+* March 16, 2016
 * Added support for cookie- and HTTP query-based language selection.
 
 *3.1.0*
