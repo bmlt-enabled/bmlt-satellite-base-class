@@ -3,7 +3,7 @@
 *   \file   bmlt-cms-satellite-plugin.php                                                   *
 *                                                                                           *
 *   \brief  This is a generic CMS plugin class for a BMLT satellite client.                 *
-*   \version 3.1.1                                                                         *
+*   \version 3.2.0                                                                         *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -1576,10 +1576,10 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                     $result = bmlt_satellite_controller::call_curl ( $url );
                     $result = preg_replace ( '|\<a |', '<a rel="nofollow external" ', $result );
                     // What all this does, is pick out the single URI in the search parameters string, and replace the meeting details link with it.
-                    if ( preg_match ( '|&single_uri=|', $this->my_http_vars['search_parameters'] ) )
+                    if ( preg_match ( '|&single_uri=|', $params ) )
                         {
                         $single_uri = '';
-                        $sp = explode ( '&', $this->my_http_vars['search_parameters'] );
+                        $sp = explode ( '&', $params );
                         foreach ( $sp as $s )
                             {
                             if ( preg_match ( '|single_uri=|', $s ) )
@@ -1939,6 +1939,8 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
         $root_server_root = $options['root_server'];
 
         $in_content = str_replace ( '&#038;', '&', $in_content );   // This stupid kludge is because WordPress does an untoward substitution. Won't do anything unless WordPress has been naughty.
+        $in_content = str_replace ( '&amp;', '&', $in_content );    // This stupid kludge is because WordPress does an untoward substitution. Won't do anything unless WordPress has been naughty.
+
         while ( $params = self::get_shortcode ( $in_content, 'bmlt_simple' ) )
             {
             $param_array = explode ( '##-##', $params );    // You can specify a settings ID, by separating it from the URI parameters with a ##-##.
@@ -2139,8 +2141,7 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
     function BMLTPlugin_map_search_global_javascript_stuff()
         {
         // Include the Google Maps API V3 files.
-        $ret = '<script type="text/javascript" src="https://maps.google.com/maps/api/js"></script>';
-        $ret .= '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=geometry"></script>';       
+        $ret = '</script><script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=geometry"></script>';       
         // Declare the various globals and display strings. This is how we pass strings to the JavaScript, as opposed to the clunky way we do it in the root server.
         $ret .= '<script type="text/javascript">' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $ret .= 'var c_g_cannot_determine_location = \''.$this->process_text ( self::$local_cannot_determine_location ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
@@ -2184,8 +2185,7 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
     function BMLTPlugin_nouveau_map_search_global_javascript_stuff()
         {
         // Include the Google Maps API V3 files.
-        $ret = '<script type="text/javascript" src="https://maps.google.com/maps/api/js"></script>';
-        $ret .= '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=geometry"></script>';       
+        $ret = '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=geometry"></script>';       
         $ret .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'javascript.js" type="text/javascript"></script>';
         $ret .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'nouveau_map_search.js" type="text/javascript"></script>';
 
@@ -2482,7 +2482,7 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
         $sensor = $in_sensor ? 'true' : 'false';
 
         // Include the Google Maps API V3 files.
-        $ret .= '<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor='.$sensor.'"></script>';
+        $ret .= '<script type="text/javascript" src="https://maps.google.com/maps/api/js"></script>';
         
         // Declare the various globals and display strings. This is how we pass strings to the JavaScript, as opposed to the clunky way we do it in the root server.
         $ret .= '<script type="text/javascript">' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');

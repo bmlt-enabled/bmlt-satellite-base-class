@@ -25,6 +25,11 @@ INSTALLATION
 
 CHANGELIST
 ----------
+*3.2.0*
+* TBD
+* Fixed a style problem with the default search, where the map and text might be outdented by 8 pixels.
+* Fixed the "Google Maps included two or more times" warning.
+
 *3.1.1*
 * March 16, 2016
 * Added support for cookie- and HTTP query-based language selection.
