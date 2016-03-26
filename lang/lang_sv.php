@@ -56,7 +56,6 @@ class BMLT_Localized_BaseClass
     /// These are all for the admin page option sheets.
     static $local_options_name_label = 'Inställnings namn:'; ///< The Label for the setting name item.
     static $local_options_rootserver_label = 'Root Server:'; ///< The Label for the root server item.
-    static $local_options_new_search_label = 'Ny söknings URL:'; ///< The Label for the new search item.
     static $local_options_gkey_label = 'Google Maps API nyckel:'; ///< The Label for the Google Maps API Key item.
     static $local_options_no_name_string = 'namnge inställningar'; ///< The Value to use for a name field for a setting with no name.
     static $local_options_no_root_server_string = 'Sökväg till rootserver'; ///< The Value to use for a root with no URL.
@@ -69,7 +68,6 @@ class BMLT_Localized_BaseClass
     static $local_options_map_label = 'välj mittpunkt och zoomnivå'; ///< The Label for the map.
     static $local_options_mobile_legend = 'Dessa påverkar olika vyer(som karta mobil och avanserad)'; ///< This indicates that the enclosed settings are for the fast mobile lookup.
     static $local_options_mobile_grace_period_label = 'Extratid på mötets starttid vid sökning:'; ///< When you do a "later today" search, you get a "Grace Period."
-    static $local_options_mobile_default_duration_label = 'Standardlängd på möten:';     ///< If the meeting has no duration, use this as a default.
     static $local_options_mobile_time_offset_label = 'Tids Offset:'; ///< This may have an offset (time zone difference) from the main server.
     static $local_options_initial_view = array ( ///< The list of choices for presentation in the popup.
                                                 'karta' => 'Karta', 'text' => 'Text', 'avanserad_karta' => 'Avanserad karta', 'avanserad_text' => 'Avanserad Text'

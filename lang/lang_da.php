@@ -56,7 +56,6 @@ class BMLT_Localized_BaseClass
     /// These are all for the admin page option sheets.
     static  $local_options_name_label = 'Indstillings Navn:';                    ///< The Label for the setting name item.
     static  $local_options_rootserver_label = 'Root Server:';               ///< The Label for the root server item.
-    static  $local_options_new_search_label = 'Ny Søgnings URL:';            ///< The Label for the new search item.
     static  $local_options_gkey_label = 'Google Maps API Key:';             ///< The Label for the Google Maps API Key item.
     static  $local_options_no_name_string = 'Indstillings Navn';           ///< The Value to use for a name field for a setting with no name.
     static  $local_options_no_root_server_string = 'Indtast Root Server URL';                               ///< The Value to use for a root with no URL.
@@ -69,7 +68,6 @@ class BMLT_Localized_BaseClass
     static  $local_options_map_label = 'Vælg Et Midterpunkt og Zoom Niveau';             ///< The Label for the map.
     static  $local_options_mobile_legend = 'Dette Påvirker Forskellige Visninger (som Kort, Mobil og Avanceret)';  ///< This indicates that the enclosed settings are for the fast mobile lookup.
     static  $local_options_mobile_grace_period_label = 'Tidsfrist inden møde:';     ///< When you do a "later today" search, you get a "Grace Period."
-    static  $local_options_mobile_default_duration_label = 'Standard Møde Længde:';     ///< If the meeting has no duration, use this as a default.
     static  $local_options_mobile_time_offset_label = 'Time Offset:';       ///< This may have an offset (time zone difference) from the main server.
     static  $local_options_initial_view = array (                           ///< The list of choices for presentation in the popup.
                                                 'kort' => 'Kort', 'tekst' => 'Tekst', 'advanceret_kort' => 'Advanceret Kort', 'advanceret_tekst' => 'Advanceret Tekst'

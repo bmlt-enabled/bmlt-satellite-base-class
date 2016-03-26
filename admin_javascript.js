@@ -154,17 +154,7 @@ function BMLTPlugin_SaveOptions()
             {
             url += encodeURIComponent ( root_server );
             };
-        
-        var new_search = document.getElementById ( 'BMLTPlugin_option_sheet_new_search_'+option_index ).value.toString();
-        
-        url += '&BMLTPlugin_option_sheet_new_search_'+option_index+'=';
-
-        if ( new_search && (new_search != c_g_BMLTPlugin_no_search) )
-            {
-
-            url += encodeURIComponent ( new_search );
-            };
-        
+    
         var distance_units = document.getElementById ( 'BMLTPlugin_option_sheet_distance_units_'+option_index ).value.toString();
         
          if ( distance_units )
@@ -195,10 +185,6 @@ function BMLTPlugin_SaveOptions()
         url += '&BMLTPlugin_option_sheet_time_format_'+option_index+'='+parseInt(document.getElementById ( 'BMLTPlugin_option_sheet_time_format_'+option_index ).selectedIndex).toString();
 
         url += '&BMLTPlugin_option_sheet_week_begins_'+option_index+'='+parseInt(document.getElementById ( 'BMLTPlugin_option_sheet_week_begins_'+option_index ).options[document.getElementById ( 'BMLTPlugin_option_sheet_week_begins_'+option_index ).selectedIndex].value).toString();
-
-        url += '&BMLTPlugin_option_sheet_duration_hour_'+option_index+'='+parseInt(document.getElementById ( 'BMLTPlugin_option_sheet_duration_hour_'+option_index ).value).toString();
-
-        url += '&BMLTPlugin_option_sheet_duration_minute_'+option_index+'='+parseInt(document.getElementById ( 'BMLTPlugin_option_sheet_duration_minute_'+option_index ).value).toString();
 
         url += '&BMLTPlugin_location_selected_checkbox_'+option_index+'='+(document.getElementById ( 'BMLTPlugin_location_selected_checkbox_'+option_index ).checked ? '1' : '0');
         

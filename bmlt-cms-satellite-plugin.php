@@ -137,7 +137,6 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
     static  $default_details_map_zoom = 11;                                 ///< This is the default basic search map zoom level
     static  $default_location_checked = 0;                                  ///< If nonzero, then the "This is a location" checkbox will be preselected.
     static  $default_location_services = 0;                                 ///< This tells the new default implementation whether or not location services should be available only for mobile devices.
-    static  $default_new_search = '';                                       ///< If this is set to something, then a new search uses the exact URI.
     static  $default_gkey = '';                                             ///< This is only necessary for older versions.
     static  $default_additional_css = '';                                   ///< This is additional CSS that is inserted inline into the <head> section.
     static  $default_initial_view = '';                                     ///< The initial view for old-style BMLT. It can be 'map', 'text', 'advanced', 'advanced map', 'advanced text' or ''.
@@ -147,7 +146,6 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
     static  $default_distance_units = 'mi';                                 ///< The default distance units are miles.
     static  $default_grace_period = 15;                                     ///< The default grace period for the mobile search (in minutes).
     static  $default_time_offset = 0;                                       ///< The default time offset from the main server (in hours).
-    static  $default_duration = '1:30';                                     ///< The default duration of meetings.
     static  $default_military_time = false;                                 ///< If this is true, then time displays will be in military time.
     static  $default_startWeekday = 1;                                      ///< The default starting weekday (Sunday)
 
@@ -417,7 +415,6 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                         'map_center_latitude' => self::$default_map_center_latitude,
                         'map_center_longitude' => self::$default_map_center_longitude,
                         'map_zoom' => self::$default_map_zoom,
-                        'bmlt_new_search_url' => self::$default_new_search,
                         'bmlt_initial_view' => self::$default_initial_view,
                         'additional_css' => self::$default_additional_css,
                         'id' => strval ( time() + intval(rand(0, 999))),   // This gives the option a unique slug
@@ -427,7 +424,6 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                         'theme' => self::$default_theme,
                         'distance_units' => self::$default_distance_units,
                         'grace_period' => self::$default_grace_period,
-                        'default_duration' => self::$default_duration,
                         'time_offset' => self::$default_time_offset,
                         'military_time' => self::$default_military_time,
                         'startWeekday' => self::$default_startWeekday
@@ -961,7 +957,7 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                         $html .= "document.getElementById('BMLTPlugin_options_container').style.display='block';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
                         $html .= "var c_g_BMLTPlugin_no_name = '".$this->process_text ( self::$local_options_no_name_string )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
                         $html .= "var c_g_BMLTPlugin_no_root = '".$this->process_text ( self::$local_options_no_root_server_string )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-                        $html .= "var c_g_BMLTPlugin_no_search = '".$this->process_text ( self::$local_options_no_new_search_string )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+//                         $html .= "var c_g_BMLTPlugin_no_search = '".$this->process_text ( self::$local_options_no_new_search_string )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
                         $html .= "var c_g_BMLTPlugin_root_canal = '".self::$local_options_url_bad.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
                         $html .= "var c_g_BMLTPlugin_success_message = '".$this->process_text ( self::$local_options_save_success )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
                         $html .= "var c_g_BMLTPlugin_failure_message = '".$this->process_text ( self::$local_options_save_failure )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
@@ -1057,15 +1053,15 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                         $ret .= '<div class="BMLTPlugin_option_sheet_Version" id="BMLTPlugin_option_sheet_version_indicator_'.$in_options_index.'"></div>';
                     $ret .= '</div>';
                 $ret .= '</div>';
-                $ret .= '<div class="BMLTPlugin_option_sheet_line_div">';
-                    $id = 'BMLTPlugin_option_sheet_new_search_'.$in_options_index;
-                    $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( self::$local_options_new_search_label ).'</label>';
-                        $string = (isset ( $options['bmlt_new_search_url'] ) && $options['bmlt_new_search_url'] ? $options['bmlt_new_search_url'] : $this->process_text ( self::$local_options_no_new_search_string ) );
-                    $ret .= '<input class="BMLTPlugin_option_sheet_line_new_search_text" id="'.htmlspecialchars ( $id ).'" type="text" value="'.htmlspecialchars ( $string ).'"';
-                    $ret .= ' onfocus="BMLTPlugin_ClickInText(this.id,\''.$this->process_text ( self::$local_options_no_new_search_string).'\',false)"';
-                    $ret .= ' onblur="BMLTPlugin_ClickInText(this.id,\''.$this->process_text ( self::$local_options_no_new_search_string).'\',true)"';
-                    $ret .= ' onchange="BMLTPlugin_DirtifyOptionSheet()" onkeyup="BMLTPlugin_DirtifyOptionSheet()" />';
-                $ret .= '</div>';
+//                 $ret .= '<div class="BMLTPlugin_option_sheet_line_div">';
+//                     $id = 'BMLTPlugin_option_sheet_new_search_'.$in_options_index;
+//                     $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( self::$local_options_new_search_label ).'</label>';
+//                         $string = (isset ( $options['bmlt_new_search_url'] ) && $options['bmlt_new_search_url'] ? $options['bmlt_new_search_url'] : $this->process_text ( self::$local_options_no_new_search_string ) );
+//                     $ret .= '<input class="BMLTPlugin_option_sheet_line_new_search_text" id="'.htmlspecialchars ( $id ).'" type="text" value="'.htmlspecialchars ( $string ).'"';
+//                     $ret .= ' onfocus="BMLTPlugin_ClickInText(this.id,\''.$this->process_text ( self::$local_options_no_new_search_string).'\',false)"';
+//                     $ret .= ' onblur="BMLTPlugin_ClickInText(this.id,\''.$this->process_text ( self::$local_options_no_new_search_string).'\',true)"';
+//                     $ret .= ' onchange="BMLTPlugin_DirtifyOptionSheet()" onkeyup="BMLTPlugin_DirtifyOptionSheet()" />';
+//                 $ret .= '</div>';
                 $dir_res = opendir ( dirname ( __FILE__ ).'/themes' );
                 if ( $dir_res )
                     {
@@ -1196,51 +1192,6 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                         $ret .= '</select>';
                         $ret .= '<div class="BMLTPlugin_option_sheet_text_div">'.$this->process_text ( self::$local_options_grace_period_disclaimer ).'</div>';
                     $ret .= '</div>';
-                    $ret .= '<div class="BMLTPlugin_option_sheet_line_div">';
-                        $id = 'BMLTPlugin_option_sheet_duration';
-                        $ret .= '<label for="'.htmlspecialchars ( $id.'_hour_'.$in_options_index ).'">'.$this->process_text ( self::$local_options_mobile_default_duration_label ).'</label>';
-                        $ret .= '<select id="'.htmlspecialchars ( $id.'_hour_'.$in_options_index ).'" onchange="BMLTPlugin_DirtifyOptionSheet()">';
-                            $def = explode ( ':', $options['default_duration'] );
-                            $def[0] = intval ( $def[0] );
-                            $def[1] = intval ( $def[1] );
-                            for ( $hour = 0; $hour < 3; $hour++ )
-                                {
-                                $ret .= '<option value="'.$hour.'"';
-                                if ( intval ( $hour ) == $def[0] )
-                                    {
-                                    $ret .= ' selected="selected"';
-                                    }
-                                $ret .= '>'.$hour.'</option>';
-                                }
-                        $ret .= '</select>';
-                        $ret .= '<select id="'.htmlspecialchars ( $id.'_minute_'.$in_options_index ).'" onchange="BMLTPlugin_DirtifyOptionSheet()">';
-                            for ( $minute = 0; $minute < 60; $minute += 5 )
-                                {
-                                $ret .= '<option value="'.$minute.'"';
-                                if ( intval ( $minute ) == $def[1] )
-                                    {
-                                    $ret .= ' selected="selected"';
-                                    }
-                                $ret .= '>'.$minute.'</option>';
-                                }
-                        $ret .= '</select>';
-                    $ret .= '</div>';
-//                     $ret .= '<div class="BMLTPlugin_option_sheet_line_div">';
-//                         $id = 'BMLTPlugin_option_sheet_time_offset_'.$in_options_index;
-//                         $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( self::$local_options_mobile_time_offset_label ).'</label>';
-//                         $ret .= '<select id="'.htmlspecialchars ( $id ).'" onchange="BMLTPlugin_DirtifyOptionSheet()">';
-//                             for ( $hour = -23; $hour < 24; $hour++ )
-//                                 {
-//                                 $ret .= '<option value="'.$hour.'"';
-//                                 if ( $hour == $options['time_offset'] )
-//                                     {
-//                                     $ret .= ' selected="selected"';
-//                                     }
-//                                 $ret .= '>'.$hour.'</option>';
-//                                 }
-//                         $ret .= '</select>';
-//                         $ret .= '<div class="BMLTPlugin_option_sheet_text_div">'.$this->process_text ( self::$local_options_time_offset_disclaimer ).'</div>';
-//                     $ret .= '</div>';
                 $ret .= '</fieldset>';
             $ret .= '</div>';
             }
@@ -1314,18 +1265,6 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                                 }
                             }
                         
-                        if ( isset ( $this->my_http_vars['BMLTPlugin_option_sheet_new_search_'.$i] ) )
-                            {
-                            if ( trim ( $this->my_http_vars['BMLTPlugin_option_sheet_new_search_'.$i] ) )
-                                {
-                                $options['bmlt_new_search_url'] = trim ( $this->my_http_vars['BMLTPlugin_option_sheet_new_search_'.$i] );
-                                }
-                            else
-                                {
-                                $options['bmlt_new_search_url'] = self::$default_new_search;
-                                }
-                            }
-                        
                         if ( isset ( $this->my_http_vars['BMLTPlugin_option_sheet_initial_view_'.$i] ) )
                             {
                             if ( trim ( $this->my_http_vars['BMLTPlugin_option_sheet_initial_view_'.$i] ) )
@@ -1380,11 +1319,6 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                         if ( isset ( $this->my_http_vars['BMLTPlugin_option_sheet_distance_units_'.$i] ) )
                             {
                             $options['distance_units'] = $this->my_http_vars['BMLTPlugin_option_sheet_distance_units_'.$i];
-                            }
-                        
-                        if ( isset ( $this->my_http_vars['BMLTPlugin_option_sheet_duration_hour_'.$i] ) && isset ( $this->my_http_vars['BMLTPlugin_option_sheet_duration_minute_'.$i] ) )
-                            {
-                            $options['default_duration'] = sprintf ( '%d:%02d', intval ( $this->my_http_vars['BMLTPlugin_option_sheet_duration_hour_'.$i] ), intval ( $this->my_http_vars['BMLTPlugin_option_sheet_duration_minute_'.$i] ) );
                             }
                         
                         if ( isset ( $this->my_http_vars['BMLTPlugin_option_sheet_time_format_'.$i] ) )
@@ -1782,11 +1716,6 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                 $the_new_content .= "var g_Nouveau_meeting_results_selection_count_sprintf_format ='".self:: $local_nouveau_meeting_results_selection_count_sprintf_format.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
                 $the_new_content .= "var g_Nouveau_meeting_results_single_selection_count_sprintf_format ='".self:: $local_nouveau_meeting_results_single_selection_count_sprintf_format.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
                 $the_new_content .= "var g_Nouveau_single_time_sprintf_format ='".self:: $local_nouveau_single_time_sprintf_format.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_single_duration_sprintf_format_1_hr ='".self:: $local_nouveau_single_duration_sprintf_format_1_hr.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_single_duration_sprintf_format_mins ='".self:: $local_nouveau_single_duration_sprintf_format_mins.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_single_duration_sprintf_format_hrs ='".self:: $local_nouveau_single_duration_sprintf_format_hrs.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_single_duration_sprintf_format_hr_mins ='".self:: $local_nouveau_single_duration_sprintf_format_hr_mins.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_single_duration_sprintf_format_hrs_mins ='".self:: $local_nouveau_single_duration_sprintf_format_hrs_mins.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
             
                 $the_new_content .= "var g_Nouveau_location_sprintf_format_loc_street_info = '".self::$local_nouveau_location_sprintf_format_loc_street_info.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
                 $the_new_content .= "var g_Nouveau_location_sprintf_format_loc_street = '".self::$local_nouveau_location_sprintf_format_loc_street.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
@@ -1847,10 +1776,6 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                 $the_new_content .= "var g_Nouveau_location_sprintf_format_wtf ='".$this->process_text ( self::$local_nouveau_location_sprintf_format_wtf ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
 
                 $the_new_content .= "var g_Nouveau_time_sprintf_format = '".self::$local_nouveau_time_sprintf_format.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_duration_title = '".self::$local_nouveau_location_sprintf_format_duration_title.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_duration_hour_only_title = '".self::$local_nouveau_location_sprintf_format_duration_hour_only_title.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_duration_hour_only_and_minutes_title = '".self::$local_nouveau_location_sprintf_format_duration_hour_only_and_minutes_title.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_duration_hours_only_title = '".self::$local_nouveau_location_sprintf_format_duration_hours_only_title.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
                 $the_new_content .= "var g_Nouveau_am ='".$this->process_text ( self::$local_nouveau_am ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
                 $the_new_content .= "var g_Nouveau_pm ='".$this->process_text ( self::$local_nouveau_pm ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
                 $the_new_content .= "var g_Nouveau_noon ='".$this->process_text ( self::$local_nouveau_noon ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
@@ -1887,7 +1812,7 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                 $the_new_content .= "var g_Nouveau_default_geo_width = -10;";
                 $the_new_content .= "var g_Nouveau_default_details_map_zoom = ".self::$default_details_map_zoom.';';
                 $the_new_content .= "var g_Nouveau_default_marker_aggregation_threshold_in_pixels = 8;";
-                $the_new_content .= "var g_Nouveau_default_duration = '".(isset ( $options['default_duration'] ) ? $options['default_duration'] : '').(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+//                 $the_new_content .= "var g_Nouveau_default_duration = '".(isset ( $options['default_duration'] ) ? $options['default_duration'] : '').(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
 
                 $the_new_content .= "var g_Nouveau_single_formats_label = '".$this->process_text ( self::$local_nouveau_single_formats_label ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
                 $the_new_content .= "var g_Nouveau_single_service_body_label = '".$this->process_text ( self::$local_nouveau_single_service_body_label ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
@@ -2006,7 +1931,6 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                     $the_new_content .= $this->BMLTPlugin_map_search_local_javascript_stuff ( $options_id, $uid );
                 $the_new_content .= '</div>';
                 $the_new_content .= '<div class="bmlt_search_map_div" id="'.$uid.'_bmlt_search_map_div"></div>';
-                $the_new_content .= '<div class="bmlt_search_map_new_search_div" id="'.$uid.'_bmlt_search_map_new_search_div" style="display:none"><a href="javascript:c_ms_'.$uid.'.newSearchExt();">'.$this->process_text ( self::$local_new_map_js_new_search ).'</a></div>';
                 $the_new_content .= '<script type="text/javascript">var g_military_time = '.($options['military_time'] ? 'true' : 'false' ).';g_no_meetings_found="'.htmlspecialchars ( self::$local_cant_find_meetings_display ).'";document.getElementById(\''.$uid.'\').style.display=\'block\';c_ms_'.$uid.' = new MapSearch ( \''.htmlspecialchars ( $uid ).'\',\''.htmlspecialchars ( $options_id ).'\', document.getElementById(\''.$uid.'_bmlt_search_map_div\'), {\'latitude\':'.$options['map_center_latitude'].',\'longitude\':'.$options['map_center_longitude'].',\'zoom\':'.$options['map_zoom'].'} );var g_Nouveau_start_week = '.((isset ( $options['startWeekday'] ) && $options['startWeekday']) ? $options['startWeekday'] : self::$default_startWeekday ).';</script>';
             $the_new_content .= '</div>';
             

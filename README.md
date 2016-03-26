@@ -29,6 +29,8 @@ CHANGELIST
 * TBD
 * Fixed a style problem with the default search, where the map and text might be outdented by 8 pixels.
 * Fixed the "Google Maps included two or more times" warning.
+* Removed unnecessary new search and duration items from admin page.
+* Fixed an issue where WordPress would sometimes HTML-entity the ampersand (&) character.
 
 *3.1.1*
 * March 16, 2016
