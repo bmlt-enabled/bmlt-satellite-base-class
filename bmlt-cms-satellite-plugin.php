@@ -1672,7 +1672,7 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
         
         $options_id = $this->cms_get_page_settings_id( $in_content );
 
-        $in_content = str_replace ( '&#038;', '&', $in_content );   // This stupid kludge is because WordPress does an untoward substitution. Won't do anything unless WordPress has been naughty.
+        $in_content = str_replace ( array ( '&#038;', '&#038;#038;', '&#038;amp;', '&amp;#038;', '&amp;', '&amp;amp;' ), '&', $in_content );   // This stupid kludge is because WordPress does an untoward substitution. Won't do anything unless WordPress has been naughty.
         
         $first = true;
 
@@ -1878,7 +1878,7 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                 $root_server_root = $options['root_server'];
                 }
             
-            $params = (count ($param_array) > 0) ? '?'.str_replace ( array ( '&#038;', '&amp;' ), '&', $param_array[count ( $param_array )-1] ) : null;
+            $params = (count ($param_array) > 0) ? '?'.str_replace ( array ( '&#038;', '&#038;#038;', '&#038;amp;', '&#038;amp;', '&amp;#038;', '&amp;', '&amp;amp;' ), '&', $param_array[count ( $param_array )-1] ) : null;
             
             $uri = $root_server_root."/client_interface/simple/index.php".$params;
 
@@ -1911,7 +1911,7 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                     $options_id = intval ( $param_array[0] );
                     }
 
-                $params = (count ($param_array) > 0) ? '?'.str_replace ( array ( '&#038;', '&#038;#038;', '&amp;#038;', '&amp;', '&amp;amp;' ), '&', $param_array[count ( $param_array )-1] ) : null;
+                $params = (count ($param_array) > 0) ? '?'.str_replace ( array ( '&#038;', '&#038;#038;', '&#038;amp;', '&#038;amp;', '&amp;#038;', '&amp;', '&amp;amp;' ), '&', $param_array[count ( $param_array )-1] ) : null;
                 
                 // This strips weekday selectors out. We will be dealing with this ourselves.
                 $params = preg_replace ( '|(\&){0,1}weekdays(\[\]){0,1}=[0-9]{0,1}|', '', $params );
@@ -1927,7 +1927,7 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                 $my_table_next_id++;    // We increment the ID, so we can have multiple tables on the same page. This also makes the IDs very predictable for fun CSS tricks.
                 
                 $the_new_content .= '<div class="bmlt_table_display_div" id="bmlt_table_display_div_'.strval ( $my_table_next_id ).'"></div>';
-                $the_new_content .= "<script type=\"text/javascript\">TableSearchDisplay ( 'bmlt_table_display_div_".strval ( $my_table_next_id )."', '$options_id', '$this->get_ajax_base_uri()', '$params' );</script>";
+                $the_new_content .= "<script type=\"text/javascript\">TableSearchDisplay ( 'bmlt_table_display_div_".strval ( $my_table_next_id )."', '$options_id', '".htmlspecialchars ( $this->get_ajax_base_uri() )."', '$params' );</script>";
                 
                 $in_content = self::replace_shortcode ( $in_content, 'bmlt_table', $the_new_content );
                 }
@@ -1947,7 +1947,7 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
         {
         $options_id = $this->cms_get_page_settings_id( $in_content );
 
-        $in_content = str_replace ( '&#038;', '&', $in_content );   // This stupid kludge is because WordPress does an untoward substitution. Won't do anything unless WordPress has been naughty.
+        $in_content = str_replace ( array ( '&#038;', '&#038;#038;', '&#038;amp;', '&amp;#038;', '&amp;', '&amp;amp;' ), '&', $in_content );   // This stupid kludge is because WordPress does an untoward substitution. Won't do anything unless WordPress has been naughty.
         
         $first = true;
 
@@ -2199,7 +2199,7 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
         $options = $this->getBMLTOptions_by_id ( $options_id );
         $root_server_root = $options['root_server'];
 
-        $in_content = str_replace ( '&#038;', '&', $in_content );   // This stupid kludge is because WordPress does an untoward substitution. Won't do anything unless WordPress has been naughty.
+        $in_content = str_replace ( array ( '&#038;', '&#038;#038;', '&#038;amp;', '&amp;#038;', '&amp;', '&amp;amp;' ), '&', $in_content );   // This stupid kludge is because WordPress does an untoward substitution. Won't do anything unless WordPress has been naughty.
         while ( $params = self::get_shortcode ( $in_content, 'bmlt_changes' ) )
             {
             $param_array = explode ( '##-##', $params );    // You can specify a settings ID, by separating it from the URI parameters with a ##-##.
