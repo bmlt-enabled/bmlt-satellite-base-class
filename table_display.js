@@ -53,6 +53,130 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
     ****************************************************************************************/
 	
     /****************************************************************************************
+    *#################################### UTILITY ROUTINES #################################*
+    ****************************************************************************************/
+    /************************************************************************************//**
+    *                                     AJAX HANDLER                                      *
+    ****************************************************************************************/
+
+    /************************************************************************************//**
+    *   \brief A simple, generic AJAX request function.                                     *
+    *                                                                                       *
+    *   \returns a new XMLHTTPRequest object.                                               *
+    ****************************************************************************************/
+    
+    this.utility_AjaxRequest = function (   url,        ///< The URI to be called
+                                            callback,   ///< The success callback
+                                            method,     ///< The method ('get' or 'post')
+                                            extra_data  ///< If supplied, extra data to be delivered to the callback.
+                                        )
+    {
+        /********************************************************************************//**
+        *   \brief Create a generic XMLHTTPObject.                                          *
+        *                                                                                   *
+        *   This will account for the various flavors imposed by different browsers.        *
+        *                                                                                   *
+        *   \returns a new XMLHTTPRequest object.                                           *
+        ************************************************************************************/
+    
+        function createXMLHTTPObject()
+        {
+            var XMLHttpArray = [
+                function() {return new XMLHttpRequest()},
+                function() {return new ActiveXObject("Msxml2.XMLHTTP")},
+                function() {return new ActiveXObject("Msxml2.XMLHTTP")},
+                function() {return new ActiveXObject("Microsoft.XMLHTTP")}
+                ];
+            
+            var xmlhttp = false;
+        
+            for ( var i=0; i < XMLHttpArray.length; i++ )
+                {
+                try
+                    {
+                    xmlhttp = XMLHttpArray[i]();
+                    }
+                catch(e)
+                    {
+                    continue;
+                    };
+                break;
+                };
+        
+            return xmlhttp;
+        };
+    
+        var req = createXMLHTTPObject();
+        req.finalCallback = callback;
+        var sVars = null;
+        method = method.toString().toUpperCase();
+        var drupal_kludge = '';
+    
+        // Split the URL up, if this is a POST.
+        if ( method == "POST" )
+            {
+            var rmatch = /^([^\?]*)\?(.*)$/.exec ( url );
+            url = rmatch[1];
+            sVars = rmatch[2];
+            // This horrible, horrible kludge, is because Drupal insists on having its q parameter in the GET list only.
+            var rmatch_kludge = /(q=admin\/settings\/bmlt)&?(.*)/.exec ( rmatch[2] );
+            if ( rmatch_kludge && rmatch_kludge[1] )
+                {
+                url += '?'+rmatch_kludge[1];
+                sVars = rmatch_kludge[2];
+                };
+            };
+        if ( extra_data )
+            {
+            req.extra_data = extra_data;
+            };
+        req.open ( method, url, true );
+        if ( method == "POST" )
+            {
+            req.setRequestHeader("Method", "POST "+url+" HTTP/1.1");
+            req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            };
+        req.onreadystatechange = function ( )
+            {
+            if ( req.readyState != 4 ) return;
+            if( req.status != 200 ) return;
+            callback ( req, req.extra_data );
+            req = null;
+            };
+        req.send ( sVars );
+    
+        return req;
+    };
+    
+    /************************************************************************************//**
+    *	\brief Called to load a weekday.
+    ****************************************************************************************/
+	this.utility_loadWeekdayData = function ( in_weekday_index  ///< An integer, with the weekday to be loaded (0 is Sunday, 6 is Saturday).
+	                                        )
+	{
+	    var uri = this.my_ajax_base_uri + '?' + my_search_query_params + '&weekdays[]=' + in_weekday_index.toString();
+	    
+        this.m_ajax_request = this.utility_AjaxRequest ( uri, this.callback_loadWeekdayData, 'get', parseInt (in_weekday_index) + 1 );
+	};
+	
+    /****************************************************************************************
+    *##################################### AJAX CALLBACKS ##################################*
+    ****************************************************************************************/
+    /************************************************************************************//**
+    *	\brief Called when the weekday data is loaded.
+    ****************************************************************************************/
+	this.callback_loadWeekdayData = function (  in_response_object, ///< The HTTPRequest response object.
+                                                in_weekday_index    ///< The weekday index, plus one (because JS likes to undefine zeroes).
+                                             )
+    {
+        in_weekday_index--;
+        var tabElementID = 'bmlt_table_header_weekday_list_element' + in_weekday_index.toString();
+        var tabObject = document.getElementById ( tabElementID );
+        tabObject.className = 'is_selected';
+    
+    };
+    
+    /****************************************************************************************
     *################################# INITIAL SETUP ROUTINES ##############################*
     ****************************************************************************************/
     /************************************************************************************//**
@@ -81,7 +205,7 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
         
         this.my_weekday_links = new Array();
         this.my_header_container = document.createElement ( 'ul' );   // Create the header container.
-        this.my_header_container.class = 'bmlt_table_header_weekday_list';
+        this.my_header_container.className = 'bmlt_table_header_weekday_list';
         var startingIndex = this.my_start_weekday;
         
         for ( var i = 0; i < 7; i++ )
@@ -108,12 +232,18 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
         // Add the text for it.
         weekdayElement.handler = this;
         weekdayElement.index = in_weekday_index;
-        weekdayElement.class = 'bmlt_table_header_weekday_list_element';
+        weekdayElement.id = 'bmlt_table_header_weekday_list_element' + in_weekday_index.toString();
+        weekdayElement.className = 'bmlt_table_header_weekday_list_element';
         weekdayElement.onclick = function () {this.handler.responder_weekdaySelected(this)};
-        weekdayElement.appendChild ( document.createTextNode ( g_table_weekday_long_array[in_weekday_index] ) );
+
+        var textNode = document.createElement ( 'span' );
+        textNode.appendChild ( document.createTextNode ( g_table_weekday_long_array[in_weekday_index] ) );
+        textNode.className = 'bmlt_table_weekday_span';
+        weekdayElement.appendChild ( textNode );
+        
         var throbberImage = document.createElement ( 'img' );   // This will be the throbber.
         throbberImage.src = g_table_throbber_img_src;
-        throbberImage.class = 'bmlt_table_throbber_image';
+        throbberImage.className = 'bmlt_table_throbber_image';
         weekdayElement.appendChild ( throbberImage );
         
         return weekdayElement;
@@ -128,7 +258,8 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
     this.responder_weekdaySelected = function ( in_weekday_object
                                                 )
     {
-alert ( in_weekday_object.index.toString() );
+        in_weekday_object.className = 'is_loading';
+        this.utility_loadWeekdayData ( in_weekday_object.index );
     };
     
     /****************************************************************************************
