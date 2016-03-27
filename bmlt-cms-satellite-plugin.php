@@ -1915,19 +1915,27 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                 
                 // This strips weekday selectors out. We will be dealing with this ourselves.
                 $params = preg_replace ( '|(\&){0,1}weekdays(\[\]){0,1}=[0-9]{0,1}|', '', $params );
+                // We ignore the block_mode selector as well. We'll be doing our own thing. It will be table-based.
+                $params = preg_replace ( '|(\&){0,1}block_mode=[a-zA-Z0-9]{0,5}|', '', $params );
                 
                 $the_new_content = '';
+                $options = $this->getBMLTOptions_by_id ( $options_id );
                 
                 // The first time through, we import our JS file. After that, we no longer need it.
                 if ( !$my_table_next_id )
                     {
-                    $the_new_content = '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'table_display.js" type="text/javascript"></script>';
+                    $the_new_content = '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'table_display.js" type="text/javascript"></script>'.(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
+                    $the_new_content .= "<script type=\"text/javascript\">".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
+                    $the_new_content .= 'var g_table_weekday_long_array = new Array ( "'.join ( '","', self::$local_nouveau_weekday_long_array ).'" );'.(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
+                    $the_new_content .= "var g_table_throbber_img_src = '".htmlspecialchars ( $this->get_plugin_path().'themes/'.$options['theme'].'/images/TableThrobber.gif' ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                    $the_new_content .= "</script>";
                     }
                 
                 $my_table_next_id++;    // We increment the ID, so we can have multiple tables on the same page. This also makes the IDs very predictable for fun CSS tricks.
                 
-                $the_new_content .= '<div class="bmlt_table_display_div" id="bmlt_table_display_div_'.strval ( $my_table_next_id ).'"></div>';
-                $the_new_content .= "<script type=\"text/javascript\">TableSearchDisplay ( 'bmlt_table_display_div_".strval ( $my_table_next_id )."', '$options_id', '".htmlspecialchars ( $this->get_ajax_base_uri() )."', '$params' );</script>";
+                $the_new_content .= '<div class="bmlt_table_display_div bmlt_table_display_div_theme_'.htmlspecialchars ( $options['theme'] ).'" id="bmlt_table_display_div_'.strval ( $my_table_next_id ).'"></div>'.(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
+                $theWeekday = strval ( intval ( $options['startWeekday'] - 1 ) );
+                $the_new_content .= "<script type=\"text/javascript\">TableSearchDisplay ( 'bmlt_table_display_div_".strval ( $my_table_next_id )."', '$options_id', '".htmlspecialchars ( $this->get_ajax_base_uri() )."', '$theWeekday', '$params' );</script>".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
                 
                 $in_content = self::replace_shortcode ( $in_content, 'bmlt_table', $the_new_content );
                 }

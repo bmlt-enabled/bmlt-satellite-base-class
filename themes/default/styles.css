@@ -786,3 +786,8 @@ div.bmlt_search_map_div div img
 {
     max-width:none; /* Hack to prevent the problems with the controls disappearing. */
 }
+
+div.bmlt_table_display_div_theme_default
+{
+}
+
