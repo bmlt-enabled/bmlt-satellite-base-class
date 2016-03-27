@@ -28,9 +28,19 @@
 /****************************************************************************************//**
 *	\brief  
 ********************************************************************************************/
+function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of the container div.
+                                in_settings_id,     ///< The ID of the settings used for this table.
+                                in_ajax_base_uri,   ///< The base URI for AJAX callbacks.
+                                in_search_params    ///< The query parameters for the base search.
+                            )
+{
 	/****************************************************************************************
-	*									  CLASS DATA MEMBERS								*
+	*									INSTANCE DATA MEMBERS								*
 	****************************************************************************************/
+	var my_container_object;
+	var my_settings_id;
+	var my_ajax_base_uri;
+	var my_search_query_params;
 	
     /****************************************************************************************
     *								  INTERNAL CLASS FUNCTIONS							    *
@@ -42,4 +52,15 @@
     /************************************************************************************//**
     *	\brief 
     ****************************************************************************************/
-
+    
+    /****************************************************************************************
+    *################################### MAIN FUNCTION CODE ################################*
+    ****************************************************************************************/
+    
+    this.my_container_object = document.getElementById ( in_display_id );
+    this.my_settings_id = in_settings_id;
+    this.my_ajax_base_uri = in_ajax_base_uri;
+    this.my_search_query_params = in_search_params;
+    
+alert ( this.my_container_object.id.toString() + "\n" + this.my_settings_id.toString() + "\n" + this.my_ajax_base_uri.toString() + "\n" + this.my_search_query_params.toString() );
+};

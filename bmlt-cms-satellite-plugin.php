@@ -163,6 +163,7 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
     var $my_driver = null;              ///< This will contain an instance of the BMLT satellite driver class.
     var $my_params = null;              ///< This will contain the $this->my_http_vars and $_POST query variables.
     var $my_http_vars = null;           ///< This will hold all of the query arguments.
+    var $my_table_next_id = 0;          ///< The next ID to use for the table.
     
     /************************************************************************************//**
     *                                    FUNCTIONS/METHODS                                  *
@@ -349,7 +350,7 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
         
         $matches = array();
       
-        if ( preg_match ( '#'.$code_regex_html.'#i', $in_text_to_parse, $matches ) || preg_match ( '#'.$code_regex_brackets.'#i', $in_text_to_parse, $matches ) )
+        if ( preg_match ( '|'.$code_regex_html.'|i', $in_text_to_parse, $matches ) || preg_match ( '|'.$code_regex_brackets.'|i', $in_text_to_parse, $matches ) )
             {
             if ( !isset ( $matches[1] ) || !($ret = trim ( $matches[1], '()' )) ) // See if we have any parameters.
                 {
@@ -1572,6 +1573,8 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
         {
         $old_content = $in_the_content; // We check to see if we added anything.
         // Simple searches can be mixed in with other content.
+        $in_the_content = $this->display_table_search ( $in_the_content );
+
         $in_the_content = $this->display_simple_search ( $in_the_content );
 
         $in_the_content = $this->display_changes ( $in_the_content );
@@ -1863,9 +1866,6 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
         $options = $this->getBMLTOptions_by_id ( $options_id );
         $root_server_root = $options['root_server'];
 
-        $in_content = str_replace ( '&#038;', '&', $in_content );   // This stupid kludge is because WordPress does an untoward substitution. Won't do anything unless WordPress has been naughty.
-        $in_content = str_replace ( '&amp;', '&', $in_content );    // This stupid kludge is because WordPress does an untoward substitution. Won't do anything unless WordPress has been naughty.
-
         while ( $params = self::get_shortcode ( $in_content, 'bmlt_simple' ) )
             {
             $param_array = explode ( '##-##', $params );    // You can specify a settings ID, by separating it from the URI parameters with a ##-##.
@@ -1876,18 +1876,63 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                 {
                 $options = $this->getBMLTOptions_by_id ( $param_array[0] );
                 $root_server_root = $options['root_server'];
-                $params = '?'.$param_array[1];
                 }
-            else
-                {
-                $params = (count ($param_array) > 0) ? '?'.$param_array[0] : null;
-                }
+            
+            $params = (count ($param_array) > 0) ? '?'.str_replace ( array ( '&#038;', '&amp;' ), '&', $param_array[count ( $param_array )-1] ) : null;
             
             $uri = $root_server_root."/client_interface/simple/index.php".$params;
 
             $the_new_content = bmlt_satellite_controller::call_curl ( $uri );
             $in_content = self::replace_shortcode ( $in_content, 'bmlt_simple', $the_new_content );
             }
+        return $in_content;
+        }
+        
+    /************************************************************************************//**
+    *   \brief This is a function that filters the content, and replaces a portion with the *
+    *   new "table" search                                                                  *
+    *                                                                                       *
+    *   \returns a string, containing the content.                                          *
+    ****************************************************************************************/
+    function display_table_search ($in_content      ///< This is the content to be filtered.
+                                    )
+        {
+        while ( $params = self::get_shortcode ( $in_content, 'bmlt_table' ) )
+            {
+            $options_id = $this->cms_get_page_settings_id( $in_content );
+
+            $param_array = explode ( '##-##', $params );    // You can specify a settings ID, by separating it from the URI parameters with a ##-##.
+            $params = null;
+            
+            if ( is_array ( $param_array ) )
+                {
+                if ( count ( $param_array ) > 1 )
+                    {
+                    $options_id = intval ( $param_array[0] );
+                    }
+
+                $params = (count ($param_array) > 0) ? '?'.str_replace ( array ( '&#038;', '&#038;#038;', '&amp;#038;', '&amp;', '&amp;amp;' ), '&', $param_array[count ( $param_array )-1] ) : null;
+                
+                // This strips weekday selectors out. We will be dealing with this ourselves.
+                $params = preg_replace ( '|(\&){0,1}weekdays(\[\]){0,1}=[0-9]{0,1}|', '', $params );
+                
+                $the_new_content = '';
+                
+                // The first time through, we import our JS file. After that, we no longer need it.
+                if ( !$my_table_next_id )
+                    {
+                    $the_new_content = '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'table_display.js" type="text/javascript"></script>';
+                    }
+                
+                $my_table_next_id++;    // We increment the ID, so we can have multiple tables on the same page. This also makes the IDs very predictable for fun CSS tricks.
+                
+                $the_new_content .= '<div class="bmlt_table_display_div" id="bmlt_table_display_div_'.strval ( $my_table_next_id ).'"></div>';
+                $the_new_content .= "<script type=\"text/javascript\">TableSearchDisplay ( 'bmlt_table_display_div_".strval ( $my_table_next_id )."', '$options_id', '$this->get_ajax_base_uri()', '$params' );</script>";
+                
+                $in_content = self::replace_shortcode ( $in_content, 'bmlt_table', $the_new_content );
+                }
+            }
+        
         return $in_content;
         }
         
