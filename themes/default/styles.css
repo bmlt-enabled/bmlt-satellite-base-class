@@ -792,7 +792,6 @@ div.bmlt_table_display_div_theme_default
     width:100%;
     margin:0;
     padding:0;
-    margin:0;
 }
 
 div.bmlt_table_display_div_theme_default .bmlt_table_header_weekday_list
@@ -807,8 +806,8 @@ div.bmlt_table_display_div_theme_default .bmlt_table_header_weekday_list li
     text-align:center;
     vertical-align: middle;
     background-color:#555;
-    line-height:40px;
-    height:40px;
+    line-height:2em;
+    height:2em;
     cursor:pointer;
     display:block;
     float:left;
@@ -817,12 +816,12 @@ div.bmlt_table_display_div_theme_default .bmlt_table_header_weekday_list li
     margin-bottom:0;
     border-bottom:none;
     width:14.28%;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    -moz-border-top-left-radius: 8px;
-    -moz-border-top-right-radius: 8px;
-    -webkit-border-top-left-radius: 8px;
-    -webkit-border-top-right-radius: 8px;
+    border-top-left-radius: 0.5em;
+    border-top-right-radius: 0.5em;
+    -moz-border-top-left-radius: 0.5em;
+    -moz-border-top-right-radius: 0.5em;
+    -webkit-border-top-left-radius: 0.5em;
+    -webkit-border-top-right-radius: 0.5em;
     border-color: white;
 }
 
@@ -872,5 +871,12 @@ div.bmlt_table_display_div_theme_default .bmlt_table_header_weekday_list li.is_s
 div.bmlt_table_display_div_theme_default .bmlt_table_header_weekday_list li.is_selected span
 {
     display:block;
+}
+
+div.bmlt_table_display_div_theme_default table.bmlt_table
+{
+    width:100%;
+    margin:0;
+    padding:0;
 }
 

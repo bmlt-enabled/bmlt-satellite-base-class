@@ -1915,9 +1915,12 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                 
                 // This strips weekday selectors out. We will be dealing with this ourselves.
                 $params = preg_replace ( '|(\&){0,1}weekdays(\[\]){0,1}=[0-9]{0,1}|', '', $params );
-                // We ignore the block_mode selector as well. We'll be doing our own thing. It will be table-based.
+                // We ignore the block_mode and sort key selectors as well. We'll be doing our own thing. It will be table-based, and sorted by time (to start).
                 $params = preg_replace ( '|(\&){0,1}block_mode=[a-zA-Z0-9]{0,5}|', '', $params );
-                $params = preg_replace ( '|^\?|', '', $params );
+                $params = preg_replace ( '|(\&){0,1}sort_key=[a-zA-Z0-9]*?|', '', $params );
+                $params = preg_replace ( '|(\&){0,1}sort_dir=[a-zA-Z0-9]{0,4}|', '', $params );
+                $params = preg_replace ( '|^[\&\?]|', '', $params );
+                $params = preg_replace ( '|[\&\?]$|', '', $params );
                 
                 $the_new_content = '';
                 $options = $this->getBMLTOptions_by_id ( $options_id );
@@ -1927,7 +1930,7 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                     {
                     $the_new_content = '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'table_display.js" type="text/javascript"></script>'.(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
                     $the_new_content .= "<script type=\"text/javascript\">".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
-                    $the_new_content .= 'var g_table_weekday_long_array = new Array ( "'.join ( '","', self::$local_nouveau_weekday_long_array ).'" );'.(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
+                    $the_new_content .= 'var g_table_weekday_name_array = new Array ( "'.join ( '","', self::$local_nouveau_weekday_short_array ).'" );'.(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
                     $the_new_content .= "var g_table_throbber_img_src = '".htmlspecialchars ( $this->get_plugin_path().'themes/'.$options['theme'].'/images/TableThrobber.gif' ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
                     $the_new_content .= "</script>";
                     }

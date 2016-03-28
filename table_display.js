@@ -46,6 +46,7 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
 	
 	var my_container_object;    ///< This is the div block that surrounds this table.
 	var my_header_container;    ///< The div element that will contain the weekday tabs.
+	var my_body_container;      ///< The table element that will contain the search results.
 	var my_weekday_links;       ///< An array of anchor elements, containing the weekday tabs
 	
     /****************************************************************************************
@@ -152,10 +153,12 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
     *	\brief  Called to load a weekday.
     *           This is called when the tab doesn't yet have a cache.
     ****************************************************************************************/
-	this.utility_loadWeekdayData = function ( in_weekday_index  ///< An integer, with the weekday to be loaded (0 is Sunday, 6 is Saturday).
+	this.utility_loadWeekdayData = function (   in_weekday_index,   ///< An integer, with the weekday to be loaded (0 is Sunday, 6 is Saturday).
+	                                            in_sort_key,        ///< The sort key, for the data sort.
+	                                            in_sort_dir         ///< The sort direction, for the data sort. It will be 'asc' or 'desc'.
 	                                        )
 	{
-	    var uri = encodeURI ( this.my_search_query_params + '&bmlt_settings_id=' + this.my_settings_id + '&weekdays[]=' + in_weekday_index.toString() ).toString();
+	    var uri = encodeURI ( this.my_search_query_params + '&sort_key=' + in_sort_key + '&sort_dir=' + in_sort_dir +'&bmlt_settings_id=' + this.my_settings_id + '&weekdays[]=' + in_weekday_index.toString() ).toString();
 	    uri =  this.my_ajax_base_uri + '?redirect_ajax_json=' + uri;
         this.m_ajax_request = this.utility_AjaxRequest ( uri, this.callback_loadWeekdayData, 'get', parseInt (in_weekday_index) + 1 );
 	};
@@ -257,12 +260,21 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
         // Add the text for it.
         weekdayElement.handler = this;
         weekdayElement.index = in_weekday_index;
+        weekdayElement.sort_key = 'time';
+        weekdayElement.sort_dir = 'asc';
         weekdayElement.id = 'bmlt_table_header_weekday_list_element' + in_weekday_index.toString();
         weekdayElement.className = 'bmlt_table_header_weekday_list_element';
+        
+        var d = new Date();
+        if ( d.getDay() == in_weekday_index )
+            {
+            weekdayElement.className += ' is_today';
+            };
+        
         weekdayElement.onclick = function () {this.select()};
 
         var textNode = document.createElement ( 'span' );
-        textNode.appendChild ( document.createTextNode ( g_table_weekday_long_array[in_weekday_index] ) );
+        textNode.appendChild ( document.createTextNode ( g_table_weekday_name_array[in_weekday_index] ) );
         textNode.className = 'bmlt_table_weekday_span';
         weekdayElement.appendChild ( textNode );
         
@@ -278,10 +290,11 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
             if ( !this.json_data )
                 {
                 this.className = 'bmlt_table_header_weekday_list_element is_loading';
-                this.handler.utility_loadWeekdayData ( this.index );
+                this.handler.utility_loadWeekdayData ( this.index, this.sort_key, this.sort_dir );
                 }
             else
                 {
+                var d = new Date();
                 for ( var i = 0; i < 7; i++ )
                     {
                     if ( this.handler && this.handler.my_weekday_links && this.handler.my_weekday_links[i] )
@@ -290,14 +303,50 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
                         if ( this.handler.my_weekday_links[i].index != this.index )
                             {
                             this.handler.my_weekday_links[i].className = 'bmlt_table_header_weekday_list_element';
+        
+                            if ( d.getDay() == this.handler.my_weekday_links[i].index )
+                                {
+                                this.handler.my_weekday_links[i].className += ' is_today';
+                                };
                             };
                         };
                     };
                 this.className = 'bmlt_table_header_weekday_list_element is_selected';
+                if ( d.getDay() == this.index )
+                    {
+                    this.className += ' is_today';
+                    };
+                this.handler.domBuilder_PopulateWeekday ( this.json_data, this.index, this.sort_key, this.sort_dir );
                 };
             };
         
         return weekdayElement;
+    };
+    
+    /************************************************************************************//**
+    *	\brief Populates the meeting result table for the given data.
+    ****************************************************************************************/
+    this.domBuilder_PopulateWeekday = function (    in_search_results_json,     ///< A JSON object with the meeting search results.
+	                                                in_index,                   ///< The 0-based weekday index.
+	                                                in_sort_key,                ///< The sort key, for the data sort.
+	                                                in_sort_dir                 ///< The sort direction, for the data sort. It will be 'asc' or 'desc'.
+                                                )
+    {
+        if ( this.my_body_container )   // Clear any preexisting condition.
+            {
+            this.my_body_container.innerHTML = '';
+            };
+        
+        this.my_body_container = document.createElement ( 'table' );        // Create the main table element.
+        this.my_body_container.className = 'bmlt_table';
+        this.my_body_container.id = 'bmlt_table_' + in_index;
+        var d = new Date();
+        if ( d.getDay() == in_index )
+            {
+            this.my_body_container.className += ' is_today';
+            };
+        
+        this.my_container_object.appendChild ( this.my_body_container );
     };
     
     /****************************************************************************************
