@@ -1815,7 +1815,6 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                 $the_new_content .= "var g_Nouveau_default_geo_width = -10;";
                 $the_new_content .= "var g_Nouveau_default_details_map_zoom = ".self::$default_details_map_zoom.';';
                 $the_new_content .= "var g_Nouveau_default_marker_aggregation_threshold_in_pixels = 8;";
-//                 $the_new_content .= "var g_Nouveau_default_duration = '".(isset ( $options['default_duration'] ) ? $options['default_duration'] : '').(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
 
                 $the_new_content .= "var g_Nouveau_single_formats_label = '".$this->process_text ( self::$local_nouveau_single_formats_label ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
                 $the_new_content .= "var g_Nouveau_single_service_body_label = '".$this->process_text ( self::$local_nouveau_single_service_body_label ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
@@ -1922,30 +1921,32 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                 $params = preg_replace ( '|^[\&\?]|', '', $params );
                 $params = preg_replace ( '|[\&\?]$|', '', $params );
                 
-                $the_new_content = '';
+                $the_new_content = '<noscript>'.$this->process_text ( self::$local_noscript ).'</noscript>';    // We let non-JS browsers know that this won't work for them.
                 $options = $this->getBMLTOptions_by_id ( $options_id );
                 
                 // The first time through, we import our JS file. After that, we no longer need it.
                 if ( !$my_table_next_id )
                     {
-                    $the_new_content = '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'table_display.js" type="text/javascript"></script>'.(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
+                    $the_new_content .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'table_display.js" type="text/javascript"></script>'.(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
                     $the_new_content .= "<script type=\"text/javascript\">".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
                     $the_new_content .= 'var g_table_weekday_name_array = new Array ( "'.join ( '","', self::$local_nouveau_weekday_short_array ).'" );'.(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
                     $the_new_content .= 'var g_table_weekday_long_name_array = new Array ( "'.join ( '","', self::$local_nouveau_weekday_long_array ).'" );'.(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
                     $the_new_content .= "var g_table_throbber_img_src = '".htmlspecialchars ( $this->get_plugin_path().'themes/'.$options['theme'].'/images/TableThrobber.gif' ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                    $the_new_content .= "var g_table_time_header_text = '".htmlspecialchars ( self::$local_table_header_time_label )."';".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
-                    $the_new_content .= "var g_table_name_header_text = '".htmlspecialchars ( self::$local_table_header_meeting_name_label )."';".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
-                    $the_new_content .= "var g_table_address_header_text = '".htmlspecialchars ( self::$local_table_header_address_label )."';".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
-                    $the_new_content .= "var g_table_format_header_text = '".htmlspecialchars ( self::$local_table_header_format_label )."';".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
-                    $the_new_content .= "var g_table_header_tab_format = '".htmlspecialchars ( self::$local_table_header_tab_title_format )."';".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
-                    $the_new_content .= "var g_table_header_tab_loading_format = '".htmlspecialchars ( self::$local_table_tab_loading_tile_format )."';".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
+                    $the_new_content .= "var g_table_sort_asc_img_src = '".htmlspecialchars ( $this->get_plugin_path().'themes/'.$options['theme'].'/images/TableSortAsc.gif' ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                    $the_new_content .= "var g_table_sort_desc_img_src = '".htmlspecialchars ( $this->get_plugin_path().'themes/'.$options['theme'].'/images/TableSortDesc.gif' ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                    $the_new_content .= "var g_table_time_header_text = '".$this->process_text ( self::$local_table_header_time_label )."';".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
+                    $the_new_content .= "var g_table_name_header_text = '".$this->process_text ( self::$local_table_header_meeting_name_label )."';".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
+                    $the_new_content .= "var g_table_address_header_text = '".$this->process_text ( self::$local_table_header_address_label )."';".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
+                    $the_new_content .= "var g_table_format_header_text = '".$this->process_text ( self::$local_table_header_format_label )."';".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
+                    $the_new_content .= "var g_table_header_tab_format = '".$this->process_text ( self::$local_table_header_tab_title_format )."';".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
+                    $the_new_content .= "var g_table_header_tab_loading_format = '".$this->process_text ( self::$local_table_tab_loading_tile_format )."';".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
                     $the_new_content .= 'var g_table_ampm_array = new Array ( '.self::$local_table_ante_meridian.' );'.(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
                     $the_new_content .= "</script>";
                     }
                 
                 $my_table_next_id++;    // We increment the ID, so we can have multiple tables on the same page. This also makes the IDs very predictable for fun CSS tricks.
                 
-                $the_new_content .= '<div class="bmlt_table_display_div bmlt_table_display_div_theme_'.htmlspecialchars ( $options['theme'] ).'" id="bmlt_table_display_div_'.strval ( $my_table_next_id ).'"></div>'.(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
+                $the_new_content .= '<div style="display_none" class="bmlt_table_display_div bmlt_table_display_div_theme_'.htmlspecialchars ( $options['theme'] ).'" id="bmlt_table_display_div_'.strval ( $my_table_next_id ).'"></div>'.(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
                 $theWeekday = strval ( intval ( $options['startWeekday'] - 1 ) );
                 $the_new_content .= "<script type=\"text/javascript\">TableSearchDisplay ( 'bmlt_table_display_div_".strval ( $my_table_next_id )."', '$options_id', '".htmlspecialchars ( $this->get_ajax_base_uri() )."', '$theWeekday', ".($options['military_time'] ? 'true' : 'false' ).", '$params' );</script>".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
                 

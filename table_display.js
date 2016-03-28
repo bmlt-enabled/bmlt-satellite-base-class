@@ -52,12 +52,15 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
 	var my_body_container_header;   ///< The table thead element that will contain the search results.
 	var my_body_container_body;     ///< The table tbody element that will contain the search results.
 	var my_weekday_links;       ///< An array of li elements, containing the weekday tabs
+	var my_selected_tab;        ///< This will be the selected tab object.
 	
 	var my_format_data;         ///< This is the JSON object that contains the format data for the search.
 	
-	var my_sort_key_time = 'start_time,location_nation,location_province,location_sub_province,location_municipality,location_neighborhood,meeting_name';
-	var my_sort_key_meeting_name = 'meeting_name,start_time,location_nation,location_province,location_sub_province,location_municipality,location_neighborhood';
-	var my_sort_key_address = 'location_nation,location_province,location_sub_province,location_municipality,location_neighborhood,start_time,meeting_name';
+	var my_sort_key_time;
+	var my_sort_key_meeting_name;
+	var my_sort_key_address;
+	var my_selected_sort_key;
+	var my_sort_dir;
 	
     /****************************************************************************************
     *								  INTERNAL CLASS FUNCTIONS							    *
@@ -166,7 +169,7 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
 	this.utility_loadWeekdayData = function (   in_tab_object       ///< The tab object.
 	                                        )
 	{
-	    var uri = encodeURI ( this.my_search_query_params + '&sort_keys=' + in_tab_object.sort_key  + ((in_tab_object.sort_dir == 'desc') ? ',desc' : '') +'&bmlt_settings_id=' + this.my_settings_id + '&weekdays[]=' + (parseInt (in_tab_object.index) + 1).toString() ).toString();
+	    var uri = encodeURI ( this.my_search_query_params + '&sort_keys=' + this.my_selected_sort_key  + ((this.my_sort_dir == 'desc') ? ',desc' : '') +'&bmlt_settings_id=' + this.my_settings_id + '&weekdays[]=' + (parseInt (in_tab_object.index) + 1).toString() ).toString();
 	    uri =  this.my_ajax_base_uri + '?redirect_ajax_json=' + uri;
         this.m_ajax_request = this.utility_AjaxRequest ( uri, this.callback_loadWeekdayData, 'get', in_tab_object );
 	};
@@ -485,8 +488,6 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
         // Add the text for it.
         weekdayElement.handler = this;
         weekdayElement.index = in_weekday_index;
-        weekdayElement.sort_key = this.my_sort_key_time;
-        weekdayElement.sort_dir = 'asc';
         weekdayElement.className = 'bmlt_table_header_weekday_list_element';
         
         var d = new Date();
@@ -572,6 +573,9 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
                         };
                     
                     this.className = 'bmlt_table_header_weekday_list_element is_selected';
+                    this.handler.my_selected_tab = this;
+                    this.sort_key = this.handler.my_selected_sort_key;
+                    this.sort_dir = this.handler.my_sort_dir;
                     if ( d.getDay() == this.index )
                         {
                         this.className += ' is_today';
@@ -633,16 +637,16 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
         this.my_body_container_header.className = 'bmlt_table_header_thead';
         var headerRow = document.createElement ( 'tr' );        // Create the row tr element.
         headerRow.className = 'bmlt_table_header_tr';
-        var thElement = this.domBuilder_PopulateWeekdayHeaderColumn ( g_table_time_header_text, this.my_sort_key_time, (in_sort_key == this.my_sort_key_time) ? in_sort_dir : 'asc', in_sort_key == this.my_sort_key_time );
+        var thElement = this.domBuilder_PopulateWeekdayHeaderColumn ( g_table_time_header_text, this.my_sort_key_time, ((in_sort_key == this.my_sort_key_time) ? in_sort_dir : 'asc'), in_sort_key == this.my_sort_key_time );
         thElement.className = 'bmlt_table_header_th bmlt_table_header_th_time';
         headerRow.appendChild ( thElement );
-        thElement = this.domBuilder_PopulateWeekdayHeaderColumn ( g_table_name_header_text, this.my_sort_key_meeting_name, (in_sort_key == this.my_sort_key_meeting_name) ? in_sort_dir : 'asc', in_sort_key == this.my_sort_key_meeting_name );
+        thElement = this.domBuilder_PopulateWeekdayHeaderColumn ( g_table_name_header_text, this.my_sort_key_meeting_name, ((in_sort_key == this.my_sort_key_meeting_name) ? in_sort_dir : 'asc'), in_sort_key == this.my_sort_key_meeting_name );
         thElement.className = 'bmlt_table_header_th bmlt_table_header_th_name';
         headerRow.appendChild ( thElement );
-        thElement = this.domBuilder_PopulateWeekdayHeaderColumn ( g_table_address_header_text, this.my_sort_key_address, (in_sort_key == this.my_sort_key_address) ? in_sort_dir : 'asc', in_sort_key == this.my_sort_key_address );
+        thElement = this.domBuilder_PopulateWeekdayHeaderColumn ( g_table_address_header_text, this.my_sort_key_address, ((in_sort_key == this.my_sort_key_address) ? in_sort_dir : 'asc'), in_sort_key == this.my_sort_key_address );
         thElement.className = 'bmlt_table_header_th bmlt_table_header_th_address';
         headerRow.appendChild ( thElement );
-        thElement = this.domBuilder_PopulateWeekdayHeaderColumn ( g_table_format_header_text, this.my_sort_key_address, (in_sort_key == this.my_sort_key_address) ? in_sort_dir : 'asc', in_sort_key == this.my_sort_key_address );
+        thElement = this.domBuilder_PopulateWeekdayHeaderColumn ( g_table_format_header_text, this.my_sort_key_address, null, false );
         thElement.className = 'bmlt_table_header_th bmlt_table_header_th_format';
         headerRow.appendChild ( thElement );
         this.my_body_container_header.appendChild ( headerRow );
@@ -656,16 +660,48 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
     this.domBuilder_PopulateWeekdayHeaderColumn = function (    in_name,        ///< The text name for the column.
 	                                                            in_sort_key,    ///< The sort key, for the data sort.
 	                                                            in_sort_dir,    ///< The sort direction, for the data sort. It will be 'asc' or 'desc'.
-	                                                            in_isSelected   ///< A boolean value. True, if this is the sort key.
+	                                                            in_is_selected   ///< A boolean value. True, if this is the sort key.
                                                             )
     {
         var thElement =  document.createElement ( 'th' );       // Create the column element
         thElement.key = in_sort_key;                            // This will be the sort key for this column.
-        thElement.dir = in_isSelected ? in_sort_dir : 'asc';    // If we are specifying a sort direction for this column, we use that.
+        thElement.dir = in_is_selected ? in_sort_dir : 'asc';    // If we are specifying a sort direction for this column, we use that.
         var textNode = document.createElement ( 'span' );
         textNode.appendChild ( document.createTextNode ( in_name ) );
-        thElement.appendChild ( textNode );
+        textNode.is_selected = false;
+        textNode.sort_dir = in_sort_dir;
+        textNode.sort_key = in_sort_key;
+        textNode.handler = this;
+        if ( in_sort_key && in_is_selected )
+            {
+            var imgNode = document.createElement ( 'img' );
+            imgNode.className = 'bmlt_table_thead_th_img bmlt_table_thead_th_img_' + ((in_sort_dir == 'asc') ? 'asc' : 'desc');
+            imgNode.src = ((in_sort_dir == 'asc') ? g_table_sort_asc_img_src : g_table_sort_desc_img_src);
+            textNode.appendChild ( imgNode );
+            textNode.is_selected = true;
+            };
         
+        if ( in_sort_key )
+            {
+            textNode.onclick = function()
+                {
+                    if ( this.handler.my_selected_sort_key == this.sort_key )
+                        {
+                        this.sort_dir = ((this.sort_dir == 'asc') ? 'desc' : 'asc');
+                        };
+                
+                    this.handler.my_selected_sort_key = this.sort_key;
+                    this.handler.my_sort_dir = this.sort_dir;
+                    this.handler.my_selected_tab.reload();
+                };
+            }
+        else
+            {
+            textNode.className = 'bmlt_header_formats_span';
+            };
+        
+        thElement.appendChild ( textNode );
+
         return thElement;
     };
     
@@ -873,6 +909,14 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
     this.my_start_weekday = in_start_weekday;
     this.my_search_query_params = in_search_params;
     this.my_military_time = in_is_military_time;
+	
+	this.my_sort_key_time = 'start_time,location_nation,location_province,location_sub_province,location_municipality,location_neighborhood,meeting_name';
+	this.my_sort_key_meeting_name = 'meeting_name,start_time,location_nation,location_province,location_sub_province,location_municipality,location_neighborhood';
+	this.my_sort_key_address = 'location_nation,location_province,location_sub_province,location_municipality,location_neighborhood,start_time,meeting_name';
 
+    this.my_selected_sort_key = this.my_sort_key_time;
+    this.my_sort_dir = 'asc';
+    
+    this.my_container_object.style.display = 'block';
     this.domBuilder_CreateHeader();
 };

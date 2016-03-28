@@ -933,9 +933,26 @@ div.bmlt_table_display_div_theme_default table.bmlt_table th span
 {
     margin:-1px;
     display: block;
+    line-height:2em;
+    height:2em;
+    width:100%;
     background-color: #555;
     color: #fff;
     vertical-align:middle;
+    cursor:pointer;
+}
+
+div.bmlt_table_display_div_theme_default table.bmlt_table th.bmlt_table_header_th_format span
+{
+    cursor:default;
+}
+
+div.bmlt_table_display_div_theme_default table.bmlt_table th span img
+{
+    margin:auto;
+    margin-left: 0.25em;
+    vertical-align:middle;
+    height: 1em;
 }
 
 div.bmlt_table_display_div_theme_default table.bmlt_table td span
