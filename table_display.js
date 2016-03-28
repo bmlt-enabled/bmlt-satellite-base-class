@@ -149,13 +149,14 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
     };
     
     /************************************************************************************//**
-    *	\brief Called to load a weekday.
+    *	\brief  Called to load a weekday.
+    *           This is called when the tab doesn't yet have a cache.
     ****************************************************************************************/
 	this.utility_loadWeekdayData = function ( in_weekday_index  ///< An integer, with the weekday to be loaded (0 is Sunday, 6 is Saturday).
 	                                        )
 	{
-	    var uri = this.my_ajax_base_uri + '?' + my_search_query_params + '&weekdays[]=' + in_weekday_index.toString();
-	    
+	    var uri = encodeURI ( this.my_search_query_params + '&bmlt_settings_id=' + this.my_settings_id + '&weekdays[]=' + in_weekday_index.toString() ).toString();
+	    uri =  this.my_ajax_base_uri + '?redirect_ajax_json=' + uri;
         this.m_ajax_request = this.utility_AjaxRequest ( uri, this.callback_loadWeekdayData, 'get', parseInt (in_weekday_index) + 1 );
 	};
 	
@@ -163,17 +164,20 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
     *##################################### AJAX CALLBACKS ##################################*
     ****************************************************************************************/
     /************************************************************************************//**
-    *	\brief Called when the weekday data is loaded.
+    *	\brief  Called when the weekday data is loaded.
+    *           This loads the tab object with a cache of the retrieved JSON data, and has
+    *           the tab object select itself.
     ****************************************************************************************/
 	this.callback_loadWeekdayData = function (  in_response_object, ///< The HTTPRequest response object.
                                                 in_weekday_index    ///< The weekday index, plus one (because JS likes to undefine zeroes).
                                              )
     {
-        in_weekday_index--;
+        in_weekday_index--; // Undo the +1
+        eval ( "var json_response = " + in_response_object.responseText + ";" );    // Extract the JSON object with the returned data.
         var tabElementID = 'bmlt_table_header_weekday_list_element' + in_weekday_index.toString();
         var tabObject = document.getElementById ( tabElementID );
-        tabObject.className = 'is_selected';
-    
+        tabObject.json_data = json_response;
+        tabObject.select();
     };
     
     /****************************************************************************************
@@ -205,9 +209,11 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
         
         this.my_weekday_links = new Array();
         this.my_header_container = document.createElement ( 'ul' );   // Create the header container.
+        this.my_header_container.handler = this;
         this.my_header_container.className = 'bmlt_table_header_weekday_list';
         var startingIndex = this.my_start_weekday;
         
+        // Build the list of weekday tab objects.
         for ( var i = 0; i < 7; i++ )
             {
             this.my_weekday_links[i] = this.domBuilder_CreateOneWeekday ( startingIndex++ );
@@ -219,7 +225,26 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
             this.my_header_container.appendChild ( this.my_weekday_links[i] );
             };
         
+        // This inline function tells the header to select the indexed (0-based) tab.
+        this.my_header_container.selectTab = function ( in_weekday  ///< The day of the week (0 is Sunday, 6 is Saturday)
+                                                        )
+            {
+            for ( var i = 0; i < 7; i++ )
+                {
+                if ( this.handler && this.handler.my_weekday_links && this.handler.my_weekday_links[i] )
+                    {
+                    // If the indexed object is not ours, then we deselect it.
+                    if ( this.handler.my_weekday_links[i].index == in_weekday )
+                        {
+                        this.handler.my_weekday_links[i].select();
+                        };
+                    };
+                };
+            };
+        
         this.my_container_object.appendChild ( this.my_header_container );
+        var d = new Date();
+        this.my_header_container.selectTab ( d.getDay() );
     };
     
     /************************************************************************************//**
@@ -234,7 +259,7 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
         weekdayElement.index = in_weekday_index;
         weekdayElement.id = 'bmlt_table_header_weekday_list_element' + in_weekday_index.toString();
         weekdayElement.className = 'bmlt_table_header_weekday_list_element';
-        weekdayElement.onclick = function () {this.handler.responder_weekdaySelected(this)};
+        weekdayElement.onclick = function () {this.select()};
 
         var textNode = document.createElement ( 'span' );
         textNode.appendChild ( document.createTextNode ( g_table_weekday_long_array[in_weekday_index] ) );
@@ -246,21 +271,38 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
         throbberImage.className = 'bmlt_table_throbber_image';
         weekdayElement.appendChild ( throbberImage );
         
+        // This inline function will read the data from the server if it is not already cached.
+        // If the tab has cached data, then it deselects all the other tabs, selects itself, and populates the main area with the data in its cache.
+        weekdayElement.select = function()
+            {
+            if ( !this.json_data )
+                {
+                this.className = 'bmlt_table_header_weekday_list_element is_loading';
+                this.handler.utility_loadWeekdayData ( this.index );
+                }
+            else
+                {
+                for ( var i = 0; i < 7; i++ )
+                    {
+                    if ( this.handler && this.handler.my_weekday_links && this.handler.my_weekday_links[i] )
+                        {
+                        // If the indexed object is not ours, then we deselect it.
+                        if ( this.handler.my_weekday_links[i].index != this.index )
+                            {
+                            this.handler.my_weekday_links[i].className = 'bmlt_table_header_weekday_list_element';
+                            };
+                        };
+                    };
+                this.className = 'bmlt_table_header_weekday_list_element is_selected';
+                };
+            };
+        
         return weekdayElement;
     };
     
     /****************************************************************************************
     *##################################### UI RESPONDERS ###################################*
     ****************************************************************************************/
-    /************************************************************************************//**
-    *	\brief 
-    ****************************************************************************************/
-    this.responder_weekdaySelected = function ( in_weekday_object
-                                                )
-    {
-        in_weekday_object.className = 'is_loading';
-        this.utility_loadWeekdayData ( in_weekday_object.index );
-    };
     
     /****************************************************************************************
     *################################### MAIN FUNCTION CODE ################################*

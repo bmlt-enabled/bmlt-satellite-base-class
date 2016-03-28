@@ -1917,6 +1917,7 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                 $params = preg_replace ( '|(\&){0,1}weekdays(\[\]){0,1}=[0-9]{0,1}|', '', $params );
                 // We ignore the block_mode selector as well. We'll be doing our own thing. It will be table-based.
                 $params = preg_replace ( '|(\&){0,1}block_mode=[a-zA-Z0-9]{0,5}|', '', $params );
+                $params = preg_replace ( '|^\?|', '', $params );
                 
                 $the_new_content = '';
                 $options = $this->getBMLTOptions_by_id ( $options_id );
