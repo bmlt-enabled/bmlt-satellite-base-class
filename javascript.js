@@ -203,7 +203,7 @@ Changelog:
 function str_repeat(i, m) {
     for (var o = []; m > 0; o[--m] = i);
     return o.join('');
-}
+};
 
 function sprintf() {
     var i = 0, a, f = arguments[i++], o = [], m, p, c, x, s = '';
@@ -217,10 +217,10 @@ function sprintf() {
         else if (m = /^\x25(?:(\d+)\$)?(\+)?(0|'[^$])?(-)?(\d+)?(?:\.(\d+))?([b-fosuxX])/.exec(f)) {
             if (((a = arguments[m[1] || i++]) == null) || (a == undefined)) {
                 throw('Too few arguments.');
-            }
+            };
             if (/[^s]/.test(m[7]) && (typeof(a) != 'number')) {
                 throw('Expecting number but found ' + typeof(a));
-            }
+            };
             switch (m[7]) {
                 case 'b': a = a.toString(2); break;
                 case 'c': a = String.fromCharCode(a); break;
@@ -232,7 +232,7 @@ function sprintf() {
                 case 'u': a = Math.abs(a); break;
                 case 'x': a = a.toString(16); break;
                 case 'X': a = a.toString(16).toUpperCase(); break;
-            }
+            };
             a = (/[def]/.test(m[7]) && m[2] && a >= 0 ? '+'+ a : a);
             c = m[3] ? m[3] == '0' ? '0' : m[3].charAt(1) : ' ';
             x = m[5] - String(a).length - s.length;
@@ -241,8 +241,8 @@ function sprintf() {
         }
         else {
             throw('Huh ?!');
-        }
+        };
         f = f.substring(m[0].length);
-    }
+    };
     return o.join('');
-}
+};

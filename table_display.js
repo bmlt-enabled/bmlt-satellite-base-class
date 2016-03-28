@@ -32,6 +32,7 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
                                 in_settings_id,     ///< The ID of the settings used for this table.
                                 in_ajax_base_uri,   ///< The base URI for AJAX callbacks.
                                 in_start_weekday,   ///< The weekday that starts the week. 0 is Sunday, 6 is Saturday.
+                                in_is_military_time,    ///< True, if the time is to be displayed as military.
                                 in_search_params    ///< The query parameters for the base search.
                             )
 {
@@ -43,11 +44,20 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
 	var my_ajax_base_uri;       ///< This is the base URI for our AJAX calls.
 	var my_search_query_params; ///< These are the search parameters that we use to populate the search.
 	var my_start_weekday;       ///< The day of week that starts the header (0 is Sunday, 6 is Saturday).
+	var my_military_time;       ///< True, if the start time is military.
 	
 	var my_container_object;    ///< This is the div block that surrounds this table.
 	var my_header_container;    ///< The div element that will contain the weekday tabs.
 	var my_body_container;      ///< The table element that will contain the search results.
-	var my_weekday_links;       ///< An array of anchor elements, containing the weekday tabs
+	var my_body_container_header;   ///< The table thead element that will contain the search results.
+	var my_body_container_body;     ///< The table tbody element that will contain the search results.
+	var my_weekday_links;       ///< An array of li elements, containing the weekday tabs
+	
+	var my_format_data;         ///< This is the JSON object that contains the format data for the search.
+	
+	var my_sort_key_time = 'start_time,location_nation,location_province,location_sub_province,location_municipality,location_neighborhood,meeting_name';
+	var my_sort_key_meeting_name = 'meeting_name,start_time,location_nation,location_province,location_sub_province,location_municipality,location_neighborhood';
+	var my_sort_key_address = 'location_nation,location_province,location_sub_province,location_municipality,location_neighborhood,start_time,meeting_name';
 	
     /****************************************************************************************
     *								  INTERNAL CLASS FUNCTIONS							    *
@@ -153,14 +163,213 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
     *	\brief  Called to load a weekday.
     *           This is called when the tab doesn't yet have a cache.
     ****************************************************************************************/
-	this.utility_loadWeekdayData = function (   in_weekday_index,   ///< An integer, with the weekday to be loaded (0 is Sunday, 6 is Saturday).
-	                                            in_sort_key,        ///< The sort key, for the data sort.
-	                                            in_sort_dir         ///< The sort direction, for the data sort. It will be 'asc' or 'desc'.
+	this.utility_loadWeekdayData = function (   in_tab_object       ///< The tab object.
 	                                        )
 	{
-	    var uri = encodeURI ( this.my_search_query_params + '&sort_key=' + in_sort_key + '&sort_dir=' + in_sort_dir +'&bmlt_settings_id=' + this.my_settings_id + '&weekdays[]=' + in_weekday_index.toString() ).toString();
+	    var uri = encodeURI ( this.my_search_query_params + '&sort_keys=' + in_tab_object.sort_key  + ((in_tab_object.sort_dir == 'desc') ? ',desc' : '') +'&bmlt_settings_id=' + this.my_settings_id + '&weekdays[]=' + (parseInt (in_tab_object.index) + 1).toString() ).toString();
 	    uri =  this.my_ajax_base_uri + '?redirect_ajax_json=' + uri;
-        this.m_ajax_request = this.utility_AjaxRequest ( uri, this.callback_loadWeekdayData, 'get', parseInt (in_weekday_index) + 1 );
+        this.m_ajax_request = this.utility_AjaxRequest ( uri, this.callback_loadWeekdayData, 'get', in_tab_object );
+	};
+    
+    /************************************************************************************//**
+    *	\brief  Called to load all the format objects for the search.
+    ****************************************************************************************/
+	this.utility_loadFormatData = function()
+	{
+	    for ( var i = 0; i < 7; i++ )
+	        {
+	        var tab_object = this.my_weekday_links[i];
+	        tab_object.className = 'bmlt_table_header_weekday_list_element is_loading';
+	        };
+	    
+	    var uri = encodeURI ( this.my_search_query_params + '&bmlt_settings_id=' + this.my_settings_id + '&get_formats_only=1' ).toString();
+	    uri =  this.my_ajax_base_uri + '?redirect_ajax_json=' + uri;
+        this.m_ajax_request = this.utility_AjaxRequest ( uri, this.callback_loadFormatData, 'get' );
+	};
+	
+    /************************************************************************************//**
+    *	\brief  This turns military time to ante meridian format.
+    ****************************************************************************************/
+	this.utility_convertTime = function ( in_time_string  ///< A string with the time in military format.
+	                                        )
+	{
+	    var ret = in_time_string;
+	    var time_array = in_time_string.split ( ":" );
+	    
+	    if ( !this.my_military_time )
+	        {
+	        var ampm = g_table_ampm_array[0];
+	        
+	        var hours = parseInt ( time_array[0] );
+	        var minutes = parseInt ( time_array[1] ).toString();
+	        
+	        if ( parseInt ( time_array[1] ) < 10 )
+	            {
+	            minutes = "0" + minutes;
+	            };
+	        
+	        if ( hours > 12 )
+	            {
+	            hours -= 12;
+	            ampm = g_table_ampm_array[1];
+	            }
+	        else if ( hours == 12 )
+	            {
+	            if ( (parseInt ( time_array[0] ) == 12) && (parseInt ( time_array[1] ) == 0) )
+	                {
+	                hours = g_table_ampm_array[2];
+	                minutes = "";
+	                ampm = "";
+	                }
+	            else
+	                {
+	                ampm = g_table_ampm_array[1];
+	                };
+	            }
+	        else if ( (parseInt ( time_array[0] ) == 23) && (parseInt ( time_array[1] ) >= 55) )
+	            {
+                hours = g_table_ampm_array[3];
+                minutes = "";
+                ampm = "";
+	            };
+	        
+	        ret = hours.toString() + ((minutes != "") ? (':' + minutes + ' ' + ampm) : "");
+	        }
+	    else if ( (parseInt ( time_array[0] ) == 12) && (parseInt ( time_array[1] ) == 0) )
+            {
+            ret = g_table_ampm_array[2];
+            }
+	    else if ( (parseInt ( time_array[0] ) == 23) && (parseInt ( time_array[1] ) >= 55) )
+            {
+            ret = g_table_ampm_array[3];
+            };
+        
+        return ret;
+	};
+	
+    /************************************************************************************//**
+    *	\brief  This builds a readable aggregated address from the components in the JSON.
+    ****************************************************************************************/
+	this.utility_createAddress = function ( in_json_data    ///< The JSON data for one meeting.
+	                                        )
+	{
+	    var ret = '';
+
+	    if ( in_json_data.location_text && in_json_data.location_text.toString() )
+	        {
+	        ret = in_json_data.location_text.toString();
+	        };
+	    
+	    if ( in_json_data.location_street && in_json_data.location_street.toString() )
+	        {
+	        if ( ret != '' )
+	            {
+	            ret += ', ';
+	            };
+	        
+	        ret += in_json_data.location_street.toString();
+	        };
+	    
+	    if ( in_json_data.location_city_subsection && in_json_data.location_city_subsection.toString() )
+	        {
+	        if ( ret != '' )
+	            {
+	            ret += ', ';
+	            };
+	        
+	        ret += in_json_data.location_city_subsection.toString();
+	        }
+	    else
+	        {
+            if ( in_json_data.location_municipality && in_json_data.location_municipality.toString() )
+                {
+                if ( ret != '' )
+                    {
+                    ret += ', ';
+                    };
+            
+                ret += in_json_data.location_municipality.toString();
+                };
+            };
+        
+	    if ( in_json_data.location_province && in_json_data.location_province.toString() )
+	        {
+	        if ( ret != '' )
+	            {
+	            ret += ', ';
+	            };
+	        
+	        ret += in_json_data.location_province.toString();
+	        };
+        
+	    if ( in_json_data.location_postal_code_1 && in_json_data.location_postal_code_1.toString() )
+	        {
+	        if ( ret != '' )
+	            {
+	            ret += ' ';
+	            };
+	        
+	        ret += in_json_data.location_postal_code_1.toString();
+	        };
+	        
+	    return ret;
+	};
+	
+    /************************************************************************************//**
+    *	\brief  This builds a div element for the given formats.
+    ****************************************************************************************/
+	this.utility_createFormats = function ( in_formats_string    ///< The JSON data for one meeting.
+	                                        )
+	{
+	    var ret = document.createElement ( 'div' );
+	    ret.className = 'bmlt_formats_div';
+	    var formatsArray = in_formats_string.split ( ',' );
+	    
+	    for ( var i = 0; i < formatsArray.length; i++ )
+	        {
+	        var format_string = formatsArray[i].toString();
+	        var span = this.utility_createOneFormatSpan ( format_string );
+	        if ( span )
+	            {
+	            ret.appendChild ( span );
+	            };
+	        };
+	    
+	    if ( ret.childNodes.length == 0 )
+	        {
+	        ret = null;
+	        };
+	    
+	    return ret;
+	};
+	
+    /************************************************************************************//**
+    *	\brief  This builds a span element for the given formats.
+    ****************************************************************************************/
+	this.utility_createOneFormatSpan = function ( in_format_string    ///< The JSON data for one format.
+	                                        )
+	{
+	    if ( in_format_string )
+	        {
+            var ret = document.createElement ( 'span' );
+            ret.className = 'bmlt_format_span bmlt_format_span_' + in_format_string;
+            ret.appendChild ( document.createTextNode ( in_format_string ) );
+            for ( var i = 0; i < this.my_format_data.length; i++ )
+                {
+                var format_object = this.my_format_data[i];
+                
+                if ( format_object.key_string == in_format_string )
+                    {
+                    var title_string = format_object.name_string;
+                    ret.setAttribute ( 'title', title_string );
+                    var description_string = format_object.description_string;
+                    ret.onclick = function() { alert ( description_string ); };
+                    };
+                };
+            return ret;
+            };
+        
+        return null;
 	};
 	
     /****************************************************************************************
@@ -172,15 +381,32 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
     *           the tab object select itself.
     ****************************************************************************************/
 	this.callback_loadWeekdayData = function (  in_response_object, ///< The HTTPRequest response object.
-                                                in_weekday_index    ///< The weekday index, plus one (because JS likes to undefine zeroes).
+                                                in_tab_object       ///< The weekday index, plus one (because JS likes to undefine zeroes).
                                              )
     {
-        in_weekday_index--; // Undo the +1
         eval ( "var json_response = " + in_response_object.responseText + ";" );    // Extract the JSON object with the returned data.
-        var tabElementID = 'bmlt_table_header_weekday_list_element' + in_weekday_index.toString();
-        var tabObject = document.getElementById ( tabElementID );
-        tabObject.json_data = json_response;
-        tabObject.select();
+        in_tab_object.json_data = json_response;
+        in_tab_object.select();
+    };
+    
+    /************************************************************************************//**
+    *	\brief  Called when the weekday data is loaded.
+    *           This loads the tab object with a cache of the retrieved JSON data, and has
+    *           the tab object select itself.
+    ****************************************************************************************/
+	this.callback_loadFormatData = function (   in_response_object ///< The HTTPRequest response object.
+                                             )
+    {
+	    for ( var i = 0; i < 7; i++ )
+	        {
+	        var tab_object = this.my_weekday_links[i];
+	        tab_object.className = 'bmlt_table_header_weekday_list_element';
+	        };
+	    
+        eval ( "this.my_format_data = " + in_response_object.responseText + ";" );    // Extract the JSON object with the returned data.
+        this.my_format_data = this.my_format_data.formats;
+        var d = new Date();
+        this.my_header_container.selectTab ( d.getDay() );
     };
     
     /****************************************************************************************
@@ -246,8 +472,7 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
             };
         
         this.my_container_object.appendChild ( this.my_header_container );
-        var d = new Date();
-        this.my_header_container.selectTab ( d.getDay() );
+        this.utility_loadFormatData();
     };
     
     /************************************************************************************//**
@@ -260,9 +485,8 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
         // Add the text for it.
         weekdayElement.handler = this;
         weekdayElement.index = in_weekday_index;
-        weekdayElement.sort_key = 'time';
+        weekdayElement.sort_key = this.my_sort_key_time;
         weekdayElement.sort_dir = 'asc';
-        weekdayElement.id = 'bmlt_table_header_weekday_list_element' + in_weekday_index.toString();
         weekdayElement.className = 'bmlt_table_header_weekday_list_element';
         
         var d = new Date();
@@ -283,40 +507,77 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
         throbberImage.className = 'bmlt_table_throbber_image';
         weekdayElement.appendChild ( throbberImage );
         
+        // This inline function will force a reload of the search for the given weekday.
+        weekdayElement.reload = function()
+            {
+                if ( this.className != 'bmlt_table_header_weekday_list_element is_loading' )
+                    {
+                    if ( this.handler.my_body_container )   // Clear any preexisting condition.
+                        {
+                        this.handler.my_body_container.parentNode.removeChild ( this.handler.my_body_container );
+                        this.handler.my_body_container.innerHTML = '';
+                        this.handler.my_body_container = null;
+                        };
+                
+                    this.json_data = null;
+                    this.className = 'bmlt_table_header_weekday_list_element is_loading';
+                    
+                    // Set a title, saying what is happening.
+                    this.setAttribute ( 'title', this.handler.sprintf ( g_table_header_tab_loading_format, g_table_weekday_long_name_array[this.index] ) );
+                    
+                    this.handler.utility_loadWeekdayData ( this );
+                    };
+            };
+        
         // This inline function will read the data from the server if it is not already cached.
         // If the tab has cached data, then it deselects all the other tabs, selects itself, and populates the main area with the data in its cache.
         weekdayElement.select = function()
             {
-            if ( !this.json_data )
+            // We don't do anything if it is already selected, or is loading.
+            if ( this.className != 'bmlt_table_header_weekday_list_element is_selected' )
                 {
-                this.className = 'bmlt_table_header_weekday_list_element is_loading';
-                this.handler.utility_loadWeekdayData ( this.index, this.sort_key, this.sort_dir );
-                }
-            else
-                {
-                var d = new Date();
-                for ( var i = 0; i < 7; i++ )
+                if ( !this.json_data )
                     {
-                    if ( this.handler && this.handler.my_weekday_links && this.handler.my_weekday_links[i] )
+                    this.reload();
+                    }
+                else
+                    {
+                    if ( this.handler.my_body_container )   // Clear any preexisting condition.
                         {
-                        // If the indexed object is not ours, then we deselect it.
-                        if ( this.handler.my_weekday_links[i].index != this.index )
-                            {
-                            this.handler.my_weekday_links[i].className = 'bmlt_table_header_weekday_list_element';
+                        this.handler.my_body_container.parentNode.removeChild ( this.handler.my_body_container );
+                        this.handler.my_body_container.innerHTML = '';
+                        this.handler.my_body_container = null;
+                        };
         
-                            if ( d.getDay() == this.handler.my_weekday_links[i].index )
+                    var d = new Date();
+                    for ( var i = 0; i < 7; i++ )
+                        {
+                        if ( this.handler && this.handler.my_weekday_links && this.handler.my_weekday_links[i] )
+                            {
+                            var tabObject = this.handler.my_weekday_links[i];
+                            // If the indexed object is not ours, then we deselect it.
+                            if ( tabObject.index != this.index )
                                 {
-                                this.handler.my_weekday_links[i].className += ' is_today';
+                                // This is not selected or loading.
+                                tabObject.className = 'bmlt_table_header_weekday_list_element';
+                                // Set a title, saying what will happen when this is clicked.
+                                tabObject.setAttribute ( 'title', this.handler.sprintf ( g_table_header_tab_format, g_table_weekday_long_name_array[tabObject.index] ) );
+        
+                                if ( d.getDay() == tabObject.index )
+                                    {
+                                    tabObject.className += ' is_today';
+                                    };
                                 };
                             };
                         };
+                    
+                    this.className = 'bmlt_table_header_weekday_list_element is_selected';
+                    if ( d.getDay() == this.index )
+                        {
+                        this.className += ' is_today';
+                        };
+                    this.handler.domBuilder_PopulateWeekday ( this.json_data, this.index, this.sort_key, this.sort_dir );
                     };
-                this.className = 'bmlt_table_header_weekday_list_element is_selected';
-                if ( d.getDay() == this.index )
-                    {
-                    this.className += ' is_today';
-                    };
-                this.handler.domBuilder_PopulateWeekday ( this.json_data, this.index, this.sort_key, this.sort_dir );
                 };
             };
         
@@ -334,24 +595,271 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
     {
         if ( this.my_body_container )   // Clear any preexisting condition.
             {
+            this.my_body_container_header.parentNode.removeChild ( this.my_body_container_header );
+            this.my_body_container_header.innerHTML = '';
+            this.my_body_container_header = null;
+            this.my_body_container_body.parentNode.removeChild ( this.my_body_container_body );
+            this.my_body_container_body.innerHTML = '';
+            this.my_body_container_body = null;
+            this.my_body_container.parentNode.removeChild ( this.my_body_container );
             this.my_body_container.innerHTML = '';
+            this.my_body_container = null;
             };
         
         this.my_body_container = document.createElement ( 'table' );        // Create the main table element.
+        this.my_body_container.cellPadding = 0;
+        this.my_body_container.cellSpacing = 0;
         this.my_body_container.className = 'bmlt_table';
-        this.my_body_container.id = 'bmlt_table_' + in_index;
         var d = new Date();
         if ( d.getDay() == in_index )
             {
             this.my_body_container.className += ' is_today';
             };
         
+        this.my_body_container.appendChild ( this.domBuilder_PopulateWeekdayHeader ( in_index, in_sort_key, in_sort_dir ) );
+        this.my_body_container.appendChild ( this.domBuilder_PopulateWeekdayBody ( in_search_results_json ) );
         this.my_container_object.appendChild ( this.my_body_container );
+    };
+    
+    /************************************************************************************//**
+    *	\brief Populates the header for the meetings table.
+    ****************************************************************************************/
+    this.domBuilder_PopulateWeekdayHeader = function (  in_index,       ///< The 0-based weekday index.
+	                                                    in_sort_key,    ///< The sort key, for the data sort.
+	                                                    in_sort_dir     ///< The sort direction, for the data sort. It will be 'asc' or 'desc'.
+                                                    )
+    {
+        this.my_body_container_header = document.createElement ( 'thead' );        // Create the header element.
+        this.my_body_container_header.className = 'bmlt_table_header_thead';
+        var headerRow = document.createElement ( 'tr' );        // Create the row tr element.
+        headerRow.className = 'bmlt_table_header_tr';
+        var thElement = this.domBuilder_PopulateWeekdayHeaderColumn ( g_table_time_header_text, this.my_sort_key_time, (in_sort_key == this.my_sort_key_time) ? in_sort_dir : 'asc', in_sort_key == this.my_sort_key_time );
+        thElement.className = 'bmlt_table_header_th bmlt_table_header_th_time';
+        headerRow.appendChild ( thElement );
+        thElement = this.domBuilder_PopulateWeekdayHeaderColumn ( g_table_name_header_text, this.my_sort_key_meeting_name, (in_sort_key == this.my_sort_key_meeting_name) ? in_sort_dir : 'asc', in_sort_key == this.my_sort_key_meeting_name );
+        thElement.className = 'bmlt_table_header_th bmlt_table_header_th_name';
+        headerRow.appendChild ( thElement );
+        thElement = this.domBuilder_PopulateWeekdayHeaderColumn ( g_table_address_header_text, this.my_sort_key_address, (in_sort_key == this.my_sort_key_address) ? in_sort_dir : 'asc', in_sort_key == this.my_sort_key_address );
+        thElement.className = 'bmlt_table_header_th bmlt_table_header_th_address';
+        headerRow.appendChild ( thElement );
+        thElement = this.domBuilder_PopulateWeekdayHeaderColumn ( g_table_format_header_text, this.my_sort_key_address, (in_sort_key == this.my_sort_key_address) ? in_sort_dir : 'asc', in_sort_key == this.my_sort_key_address );
+        thElement.className = 'bmlt_table_header_th bmlt_table_header_th_format';
+        headerRow.appendChild ( thElement );
+        this.my_body_container_header.appendChild ( headerRow );
+        
+        return this.my_body_container_header;
+    };
+    
+    /************************************************************************************//**
+    *	\brief Populates the header for the meetings table.
+    ****************************************************************************************/
+    this.domBuilder_PopulateWeekdayHeaderColumn = function (    in_name,        ///< The text name for the column.
+	                                                            in_sort_key,    ///< The sort key, for the data sort.
+	                                                            in_sort_dir,    ///< The sort direction, for the data sort. It will be 'asc' or 'desc'.
+	                                                            in_isSelected   ///< A boolean value. True, if this is the sort key.
+                                                            )
+    {
+        var thElement =  document.createElement ( 'th' );       // Create the column element
+        thElement.key = in_sort_key;                            // This will be the sort key for this column.
+        thElement.dir = in_isSelected ? in_sort_dir : 'asc';    // If we are specifying a sort direction for this column, we use that.
+        var textNode = document.createElement ( 'span' );
+        textNode.appendChild ( document.createTextNode ( in_name ) );
+        thElement.appendChild ( textNode );
+        
+        return thElement;
+    };
+    
+    /************************************************************************************//**
+    *	\brief Populates the main table for the meetings table.
+    ****************************************************************************************/
+    this.domBuilder_PopulateWeekdayBody = function (  in_json_data  ///< The JSON data for the meetings.
+                                                    )
+    {
+        this.my_body_container_body = document.createElement ( 'tbody' );        // Create the header element.
+        this.my_body_container_body.className = 'bmlt_table_tbody';
+        
+        if ( in_json_data.length )
+            {
+            for ( var i = 0; i < in_json_data.length; i++ )
+                {
+                var meeting_json = in_json_data[i];
+                var meeting_object = this.domBuilder_PopulateWeekdayBody_one_meeting ( meeting_json );
+                meeting_object.className += (' bmlt_row' + ((i % 2) ? '_odd' : '_even'));
+                this.my_body_container_body.appendChild ( meeting_object );
+                };
+            }
+        else
+            {
+            };
+        
+        return this.my_body_container_body;
+    };
+    
+    /************************************************************************************//**
+    *	\brief Populates one row 
+    ****************************************************************************************/
+    this.domBuilder_PopulateWeekdayBody_one_meeting = function (  in_json_data  ///< The JSON data for the meetings.
+                                                                )
+    {
+        var rowElement = document.createElement ( 'tr' );
+        rowElement.className = 'bmlt_table_tbody_tr';
+        
+        rowElement.appendChild ( this.domBuilder_PopulateWeekdayBody_one_column ( 'time', this.utility_convertTime ( in_json_data.start_time.toString() ) ) );
+        rowElement.appendChild ( this.domBuilder_PopulateWeekdayBody_one_column ( 'name', in_json_data.meeting_name.toString() ) );
+        rowElement.appendChild ( this.domBuilder_PopulateWeekdayBody_one_column ( 'address', this.utility_createAddress ( in_json_data ) ) );
+        rowElement.appendChild ( this.domBuilder_PopulateWeekdayBody_one_column ( 'formats', in_json_data.formats.toString() ) );
+        
+        return rowElement;
+    };
+    
+    /************************************************************************************//**
+    *	\brief Populates one row 
+    ****************************************************************************************/
+    this.domBuilder_PopulateWeekdayBody_one_column = function ( in_tag,
+                                                                in_string
+                                                                )
+    {
+        var columnElement = document.createElement ( 'td' );
+        columnElement.className = 'bmlt_table_tbody_td bmlt_table_tbody_td_' + in_tag;
+
+        if ( in_tag == 'formats' )
+            {
+            var formats_div = this.utility_createFormats ( in_string );
+            if ( formats_div )
+                {
+                columnElement.appendChild ( formats_div );
+                };
+            }
+        else
+            {
+            var textNode = document.createElement ( 'span' );
+            textNode.className = 'bmlt_table_tbody_td_span_' + in_tag;
+            textNode.appendChild ( document.createTextNode ( in_string ) );
+            columnElement.appendChild ( textNode );
+            };
+            
+        return columnElement;
     };
     
     /****************************************************************************************
     *##################################### UI RESPONDERS ###################################*
     ****************************************************************************************/
+
+    /****************************************************************************************
+    *#################################### THIRD-PARTY CODE #################################*
+    ****************************************************************************************/
+    /**
+    sprintf() for JavaScript 0.6
+
+    Copyright (c) Alexandru Marasteanu <alexaholic [at) gmail (dot] com>
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+        * Redistributions of source code must retain the above copyright
+          notice, this list of conditions and the following disclaimer.
+        * Redistributions in binary form must reproduce the above copyright
+          notice, this list of conditions and the following disclaimer in the
+          documentation and/or other materials provided with the distribution.
+        * Neither the name of sprintf() for JavaScript nor the
+          names of its contributors may be used to endorse or promote products
+          derived from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+    ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+    WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+    DISCLAIMED. IN NO EVENT SHALL Alexandru Marasteanu BE LIABLE FOR ANY
+    DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+    (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+    LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+    ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+    (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+    Changelog:
+    2007.04.03 - 0.1:
+     - initial release
+    2007.09.11 - 0.2:
+     - feature: added argument swapping
+    2007.09.17 - 0.3:
+     - bug fix: no longer throws exception on empty paramenters (Hans Pufal)
+    2007.10.21 - 0.4:
+     - unit test and patch (David Baird)
+    2010.05.09 - 0.5:
+     - bug fix: 0 is now preceeded with a + sign
+     - bug fix: the sign was not at the right position on padded results (Kamal Abdali)
+     - switched from GPL to BSD license
+    2010.05.22 - 0.6:
+     - reverted to 0.4 and fixed the bug regarding the sign of the number 0
+     Note:
+     Thanks to Raphael Pigulla <raph (at] n3rd [dot) org> (http://www.n3rd.org/)
+     who warned me about a bug in 0.5, I discovered that the last update was
+     a regress. I appologize for that.
+    **/
+
+    this.str_repeat = function (i,
+                                m
+                                )
+    {
+        for (var o = []; m > 0; o[--m] = i);
+        return o.join('');
+    };
+
+    this.sprintf = function ()
+    {
+        var i = 0, a, f = arguments[i++], o = [], m, p, c, x, s = '';
+        while (f)
+            {
+            if (m = /^[^\x25]+/.exec(f))
+                {
+                o.push(m[0]);
+                }
+            else if (m = /^\x25{2}/.exec(f))
+                {
+                o.push('%');
+                }
+            else if (m = /^\x25(?:(\d+)\$)?(\+)?(0|'[^$])?(-)?(\d+)?(?:\.(\d+))?([b-fosuxX])/.exec(f))
+                {
+                if (((a = arguments[m[1] || i++]) == null) || (a == undefined))
+                    {
+                    throw('Too few arguments.');
+                    };
+                
+                if (/[^s]/.test(m[7]) && (typeof(a) != 'number'))
+                    {
+                    throw('Expecting number but found ' + typeof(a));
+                    };
+                
+                switch (m[7])
+                    {
+                    case 'b': a = a.toString(2); break;
+                    case 'c': a = String.fromCharCode(a); break;
+                    case 'd': a = parseInt(a,10); break;
+                    case 'e': a = m[6] ? a.toExponential(m[6]) : a.toExponential(); break;
+                    case 'f': a = m[6] ? parseFloat(a).toFixed(m[6]) : parseFloat(a); break;
+                    case 'o': a = a.toString(8); break;
+                    case 's': a = ((a = String(a)) && m[6] ? a.substring(0, m[6]) : a); break;
+                    case 'u': a = Math.abs(a); break;
+                    case 'x': a = a.toString(16); break;
+                    case 'X': a = a.toString(16).toUpperCase(); break;
+                    };
+                
+                a = (/[def]/.test(m[7]) && m[2] && a >= 0 ? '+'+ a : a);
+                c = m[3] ? m[3] == '0' ? '0' : m[3].charAt(1) : ' ';
+                x = m[5] - String(a).length - s.length;
+                p = m[5] ? this.str_repeat(c, x) : '';
+                o.push(s + (m[4] ? a + p : p + a));
+                }
+            else
+                {
+                throw('Huh ?!');
+                };
+            
+            f = f.substring(m[0].length);
+            };
+        return o.join('');
+    };
     
     /****************************************************************************************
     *################################### MAIN FUNCTION CODE ################################*
@@ -364,6 +872,7 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
     this.my_ajax_base_uri = in_ajax_base_uri;
     this.my_start_weekday = in_start_weekday;
     this.my_search_query_params = in_search_params;
+    this.my_military_time = in_is_military_time;
 
     this.domBuilder_CreateHeader();
 };
