@@ -40,28 +40,28 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
 	*									INSTANCE DATA MEMBERS								*
 	****************************************************************************************/
 
-	var my_settings_id;         ///< This is the unique ID of the BMLT settings that we use to reference default values.
-	var my_ajax_base_uri;       ///< This is the base URI for our AJAX calls.
-	var my_search_query_params; ///< These are the search parameters that we use to populate the search.
-	var my_start_weekday;       ///< The day of week that starts the header (0 is Sunday, 6 is Saturday).
-	var my_military_time;       ///< True, if the start time is military.
+	var my_settings_id;             ///< This is the unique ID of the BMLT settings that we use to reference default values.
+	var my_ajax_base_uri;           ///< This is the base URI for our AJAX calls.
+	var my_search_query_params;     ///< These are the search parameters that we use to populate the search.
+	var my_start_weekday;           ///< The day of week that starts the header (0 is Sunday, 6 is Saturday).
+	var my_military_time;           ///< True, if the start time is military.
 	
-	var my_container_object;    ///< This is the div block that surrounds this table.
-	var my_header_container;    ///< The div element that will contain the weekday tabs.
-	var my_body_container;      ///< The table element that will contain the search results.
+	var my_container_object;        ///< This is the div block that surrounds this table.
+	var my_header_container;        ///< The div element that will contain the weekday tabs.
+	var my_body_container;          ///< The table element that will contain the search results.
 	var my_body_container_header;   ///< The table thead element that will contain the search results.
 	var my_body_container_body;     ///< The table tbody element that will contain the search results.
-	var my_weekday_links;       ///< An array of li elements, containing the weekday tabs
-	var my_selected_tab;        ///< This will be the selected tab object.
+	var my_weekday_links;           ///< An array of li elements, containing the weekday tabs
+	var my_selected_tab;            ///< This will be the selected tab object.
 	
-	var my_format_data;         ///< This is the JSON object that contains the format data for the search.
+	var my_format_data;             ///< This is the JSON object that contains the format data for the search.
 	
-	var my_sort_key_time;
-	var my_sort_key_meeting_name;
-	var my_sort_key_town;
-	var my_sort_key_address;
-	var my_selected_sort_key;
-	var my_sort_dir;
+	var my_sort_key_time;           ///< The sort keys for sorting by start time.
+	var my_sort_key_meeting_name;   ///< The sort keys for sorting by meeting name.
+	var my_sort_key_town;           ///< The sort keys for sorting by borough/town.
+	var my_sort_key_address;        ///< The sort keys for sorting by street address/location name.
+	var my_selected_sort_key;       ///< The currently selected sort key.
+	var my_sort_dir;                ///< The currently selected sort direction.
 	
     /****************************************************************************************
     *								  INTERNAL CLASS FUNCTIONS							    *
@@ -487,7 +487,7 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
                 {
                 i--;
                 this.my_weekday_links[i].parentNode.removeChild ( this.my_weekday_links[i] );
-                this.my_weekday_links[i].innerHTML = null
+                this.my_weekday_links[i].innerHTML = null;
                 this.my_weekday_links[i] = null;
                 };
             };
@@ -790,9 +790,6 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
                 meeting_object.className += (' bmlt_row' + ((i % 2) ? '_odd' : '_even'));
                 this.my_body_container_body.appendChild ( meeting_object );
                 };
-            }
-        else
-            {
             };
         
         return this.my_body_container_body;
@@ -958,7 +955,7 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
                     case 'X': a = a.toString(16).toUpperCase(); break;
                     };
                 
-                a = (/[def]/.test(m[7]) && m[2] && a >= 0 ? '+'+ a : a);
+                a = (/[def]/.test(m[7]) && m[2] && a >= 0 ? '+' + a : a);
                 c = m[3] ? m[3] == '0' ? '0' : m[3].charAt(1) : ' ';
                 x = m[5] - String(a).length - s.length;
                 p = m[5] ? this.str_repeat(c, x) : '';

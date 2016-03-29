@@ -31,7 +31,7 @@
 * This code is used for testing the class by allowing a direct call of the file. It will be	*
 * disabled in actual implementation, so calls to the file will return nothing.				*
 ********************************************************************************************/
-define ( '_DEBUG_MODE_', 1 );
+// define ( '_DEBUG_MODE_', 1 );
 define ( '_LANG_COOKIE_NAME', 'bmlt_admin_lang_pref' );
 
 error_reporting ( E_ERROR | E_WARNING );
