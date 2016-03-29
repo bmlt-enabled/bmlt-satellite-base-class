@@ -321,64 +321,6 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
 	};
 	
     /************************************************************************************//**
-    *	\brief  This builds an aggregated address for map lookup from the components in the JSON.
-    ****************************************************************************************/
-	this.utility_createMapAddress = function ( in_json_data    ///< The JSON data for one meeting.
-	                                        )
-	{
-	    var ret = '';
-
-	    if ( in_json_data.location_street && in_json_data.location_street.toString() )
-	        {
-	        ret += in_json_data.location_street.toString();
-	        };
-	    
-	    if ( in_json_data.location_city_subsection && in_json_data.location_city_subsection.toString() )
-	        {
-	        if ( ret != '' )
-	            {
-	            ret += ', ';
-	            };
-	        
-	        ret += in_json_data.location_city_subsection.toString();
-	        }
-	    else
-	        {
-            if ( in_json_data.location_municipality && in_json_data.location_municipality.toString() )
-                {
-                if ( ret != '' )
-                    {
-                    ret += ', ';
-                    };
-            
-                ret += in_json_data.location_municipality.toString();
-                };
-            };
-        
-	    if ( in_json_data.location_province && in_json_data.location_province.toString() )
-	        {
-	        if ( ret != '' )
-	            {
-	            ret += ', ';
-	            };
-	        
-	        ret += in_json_data.location_province.toString();
-	        };
-        
-	    if ( in_json_data.location_postal_code_1 && in_json_data.location_postal_code_1.toString() )
-	        {
-	        if ( ret != '' )
-	            {
-	            ret += ' ';
-	            };
-	        
-	        ret += in_json_data.location_postal_code_1.toString();
-	        };
-	        
-	    return ret;
-	};
-	
-    /************************************************************************************//**
     *	\brief  This builds a div element for the given formats.
     ****************************************************************************************/
 	this.utility_createFormats = function ( in_formats_string    ///< The JSON data for one meeting.
