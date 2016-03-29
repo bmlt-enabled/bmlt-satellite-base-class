@@ -25,6 +25,10 @@ INSTALLATION
 
 CHANGELIST
 ----------
+*3.2.3*
+* TBD
+* Got rid of an undeclared variable warning.
+
 *3.2.2*
 * March 29, 2016
 * The JavaScript errors were more extensive than first thought. They should really be fixed, now.

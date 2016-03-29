@@ -3,7 +3,7 @@
 *   \file   bmlt-cms-satellite-plugin.php                                                   *
 *                                                                                           *
 *   \brief  This is a generic CMS plugin class for a BMLT satellite client.                 *
-*   \version 3.2.2                                                                         *
+*   \version 3.2.3                                                                         *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -1907,6 +1907,8 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
     function display_table_search ($in_content      ///< This is the content to be filtered.
                                     )
         {
+        $my_table_next_id = 0;
+        
         while ( $params = self::get_shortcode ( $in_content, 'bmlt_table' ) )
             {
             $options_id = $this->cms_get_page_settings_id( $in_content );
