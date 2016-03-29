@@ -798,11 +798,14 @@ div.bmlt_table_display_div_theme_default
     padding:0;
 }
 
-div.bmlt_table_display_div_theme_default .bmlt_table_header_weekday_list
+div.bmlt_table_display_div_theme_default ul.bmlt_table_header_weekday_list
 {
     width:100%;
     display:block;
     list-style-type:none;
+    list-style-position:outside;
+    margin:0;
+    padding:0;
 }
 
 div.bmlt_table_display_div_theme_default .bmlt_table_header_weekday_list li

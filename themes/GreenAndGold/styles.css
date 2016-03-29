@@ -835,11 +835,14 @@ div.bmlt_table_display_div_theme_GreenAndGold
     padding:0;
 }
 
-div.bmlt_table_display_div_theme_GreenAndGold .bmlt_table_header_weekday_list
+div.bmlt_table_display_div_theme_GreenAndGold ul.bmlt_table_header_weekday_list
 {
     width:100%;
     display:block;
     list-style-type:none;
+    list-style-position:outside;
+    margin:0;
+    padding:0;
 }
 
 div.bmlt_table_display_div_theme_GreenAndGold .bmlt_table_header_weekday_list li
