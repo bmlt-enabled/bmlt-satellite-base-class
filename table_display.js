@@ -2,7 +2,7 @@
 * \file table_display.js																    *
 * \brief Javascript functions for the basic table display.                                  *
 *                                                                                           *
-*   \version 3.2.0                                                                          *
+*   \version 3.2.1                                                                          *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *

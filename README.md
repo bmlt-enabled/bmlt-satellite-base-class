@@ -25,6 +25,10 @@ INSTALLATION
 
 CHANGELIST
 ----------
+*3.2.1*
+* March 29, 2016
+* Fixed a JavaScript bug introduced at the last minute in 3.2.0.
+
 *3.2.0*
 * March 29, 2016
 * Fixed a style problem with the default search, where the map and text might be outdented by 8 pixels.
