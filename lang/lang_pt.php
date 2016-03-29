@@ -251,6 +251,18 @@ class BMLT_Localized_BaseClass
                                                 'location_postal_code_1' => 'CEP',
                                                 'location_info' => 'Informações Adicionais'
                                                 );
+    
+    /************************************************************************************//**
+    *                   TABLE SHORTCODE STATIC DATA MEMBERS (LOCALIZABLE)                    *
+    ****************************************************************************************/
+    static  $local_table_tab_loading_tile_format        = 'Getting meetings for %s';
+    static  $local_table_header_time_label              = 'Time';
+    static  $local_table_header_meeting_name_label      = 'Meeting Name';
+    static  $local_table_header_town_label              = 'Town';
+    static  $local_table_header_address_label           = 'Address';
+    static  $local_table_header_format_label            = 'Format';
+    static  $local_table_header_tab_title_format        = 'Display meetings for %s';
+    static  $local_table_ante_meridian                  = '"AM","PM","Noon","Midnight"';
                                                 
     /************************************************************************************//**
     *                      STATIC DATA MEMBERS (SPECIAL LOCALIZABLE)                        *

@@ -58,6 +58,7 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
 	
 	var my_sort_key_time;
 	var my_sort_key_meeting_name;
+	var my_sort_key_town;
 	var my_sort_key_address;
 	var my_selected_sort_key;
 	var my_sort_dir;
@@ -251,9 +252,9 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
 	};
 	
     /************************************************************************************//**
-    *	\brief  This builds a readable aggregated address from the components in the JSON.
+    *	\brief  This builds a readable aggregated street address from the components in the JSON.
     ****************************************************************************************/
-	this.utility_createAddress = function ( in_json_data    ///< The JSON data for one meeting.
+	this.utility_createStreetAddress = function ( in_json_data    ///< The JSON data for one meeting.
 	                                        )
 	{
 	    var ret = '';
@@ -270,6 +271,65 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
 	            ret += ', ';
 	            };
 	        
+	        ret += in_json_data.location_street.toString();
+	        };
+	        
+	    return ret;
+	};
+	
+    /************************************************************************************//**
+    *	\brief  This builds an aggregated town from the components in the JSON.
+    ****************************************************************************************/
+	this.utility_createAddressTown = function ( in_json_data    ///< The JSON data for one meeting.
+	                                        )
+	{
+	    var ret = '';
+	    
+	    if ( in_json_data.location_city_subsection && in_json_data.location_city_subsection.toString() )
+	        {
+	        if ( ret != '' )
+	            {
+	            ret += ', ';
+	            };
+	        
+	        ret += in_json_data.location_city_subsection.toString();
+	        }
+	    else
+	        {
+            if ( in_json_data.location_municipality && in_json_data.location_municipality.toString() )
+                {
+                if ( ret != '' )
+                    {
+                    ret += ', ';
+                    };
+            
+                ret += in_json_data.location_municipality.toString();
+                };
+            };
+        
+	    if ( in_json_data.location_province && in_json_data.location_province.toString() )
+	        {
+	        if ( ret != '' )
+	            {
+	            ret += ', ';
+	            };
+	        
+	        ret += in_json_data.location_province.toString();
+	        };
+	        
+	    return ret;
+	};
+	
+    /************************************************************************************//**
+    *	\brief  This builds an aggregated address for map lookup from the components in the JSON.
+    ****************************************************************************************/
+	this.utility_createMapAddress = function ( in_json_data    ///< The JSON data for one meeting.
+	                                        )
+	{
+	    var ret = '';
+
+	    if ( in_json_data.location_street && in_json_data.location_street.toString() )
+	        {
 	        ret += in_json_data.location_street.toString();
 	        };
 	    
@@ -640,13 +700,16 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
         var thElement = this.domBuilder_PopulateWeekdayHeaderColumn ( g_table_time_header_text, this.my_sort_key_time, ((in_sort_key == this.my_sort_key_time) ? in_sort_dir : 'asc'), in_sort_key == this.my_sort_key_time );
         thElement.className = 'bmlt_table_header_th bmlt_table_header_th_time';
         headerRow.appendChild ( thElement );
+        thElement = this.domBuilder_PopulateWeekdayHeaderColumn ( g_table_town_header_text, this.my_sort_key_town, ((in_sort_key == this.my_sort_key_town) ? in_sort_dir : 'asc'), in_sort_key == this.my_sort_key_town );
+        thElement.className = 'bmlt_table_header_th bmlt_table_header_th_town';
+        headerRow.appendChild ( thElement );
         thElement = this.domBuilder_PopulateWeekdayHeaderColumn ( g_table_name_header_text, this.my_sort_key_meeting_name, ((in_sort_key == this.my_sort_key_meeting_name) ? in_sort_dir : 'asc'), in_sort_key == this.my_sort_key_meeting_name );
         thElement.className = 'bmlt_table_header_th bmlt_table_header_th_name';
         headerRow.appendChild ( thElement );
         thElement = this.domBuilder_PopulateWeekdayHeaderColumn ( g_table_address_header_text, this.my_sort_key_address, ((in_sort_key == this.my_sort_key_address) ? in_sort_dir : 'asc'), in_sort_key == this.my_sort_key_address );
         thElement.className = 'bmlt_table_header_th bmlt_table_header_th_address';
         headerRow.appendChild ( thElement );
-        thElement = this.domBuilder_PopulateWeekdayHeaderColumn ( g_table_format_header_text, this.my_sort_key_address, null, false );
+        thElement = this.domBuilder_PopulateWeekdayHeaderColumn ( g_table_format_header_text, null, null, false );
         thElement.className = 'bmlt_table_header_th bmlt_table_header_th_format';
         headerRow.appendChild ( thElement );
         this.my_body_container_header.appendChild ( headerRow );
@@ -660,7 +723,7 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
     this.domBuilder_PopulateWeekdayHeaderColumn = function (    in_name,        ///< The text name for the column.
 	                                                            in_sort_key,    ///< The sort key, for the data sort.
 	                                                            in_sort_dir,    ///< The sort direction, for the data sort. It will be 'asc' or 'desc'.
-	                                                            in_is_selected   ///< A boolean value. True, if this is the sort key.
+	                                                            in_is_selected  ///< A boolean value. True, if this is the sort key.
                                                             )
     {
         var thElement =  document.createElement ( 'th' );       // Create the column element
@@ -692,6 +755,10 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
                 
                     this.handler.my_selected_sort_key = this.sort_key;
                     this.handler.my_sort_dir = this.sort_dir;
+                    for ( var i = 0; i < 7; i++ )
+                        {
+                        this.handler.my_weekday_links[i].json_data = null;
+                        };
                     this.handler.my_selected_tab.reload();
                 };
             }
@@ -740,10 +807,13 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
         var rowElement = document.createElement ( 'tr' );
         rowElement.className = 'bmlt_table_tbody_tr';
         
-        rowElement.appendChild ( this.domBuilder_PopulateWeekdayBody_one_column ( 'time', this.utility_convertTime ( in_json_data.start_time.toString() ) ) );
-        rowElement.appendChild ( this.domBuilder_PopulateWeekdayBody_one_column ( 'name', in_json_data.meeting_name.toString() ) );
-        rowElement.appendChild ( this.domBuilder_PopulateWeekdayBody_one_column ( 'address', this.utility_createAddress ( in_json_data ) ) );
-        rowElement.appendChild ( this.domBuilder_PopulateWeekdayBody_one_column ( 'formats', in_json_data.formats.toString() ) );
+        rowElement.appendChild ( this.domBuilder_PopulateWeekdayBody_one_column ( 'time', this.utility_convertTime ( in_json_data.start_time.toString() ), 0, 0 ) );
+        rowElement.appendChild ( this.domBuilder_PopulateWeekdayBody_one_column ( 'town', this.utility_createAddressTown ( in_json_data ), 0, 0 ) );
+        rowElement.appendChild ( this.domBuilder_PopulateWeekdayBody_one_column ( 'name', in_json_data.meeting_name.toString(), 0, 0 ) );
+        var latitude = in_json_data.latitude;
+        var longitude = in_json_data.longitude;
+        rowElement.appendChild ( this.domBuilder_PopulateWeekdayBody_one_column ( 'address', this.utility_createStreetAddress ( in_json_data ), latitude, longitude ) );
+        rowElement.appendChild ( this.domBuilder_PopulateWeekdayBody_one_column ( 'formats', in_json_data.formats.toString(), 0, 0 ) );
         
         return rowElement;
     };
@@ -752,7 +822,9 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
     *	\brief Populates one row 
     ****************************************************************************************/
     this.domBuilder_PopulateWeekdayBody_one_column = function ( in_tag,
-                                                                in_string
+                                                                in_string,
+                                                                in_latitude,
+                                                                in_longitude
                                                                 )
     {
         var columnElement = document.createElement ( 'td' );
@@ -766,6 +838,15 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
                 columnElement.appendChild ( formats_div );
                 };
             }
+        else if ( in_latitude && in_longitude )
+            {
+            var textNode = document.createElement ( 'span' );
+            var anchorNode = document.createElement ( 'a' );
+            anchorNode.href= this.sprintf ( g_table_map_link_uri_format, parseFloat ( in_latitude ), parseFloat ( in_longitude ) );
+            anchorNode.appendChild ( document.createTextNode ( in_string ) );
+            textNode.appendChild ( anchorNode );
+            columnElement.appendChild ( textNode );
+            }
         else
             {
             var textNode = document.createElement ( 'span' );
@@ -776,10 +857,6 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
             
         return columnElement;
     };
-    
-    /****************************************************************************************
-    *##################################### UI RESPONDERS ###################################*
-    ****************************************************************************************/
 
     /****************************************************************************************
     *#################################### THIRD-PARTY CODE #################################*
@@ -912,7 +989,8 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
 	
 	this.my_sort_key_time = 'start_time,location_nation,location_province,location_sub_province,location_municipality,location_neighborhood,meeting_name';
 	this.my_sort_key_meeting_name = 'meeting_name,start_time,location_nation,location_province,location_sub_province,location_municipality,location_neighborhood';
-	this.my_sort_key_address = 'location_nation,location_province,location_sub_province,location_municipality,location_neighborhood,start_time,meeting_name';
+	this.my_sort_key_town = 'location_nation,location_province,location_sub_province,location_municipality,location_neighborhood,start_time,meeting_name';
+	this.my_sort_key_address = 'location_text,location_street,location_nation,location_province,location_sub_province,location_municipality,location_neighborhood,start_time,meeting_name';
 
     this.my_selected_sort_key = this.my_sort_key_time;
     this.my_sort_dir = 'asc';

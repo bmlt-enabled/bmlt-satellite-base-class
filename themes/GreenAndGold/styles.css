@@ -780,8 +780,8 @@ div.bmlt_nouveau_details_hidden_element_outer_container_div
 	-moz-border-radius:5px;
 	-webkit-border-radius: 5px;
     background-color:#ffefef;
-    border:1px solid #555;
-    color:#555;
+    border:1px solid #030;
+    color:#030;
 }
 
 div.bmlt_nouveau_details_hidden_element_line_div,
@@ -822,4 +822,227 @@ div.bmlt_map_container_div,
 div.bmlt_search_map_div div img
 {
     max-width:none; /* Hack to prevent the problems with the controls disappearing. */
+}
+
+/**************************************************/
+/* These are all for the table display shortcode. */
+/**************************************************/
+
+div.bmlt_table_display_div_theme_GreenAndGold
+{
+    width:100%;
+    margin:0;
+    padding:0;
+}
+
+div.bmlt_table_display_div_theme_GreenAndGold .bmlt_table_header_weekday_list
+{
+    width:100%;
+    display:block;
+    list-style-type:none;
+}
+
+div.bmlt_table_display_div_theme_GreenAndGold .bmlt_table_header_weekday_list li
+{
+    width:14.28%;
+    line-height:2em;
+    height:2em;
+    text-align:center;
+    vertical-align: middle;
+    background-color:#030;
+    cursor:pointer;
+    display:block;
+    float:left;
+    margin:-1px;
+    margin-bottom:0;
+    border:1px solid;
+    border-bottom:none;
+    border-color: #ff9;
+    border-top-left-radius: 0.5em;
+    border-top-right-radius: 0.5em;
+    -moz-border-top-left-radius: 0.5em;
+    -moz-border-top-right-radius: 0.5em;
+    -webkit-border-top-left-radius: 0.5em;
+    -webkit-border-top-right-radius: 0.5em;
+}
+
+div.bmlt_table_display_div .bmlt_table_header_weekday_list span
+{
+    display:block;
+    color:#ff9;
+    font-weight:bold;
+    font-size:large;
+}
+
+div.bmlt_table_display_div_theme_GreenAndGold .bmlt_table_header_weekday_list img
+{
+    margin-left:auto;
+    margin-right:auto;
+    vertical-align: middle;
+    display:none;
+}
+
+div.bmlt_table_display_div_theme_GreenAndGold .bmlt_table_header_weekday_list li.is_loading img
+{
+    display: inline-block;
+}
+
+div.bmlt_table_display_div_theme_GreenAndGold .bmlt_table_header_weekday_list li.is_loading span
+{
+    display:none;
+}
+
+div.bmlt_table_display_div_theme_GreenAndGold .bmlt_table_header_weekday_list li.is_selected
+{
+    display: block;
+    background-color:#ff9;
+    color:#030;
+    border-color: #030;
+    cursor:default;
+}
+
+div.bmlt_table_display_div_theme_GreenAndGold .bmlt_table_header_weekday_list li.is_selected span
+{
+    color:#030;
+}
+
+div.bmlt_table_display_div_theme_GreenAndGold .bmlt_table_header_weekday_list li.is_selected img
+{
+    display:none;
+}
+
+div.bmlt_table_display_div_theme_GreenAndGold .bmlt_table_header_weekday_list li.is_selected span
+{
+    display:block;
+}
+
+div.bmlt_table_display_div_theme_GreenAndGold table.bmlt_table,
+div.bmlt_table_display_div_theme_GreenAndGold table.bmlt_table thead,
+div.bmlt_table_display_div_theme_GreenAndGold table.bmlt_table th,
+div.bmlt_table_display_div_theme_GreenAndGold table.bmlt_table tr,
+div.bmlt_table_display_div_theme_GreenAndGold table.bmlt_table td span,
+div.bmlt_table_display_div_theme_GreenAndGold table.bmlt_table th span
+{
+    width:100%;
+}
+
+div.bmlt_table_display_div_theme_GreenAndGold table.bmlt_table,
+div.bmlt_table_display_div_theme_GreenAndGold table.bmlt_table thead,
+div.bmlt_table_display_div_theme_GreenAndGold table.bmlt_table th,
+div.bmlt_table_display_div_theme_GreenAndGold table.bmlt_table tr,
+div.bmlt_table_display_div_theme_GreenAndGold table.bmlt_table td,
+div.bmlt_table_display_div_theme_GreenAndGold table.bmlt_table th span
+{
+    margin:0;
+    padding:0;
+}
+
+div.bmlt_table_display_div_theme_GreenAndGold table.bmlt_table tr
+{
+    vertical-align:top;
+}
+
+div.bmlt_table_display_div_theme_GreenAndGold table.bmlt_table th
+{
+    border-top:2px solid #ff9;
+    border-left:1px solid #ff9;
+}
+
+div.bmlt_table_display_div_theme_GreenAndGold table.bmlt_table th.bmlt_table_header_th_time
+{
+    width: 7%;
+}
+
+div.bmlt_table_display_div_theme_GreenAndGold table.bmlt_table th.bmlt_table_header_th_town
+{
+    width: 10%;
+}
+
+div.bmlt_table_display_div_theme_GreenAndGold table.bmlt_table th.bmlt_table_header_th_name
+{
+    width: 30%;
+}
+
+div.bmlt_table_display_div_theme_GreenAndGold table.bmlt_table th.bmlt_table_header_th_address
+{
+    width: 43%;
+}
+
+div.bmlt_table_display_div_theme_GreenAndGold table.bmlt_table th.bmlt_table_header_th_format
+{
+    width: 10%;
+}
+
+div.bmlt_table_display_div_theme_GreenAndGold table.bmlt_table th span
+{
+    margin:-1px;
+    display: block;
+    line-height:2em;
+    height:2em;
+    width:100%;
+    background-color: #030;
+    color: #ff9;
+    vertical-align:middle;
+    cursor:pointer;
+}
+
+div.bmlt_table_display_div_theme_GreenAndGold table.bmlt_table th.bmlt_table_header_th_format span
+{
+    cursor:default;
+}
+
+div.bmlt_table_display_div_theme_GreenAndGold table.bmlt_table th span img
+{
+    margin:auto;
+    margin-left: 0.25em;
+    vertical-align:middle;
+    height: 1em;
+}
+
+div.bmlt_table_display_div_theme_GreenAndGold table.bmlt_table td span
+{
+    padding: 0.125em;
+    display: block;
+    color: #030;
+}
+
+div.bmlt_table_display_div_theme_GreenAndGold table.bmlt_table td div.bmlt_formats_div span
+{
+    margin: 0.125em;
+    line-height:2em;
+    height:2em;
+    width:2em;
+    vertical-align:middle;
+    text-align:center;
+    color: white;
+    background-color: #030;
+    float:left;
+    border-radius: 1.25em;
+    -moz-border-radius: 1.25em;
+    -webkit-border-radius: 1.25em;
+    cursor:pointer;
+}
+
+div.bmlt_table_display_div_theme_GreenAndGold table.bmlt_table tr.bmlt_row_odd td
+{
+    background-color: #eee;
+}
+
+div.bmlt_table_display_div_theme_GreenAndGold table.bmlt_table tr td
+{
+    border-left:1px dashed #030;
+    margin:0;
+    padding:0;
+}
+
+div.bmlt_table_display_div_theme_GreenAndGold table.bmlt_table tr td.bmlt_table_tbody_td_time,
+div.bmlt_table_display_div_theme_GreenAndGold table.bmlt_table tr td.bmlt_table_tbody_td_town
+{
+    line-height:100%;
+    vertical-align:middle;
+}
+
+div.bmlt_table_display_div_theme_GreenAndGold table.bmlt_table tr td.bmlt_table_tbody_td_time
+{
+    text-align:center;
 }

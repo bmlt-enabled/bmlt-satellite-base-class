@@ -833,6 +833,8 @@ div.bmlt_table_display_div .bmlt_table_header_weekday_list span
 {
     display:block;
     color:white;
+    font-weight:bold;
+    font-size:large;
 }
 
 div.bmlt_table_display_div_theme_default .bmlt_table_header_weekday_list img
@@ -911,6 +913,11 @@ div.bmlt_table_display_div_theme_default table.bmlt_table th
 
 div.bmlt_table_display_div_theme_default table.bmlt_table th.bmlt_table_header_th_time
 {
+    width: 7%;
+}
+
+div.bmlt_table_display_div_theme_default table.bmlt_table th.bmlt_table_header_th_town
+{
     width: 10%;
 }
 
@@ -921,7 +928,7 @@ div.bmlt_table_display_div_theme_default table.bmlt_table th.bmlt_table_header_t
 
 div.bmlt_table_display_div_theme_default table.bmlt_table th.bmlt_table_header_th_address
 {
-    width: 50%;
+    width: 43%;
 }
 
 div.bmlt_table_display_div_theme_default table.bmlt_table th.bmlt_table_header_th_format
@@ -991,9 +998,15 @@ div.bmlt_table_display_div_theme_default table.bmlt_table tr td
     padding:0;
 }
 
-div.bmlt_table_display_div_theme_default table.bmlt_table tr td.bmlt_table_tbody_td_time
+div.bmlt_table_display_div_theme_default table.bmlt_table tr td.bmlt_table_tbody_td_time,
+div.bmlt_table_display_div_theme_default table.bmlt_table tr td.bmlt_table_tbody_td_town
 {
     line-height:100%;
     vertical-align:middle;
+}
+
+div.bmlt_table_display_div_theme_default table.bmlt_table tr td.bmlt_table_tbody_td_time
+{
     text-align:center;
 }
+
