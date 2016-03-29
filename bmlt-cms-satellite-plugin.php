@@ -3,7 +3,7 @@
 *   \file   bmlt-cms-satellite-plugin.php                                                   *
 *                                                                                           *
 *   \brief  This is a generic CMS plugin class for a BMLT satellite client.                 *
-*   \version 3.2.1                                                                         *
+*   \version 3.2.2                                                                         *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -148,7 +148,8 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
     static  $default_time_offset = 0;                                       ///< The default time offset from the main server (in hours).
     static  $default_military_time = false;                                 ///< If this is true, then time displays will be in military time.
     static  $default_startWeekday = 1;                                      ///< The default starting weekday (Sunday)
-
+    static  $default_duration = '1:30';                                     ///< The default duration of meetings.
+    
     /************************************************************************************//**
     *                               STATIC DATA MEMBERS (MISC)                              *
     ****************************************************************************************/
@@ -1820,6 +1821,16 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                 $the_new_content .= "var g_Nouveau_single_service_body_label = '".$this->process_text ( self::$local_nouveau_single_service_body_label ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
                 
                 $the_new_content .= "var g_Nouveau_user_logged_in = '".((isset ( $this->m_is_logged_in_user ) && $this->m_is_logged_in_user) ? "true" : "false" ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_default_duration = '".self::$default_duration."';";
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_duration_title = '".self::$local_nouveau_location_sprintf_format_duration_title.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_duration_hour_only_title = '".self::$local_nouveau_location_sprintf_format_duration_hour_only_title.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_duration_hour_only_and_minutes_title = '".self::$local_nouveau_location_sprintf_format_duration_hour_only_and_minutes_title.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_duration_hours_only_title = '".self::$local_nouveau_location_sprintf_format_duration_hours_only_title.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_single_duration_sprintf_format_1_hr ='".self:: $local_nouveau_single_duration_sprintf_format_1_hr.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_single_duration_sprintf_format_mins ='".self:: $local_nouveau_single_duration_sprintf_format_mins.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_single_duration_sprintf_format_hrs ='".self:: $local_nouveau_single_duration_sprintf_format_hrs.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_single_duration_sprintf_format_hr_mins ='".self:: $local_nouveau_single_duration_sprintf_format_hr_mins.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_single_duration_sprintf_format_hrs_mins ='".self:: $local_nouveau_single_duration_sprintf_format_hrs_mins.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
                 
                 $the_new_content .= '</script>';
                 $first = false;

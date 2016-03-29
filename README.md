@@ -25,6 +25,10 @@ INSTALLATION
 
 CHANGELIST
 ----------
+*3.2.2*
+* March 29, 2016
+* The JavaScript errors were more extensive than first thought. They should really be fixed, now.
+
 *3.2.1*
 * March 29, 2016
 * Fixed a JavaScript bug introduced at the last minute in 3.2.0.
