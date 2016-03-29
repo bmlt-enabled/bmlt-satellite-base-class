@@ -987,10 +987,10 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
     this.my_search_query_params = in_search_params;
     this.my_military_time = in_is_military_time;
 	
-	this.my_sort_key_time = 'start_time,location_nation,location_province,location_sub_province,location_municipality,location_neighborhood,meeting_name';
-	this.my_sort_key_meeting_name = 'meeting_name,start_time,location_nation,location_province,location_sub_province,location_municipality,location_neighborhood';
-	this.my_sort_key_town = 'location_nation,location_province,location_sub_province,location_municipality,location_neighborhood,start_time,meeting_name';
-	this.my_sort_key_address = 'location_text,location_street,location_nation,location_province,location_sub_province,location_municipality,location_neighborhood,start_time,meeting_name';
+	this.my_sort_key_time = 'start_time,location_nation,location_province,location_sub_province,location_city_subsection,location_municipality,location_neighborhood,meeting_name';
+	this.my_sort_key_meeting_name = 'meeting_name,start_time,location_city_subsection,location_municipality';
+	this.my_sort_key_town = 'location_city_subsection,location_municipality,start_time,meeting_name';
+	this.my_sort_key_address = 'location_text,location_street,location_city_subsection,location_municipality,start_time,meeting_name';
 
     this.my_selected_sort_key = this.my_sort_key_time;
     this.my_sort_dir = 'asc';

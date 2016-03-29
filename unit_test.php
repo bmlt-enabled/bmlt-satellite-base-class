@@ -252,8 +252,9 @@ function u_test_form()
                         $ret .= '<option value="&lt;!--bmlt_simple(2##-##switcher=GetFormats)--&gt;">BMLT Simple (Comment -ID 2, Formats)</option>';
                         $ret .= '<option value="[[bmlt_simple(1##-##switcher=GetFormats)]]">BMLT Simple (Brackets -ID 1, Formats)</option>';
                         $ret .= '<option value="&lt;!--bmlt_simple(2##-##switcher=GetFormats)--&gt;">BMLT Simple (Comment -ID 2, Formats)</option>';
-                        $ret .= '<option value="[[BMLT_TABLE(1##-##switcher=GetSearchResults&block_mode=1&meeting_key=location_city_subsection&meeting_key_value=Brooklyn&weekdays[]=7)]]">BMLT Table (Brackets -ID 1, Brooklyn, Saturday)</option>';
-                        $ret .= '<option value="&lt;!--bmlt_table(2##-##switcher=GetSearchResults&block_mode=1&meeting_key=location_city_subsection&meeting_key_value=Brooklyn&weekdays[]=1)--&gt;">BMLT Table (Comment -ID 2, Brooklyn, Sunday)</option>';
+                        $ret .= '<option value="[[bmlt_table]]">BMLT Table (Brackets -default)</option>';
+                        $ret .= '<option value="[[BMLT_TABLE(1##-##meeting_key=location_city_subsection&meeting_key_value=Brooklyn)]]">BMLT Table (Brackets -ID 1, Brooklyn)</option>';
+                        $ret .= '<option value="&lt;!--bmlt_table(2##-##meeting_key=location_city_subsection&meeting_key_value=Manhattan)--&gt;">BMLT Table (Comment -ID 2, Manhattan)</option>';
                         $ret .= '<option value="[[bmlt_changes(switcher=GetChanges&start_date='.date('Y-m-d',time()-(60 * 60 * 24 * 90)).')]]">BMLT Changes (Brackets -Last 90 days)</option>';
                         $ret .= '<option value="&lt;!-- bmlt_changes(switcher=GetChanges&start_date='.date('Y-m-d',time()-(60 * 60 * 24 * 180)).'&end_date='.date('Y-m-d',time()-(60 * 60 * 24 * 90)).') --&gt;">BMLT Changes (Comments -Last 180 - 90 days)</option>';
                         $ret .= '<option value="[[bmlt_changes(switcher=GetChanges&start_date='.date('Y-m-d',time()-(60 * 60 * 24 * 365)).'&service_body_id=1001)]]">BMLT Changes (Brackets -Last year in Suffolk Area Service)</option>';
