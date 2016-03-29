@@ -26,11 +26,12 @@ INSTALLATION
 CHANGELIST
 ----------
 *3.2.0*
-* TBD
+* March 29, 2016
 * Fixed a style problem with the default search, where the map and text might be outdented by 8 pixels.
 * Fixed the "Google Maps included two or more times" warning.
 * Removed unnecessary new search and duration items from admin page.
 * Fixed an issue where WordPress would sometimes HTML-entity the ampersand (&) character.
+* Added a very significant new shortcode: [[bmlt_table]].
 
 *3.1.1*
 * March 16, 2016
