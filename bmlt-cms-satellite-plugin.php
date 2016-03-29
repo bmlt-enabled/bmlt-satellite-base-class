@@ -1950,7 +1950,7 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                 
                 $the_new_content .= '<div style="display_none" class="bmlt_table_display_div bmlt_table_display_div_theme_'.htmlspecialchars ( $options['theme'] ).'" id="bmlt_table_display_div_'.strval ( $my_table_next_id ).'"></div>'.(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
                 $theWeekday = strval ( intval ( $options['startWeekday'] - 1 ) );
-                $the_new_content .= "<script type=\"text/javascript\">TableSearchDisplay ( 'bmlt_table_display_div_".strval ( $my_table_next_id )."', '$options_id', '".htmlspecialchars ( $this->get_ajax_base_uri() )."', '$theWeekday', ".($options['military_time'] ? 'true' : 'false' ).", '$params' );</script>".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
+                $the_new_content .= "<script type=\"text/javascript\">TableSearchDisplay ( 'bmlt_table_display_div_".strval ( $my_table_next_id )."', '$options_id', '".htmlspecialchars ( $this->get_ajax_base_uri() )."?redirect_ajax_json=', '$theWeekday', ".($options['military_time'] ? 'true' : 'false' ).", '$params' );</script>".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
                 
                 $in_content = self::replace_shortcode ( $in_content, 'bmlt_table', $the_new_content );
                 }

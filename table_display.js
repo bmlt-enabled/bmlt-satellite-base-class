@@ -171,7 +171,7 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
 	                                        )
 	{
 	    var uri = encodeURI ( this.my_search_query_params + '&sort_keys=' + this.my_selected_sort_key  + ((this.my_sort_dir == 'desc') ? ',desc' : '') +'&bmlt_settings_id=' + this.my_settings_id + '&weekdays[]=' + (parseInt (in_tab_object.index) + 1).toString() ).toString();
-	    uri =  this.my_ajax_base_uri + '?redirect_ajax_json=' + uri;
+	    uri =  this.my_ajax_base_uri + encodeURI ( 'switcher=GetSearchResults&' ) + uri;
         this.m_ajax_request = this.utility_AjaxRequest ( uri, this.callback_loadWeekdayData, 'get', in_tab_object );
 	};
     
@@ -187,7 +187,7 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
 	        };
 	    
 	    var uri = encodeURI ( this.my_search_query_params + '&bmlt_settings_id=' + this.my_settings_id + '&get_formats_only=1' ).toString();
-	    uri =  this.my_ajax_base_uri + '?redirect_ajax_json=' + uri;
+	    uri =  this.my_ajax_base_uri + encodeURI ( 'switcher=GetSearchResults&' ) + uri;
         this.m_ajax_request = this.utility_AjaxRequest ( uri, this.callback_loadFormatData, 'get' );
 	};
 	
