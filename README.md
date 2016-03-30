@@ -28,6 +28,7 @@ CHANGELIST
 *3.2.3*
 * TBD
 * Got rid of an undeclared variable warning.
+* Fixed a bug that caused rendering issues with the new table shortcode on Internet Exploder.
 
 *3.2.2*
 * March 29, 2016

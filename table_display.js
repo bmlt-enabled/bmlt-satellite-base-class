@@ -670,7 +670,6 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
     {
         var thElement =  document.createElement ( 'th' );       // Create the column element
         thElement.key = in_sort_key;                            // This will be the sort key for this column.
-        thElement.dir = in_is_selected ? in_sort_dir : 'asc';    // If we are specifying a sort direction for this column, we use that.
         var textNode = document.createElement ( 'span' );
         textNode.appendChild ( document.createTextNode ( in_name ) );
         textNode.is_selected = false;
