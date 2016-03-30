@@ -1154,6 +1154,25 @@ div.bmlt_table_display_div_theme_GNYR table.bmlt_table th span
     color: #ffc;
     vertical-align:middle;
     cursor:pointer;
+    overflow: hidden;
+}
+
+div.bmlt_table_display_div_theme_GNYR table.bmlt_table span.bmlt_table_header_selected
+{
+    background-attachment: local;
+    background-position: 98% center;
+    background-repeat: no-repeat;
+    background-size:0.75em;
+}
+
+div.bmlt_table_display_div_theme_GNYR table.bmlt_table span.bmlt_table_header_selected_sort_direction_asc
+{
+    background-image:url("images/TableSortAsc.gif");
+}
+
+div.bmlt_table_display_div_theme_GNYR table.bmlt_table span.bmlt_table_header_selected_sort_direction_desc
+{
+    background-image:url("images/TableSortDesc.gif");
 }
 
 div.bmlt_table_display_div_theme_GNYR table.bmlt_table th.bmlt_table_header_th_format span
@@ -1167,7 +1186,7 @@ div.bmlt_table_display_div_theme_GNYR table.bmlt_table th span img
     margin:auto;
     margin-left: 0.25em;
     vertical-align:middle;
-    height: 1em;
+    height:33.3%;
 }
 
 div.bmlt_table_display_div_theme_GNYR table.bmlt_table td span

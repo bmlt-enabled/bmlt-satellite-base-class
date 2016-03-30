@@ -678,10 +678,7 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
         textNode.handler = this;
         if ( in_sort_key && in_is_selected )
             {
-            var imgNode = document.createElement ( 'img' );
-            imgNode.className = 'bmlt_table_thead_th_img bmlt_table_thead_th_img_' + ((in_sort_dir == 'asc') ? 'asc' : 'desc');
-            imgNode.src = ((in_sort_dir == 'asc') ? g_table_sort_asc_img_src : g_table_sort_desc_img_src);
-            textNode.appendChild ( imgNode );
+            textNode.className = 'bmlt_table_header_selected ' + 'bmlt_table_header_selected_sort_direction_' + ((in_sort_dir == 'asc') ? 'asc' : 'desc');
             textNode.is_selected = true;
             };
         
