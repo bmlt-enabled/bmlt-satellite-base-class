@@ -3503,7 +3503,7 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                 }
             elseif( !$in_check_mobile ) // A mobile check ignores the rest.
                 {
-                if ( ($params = self::get_shortcode ( $in_content, 'bmlt_simple')) || ($params = self::get_shortcode ( $in_content, 'bmlt_changes')) ) 
+                if ( ($params = self::get_shortcode ( $in_content, 'bmlt_table')) || ($params = self::get_shortcode ( $in_content, 'bmlt_simple')) || ($params = self::get_shortcode ( $in_content, 'bmlt_changes')) ) 
                     {
                     $param_array = explode ( '##-##', $params );
                     
