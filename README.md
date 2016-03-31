@@ -27,6 +27,7 @@ CHANGELIST
 ----------
 *3.2.4*
 * TBD
+* Broke the table styling out into separate files that are all loaded at once. This allows a lot more flexibility when implementing the table display.
 
 *3.2.3*
 * March 30, 2016

@@ -378,6 +378,8 @@ class BMLTUTestPlugin extends BMLTPlugin
         
         $head_content .= 'nouveau_map_styles.css" />';
 
+        $head_content .= '<link rel="stylesheet" type="text/css" href="table_styles.php" />';
+        
         if ( $root_server_root )
             {
             $root_server = $root_server_root."/client_interface/xhtml/index.php";

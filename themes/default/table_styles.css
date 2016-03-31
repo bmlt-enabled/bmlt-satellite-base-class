@@ -1,0 +1,262 @@
+/*    
+    \version 3.2.4
+    
+    This file is part of the BMLT Common Satellite Base Class Project. The project GitHub
+    page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class
+    
+    This file is part of the Basic Meeting List Toolbox (BMLT).
+    
+    Find out more at: http://bmlt.magshare.org
+    
+    BMLT is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+    
+    BMLT is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    
+    You should have received a copy of the GNU General Public License
+    along with this code.  If not, see <http://www.gnu.org/licenses/>.
+*/
+/**************************************************/
+/* These are all for the table display shortcode. */
+/**************************************************/
+
+div.bmlt_table_display_div_theme_default
+{
+    width:100%;
+    margin:0;
+    padding:0;
+}
+
+#content div.bmlt_table_display_div_theme_default ul.bmlt_table_header_weekday_list
+{
+    width:100%;
+    display:block;
+    list-style-type:none;
+    list-style-position:outside;
+    clear:both;
+    float:none;
+    margin:0;
+    padding:0;
+}
+
+div.bmlt_table_display_div_theme_default .bmlt_table_header_weekday_list li
+{
+    width:14.28%;
+    line-height:2em;
+    height:2em;
+    text-align:center;
+    vertical-align: middle;
+    background-color:#555;
+    cursor:pointer;
+    display:block;
+    float:left;
+    margin:-1px;
+    margin-bottom:0;
+    border:1px solid;
+    border-bottom:none;
+    border-color: white;
+    border-top-left-radius: 0.5em;
+    border-top-right-radius: 0.5em;
+    -moz-border-top-left-radius: 0.5em;
+    -moz-border-top-right-radius: 0.5em;
+    -webkit-border-top-left-radius: 0.5em;
+    -webkit-border-top-right-radius: 0.5em;
+}
+
+div.bmlt_table_display_div .bmlt_table_header_weekday_list span
+{
+    display:block;
+    color:white;
+    font-weight:bold;
+    font-size:large;
+}
+
+div.bmlt_table_display_div_theme_default .bmlt_table_header_weekday_list img
+{
+    margin-left:auto;
+    margin-right:auto;
+    vertical-align: middle;
+    display:none;
+}
+
+div.bmlt_table_display_div_theme_default .bmlt_table_header_weekday_list li.is_loading img
+{
+    display: inline-block;
+}
+
+div.bmlt_table_display_div_theme_default .bmlt_table_header_weekday_list li.is_loading span
+{
+    display:none;
+}
+
+div.bmlt_table_display_div_theme_default .bmlt_table_header_weekday_list li.is_selected
+{
+    display: block;
+    background-color:#fff;
+    color:#555;
+    border-color: #555;
+    cursor:default;
+}
+
+div.bmlt_table_display_div_theme_default .bmlt_table_header_weekday_list li.is_selected span
+{
+    color:#555;
+}
+
+div.bmlt_table_display_div_theme_default .bmlt_table_header_weekday_list li.is_selected img
+{
+    display:none;
+}
+
+div.bmlt_table_display_div_theme_default .bmlt_table_header_weekday_list li.is_selected span
+{
+    display:block;
+}
+
+div.bmlt_table_display_div_theme_default table.bmlt_table,
+div.bmlt_table_display_div_theme_default table.bmlt_table thead,
+div.bmlt_table_display_div_theme_default table.bmlt_table th,
+div.bmlt_table_display_div_theme_default table.bmlt_table tr,
+div.bmlt_table_display_div_theme_default table.bmlt_table td span,
+div.bmlt_table_display_div_theme_default table.bmlt_table th span
+{
+    width:100%;
+}
+
+div.bmlt_table_display_div_theme_default table.bmlt_table,
+div.bmlt_table_display_div_theme_default table.bmlt_table thead,
+div.bmlt_table_display_div_theme_default table.bmlt_table th,
+div.bmlt_table_display_div_theme_default table.bmlt_table tr,
+div.bmlt_table_display_div_theme_default table.bmlt_table td,
+div.bmlt_table_display_div_theme_default table.bmlt_table th span
+{
+    margin:0;
+    padding:0;
+}
+
+div.bmlt_table_display_div_theme_default table.bmlt_table tr
+{
+    vertical-align:top;
+}
+
+div.bmlt_table_display_div_theme_default table.bmlt_table th
+{
+    border-top:2px solid white;
+    border-left:1px solid white;
+}
+
+div.bmlt_table_display_div_theme_default table.bmlt_table th.bmlt_table_header_th_time
+{
+    width: 7%;
+}
+
+div.bmlt_table_display_div_theme_default table.bmlt_table th.bmlt_table_header_th_town
+{
+    width: 10%;
+}
+
+div.bmlt_table_display_div_theme_default table.bmlt_table th.bmlt_table_header_th_name
+{
+    width: 30%;
+}
+
+div.bmlt_table_display_div_theme_default table.bmlt_table th.bmlt_table_header_th_address
+{
+    width: 43%;
+}
+
+div.bmlt_table_display_div_theme_default table.bmlt_table th.bmlt_table_header_th_format
+{
+    width: 10%;
+}
+
+div.bmlt_table_display_div_theme_default table.bmlt_table th span
+{
+    margin:-1px;
+    display: block;
+    line-height:2em;
+    height:2em;
+    width:100%;
+    background-color: #555;
+    color: #fff;
+    vertical-align:middle;
+    cursor:pointer;
+    overflow: hidden;
+}
+
+div.bmlt_table_display_div_theme_default table.bmlt_table th.bmlt_table_header_th_format span
+{
+    cursor:default;
+}
+
+div.bmlt_table_display_div_theme_default table.bmlt_table span.bmlt_table_header_selected
+{
+    background-attachment: local;
+    background-position: 98% center;
+    background-repeat: no-repeat;
+    background-size:0.75em;
+}
+
+div.bmlt_table_display_div_theme_default table.bmlt_table span.bmlt_table_header_selected_sort_direction_asc
+{
+    background-image:url("images/TableSortAsc.gif");
+}
+
+div.bmlt_table_display_div_theme_default table.bmlt_table span.bmlt_table_header_selected_sort_direction_desc
+{
+    background-image:url("images/TableSortDesc.gif");
+}
+
+div.bmlt_table_display_div_theme_default table.bmlt_table td span
+{
+    padding: 0.125em;
+    display: block;
+    color: #555;
+}
+
+div.bmlt_table_display_div_theme_default table.bmlt_table td div.bmlt_formats_div span
+{
+    margin: 0.125em;
+    line-height:2em;
+    height:2em;
+    width:2em;
+    vertical-align:middle;
+    text-align:center;
+    color: white;
+    background-color: #555;
+    float:left;
+    border-radius: 1.25em;
+    -moz-border-radius: 1.25em;
+    -webkit-border-radius: 1.25em;
+    cursor:pointer;
+}
+
+div.bmlt_table_display_div_theme_default table.bmlt_table tr.bmlt_row_odd td
+{
+    background-color: #eee;
+}
+
+div.bmlt_table_display_div_theme_default table.bmlt_table tr td
+{
+    border-left:1px dashed #555;
+    margin:0;
+    padding:0;
+}
+
+div.bmlt_table_display_div_theme_default table.bmlt_table tr td.bmlt_table_tbody_td_time,
+div.bmlt_table_display_div_theme_default table.bmlt_table tr td.bmlt_table_tbody_td_town
+{
+    line-height:100%;
+    vertical-align:middle;
+}
+
+div.bmlt_table_display_div_theme_default table.bmlt_table tr td.bmlt_table_tbody_td_time
+{
+    text-align:center;
+}
+
