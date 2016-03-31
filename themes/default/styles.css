@@ -798,7 +798,7 @@ div.bmlt_table_display_div_theme_default
     padding:0;
 }
 
-div.bmlt_table_display_div_theme_default ul.bmlt_table_header_weekday_list
+#content div.bmlt_table_display_div_theme_default ul.bmlt_table_header_weekday_list
 {
     width:100%;
     display:block;
@@ -806,10 +806,7 @@ div.bmlt_table_display_div_theme_default ul.bmlt_table_header_weekday_list
     list-style-position:outside;
     clear:both;
     float:none;
-    margin-top:0;
-    margin-bottom:0;
-    margin-left:0 !important;
-    margin-right:0;
+    margin:0;
     padding:0;
 }
 
