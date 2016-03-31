@@ -831,7 +831,12 @@ div.bmlt_table_display_div_theme_BlueAndRed ul.bmlt_table_header_weekday_list
     display:block;
     list-style-type:none;
     list-style-position:outside;
-    margin:0;
+    clear:both;
+    float:none;
+    margin-top:0;
+    margin-bottom:0;
+    margin-left:0;
+    margin-right:0;
     padding:0;
 }
 
