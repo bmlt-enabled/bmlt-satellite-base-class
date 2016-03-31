@@ -65,14 +65,14 @@ div.bmlt_table_display_div_theme_BlueAndRed table.bmlt_table th.bmlt_table_heade
     color: white;
 }
 
-div.bmlt_table_display_div_theme_BlueAndRed table.bmlt_table span.bmlt_table_header_selected_sort_direction_asc
+div.bmlt_table_display_div_theme_BlueAndRed table.bmlt_table th span.bmlt_table_header_selected_sort_direction_asc
 {
-    background-image:url("images/TableSortAsc.gif");
+    background-image:url("themes/BlueAndRed/images/TableSortAsc.gif");
 }
 
-div.bmlt_table_display_div_theme_BlueAndRed table.bmlt_table span.bmlt_table_header_selected_sort_direction_desc
+div.bmlt_table_display_div_theme_BlueAndRed table.bmlt_table th span.bmlt_table_header_selected_sort_direction_desc
 {
-    background-image:url("images/TableSortDesc.gif");
+    background-image:url("themes/BlueAndRed/images/TableSortDesc.gif");
 }
 
 
