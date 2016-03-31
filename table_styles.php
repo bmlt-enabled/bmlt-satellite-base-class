@@ -36,23 +36,24 @@
 
 function loadTable_StyleFile ( $in_theme_dirname )
     {
-    $pathname = dirname ( __FILE__ )."/themes/$in_theme_dirname/table_styles.css";
+    $pathname = dirname ( __FILE__ )."$in_theme_dirname/table_styles.css";
     $opt = file_get_contents ( $pathname );
     $opt = preg_replace( "|\/\*.*?\*\/|s", "", $opt );
     $opt = preg_replace( "|\s+|s", " ", $opt );
     return $opt;
     }
 
+$opt = loadTable_StyleFile ( "" );
+
 $dir_res = opendir ( dirname ( __FILE__ ).'/themes' );
+
 if ( $dir_res )
     {
-    $opt = '';
-
     while ( false !== ( $dir_name = readdir ( $dir_res ) ) )
         {
         if ( !preg_match ( '/^\./', $dir_name ) && is_dir ( dirname ( __FILE__ ).'/themes/'.$dir_name ) && file_exists ( dirname ( __FILE__ ).'/themes/'.$dir_name.'/table_styles.css' ) )
             {
-            $opt .= loadTable_StyleFile ( $dir_name );
+            $opt .= loadTable_StyleFile ( "/themes/$dir_name" );
             }
         }
 
