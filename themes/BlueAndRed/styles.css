@@ -2,7 +2,7 @@
     This file is part of the BMLT Common Satellite Base Class Project. The project GitHub
     page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class
 
-    \version 3.2.3
+    \version 3.2.4
     
     This file is part of the BMLT Common Satellite Base Class Project. The project GitHub
     page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class
@@ -980,6 +980,12 @@ div.bmlt_table_display_div_theme_BlueAndRed table.bmlt_table th span
     overflow: hidden;
 }
 
+div.bmlt_table_display_div_theme_BlueAndRed table.bmlt_table th.bmlt_table_header_th_format span
+{
+    color: white;
+    cursor:default;
+}
+
 div.bmlt_table_display_div_theme_BlueAndRed table.bmlt_table span.bmlt_table_header_selected
 {
     background-attachment: local;
@@ -996,12 +1002,6 @@ div.bmlt_table_display_div_theme_BlueAndRed table.bmlt_table span.bmlt_table_hea
 div.bmlt_table_display_div_theme_BlueAndRed table.bmlt_table span.bmlt_table_header_selected_sort_direction_desc
 {
     background-image:url("images/TableSortDesc.gif");
-}
-
-div.bmlt_table_display_div_theme_BlueAndRed table.bmlt_table th.bmlt_table_header_th_format span
-{
-    color: white;
-    cursor:default;
 }
 
 div.bmlt_table_display_div_theme_BlueAndRed table.bmlt_table th span img

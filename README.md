@@ -25,6 +25,9 @@ INSTALLATION
 
 CHANGELIST
 ----------
+*3.2.4*
+* TBD
+
 *3.2.3*
 * March 30, 2016
 * Got rid of an undeclared variable warning.
