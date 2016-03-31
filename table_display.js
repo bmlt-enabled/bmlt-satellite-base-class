@@ -172,7 +172,7 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
 	{
 	    var uri = encodeURI ( this.my_search_query_params + '&sort_keys=' + this.my_selected_sort_key  + ((this.my_sort_dir == 'desc') ? ',desc' : '') +'&bmlt_settings_id=' + this.my_settings_id + '&weekdays[]=' + (parseInt (in_tab_object.index) + 1).toString() ).toString();
 	    uri =  this.my_ajax_base_uri + encodeURI ( 'switcher=GetSearchResults&' ) + uri;
-        this.m_ajax_request = this.utility_AjaxRequest ( uri, this.callback_loadWeekdayData, 'get', in_tab_object );
+        this.m_ajax_request = this.utility_AjaxRequest ( uri, TableSearchDisplay.prototype.callback_loadWeekdayData, 'get', in_tab_object );
 	};
     
     /************************************************************************************//**
@@ -188,7 +188,7 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
 	    
 	    var uri = encodeURI ( this.my_search_query_params + '&bmlt_settings_id=' + this.my_settings_id + '&get_formats_only=1' ).toString();
 	    uri =  this.my_ajax_base_uri + encodeURI ( 'switcher=GetSearchResults&' ) + uri;
-        this.m_ajax_request = this.utility_AjaxRequest ( uri, this.callback_loadFormatData, 'get' );
+        this.m_ajax_request = this.utility_AjaxRequest ( uri, TableSearchDisplay.prototype.callback_loadFormatData, 'get', this );
 	};
 	
     /************************************************************************************//**
@@ -908,7 +908,6 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
             };
         return o.join('');
     };
-    
     /****************************************************************************************
     *################################### MAIN FUNCTION CODE ################################*
     ****************************************************************************************/
@@ -932,4 +931,44 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
     
     this.my_container_object.style.display = 'block';
     this.domBuilder_CreateHeader();
+};
+    
+/****************************************************************************************
+*##################################### CLASS FUNCTIONS #################################*
+****************************************************************************************/
+
+/************************************************************************************//**
+*	\brief  Called when the weekday data is loaded.
+*           This loads the tab object with a cache of the retrieved JSON data, and has
+*           the tab object select itself.
+****************************************************************************************/
+TableSearchDisplay.prototype.callback_loadWeekdayData = function (  in_response_object, ///< The HTTPRequest response object.
+                                                                    in_tab_object       ///< The weekday index, plus one (because JS likes to undefine zeroes).
+                                                                    )
+{
+    eval ( "var json_response = " + in_response_object.responseText + ";" );    // Extract the JSON object with the returned data.
+    in_tab_object.json_data = json_response;
+    in_tab_object.select();
+};
+
+/************************************************************************************//**
+*	\brief  Called when the weekday data is loaded.
+*           This loads the tab object with a cache of the retrieved JSON data, and has
+*           the tab object select itself.
+****************************************************************************************/
+TableSearchDisplay.prototype.callback_loadFormatData = function (   in_response_object, ///< The HTTPRequest response object.
+                                                                    in_context_object
+                                         )
+{
+    for ( var i = 0; i < 7; i++ )
+        {
+        var tab_object = in_context_object.my_weekday_links[i];
+        tab_object.className = 'bmlt_table_header_weekday_list_element';
+        };
+    
+    eval ( "var format_data = " + in_response_object.responseText + ";" );    // Extract the JSON object with the returned data.
+    in_context_object.my_format_data = format_data;
+    in_context_object.my_format_data = in_context_object.my_format_data.formats;
+    var d = new Date();
+    in_context_object.my_header_container.selectTab ( d.getDay() );
 };
