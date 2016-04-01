@@ -4,7 +4,7 @@
 *   \file   lang_da.php                                                                     *
 *                                                                                           *
 *   \brief  This file contains Danish localizations.                                        *
-*   \version 3.2.4                                                                          *
+*   \version 3.2.5                                                                          *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *

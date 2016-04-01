@@ -25,6 +25,10 @@ INSTALLATION
 
 CHANGELIST
 ----------
+*3.2.5*
+* TBD
+* Minor styling fixes for the table header.
+
 *3.2.4*
 * April 1, 2016 (Happy April Fools'!)
 * Broke the table styling out into separate files that are all loaded at once. This allows a lot more flexibility when implementing the table display.

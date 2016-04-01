@@ -1,5 +1,5 @@
 /*    
-    \version 3.2.4
+    \version 3.2.5
     
     This file is part of the BMLT Common Satellite Base Class Project. The project GitHub
     page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class
@@ -33,6 +33,7 @@ div.bmlt_table_display_div
     padding:0;
     font-size:small;
     font-family:Arial, Sans-Serif
+    vertical-align:top;
 }
 
 #content div.bmlt_table_display_div ul.bmlt_table_header_weekday_list
@@ -136,6 +137,19 @@ div.bmlt_table_display_div table.bmlt_table tr
     vertical-align:top;
 }
 
+div.bmlt_table_display_div table.bmlt_table th span
+{
+    margin:-1px;
+    display: block;
+    line-height:2em;
+    height:2em;
+    width:100%;
+    vertical-align:middle;
+    cursor:pointer;
+    overflow: hidden;
+    text-align:center;
+}
+
 div.bmlt_table_display_div table.bmlt_table th.bmlt_table_header_th_time
 {
     width: 7%;
@@ -159,18 +173,6 @@ div.bmlt_table_display_div table.bmlt_table th.bmlt_table_header_th_address
 div.bmlt_table_display_div table.bmlt_table th.bmlt_table_header_th_format
 {
     width: 10%;
-}
-
-div.bmlt_table_display_div table.bmlt_table th span
-{
-    margin:-1px;
-    display: block;
-    line-height:2em;
-    height:2em;
-    width:100%;
-    vertical-align:middle;
-    cursor:pointer;
-    overflow: hidden;
 }
 
 div.bmlt_table_display_div table.bmlt_table th.bmlt_table_header_th_format span
