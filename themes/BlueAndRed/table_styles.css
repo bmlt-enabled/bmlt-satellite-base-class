@@ -31,7 +31,7 @@ div.bmlt_table_display_div_theme_BlueAndRed .bmlt_table_header_weekday_list li
     border-color: #f30;
 }
 
-div.bmlt_table_display_div .bmlt_table_header_weekday_list span
+div.bmlt_table_display_div_div_theme_BlueAndRed .bmlt_table_header_weekday_list li span
 {
     color:#f30;
 }
@@ -60,6 +60,12 @@ div.bmlt_table_display_div_theme_BlueAndRed table.bmlt_table th span
     color: #f30;
 }
 
+div.bmlt_table_display_div_theme_BlueAndRed .bmlt_table_header_weekday_list span.bmlt_table_mouseover,
+div.bmlt_table_display_div_theme_BlueAndRed table.bmlt_table th span.bmlt_table_mouseover
+{
+    color: #ff0;
+}
+
 div.bmlt_table_display_div_theme_BlueAndRed table.bmlt_table th.bmlt_table_header_th_format span
 {
     color: white;
@@ -70,16 +76,30 @@ div.bmlt_table_display_div_theme_BlueAndRed table.bmlt_table th span.bmlt_table_
     background-image:url("themes/BlueAndRed/images/TableSortAsc.gif");
 }
 
+div.bmlt_table_display_div_theme_BlueAndRed table.bmlt_table th span.bmlt_table_header_selected_sort_direction_asc.bmlt_table_mouseover
+{
+    background-image:url("themes/BlueAndRed/images/TableSortAsc_mouseover.gif");
+}
+
 div.bmlt_table_display_div_theme_BlueAndRed table.bmlt_table th span.bmlt_table_header_selected_sort_direction_desc
 {
     background-image:url("themes/BlueAndRed/images/TableSortDesc.gif");
 }
 
+div.bmlt_table_display_div_theme_BlueAndRed table.bmlt_table th span.bmlt_table_header_selected_sort_direction_desc.bmlt_table_mouseover
+{
+    background-image:url("themes/BlueAndRed/images/TableSortDesc_mouseover.gif");
+}
 
 div.bmlt_table_display_div_theme_BlueAndRed table.bmlt_table td div.bmlt_formats_div span
 {
-    color: white;
+    color: #f30;
     background-color: #006;
+}
+
+div.bmlt_table_display_div_theme_BlueAndRed table.bmlt_table td div.bmlt_formats_div span.bmlt_table_mouseover
+{
+    color: #ff0;
 }
 
 div.bmlt_table_display_div_theme_BlueAndRed table.bmlt_table tr.bmlt_row_odd td

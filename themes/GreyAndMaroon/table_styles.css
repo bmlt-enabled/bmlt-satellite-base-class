@@ -31,7 +31,7 @@ div.bmlt_table_display_div_theme_GreyAndMaroon .bmlt_table_header_weekday_list l
     border-color: #ccc;
 }
 
-div.bmlt_table_display_div .bmlt_table_header_weekday_list span
+div.bmlt_table_display_div_theme_GreyAndMaroon .bmlt_table_header_weekday_list li span
 {
     color:#ccc;
     font-size:large;
@@ -55,6 +55,12 @@ div.bmlt_table_display_div_theme_GreyAndMaroon table.bmlt_table th
     border-left:1px solid #ccc;
 }
 
+div.bmlt_table_display_div_theme_GreyAndMaroon .bmlt_table_header_weekday_list span.bmlt_table_mouseover,
+div.bmlt_table_display_div_theme_GreyAndMaroon table.bmlt_table th span.bmlt_table_mouseover
+{
+    color: #0f0;
+}
+
 div.bmlt_table_display_div_theme_GreyAndMaroon table.bmlt_table th span
 {
     background-color: #600;
@@ -66,9 +72,19 @@ div.bmlt_table_display_div_theme_GreyAndMaroon table.bmlt_table span.bmlt_table_
     background-image:url("themes/GreyAndMaroon/images/TableSortAsc.gif");
 }
 
+div.bmlt_table_display_div_theme_GreyAndMaroon table.bmlt_table span.bmlt_table_header_selected_sort_direction_asc.bmlt_table_mouseover
+{
+    background-image:url("themes/GreyAndMaroon/images/TableSortAsc_mouseover.gif");
+}
+
 div.bmlt_table_display_div_theme_GreyAndMaroon table.bmlt_table span.bmlt_table_header_selected_sort_direction_desc
 {
     background-image:url("themes/GreyAndMaroon/images/TableSortDesc.gif");
+}
+
+div.bmlt_table_display_div_theme_GreyAndMaroon table.bmlt_table span.bmlt_table_header_selected_sort_direction_desc.bmlt_table_mouseover
+{
+    background-image:url("themes/GreyAndMaroon/images/TableSortDesc_mouseover.gif");
 }
 
 div.bmlt_table_display_div_theme_GreyAndMaroon table.bmlt_table td span
@@ -80,6 +96,11 @@ div.bmlt_table_display_div_theme_GreyAndMaroon table.bmlt_table td div.bmlt_form
 {
     color: #ccc;
     background-color: #600;
+}
+
+div.bmlt_table_display_div_theme_GreyAndMaroon table.bmlt_table td div.bmlt_formats_div span.bmlt_table_mouseover
+{
+    color: #0f0;
 }
 
 div.bmlt_table_display_div_theme_GreyAndMaroon table.bmlt_table tr.bmlt_row_odd td

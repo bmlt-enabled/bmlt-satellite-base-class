@@ -30,6 +30,8 @@ div.bmlt_table_display_div
     width:100%;
     margin:0;
     padding:0;
+    font-size:small;
+    font-family:Arial, Sans-Serif
 }
 
 #content div.bmlt_table_display_div ul.bmlt_table_header_weekday_list
@@ -66,11 +68,11 @@ div.bmlt_table_display_div .bmlt_table_header_weekday_list li
     -webkit-border-top-right-radius: 0.5em;
 }
 
-div.bmlt_table_display_div .bmlt_table_header_weekday_list span
+div.bmlt_table_display_div .bmlt_table_header_weekday_list li span.bmlt_table_weekday_span
 {
     display:block;
     font-weight:bold;
-    font-size:large;
+    font-size:larger;
 }
 
 div.bmlt_table_display_div .bmlt_table_header_weekday_list img
@@ -191,6 +193,7 @@ div.bmlt_table_display_div table.bmlt_table td span
 
 div.bmlt_table_display_div table.bmlt_table td div.bmlt_formats_div span
 {
+    font-size:smaller;
     margin: 0.125em;
     line-height:2em;
     height:2em;
@@ -222,3 +225,10 @@ div.bmlt_table_display_div table.bmlt_table tr td.bmlt_table_tbody_td_time
     text-align:center;
 }
 
+@media screen and (max-width: 480px)
+{
+    div.bmlt_table_display_div
+    {
+        font-size:x-small;
+    }
+}

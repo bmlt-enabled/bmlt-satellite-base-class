@@ -357,7 +357,8 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
 	    if ( in_format_string )
 	        {
             var ret = document.createElement ( 'span' );
-            ret.className = 'bmlt_format_span bmlt_format_span_' + in_format_string;
+            ret.rest_className = 'bmlt_format_span bmlt_format_span_' + in_format_string;
+            ret.className = ret.rest_className;
             ret.appendChild ( document.createTextNode ( in_format_string ) );
             for ( var i = 0; i < this.my_format_data.length; i++ )
                 {
@@ -368,7 +369,20 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
                     var title_string = format_object.name_string;
                     ret.setAttribute ( 'title', title_string );
                     var description_string = format_object.description_string;
-                    ret.onclick = function() { alert ( description_string ); };
+                    ret.onclick = function()
+                        {
+                        alert ( description_string );
+                        };
+                
+                    ret.onmouseover = function ()
+                        {
+                        this.className = this.rest_className + ' bmlt_table_mouseover';
+                        };
+        
+                    ret.onmouseout = function ()
+                        {
+                        this.className = this.rest_className;
+                        };
                     };
                 };
             return ret;
@@ -502,7 +516,19 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
 
         var textNode = document.createElement ( 'span' );
         textNode.appendChild ( document.createTextNode ( g_table_weekday_name_array[in_weekday_index] ) );
-        textNode.className = 'bmlt_table_weekday_span';
+        textNode.rest_className = 'bmlt_table_weekday_span';
+        textNode.className = textNode.rest_className;
+                
+        textNode.onmouseover = function ()
+            {
+            this.className = this.rest_className + ' bmlt_table_mouseover';
+            };
+        
+        textNode.onmouseout = function ()
+            {
+            this.className = this.rest_className;
+            };
+
         weekdayElement.appendChild ( textNode );
         
         var throbberImage = document.createElement ( 'img' );   // This will be the throbber.
@@ -513,7 +539,7 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
         // This inline function will force a reload of the search for the given weekday.
         weekdayElement.reload = function()
             {
-                if ( this.className != 'bmlt_table_header_weekday_list_element is_loading' )
+                if ( this.rest_className != 'bmlt_table_header_weekday_list_element is_loading' )
                     {
                     if ( this.handler.my_body_container )   // Clear any preexisting condition.
                         {
@@ -523,7 +549,8 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
                         };
                 
                     this.json_data = null;
-                    this.className = 'bmlt_table_header_weekday_list_element is_loading';
+                    this.rest_className = 'bmlt_table_header_weekday_list_element is_loading';
+                    this.className = this.rest_className;
                     
                     // Set a title, saying what is happening.
                     this.setAttribute ( 'title', this.handler.sprintf ( g_table_header_tab_loading_format, g_table_weekday_long_name_array[this.index] ) );
@@ -537,7 +564,7 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
         weekdayElement.select = function()
             {
             // We don't do anything if it is already selected, or is loading.
-            if ( this.className != 'bmlt_table_header_weekday_list_element is_selected' )
+            if ( this.rest_className != 'bmlt_table_header_weekday_list_element is_selected' )
                 {
                 if ( !this.json_data )
                     {
@@ -562,7 +589,8 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
                             if ( tabObject.index != this.index )
                                 {
                                 // This is not selected or loading.
-                                tabObject.className = 'bmlt_table_header_weekday_list_element';
+                                tabObject.rest_className = 'bmlt_table_header_weekday_list_element';
+                                tabObject.className = tabObject.rest_className;
                                 // Set a title, saying what will happen when this is clicked.
                                 tabObject.setAttribute ( 'title', this.handler.sprintf ( g_table_header_tab_format, g_table_weekday_long_name_array[tabObject.index] ) );
         
@@ -574,7 +602,8 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
                             };
                         };
                     
-                    this.className = 'bmlt_table_header_weekday_list_element is_selected';
+                    this.rest_className = 'bmlt_table_header_weekday_list_element is_selected';
+                    this.className = this.rest_className;
                     this.handler.my_selected_tab = this;
                     this.sort_key = this.handler.my_selected_sort_key;
                     this.sort_dir = this.handler.my_sort_dir;
@@ -676,9 +705,21 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
         textNode.sort_dir = in_sort_dir;
         textNode.sort_key = in_sort_key;
         textNode.handler = this;
+        
+        textNode.onmouseover = function ()
+            {
+            this.className = this.rest_className + ' bmlt_table_mouseover';
+            };
+        
+        textNode.onmouseout = function ()
+            {
+            this.className = this.rest_className;
+            };
+        
         if ( in_sort_key && in_is_selected )
             {
-            textNode.className = 'bmlt_table_header_selected ' + 'bmlt_table_header_selected_sort_direction_' + ((in_sort_dir == 'asc') ? 'asc' : 'desc');
+            textNode.rest_className = 'bmlt_table_header_selected ' + 'bmlt_table_header_selected_sort_direction_' + ((in_sort_dir == 'asc') ? 'asc' : 'desc');
+            textNode.className = textNode.rest_className;
             textNode.is_selected = true;
             };
         
@@ -702,7 +743,8 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
             }
         else
             {
-            textNode.className = 'bmlt_header_formats_span';
+            textNode.rest_className = 'bmlt_header_formats_span';
+            textNode.className = textNode.rest_className;
             };
         
         thElement.appendChild ( textNode );
