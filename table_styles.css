@@ -115,16 +115,6 @@ div.bmlt_table_display_div table.bmlt_table,
 div.bmlt_table_display_div table.bmlt_table thead,
 div.bmlt_table_display_div table.bmlt_table th,
 div.bmlt_table_display_div table.bmlt_table tr,
-div.bmlt_table_display_div table.bmlt_table td span,
-div.bmlt_table_display_div table.bmlt_table th span
-{
-    width:100%;
-}
-
-div.bmlt_table_display_div table.bmlt_table,
-div.bmlt_table_display_div table.bmlt_table thead,
-div.bmlt_table_display_div table.bmlt_table th,
-div.bmlt_table_display_div table.bmlt_table tr,
 div.bmlt_table_display_div table.bmlt_table td,
 div.bmlt_table_display_div table.bmlt_table th span
 {
@@ -192,6 +182,12 @@ div.bmlt_table_display_div table.bmlt_table td span
 {
     padding: 0.125em;
     display: block;
+}
+
+div.bmlt_table_display_div table.bmlt_table td span.bmlt_table_state_span,
+div.bmlt_table_display_div table.bmlt_table td span.bmlt_table_location_text_span
+{
+    display:inline;
 }
 
 div.bmlt_table_display_div table.bmlt_table td div.bmlt_formats_div span

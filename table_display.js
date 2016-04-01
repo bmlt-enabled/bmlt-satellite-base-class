@@ -4,6 +4,26 @@
 *                                                                                           *
 *   \version 3.2.5                                                                          *
 *                                                                                           *
+*   This file contains a function/object that implements the Fast Table Shortcode. Upon     *
+*   instantiation, it uses the page DOM to create a tabular display of meetings that are    *
+*   returned by a focused semantic search. The meetings are segregated by weekday, and only *
+*   one weekday is populated at a time. Clicking on another weekday will start an AJAX      *
+*   query to the server, fetching the meetings for that weekday (and only that weekday).    *
+*   Search results are cached.                                                              *
+*                                                                                           *
+*   The displayed meetings can be sorted by clicking on the column headers (with the sort   *
+*   direction being changed by repeated clicks). Changing the sort flushes all cached data. *
+*                                                                                           *
+*   This class was designed to be highly self-contained. It can be instantiated multiple    *
+*   times per page, with each instance reflecting a different set of settings from the      *
+*   BMLT Administration setup (Theme, Week Start, Time Format and Root Server). The basic   *
+*   search parameters are passed in upon instantiation. These define the dataset to be      *
+*   fetched and displayed. The dataset is retrieved through a standard JSON semantic query  *
+*   to the instance's Root Server.                                                          *
+*                                                                                           *
+*   This should only be used on Root Server version 2.7.8 or above, because the town sort   *
+*   will not work properly on older versions (but this will generally work, anyway).        *
+*                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
 *                                                                                           *
@@ -28,12 +48,12 @@
 /****************************************************************************************//**
 *	\brief  
 ********************************************************************************************/
-function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of the container div.
-                                in_settings_id,     ///< The ID of the settings used for this table.
-                                in_ajax_base_uri,   ///< The base URI for AJAX callbacks.
-                                in_start_weekday,   ///< The weekday that starts the week. 0 is Sunday, 6 is Saturday.
+function TableSearchDisplay (   in_display_id,          ///< The element DOM ID of the container div.
+                                in_settings_id,         ///< The ID of the settings used for this table.
+                                in_ajax_base_uri,       ///< The base URI for AJAX callbacks.
+                                in_start_weekday,       ///< The weekday that starts the week. 0 is Sunday, 6 is Saturday.
                                 in_is_military_time,    ///< True, if the time is to be displayed as military.
-                                in_search_params    ///< The query parameters for the base search.
+                                in_search_params        ///< The query parameters for the base search.
                             )
 {
 	/****************************************************************************************
@@ -166,6 +186,7 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
     /************************************************************************************//**
     *	\brief  Called to load a weekday.
     *           This is called when the tab doesn't yet have a cache.
+    *           This uses the filter established by the query parameters passed in on instantiation.
     ****************************************************************************************/
 	this.utility_loadWeekdayData = function (   in_tab_object       ///< The tab object.
 	                                        )
@@ -177,6 +198,8 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
     
     /************************************************************************************//**
     *	\brief  Called to load all the format objects for the search.
+    *           This will give us the "used formats" for the given filtered search.
+    *           This uses the filter established by the query parameters passed in on instantiation.
     ****************************************************************************************/
 	this.utility_loadFormatData = function()
 	{
@@ -207,11 +230,13 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
 	        var hours = parseInt ( time_array[0] );
 	        var minutes = parseInt ( time_array[1] ).toString();
 	        
+	        // Padding with a leading 0.
 	        if ( parseInt ( time_array[1] ) < 10 )
 	            {
 	            minutes = "0" + minutes;
 	            };
 	        
+	        // Subtract 12 from afternoon.
 	        if ( hours > 12 )
 	            {
 	            hours -= 12;
@@ -219,6 +244,7 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
 	            }
 	        else if ( hours == 12 )
 	            {
+	            // We use "Noon" and "Midnight" strings for those times.
 	            if ( (parseInt ( time_array[0] ) == 12) && (parseInt ( time_array[1] ) == 0) )
 	                {
 	                hours = g_table_ampm_array[2];
@@ -230,6 +256,8 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
 	                ampm = g_table_ampm_array[1];
 	                };
 	            }
+            // Kludge, to make "Midnight" late, as the computer wants it to be early.
+            // Anything over 23:54:59 is "Midnight."
 	        else if ( (parseInt ( time_array[0] ) == 23) && (parseInt ( time_array[1] ) >= 55) )
 	            {
                 hours = g_table_ampm_array[3];
@@ -239,10 +267,14 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
 	        
 	        ret = hours.toString() + ((minutes != "") ? (':' + minutes + ' ' + ampm) : "");
 	        }
+	    // We use "Noon" and "Midnight" strings for those times.
+	    // We use these, even for military time, which is why we are doing this here.
 	    else if ( (parseInt ( time_array[0] ) == 12) && (parseInt ( time_array[1] ) == 0) )
             {
             ret = g_table_ampm_array[2];
             }
+        // Kludge, to make "Midnight" late, as the computer wants it to be early.
+        // Anything over 23:54:59 is "Midnight."
 	    else if ( (parseInt ( time_array[0] ) == 23) && (parseInt ( time_array[1] ) >= 55) )
             {
             ret = g_table_ampm_array[3];
@@ -253,6 +285,7 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
 	
     /************************************************************************************//**
     *	\brief  This builds a readable aggregated street address from the components in the JSON.
+    *           Very simply, we just do the location name and street address.
     ****************************************************************************************/
 	this.utility_createStreetAddress = function ( in_json_data    ///< The JSON data for one meeting.
 	                                        )
@@ -261,7 +294,9 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
 
 	    if ( in_json_data.location_text && in_json_data.location_text.toString() )
 	        {
-	        ret = in_json_data.location_text.toString();
+	        ret = '<span class="bmlt_table_location_text_span">';  // This allows folks to hide the state.
+	        ret += in_json_data.location_text.toString();
+	        ret += '</span>';
 	        };
 	    
 	    if ( in_json_data.location_street && in_json_data.location_street.toString() )
@@ -285,6 +320,7 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
 	{
 	    var ret = '';
 	    
+	    // We prefer boroughs, as folks think of them as "towns."
 	    if ( in_json_data.location_city_subsection && in_json_data.location_city_subsection.toString() )
 	        {
 	        if ( ret != '' )
@@ -307,14 +343,17 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
                 };
             };
         
+        // Add the state.
 	    if ( in_json_data.location_province && in_json_data.location_province.toString() )
 	        {
+	        ret += '<span class="bmlt_table_state_span">';  // This allows folks to hide the state.
 	        if ( ret != '' )
 	            {
 	            ret += ', ';
 	            };
 	        
 	        ret += in_json_data.location_province.toString();
+	        ret += '</span>';
 	        };
 	        
 	    return ret;
@@ -768,9 +807,13 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
             for ( var i = 0; i < in_json_data.length; i++ )
                 {
                 var meeting_json = in_json_data[i];
-                var meeting_object = this.domBuilder_PopulateWeekdayBody_one_meeting ( meeting_json );
-                meeting_object.className += (' bmlt_row' + ((i % 2) ? '_odd' : '_even'));
-                this.my_body_container_body.appendChild ( meeting_object );
+                var meeting_objects = this.domBuilder_PopulateWeekdayBody_one_meeting ( meeting_json );
+                for ( var c = 0; c < meeting_objects.length; c++ )
+                    {
+                    meeting_object = meeting_objects[c];
+                    meeting_object.className += (' bmlt_row' + ((i % 2) ? '_odd' : '_even'));
+                    this.my_body_container_body.appendChild ( meeting_object );
+                    };
                 };
             };
         
@@ -778,23 +821,51 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
     };
     
     /************************************************************************************//**
-    *	\brief Populates one row 
+    *	\brief  Populates one row
+    *           This returns an array, because comments can create an extra row,
     ****************************************************************************************/
     this.domBuilder_PopulateWeekdayBody_one_meeting = function (  in_json_data  ///< The JSON data for the meetings.
                                                                 )
     {
+        var array_ret = Array();
         var rowElement = document.createElement ( 'tr' );
         rowElement.className = 'bmlt_table_tbody_tr';
+        array_ret[0] = rowElement;
+        var comments = null;
         
-        rowElement.appendChild ( this.domBuilder_PopulateWeekdayBody_one_column ( 'time', this.utility_convertTime ( in_json_data.start_time.toString() ), 0, 0 ) );
-        rowElement.appendChild ( this.domBuilder_PopulateWeekdayBody_one_column ( 'town', this.utility_createAddressTown ( in_json_data ), 0, 0 ) );
-        rowElement.appendChild ( this.domBuilder_PopulateWeekdayBody_one_column ( 'name', in_json_data.meeting_name.toString(), 0, 0 ) );
+        if ( in_json_data.comments )
+            {
+            comments = in_json_data.comments;
+            };
+        
         var latitude = in_json_data.latitude;
         var longitude = in_json_data.longitude;
-        rowElement.appendChild ( this.domBuilder_PopulateWeekdayBody_one_column ( 'address', this.utility_createStreetAddress ( in_json_data ), latitude, longitude ) );
-        rowElement.appendChild ( this.domBuilder_PopulateWeekdayBody_one_column ( 'formats', in_json_data.formats.toString(), 0, 0 ) );
+
+        var time_column = this.domBuilder_PopulateWeekdayBody_one_column ( 'time', this.utility_convertTime ( in_json_data.start_time.toString() ), 0, 0 );
+        var town_column = this.domBuilder_PopulateWeekdayBody_one_column ( 'town', this.utility_createAddressTown ( in_json_data ), 0, 0 );
+        var name_column = this.domBuilder_PopulateWeekdayBody_one_column ( 'name', in_json_data.meeting_name.toString(), 0, 0 );
+        var address_column = this.domBuilder_PopulateWeekdayBody_one_column ( 'address', this.utility_createStreetAddress ( in_json_data ), latitude, longitude );
+        var format_column = this.domBuilder_PopulateWeekdayBody_one_column ( 'formats', in_json_data.formats.toString(), 0, 0 );
         
-        return rowElement;
+        if ( comments )
+            {
+            var rowElement2 = document.createElement ( 'tr' );
+            rowElement2.className = 'bmlt_table_tbody_comments_tr';
+            time_column.rowSpan = 2;
+            format_column.rowSpan = 2;
+            comments_column = this.domBuilder_PopulateWeekdayBody_one_column ( 'comments', comments, 0, 0 );
+            comments_column.colSpan = 3;
+            rowElement2.appendChild ( comments_column );
+            array_ret[1] = rowElement2;
+            };
+        
+        rowElement.appendChild ( time_column );
+        rowElement.appendChild ( town_column );
+        rowElement.appendChild ( name_column );
+        rowElement.appendChild ( address_column );
+        rowElement.appendChild ( format_column );
+        
+        return array_ret;
     };
     
     /************************************************************************************//**
@@ -822,7 +893,7 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
             var textNode = document.createElement ( 'span' );
             var anchorNode = document.createElement ( 'a' );
             anchorNode.href= this.sprintf ( g_table_map_link_uri_format, parseFloat ( in_latitude ), parseFloat ( in_longitude ) );
-            anchorNode.appendChild ( document.createTextNode ( in_string ) );
+            anchorNode.innerHTML = in_string;
             textNode.appendChild ( anchorNode );
             columnElement.appendChild ( textNode );
             }
@@ -830,7 +901,7 @@ function TableSearchDisplay (   in_display_id,      ///< The element DOM ID of t
             {
             var textNode = document.createElement ( 'span' );
             textNode.className = 'bmlt_table_tbody_td_span_' + in_tag;
-            textNode.appendChild ( document.createTextNode ( in_string ) );
+            textNode.innerHTML = in_string;
             columnElement.appendChild ( textNode );
             };
             
