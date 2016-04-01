@@ -214,6 +214,7 @@ div.bmlt_table_display_div table.bmlt_table tr td
 {
     margin:0;
     padding:0;
+    vertical-align:top;
 }
 
 div.bmlt_table_display_div table.bmlt_table tr td.bmlt_table_tbody_td_time,
