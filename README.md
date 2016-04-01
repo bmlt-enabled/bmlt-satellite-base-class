@@ -26,7 +26,7 @@ INSTALLATION
 CHANGELIST
 ----------
 *3.2.4*
-* TBD
+* April 1, 2016 (Happy April Fools'!)
 * Broke the table styling out into separate files that are all loaded at once. This allows a lot more flexibility when implementing the table display.
 * Tweaked the GNYR style.
 * The JavaScript had a fundamental error that prevented multiple instances of the table. That's been fixed.
