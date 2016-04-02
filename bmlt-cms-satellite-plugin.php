@@ -1575,14 +1575,19 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
         $old_content = $in_the_content; // We check to see if we added anything.
         // Simple searches can be mixed in with other content.
         $in_the_content = $this->display_table_search ( $in_the_content );
-
-        $in_the_content = $this->display_simple_search ( $in_the_content );
-
-        $in_the_content = $this->display_changes ( $in_the_content );
         
-        $in_the_content = $this->display_new_map_search ( $in_the_content );
+        $options = $this->getBMLTOptions_by_id ( $this->my_http_vars['bmlt_settings_id'] );
+                
+        if ( file_exists ( dirname ( __FILE__ ).'/themes/'.$options['theme'].'/styles.css' ) && file_exists ( dirname ( __FILE__ ).'/themes/'.$options['theme'].'/nouveau_map_styles.css' ) )
+            {
+            $in_the_content = $this->display_simple_search ( $in_the_content );
+
+            $in_the_content = $this->display_changes ( $in_the_content );
         
-        $in_the_content = $this->display_bmlt_nouveau ( $in_the_content );
+            $in_the_content = $this->display_new_map_search ( $in_the_content );
+        
+            $in_the_content = $this->display_bmlt_nouveau ( $in_the_content );
+            }
         
         // This simply ensures that we remove any unused mobile shortcodes.
         $in_the_content = self::replace_shortcode ( $in_the_content, 'bmlt_mobile', '' );

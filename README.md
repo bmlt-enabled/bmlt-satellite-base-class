@@ -28,6 +28,7 @@ CHANGELIST
 *3.2.5*
 * TBD
 * Minor styling fixes for the table header.
+* Made it so that we can have specialized themes, amied at only certain shortcodes.
 
 *3.2.4*
 * April 1, 2016 (Happy April Fools'!)

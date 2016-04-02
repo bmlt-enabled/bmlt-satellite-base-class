@@ -355,31 +355,42 @@ class BMLTUTestPlugin extends BMLTPlugin
         $root_server_root = $options['root_server'];
         
         $head_content .= '<link rel="stylesheet" type="text/css" href="';
-        
-        $url = $this->get_plugin_path();
-        
-        $head_content .= htmlspecialchars ( $url.'themes/'.$options['theme'].'/' );
-        
-        if ( !defined ('_DEBUG_MODE_' ) )
-            {
-            $head_content .= 'style_stripper.php?filename=';
-            }
-        
-        $head_content .= 'styles.css" />'.(defined ('_DEBUG_MODE_' ) ? "\n" : '');
-        
-        $head_content .= '<link rel="stylesheet" type="text/css" href="';
-        
-        $head_content .= htmlspecialchars ( $url.'themes/'.$options['theme'].'/' );
-        
-        if ( !defined ('_DEBUG_MODE_' ) )
-            {
-            $head_content .= 'style_stripper.php?filename=';
-            }
-        
-        $head_content .= 'nouveau_map_styles.css" />';
 
-        $head_content .= '<link rel="stylesheet" type="text/css" href="table_styles.php" />';
+        $url = $this->get_plugin_path();
+    
+        if ( file_exists ( dirname ( __FILE__ ).'/themes/'.$options['theme'].'/styles.css' ) )
+            {
+            $head_content .= '<link rel="stylesheet" type="text/css" href="';
+    
+            $head_content .= htmlspecialchars ( $url.'themes/'.$options['theme'].'/' );
+    
+            if ( !defined ('_DEBUG_MODE_' ) )
+                {
+                $head_content .= 'style_stripper.php?filename=';
+                }
+    
+            $head_content .= 'styles.css" />';
+            }
+    
+        if ( file_exists ( dirname ( __FILE__ ).'/themes/'.$options['theme'].'/nouveau_map_styles.css' ) )
+            {
+            $head_content .= '<link rel="stylesheet" type="text/css" href="';
+    
+            $head_content .= htmlspecialchars ( $url.'themes/'.$options['theme'].'/' );
+    
+            if ( !defined ('_DEBUG_MODE_' ) )
+                {
+                $head_content .= 'style_stripper.php?filename=';
+                }
+    
+            $head_content .= 'nouveau_map_styles.css" />';
+            }
         
+        if ( file_exists ( dirname ( __FILE__ ).'/table_styles.php' ) )
+            {
+            $head_content .= '<link rel="stylesheet" type="text/css" href="'.$url.'table_styles.php" />';
+            }
+
         if ( $root_server_root )
             {
             $root_server = $root_server_root."/client_interface/xhtml/index.php";
