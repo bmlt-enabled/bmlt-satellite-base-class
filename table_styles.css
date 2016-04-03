@@ -25,8 +25,17 @@
 /* These are global styles for the table display shortcode. */
 /************************************************************/
 
-/* The overall container div */
+/************************************************************/
+/*                      General Purpose                     */
+/************************************************************/
+div.bmlt_breaker_div
+{
+    clear:both;
+}
 
+/************************************************************/
+/*                 The overall container div                */
+/************************************************************/
 div.bmlt_table_display_div
 {
     width:100%;
@@ -286,7 +295,37 @@ div.bmlt_table_display_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_
     width: 43%;
 }
 
-div.bmlt_table_display_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_format
+div.bmlt_table_display_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_formats
 {
     width: 10%;
 }
+
+div.bmlt_table_display_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_li
+{
+    line-height:2em;
+}
+
+div.bmlt_table_display_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_comments span
+{
+    padding-left: 4vw;
+    clear:both;
+}
+
+div.bmlt_table_display_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_formats div.bmlt_formats_div span
+{
+    display:block;
+    float:left;
+    height:3em;
+    width:3em;
+    line-height:3em;
+    vertical-align:middle;
+    text-align:center;
+    border: 0px;
+    border-radius: 1.5em;
+    -moz-border-radius: 1.5em;
+    -webkit-border-radius: 1.5em;
+    font-size:smaller;
+}
+
+
+

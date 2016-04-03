@@ -382,6 +382,12 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
 	    if ( ret.childNodes.length == 0 )
 	        {
 	        ret = null;
+	        }
+	    else
+	        {
+            var div = document.createElement ( 'div' );
+            div.className = 'bmlt_breaker_div';
+	        ret.appendChild ( div );
 	        };
 	    
 	    return ret;
@@ -591,47 +597,40 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
         // If the tab has cached data, then it deselects all the other tabs, selects itself, and populates the main area with the data in its cache.
         weekdayElement.select = function()
             {
-            if ( this.handler.my_selected_tab != this )
+            if ( !this.weekday_json_data )
                 {
-                if ( !this.weekday_json_data )
-                    {
-                    this.reload();
-                    }
-                else
-                    {
-                    if ( this.handler.my_body_container )   // Clear any preexisting condition.
-                        {
-                        this.handler.my_body_container.parentNode.removeChild ( this.handler.my_body_container );
-                        this.handler.my_body_container.innerHTML = '';
-                        this.handler.my_body_container = null;
-                        };
-    
-                    for ( var i = 0; i < 7; i++ )
-                        {
-                        if ( this.handler && this.handler.my_weekday_links && this.handler.my_weekday_links[i] )
-                            {
-                            var tabObject = this.handler.my_weekday_links[i];
-                            // If the indexed object is not ours, then we deselect it.
-                            if ( tabObject.index != this.index )
-                                {
-                                // This is not selected or loading.
-                                tabObject.className = tabObject.rest_className;
-                                // Set a title, saying what will happen when this is clicked.
-                                tabObject.setAttribute ( 'title', this.handler.sprintf ( g_table_header_tab_format, g_table_weekday_long_name_array[tabObject.index] ) );
-                                };
-                            };
-                        };
-                
-                    this.className = this.rest_className + ' is_selected';
-                    this.handler.my_selected_tab = this;
-                    this.sort_key = this.handler.my_selected_sort_key;
-                    this.sort_dir = this.handler.my_sort_dir;
-                    this.handler.domBuilder_PopulateWeekday ( this.weekday_json_data, this.index, this.sort_key, this.sort_dir );
-                    };
+                this.reload();
                 }
             else
                 {
+                if ( this.handler.my_body_container )   // Clear any preexisting condition.
+                    {
+                    this.handler.my_body_container.parentNode.removeChild ( this.handler.my_body_container );
+                    this.handler.my_body_container.innerHTML = '';
+                    this.handler.my_body_container = null;
+                    };
+
+                for ( var i = 0; i < 7; i++ )
+                    {
+                    if ( this.handler && this.handler.my_weekday_links && this.handler.my_weekday_links[i] )
+                        {
+                        var tabObject = this.handler.my_weekday_links[i];
+                        // If the indexed object is not ours, then we deselect it.
+                        if ( tabObject.index != this.index )
+                            {
+                            // This is not selected or loading.
+                            tabObject.className = tabObject.rest_className;
+                            // Set a title, saying what will happen when this is clicked.
+                            tabObject.setAttribute ( 'title', this.handler.sprintf ( g_table_header_tab_format, g_table_weekday_long_name_array[tabObject.index] ) );
+                            };
+                        };
+                    };
+            
                 this.className = this.rest_className + ' is_selected';
+                this.handler.my_selected_tab = this;
+                this.sort_key = this.handler.my_selected_sort_key;
+                this.sort_dir = this.handler.my_sort_dir;
+                this.handler.domBuilder_PopulateWeekday ( this.weekday_json_data, this.index, this.sort_key, this.sort_dir );
                 };
             };
         
@@ -725,25 +724,25 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
         textNode.sort_key = in_sort_key;
         textNode.handler = this;
         
-        textNode.onmouseover = function ()
-            {
-            this.className = this.rest_className + ' bmlt_table_mouseover';
-            };
-        
-        textNode.onmouseout = function ()
-            {
-            this.className = this.rest_className;
-            };
-        
-        if ( in_sort_key && in_is_selected )
-            {
-            textNode.rest_className = 'bmlt_table_header bmlt_table_header_selected' + ' bmlt_table_header_selected_sort_direction_' + ((in_sort_dir == 'asc') ? 'asc' : 'desc');
-            textNode.className = textNode.rest_className;
-            textNode.is_selected = true;
-            };
-        
         if ( in_sort_key )
             {
+            if ( in_is_selected )
+                {
+                textNode.rest_className = 'bmlt_table_header bmlt_table_header_selected' + ' bmlt_table_header_selected_sort_direction_' + ((in_sort_dir == 'asc') ? 'asc' : 'desc');
+                textNode.className = textNode.rest_className;
+                textNode.is_selected = true;
+                };
+        
+            textNode.onmouseover = function ()
+                {
+                this.className = this.rest_className + ' bmlt_table_mouseover';
+                };
+        
+            textNode.onmouseout = function ()
+                {
+                this.className = this.rest_className;
+                };
+
             textNode.onclick = function()
                 {
                 if ( this.handler.my_selected_sort_key == this.sort_key )
@@ -757,6 +756,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
                     {
                     this.handler.my_weekday_links[i].weekday_json_data = null;
                     };
+                
                 this.handler.my_selected_tab.reload();
                 };
             }
@@ -787,23 +787,19 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
         this.my_body_container_body = document.createElement ( 'ul' );
         this.my_body_container_body.className = 'bmlt_table_data_ul';
         
-//         if ( in_json_data.length )
-//             {
-//             for ( var i = 0; i < in_json_data.length; i++ )
-//                 {
-//                 var listElement = document.createElement ( 'li' );
-//                 listElement.className = 'bmlt_table_data_ul_li';
-//                 var meeting_json = in_json_data[i];
-//                 var meeting_objects = this.domBuilder_PopulateWeekdayBody_one_meeting ( meeting_json );
-//                 for ( var c = 0; c < meeting_objects.length; c++ )
-//                     {
-//                     meeting_object = meeting_objects[c];
-//                     meeting_object.className += (' bmlt_row' + ((i % 2) ? '_odd' : '_even'));
-//                     listElement.appendChild ( meeting_object );
-//                     this.my_body_container_body.appendChild ( listElement );
-//                     };
-//                 };
-//             };
+        if ( in_json_data.length )
+            {
+            for ( var i = 0; i < in_json_data.length; i++ )
+                {
+                var listElement = document.createElement ( 'li' );
+                listElement.className = 'bmlt_table_data_ul_li';
+                listElement.className += (' bmlt_row' + ((i % 2) ? '_odd' : '_even'));
+                var meeting_json = in_json_data[i];
+                var meeting_object = this.domBuilder_PopulateWeekdayBody_one_meeting ( meeting_json );
+                listElement.appendChild ( meeting_object );
+                this.my_body_container_body.appendChild ( listElement );
+                };
+            };
         
         return this.my_body_container_body;
     };
@@ -815,10 +811,8 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     this.domBuilder_PopulateWeekdayBody_one_meeting = function (  in_json_data  ///< The JSON data for the meetings.
                                                                 )
     {
-        var array_ret = Array();
         var rowElement = document.createElement ( 'ul' );
         rowElement.className = 'bmlt_table_data_ul_li_ul';
-        array_ret[0] = rowElement;
         var comments = null;
         
         if ( in_json_data.comments )
@@ -841,7 +835,13 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
         rowElement.appendChild ( address_column );
         rowElement.appendChild ( format_column );
         
-        return array_ret;
+        if ( in_json_data.comments )
+            {
+            var comments_column = this.domBuilder_PopulateWeekdayBody_one_column ( 'comments', in_json_data.comments.toString(), 0, 0 );
+            rowElement.appendChild ( comments_column );
+            };
+        
+        return rowElement;
     };
     
     /************************************************************************************//**
