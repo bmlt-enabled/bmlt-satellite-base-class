@@ -38,8 +38,8 @@ function loadTable_StyleFile ( $in_theme_dirname )
     {
     $pathname = dirname ( __FILE__ )."$in_theme_dirname/table_styles.css";
     $opt = file_get_contents ( $pathname );
-    $opt = preg_replace( "|\/\*.*?\*\/|s", "", $opt );
-    $opt = preg_replace( "|\s+|s", " ", $opt );
+//     $opt = preg_replace( "|\/\*.*?\*\/|s", "", $opt );
+//     $opt = preg_replace( "|\s+|s", " ", $opt );
     return $opt;
     }
 

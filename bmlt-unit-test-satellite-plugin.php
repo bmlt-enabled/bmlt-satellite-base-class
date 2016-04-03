@@ -354,8 +354,6 @@ class BMLTUTestPlugin extends BMLTPlugin
         
         $root_server_root = $options['root_server'];
         
-        $head_content .= '<link rel="stylesheet" type="text/css" href="';
-
         $url = $this->get_plugin_path();
     
         if ( file_exists ( dirname ( __FILE__ ).'/themes/'.$options['theme'].'/styles.css' ) )

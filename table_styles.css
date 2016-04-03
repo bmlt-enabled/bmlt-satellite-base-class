@@ -224,11 +224,3 @@ div.bmlt_table_display_div table.bmlt_table tr td.bmlt_table_tbody_td_time
 {
     text-align:center;
 }
-
-@media screen and (max-width: 480px)
-{
-    div.bmlt_table_display_div
-    {
-        font-size:x-small;
-    }
-}

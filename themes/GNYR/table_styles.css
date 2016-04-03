@@ -119,8 +119,10 @@ div.bmlt_table_display_div_theme_GNYR table.bmlt_table tr.bmlt_row_even td
 
 div.bmlt_table_display_div_theme_GNYR table.bmlt_table tr td
 {
-    padding:0.25em;}
+    padding:0.25em;
+}
 
 div.bmlt_table_display_div_theme_GNYR table.bmlt_table tr.bmlt_table_tbody_comments_tr td span
 {
-    font-style:italic;}
+    font-style:italic;
+}
