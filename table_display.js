@@ -443,7 +443,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
                                              )
     {
         eval ( "var json_response = " + in_response_object.responseText + ";" );    // Extract the JSON object with the returned data.
-        in_tab_object.json_data = json_response;
+        in_tab_object.weekday_json_data = json_response;
         in_tab_object.select();
     };
     
@@ -475,29 +475,13 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     ****************************************************************************************/
     this.domBuilder_CreateHeader = function ()
     {
-        // Clear out any previous ones.
-        if ( this.my_weekday_links && this.my_weekday_links.length )
-            {
-            for ( var i = this.my_weekday_links.length; i > 0; )
-                {
-                i--;
-                this.my_weekday_links[i].parentNode.removeChild ( this.my_weekday_links[i] );
-                this.my_weekday_links[i].innerHTML = null;
-                this.my_weekday_links[i] = null;
-                };
-            };
-        
-        if ( this.my_header_container )
-            {
-            this.my_header_container.parentNode.removeChild ( this.my_header_container );
-            this.my_header_container.innerHTML = null;
-            this.my_header_container = null;
-            };
-        
         this.my_weekday_links = new Array();
         this.my_header_container = document.createElement ( 'ul' );   // Create the header container.
         this.my_header_container.handler = this;
         this.my_header_container.className = 'bmlt_table_header_weekday_list';
+        
+        this.my_container_object.appendChild ( this.my_header_container );
+
         var startingIndex = this.my_start_weekday;
         
         // Build the list of weekday tab objects.
@@ -520,7 +504,6 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
                 {
                 if ( this.handler && this.handler.my_weekday_links && this.handler.my_weekday_links[i] )
                     {
-                    // If the indexed object is not ours, then we deselect it.
                     if ( this.handler.my_weekday_links[i].index == in_weekday )
                         {
                         this.handler.my_weekday_links[i].select();
@@ -528,8 +511,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
                     };
                 };
             };
-        
-        this.my_container_object.appendChild ( this.my_header_container );
+
         this.utility_loadFormatData();
     };
     
@@ -543,31 +525,39 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
         // Add the text for it.
         weekdayElement.handler = this;
         weekdayElement.index = in_weekday_index;
-        weekdayElement.className = 'bmlt_table_header_weekday_list_element';
+        weekdayElement.rest_className = 'bmlt_table_header_weekday_list_element';
         
         var d = new Date();
         if ( d.getDay() == in_weekday_index )
             {
-            weekdayElement.className += ' is_today';
+            weekdayElement.rest_className += ' is_today';
             };
         
         weekdayElement.onclick = function () {this.select()};
-
+        weekdayElement.className = weekdayElement.rest_className;
+        
         var textNode = document.createElement ( 'span' );
         textNode.appendChild ( document.createTextNode ( g_table_weekday_name_array[in_weekday_index] ) );
         textNode.rest_className = 'bmlt_table_weekday_span';
         textNode.className = textNode.rest_className;
-                
+        
         textNode.onmouseover = function ()
             {
-            this.className = this.rest_className + ' bmlt_table_mouseover';
+            if ( this.parentNode.handler.my_selected_tab != this.parentNode )
+                {
+                this.parentNode.className = this.parentNode.rest_className + ' bmlt_table_mouseover';
+                };
             };
         
         textNode.onmouseout = function ()
             {
-            this.className = this.rest_className;
+            this.parentNode.className = this.parentNode.rest_className;
+            if ( this.parentNode.handler.my_selected_tab == this.parentNode )
+                {
+                this.parentNode.className += ' is_selected';
+                };
             };
-
+        
         weekdayElement.appendChild ( textNode );
         
         var throbberImage = document.createElement ( 'img' );   // This will be the throbber.
@@ -578,34 +568,32 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
         // This inline function will force a reload of the search for the given weekday.
         weekdayElement.reload = function()
             {
-                if ( this.rest_className != 'bmlt_table_header_weekday_list_element is_loading' )
+            if ( this.className != (this.rest_className + ' is_loading') )
+                {
+                if ( this.handler.my_body_container )   // Clear any preexisting condition.
                     {
-                    if ( this.handler.my_body_container )   // Clear any preexisting condition.
-                        {
-                        this.handler.my_body_container.parentNode.removeChild ( this.handler.my_body_container );
-                        this.handler.my_body_container.innerHTML = '';
-                        this.handler.my_body_container = null;
-                        };
-                
-                    this.json_data = null;
-                    this.rest_className = 'bmlt_table_header_weekday_list_element is_loading';
-                    this.className = this.rest_className;
-                    
-                    // Set a title, saying what is happening.
-                    this.setAttribute ( 'title', this.handler.sprintf ( g_table_header_tab_loading_format, g_table_weekday_long_name_array[this.index] ) );
-                    
-                    this.handler.utility_loadWeekdayData ( this );
+                    this.handler.my_body_container.parentNode.removeChild ( this.handler.my_body_container );
+                    this.handler.my_body_container.innerHTML = '';
+                    this.handler.my_body_container = null;
                     };
+            
+                this.weekday_json_data = null;
+                this.className = this.rest_className + ' is_loading';
+                
+                // Set a title, saying what is happening.
+                this.setAttribute ( 'title', this.handler.sprintf ( g_table_header_tab_loading_format, g_table_weekday_long_name_array[this.index] ) );
+                
+                this.handler.utility_loadWeekdayData ( this );
+                };
             };
         
         // This inline function will read the data from the server if it is not already cached.
         // If the tab has cached data, then it deselects all the other tabs, selects itself, and populates the main area with the data in its cache.
         weekdayElement.select = function()
             {
-            // We don't do anything if it is already selected, or is loading.
-            if ( this.rest_className != 'bmlt_table_header_weekday_list_element is_selected' )
+            if ( this.handler.my_selected_tab != this )
                 {
-                if ( !this.json_data )
+                if ( !this.weekday_json_data )
                     {
                     this.reload();
                     }
@@ -617,8 +605,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
                         this.handler.my_body_container.innerHTML = '';
                         this.handler.my_body_container = null;
                         };
-        
-                    var d = new Date();
+    
                     for ( var i = 0; i < 7; i++ )
                         {
                         if ( this.handler && this.handler.my_weekday_links && this.handler.my_weekday_links[i] )
@@ -628,30 +615,23 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
                             if ( tabObject.index != this.index )
                                 {
                                 // This is not selected or loading.
-                                tabObject.rest_className = 'bmlt_table_header_weekday_list_element';
                                 tabObject.className = tabObject.rest_className;
                                 // Set a title, saying what will happen when this is clicked.
                                 tabObject.setAttribute ( 'title', this.handler.sprintf ( g_table_header_tab_format, g_table_weekday_long_name_array[tabObject.index] ) );
-        
-                                if ( d.getDay() == tabObject.index )
-                                    {
-                                    tabObject.className += ' is_today';
-                                    };
                                 };
                             };
                         };
-                    
-                    this.rest_className = 'bmlt_table_header_weekday_list_element is_selected';
-                    this.className = this.rest_className;
+                
+                    this.className = this.rest_className + ' is_selected';
                     this.handler.my_selected_tab = this;
                     this.sort_key = this.handler.my_selected_sort_key;
                     this.sort_dir = this.handler.my_sort_dir;
-                    if ( d.getDay() == this.index )
-                        {
-                        this.className += ' is_today';
-                        };
-                    this.handler.domBuilder_PopulateWeekday ( this.json_data, this.index, this.sort_key, this.sort_dir );
+                    this.handler.domBuilder_PopulateWeekday ( this.weekday_json_data, this.index, this.sort_key, this.sort_dir );
                     };
+                }
+            else
+                {
+                this.className = this.rest_className + ' is_selected';
                 };
             };
         
@@ -667,32 +647,21 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
 	                                                in_sort_dir                 ///< The sort direction, for the data sort. It will be 'asc' or 'desc'.
                                                 )
     {
-        if ( this.my_body_container )   // Clear any preexisting condition.
+        if ( null != this.my_body_container )   // Clear any preexisting condition.
             {
-            this.my_body_container_header.parentNode.removeChild ( this.my_body_container_header );
-            this.my_body_container_header.innerHTML = '';
-            this.my_body_container_header = null;
-            this.my_body_container_body.parentNode.removeChild ( this.my_body_container_body );
-            this.my_body_container_body.innerHTML = '';
-            this.my_body_container_body = null;
             this.my_body_container.parentNode.removeChild ( this.my_body_container );
             this.my_body_container.innerHTML = '';
             this.my_body_container = null;
             };
         
-        this.my_body_container = document.createElement ( 'table' );        // Create the main table element.
-        this.my_body_container.cellPadding = 0;
-        this.my_body_container.cellSpacing = 0;
-        this.my_body_container.className = 'bmlt_table';
-        var d = new Date();
-        if ( d.getDay() == in_index )
-            {
-            this.my_body_container.className += ' is_today';
-            };
+        this.my_body_container = document.createElement ( 'div' );        // Create the main table element.
+        this.my_body_container.className = 'bmlt_table_div';
+        this.my_body_container_header = null;
+        this.my_body_container_body = null;
         
+        this.my_container_object.appendChild ( this.my_body_container );        
         this.my_body_container.appendChild ( this.domBuilder_PopulateWeekdayHeader ( in_index, in_sort_key, in_sort_dir ) );
         this.my_body_container.appendChild ( this.domBuilder_PopulateWeekdayBody ( in_search_results_json ) );
-        this.my_container_object.appendChild ( this.my_body_container );
     };
     
     /************************************************************************************//**
@@ -703,26 +672,35 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
 	                                                    in_sort_dir     ///< The sort direction, for the data sort. It will be 'asc' or 'desc'.
                                                     )
     {
-        this.my_body_container_header = document.createElement ( 'thead' );        // Create the header element.
-        this.my_body_container_header.className = 'bmlt_table_header_thead';
-        var headerRow = document.createElement ( 'tr' );        // Create the row tr element.
-        headerRow.className = 'bmlt_table_header_tr';
-        var thElement = this.domBuilder_PopulateWeekdayHeaderColumn ( g_table_time_header_text, this.my_sort_key_time, ((in_sort_key == this.my_sort_key_time) ? in_sort_dir : 'asc'), in_sort_key == this.my_sort_key_time );
-        thElement.className = 'bmlt_table_header_th bmlt_table_header_th_time';
-        headerRow.appendChild ( thElement );
-        thElement = this.domBuilder_PopulateWeekdayHeaderColumn ( g_table_town_header_text, this.my_sort_key_town, ((in_sort_key == this.my_sort_key_town) ? in_sort_dir : 'asc'), in_sort_key == this.my_sort_key_town );
-        thElement.className = 'bmlt_table_header_th bmlt_table_header_th_town';
-        headerRow.appendChild ( thElement );
-        thElement = this.domBuilder_PopulateWeekdayHeaderColumn ( g_table_name_header_text, this.my_sort_key_meeting_name, ((in_sort_key == this.my_sort_key_meeting_name) ? in_sort_dir : 'asc'), in_sort_key == this.my_sort_key_meeting_name );
-        thElement.className = 'bmlt_table_header_th bmlt_table_header_th_name';
-        headerRow.appendChild ( thElement );
-        thElement = this.domBuilder_PopulateWeekdayHeaderColumn ( g_table_address_header_text, this.my_sort_key_address, ((in_sort_key == this.my_sort_key_address) ? in_sort_dir : 'asc'), in_sort_key == this.my_sort_key_address );
-        thElement.className = 'bmlt_table_header_th bmlt_table_header_th_address';
-        headerRow.appendChild ( thElement );
-        thElement = this.domBuilder_PopulateWeekdayHeaderColumn ( g_table_format_header_text, null, null, false );
-        thElement.className = 'bmlt_table_header_th bmlt_table_header_th_format';
-        headerRow.appendChild ( thElement );
-        this.my_body_container_header.appendChild ( headerRow );
+        if ( null != this.my_body_container_header )   // Clear any preexisting condition.
+            {
+            this.my_body_container_header.parentNode.removeChild ( this.my_body_container_header );
+            this.my_body_container_header.innerHTML = '';
+            this.my_body_container_header = null;
+            };
+        
+        this.my_body_container_header = document.createElement ( 'ul' );        // Create the header element.
+        this.my_body_container_header.className = 'bmlt_table_header_ul';
+        
+        var theElement = this.domBuilder_PopulateWeekdayHeaderColumn ( g_table_time_header_text, this.my_sort_key_time, ((in_sort_key == this.my_sort_key_time) ? in_sort_dir : 'asc'), in_sort_key == this.my_sort_key_time );
+        theElement.className = 'bmlt_table_header_li bmlt_table_header_li_time';
+        this.my_body_container_header.appendChild ( theElement );
+        
+        theElement = this.domBuilder_PopulateWeekdayHeaderColumn ( g_table_town_header_text, this.my_sort_key_town, ((in_sort_key == this.my_sort_key_town) ? in_sort_dir : 'asc'), in_sort_key == this.my_sort_key_town );
+        theElement.className = 'bmlt_table_header_li bmlt_table_header_li_town';
+        this.my_body_container_header.appendChild ( theElement );
+        
+        theElement = this.domBuilder_PopulateWeekdayHeaderColumn ( g_table_name_header_text, this.my_sort_key_meeting_name, ((in_sort_key == this.my_sort_key_meeting_name) ? in_sort_dir : 'asc'), in_sort_key == this.my_sort_key_meeting_name );
+        theElement.className = 'bmlt_table_header_li bmlt_table_header_li_name';
+        this.my_body_container_header.appendChild ( theElement );
+        
+        theElement = this.domBuilder_PopulateWeekdayHeaderColumn ( g_table_address_header_text, this.my_sort_key_address, ((in_sort_key == this.my_sort_key_address) ? in_sort_dir : 'asc'), in_sort_key == this.my_sort_key_address );
+        theElement.className = 'bmlt_table_header_li bmlt_table_header_li_address';
+        this.my_body_container_header.appendChild ( theElement );
+        
+        theElement = this.domBuilder_PopulateWeekdayHeaderColumn ( g_table_format_header_text, null, null, false );
+        theElement.className = 'bmlt_table_header_li bmlt_table_header_li_format';
+        this.my_body_container_header.appendChild ( theElement );
         
         return this.my_body_container_header;
     };
@@ -736,8 +714,8 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
 	                                                            in_is_selected  ///< A boolean value. True, if this is the sort key.
                                                             )
     {
-        var thElement =  document.createElement ( 'th' );       // Create the column element
-        thElement.key = in_sort_key;                            // This will be the sort key for this column.
+        var theElement =  document.createElement ( 'li' );       // Create the column element
+        theElement.key = in_sort_key;                            // This will be the sort key for this column.
         var textNode = document.createElement ( 'span' );
         textNode.appendChild ( document.createTextNode ( in_name ) );
         textNode.is_selected = false;
@@ -759,7 +737,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
         
         if ( in_sort_key && in_is_selected )
             {
-            textNode.rest_className = 'bmlt_table_header_selected ' + 'bmlt_table_header_selected_sort_direction_' + ((in_sort_dir == 'asc') ? 'asc' : 'desc');
+            textNode.rest_className = 'bmlt_table_header bmlt_table_header_selected' + ' bmlt_table_header_selected_sort_direction_' + ((in_sort_dir == 'asc') ? 'asc' : 'desc');
             textNode.className = textNode.rest_className;
             textNode.is_selected = true;
             };
@@ -768,18 +746,18 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
             {
             textNode.onclick = function()
                 {
-                    if ( this.handler.my_selected_sort_key == this.sort_key )
-                        {
-                        this.sort_dir = ((this.sort_dir == 'asc') ? 'desc' : 'asc');
-                        };
-                
-                    this.handler.my_selected_sort_key = this.sort_key;
-                    this.handler.my_sort_dir = this.sort_dir;
-                    for ( var i = 0; i < 7; i++ )
-                        {
-                        this.handler.my_weekday_links[i].json_data = null;
-                        };
-                    this.handler.my_selected_tab.reload();
+                if ( this.handler.my_selected_sort_key == this.sort_key )
+                    {
+                    this.sort_dir = ((this.sort_dir == 'asc') ? 'desc' : 'asc');
+                    };
+            
+                this.handler.my_selected_sort_key = this.sort_key;
+                this.handler.my_sort_dir = this.sort_dir;
+                for ( var i = 0; i < 7; i++ )
+                    {
+                    this.handler.my_weekday_links[i].weekday_json_data = null;
+                    };
+                this.handler.my_selected_tab.reload();
                 };
             }
         else
@@ -788,9 +766,9 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
             textNode.className = textNode.rest_className;
             };
         
-        thElement.appendChild ( textNode );
+        theElement.appendChild ( textNode );
 
-        return thElement;
+        return theElement;
     };
     
     /************************************************************************************//**
@@ -799,23 +777,33 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     this.domBuilder_PopulateWeekdayBody = function (  in_json_data  ///< The JSON data for the meetings.
                                                     )
     {
-        this.my_body_container_body = document.createElement ( 'tbody' );        // Create the header element.
-        this.my_body_container_body.className = 'bmlt_table_tbody';
-        
-        if ( in_json_data.length )
+        if ( null != this.my_body_container_body )   // Clear any preexisting condition.
             {
-            for ( var i = 0; i < in_json_data.length; i++ )
-                {
-                var meeting_json = in_json_data[i];
-                var meeting_objects = this.domBuilder_PopulateWeekdayBody_one_meeting ( meeting_json );
-                for ( var c = 0; c < meeting_objects.length; c++ )
-                    {
-                    meeting_object = meeting_objects[c];
-                    meeting_object.className += (' bmlt_row' + ((i % 2) ? '_odd' : '_even'));
-                    this.my_body_container_body.appendChild ( meeting_object );
-                    };
-                };
+            this.my_body_container_body.parentNode.removeChild ( this.my_body_container_body );
+            this.my_body_container_body.innerHTML = '';
+            this.my_body_container_body = null;
             };
+        
+        this.my_body_container_body = document.createElement ( 'ul' );
+        this.my_body_container_body.className = 'bmlt_table_data_ul';
+        
+//         if ( in_json_data.length )
+//             {
+//             for ( var i = 0; i < in_json_data.length; i++ )
+//                 {
+//                 var listElement = document.createElement ( 'li' );
+//                 listElement.className = 'bmlt_table_data_ul_li';
+//                 var meeting_json = in_json_data[i];
+//                 var meeting_objects = this.domBuilder_PopulateWeekdayBody_one_meeting ( meeting_json );
+//                 for ( var c = 0; c < meeting_objects.length; c++ )
+//                     {
+//                     meeting_object = meeting_objects[c];
+//                     meeting_object.className += (' bmlt_row' + ((i % 2) ? '_odd' : '_even'));
+//                     listElement.appendChild ( meeting_object );
+//                     this.my_body_container_body.appendChild ( listElement );
+//                     };
+//                 };
+//             };
         
         return this.my_body_container_body;
     };
@@ -828,8 +816,8 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
                                                                 )
     {
         var array_ret = Array();
-        var rowElement = document.createElement ( 'tr' );
-        rowElement.className = 'bmlt_table_tbody_tr';
+        var rowElement = document.createElement ( 'ul' );
+        rowElement.className = 'bmlt_table_data_ul_li_ul';
         array_ret[0] = rowElement;
         var comments = null;
         
@@ -846,18 +834,6 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
         var name_column = this.domBuilder_PopulateWeekdayBody_one_column ( 'name', in_json_data.meeting_name.toString(), 0, 0 );
         var address_column = this.domBuilder_PopulateWeekdayBody_one_column ( 'address', this.utility_createStreetAddress ( in_json_data ), latitude, longitude );
         var format_column = this.domBuilder_PopulateWeekdayBody_one_column ( 'formats', in_json_data.formats.toString(), 0, 0 );
-        
-        if ( comments )
-            {
-            var rowElement2 = document.createElement ( 'tr' );
-            rowElement2.className = 'bmlt_table_tbody_comments_tr';
-            time_column.rowSpan = 2;
-            format_column.rowSpan = 2;
-            comments_column = this.domBuilder_PopulateWeekdayBody_one_column ( 'comments', comments, 0, 0 );
-            comments_column.colSpan = 3;
-            rowElement2.appendChild ( comments_column );
-            array_ret[1] = rowElement2;
-            };
         
         rowElement.appendChild ( time_column );
         rowElement.appendChild ( town_column );
@@ -877,8 +853,8 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
                                                                 in_longitude
                                                                 )
     {
-        var columnElement = document.createElement ( 'td' );
-        columnElement.className = 'bmlt_table_tbody_td bmlt_table_tbody_td_' + in_tag;
+        var columnElement = document.createElement ( 'li' );
+        columnElement.className = 'bmlt_table_data_ul_li_ul_li bmlt_table_data_ul_li_ul_li_' + in_tag;
 
         if ( in_tag == 'formats' )
             {
@@ -891,7 +867,9 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
         else if ( in_latitude && in_longitude )
             {
             var textNode = document.createElement ( 'span' );
+            textNode.className = 'bmlt_table_data_ul_li_ul_li_span bmlt_table_data_ul_li_ul_li_span_' + in_tag;
             var anchorNode = document.createElement ( 'a' );
+            textNode.className = 'bmlt_table_data_ul_li_ul_li_span_a bmlt_table_data_ul_li_ul_li_span_a_' + in_tag;
             anchorNode.href= this.sprintf ( g_table_map_link_uri_format, parseFloat ( in_latitude ), parseFloat ( in_longitude ) );
             anchorNode.innerHTML = in_string;
             textNode.appendChild ( anchorNode );
@@ -900,7 +878,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
         else
             {
             var textNode = document.createElement ( 'span' );
-            textNode.className = 'bmlt_table_tbody_td_span_' + in_tag;
+            textNode.className = 'bmlt_table_data_ul_li_ul_li_span bmlt_table_data_ul_li_ul_li_span_' + in_tag;
             textNode.innerHTML = in_string;
             columnElement.appendChild ( textNode );
             };
@@ -1062,7 +1040,7 @@ TableSearchDisplay.prototype.callback_loadWeekdayData = function (  in_response_
                                                                     )
 {
     eval ( "var json_response = " + in_response_object.responseText + ";" );    // Extract the JSON object with the returned data.
-    in_tab_object.json_data = json_response;
+    in_tab_object.weekday_json_data = json_response;
     in_tab_object.select();
 };
 
@@ -1082,8 +1060,7 @@ TableSearchDisplay.prototype.callback_loadFormatData = function (   in_response_
         };
     
     eval ( "var format_data = " + in_response_object.responseText + ";" );    // Extract the JSON object with the returned data.
-    in_context_object.my_format_data = format_data;
-    in_context_object.my_format_data = in_context_object.my_format_data.formats;
+    in_context_object.my_format_data = format_data.formats;
     var d = new Date();
     in_context_object.my_header_container.selectTab ( d.getDay() );
 };

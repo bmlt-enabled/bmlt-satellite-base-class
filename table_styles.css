@@ -25,6 +25,8 @@
 /* These are global styles for the table display shortcode. */
 /************************************************************/
 
+/* The overall container div */
+
 div.bmlt_table_display_div
 {
     width:100%;
@@ -36,7 +38,11 @@ div.bmlt_table_display_div
     vertical-align:top;
 }
 
-#content div.bmlt_table_display_div ul.bmlt_table_header_weekday_list
+/************************************************************/
+/*      The list (ul) at the top, with the weekdays.        */
+/************************************************************/
+
+div.bmlt_table_display_div ul.bmlt_table_header_weekday_list
 {
     width:100%;
     display:block;
@@ -48,7 +54,7 @@ div.bmlt_table_display_div
     padding:0;
 }
 
-div.bmlt_table_display_div .bmlt_table_header_weekday_list li
+div.bmlt_table_display_div ul.bmlt_table_header_weekday_list li
 {
     width:14.28%;
     line-height:2em;
@@ -95,12 +101,6 @@ div.bmlt_table_display_div .bmlt_table_header_weekday_list li.is_loading span
     display:none;
 }
 
-div.bmlt_table_display_div .bmlt_table_header_weekday_list li.is_selected
-{
-    display: block;
-    cursor:default;
-}
-
 div.bmlt_table_display_div .bmlt_table_header_weekday_list li.is_selected img
 {
     display:none;
@@ -108,69 +108,94 @@ div.bmlt_table_display_div .bmlt_table_header_weekday_list li.is_selected img
 
 div.bmlt_table_display_div .bmlt_table_header_weekday_list li.is_selected span
 {
-    display:block;
+    display: block;
+    cursor:default;
 }
 
-div.bmlt_table_display_div table.bmlt_table,
-div.bmlt_table_display_div table.bmlt_table thead,
-div.bmlt_table_display_div table.bmlt_table th,
-div.bmlt_table_display_div table.bmlt_table tr,
-div.bmlt_table_display_div table.bmlt_table td,
-div.bmlt_table_display_div table.bmlt_table th span
+/************************************************************/
+/*                      The data table                      */
+/************************************************************/
+div.bmlt_table_display_div div.bmlt_table_div
 {
+    width: 100%;
     margin:0;
     padding:0;
 }
 
-div.bmlt_table_display_div table.bmlt_table tr
+/************************************************************/
+/*                      The table header                    */
+/************************************************************/
+div.bmlt_table_display_div ul.bmlt_table_header_ul,
+div.bmlt_table_display_div ul.bmlt_table_header_ul li
 {
-    vertical-align:top;
+    list-style-type:none;
+    list-style-position:outside;
+    margin:0;
+    padding:0;
 }
 
-div.bmlt_table_display_div table.bmlt_table th span
+div.bmlt_table_display_div ul.bmlt_table_header_ul
 {
-    margin:-1px;
     display: block;
-    line-height:2em;
-    height:2em;
-    width:100%;
+    width: 100%;
+    text-align:center;
     vertical-align:middle;
     cursor:pointer;
-    overflow: hidden;
-    text-align:center;
 }
 
-div.bmlt_table_display_div table.bmlt_table th.bmlt_table_header_th_time
+div.bmlt_table_display_div ul.bmlt_table_header_ul li
+{
+    border-top: 2px solid;
+    line-height:2em;
+    height:2em;
+    display: block;
+    float: left;
+    overflow: hidden;
+}
+
+/************************************************************/
+/*                  Table Header Size Styles                */
+/************************************************************/
+div.bmlt_table_display_div ul.bmlt_table_header_ul li.bmlt_table_header_li_time
 {
     width: 7%;
 }
 
-div.bmlt_table_display_div table.bmlt_table th.bmlt_table_header_th_town
+div.bmlt_table_display_div ul.bmlt_table_header_ul li.bmlt_table_header_li_town
 {
     width: 10%;
 }
 
-div.bmlt_table_display_div table.bmlt_table th.bmlt_table_header_th_name
+div.bmlt_table_display_div ul.bmlt_table_header_ul li.bmlt_table_header_li_name
 {
     width: 30%;
 }
 
-div.bmlt_table_display_div table.bmlt_table th.bmlt_table_header_th_address
+div.bmlt_table_display_div ul.bmlt_table_header_ul li.bmlt_table_header_li_address
 {
     width: 43%;
 }
 
-div.bmlt_table_display_div table.bmlt_table th.bmlt_table_header_th_format
+div.bmlt_table_display_div ul.bmlt_table_header_ul li.bmlt_table_header_li_format
 {
     width: 10%;
-}
-
-div.bmlt_table_display_div table.bmlt_table th.bmlt_table_header_th_format span
-{
     cursor:default;
 }
 
-div.bmlt_table_display_div table.bmlt_table span.bmlt_table_header_selected
+/************************************************************/
+/*                      Inner Span Styling                  */
+/************************************************************/
+div.bmlt_table_display_div ul.bmlt_table_header_ul li.bmlt_table_header_li span
+{
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/************************************************************/
+/*        Selected Element Sort Direction Image Style       */
+/************************************************************/
+div.bmlt_table_display_div ul.bmlt_table_header_ul li.bmlt_table_header_li span.bmlt_table_header_selected
 {
     background-attachment: local;
     background-position: 98% center;
@@ -178,49 +203,90 @@ div.bmlt_table_display_div table.bmlt_table span.bmlt_table_header_selected
     background-size:0.75em;
 }
 
-div.bmlt_table_display_div table.bmlt_table td span
+/************************************************************/
+/*                 Table Header Border Styles               */
+/************************************************************/
+
+div.bmlt_table_display_div ul.bmlt_table_header_ul li.bmlt_table_header_li_town
 {
-    padding: 0.125em;
-    display: block;
+    margin-left:-1px;
+    margin-right:-1px;
+    border-left: 1px solid;
+    border-right: 1px solid;
 }
 
-div.bmlt_table_display_div table.bmlt_table td span.bmlt_table_state_span,
-div.bmlt_table_display_div table.bmlt_table td span.bmlt_table_location_text_span
+div.bmlt_table_display_div ul.bmlt_table_header_ul li.bmlt_table_header_li_name
 {
-    display:inline;
+    margin-left:-1px;
+    margin-right:-1px;
+    border-left: 1px solid;
+    border-right: 1px solid;
 }
 
-div.bmlt_table_display_div table.bmlt_table td div.bmlt_formats_div span
+div.bmlt_table_display_div ul.bmlt_table_header_ul li.bmlt_table_header_li_address
 {
-    font-size:smaller;
-    margin: 0.125em;
-    line-height:2em;
-    height:2em;
-    width:2em;
-    vertical-align:middle;
-    text-align:center;
-    float:left;
-    border-radius: 1.25em;
-    -moz-border-radius: 1.25em;
-    -webkit-border-radius: 1.25em;
-    cursor:pointer;
+    margin-left:-1px;
+    margin-right:-1px;
+    border-left: 1px solid;
+    border-right: 1px solid;
 }
 
-div.bmlt_table_display_div table.bmlt_table tr td
+div.bmlt_table_display_div ul.bmlt_table_header_ul li.bmlt_table_header_li_format
 {
+    margin-left:-1px;
+    border-left: 1px solid;
+}
+
+/************************************************************/
+/*                       The table Data                     */
+/************************************************************/
+div.bmlt_table_display_div ul.bmlt_table_data_ul,
+div.bmlt_table_display_div ul.bmlt_table_data_ul li
+{
+    list-style-type:none;
+    list-style-position:outside;
     margin:0;
     padding:0;
-    vertical-align:top;
 }
 
-div.bmlt_table_display_div table.bmlt_table tr td.bmlt_table_tbody_td_time,
-div.bmlt_table_display_div table.bmlt_table tr td.bmlt_table_tbody_td_town
+div.bmlt_table_display_div ul.bmlt_table_data_ul,
+div.bmlt_table_display_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_li
 {
-    line-height:100%;
-    vertical-align:middle;
+    display: block;
+    width: 100%;
+    clear:both;
 }
 
-div.bmlt_table_display_div table.bmlt_table tr td.bmlt_table_tbody_td_time
+div.bmlt_table_display_div ul.bmlt_table_data_ul li
 {
-    text-align:center;
+    display: block;
+    float:left;
+}
+
+/************************************************************/
+/*                   Table Data Size Styles                 */
+/************************************************************/
+div.bmlt_table_display_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_time
+{
+    width: 7%;
+}
+
+div.bmlt_table_display_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_town
+{
+    width: 10%;
+}
+
+div.bmlt_table_display_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_name
+{
+    width: 30%;
+}
+
+div.bmlt_table_display_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_address
+{
+    width: 43%;
+}
+
+div.bmlt_table_display_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_format
+{
+    width: 10%;
 }
