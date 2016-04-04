@@ -418,6 +418,11 @@ div.bmlt_table_display_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_
     {
         text-align: left;
     }
+    
+    div.bmlt_table_display_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_comments span
+    {
+        padding-left: 0;
+    }
 }
 
 @media only screen and (max-width: 320px)
