@@ -34,8 +34,13 @@
 div.bmlt_table_display_div_theme_GreenAndGold ul.bmlt_table_header_weekday_list li
 {
     background-color:#030;
-    border-color: #ff9;
     color:#ff9;
+}
+
+div.bmlt_table_display_div_theme_GreenAndGold ul.bmlt_table_header_weekday_list li,
+div.bmlt_table_display_div_theme_GreenAndGold .bmlt_table_header_weekday_list li span.bmlt_table_weekday_span
+{
+    border-color: #ff9;
 }
 
 div.bmlt_table_display_div_theme_GreenAndGold ul.bmlt_table_header_weekday_list li.bmlt_table_mouseover

@@ -34,8 +34,13 @@
 div.bmlt_table_display_div_theme_BlueAndRed ul.bmlt_table_header_weekday_list li
 {
     background-color:#006;
-    border-color: #f30;
     color:#f30;
+}
+
+div.bmlt_table_display_div_theme_BlueAndRed ul.bmlt_table_header_weekday_list li,
+div.bmlt_table_display_div_theme_BlueAndRed .bmlt_table_header_weekday_list li span.bmlt_table_weekday_span
+{
+    border-color: #f30;
 }
 
 div.bmlt_table_display_div_theme_BlueAndRed ul.bmlt_table_header_weekday_list li.bmlt_table_mouseover
