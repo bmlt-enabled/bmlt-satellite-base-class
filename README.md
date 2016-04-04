@@ -25,10 +25,10 @@ INSTALLATION
 
 CHANGELIST
 ----------
-*3.2.5*
+*3.3.0*
 * TBD
-* Minor styling fixes for the table header.
 * Made it so that we can have specialized themes, amied at only certain shortcodes.
+* Complete rewrite of the [[bmlt_table]] shortcode. Made it so that it can have simpler theming and be more responsive.
 
 *3.2.4*
 * April 1, 2016 (Happy April Fools'!)

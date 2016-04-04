@@ -1,5 +1,5 @@
 /*    
-    \version 3.2.5
+    \version 3.3.0
     
     This file is part of the BMLT Common Satellite Base Class Project. The project GitHub
     page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class
@@ -25,124 +25,108 @@
 /* These are all for the table display shortcode. */
 /**************************************************/
 
-div.bmlt_table_display_div_theme_BlueAndWhite .bmlt_table_header_weekday_list li
+/************************************************************/
+/*      The list (ul) at the top, with the weekdays.        */
+/************************************************************/
+/************************************************************/
+/*                      Most tabs                           */
+/************************************************************/
+div.bmlt_table_display_div_theme_BlueAndWhite ul.bmlt_table_header_weekday_list li
 {
     background-color:#009;
     border-color: white;
-}
-
-div.bmlt_table_display_div_theme_BlueAndWhite .bmlt_table_header_weekday_list li span
-{
     color:white;
 }
 
-div.bmlt_table_display_div_theme_BlueAndWhite .bmlt_table_header_weekday_list li.is_selected
-{
-    background-color:white;
-    color:#009;
-    border-color: #009;
-}
-
-div.bmlt_table_display_div_theme_BlueAndWhite .bmlt_table_header_weekday_list li.is_selected span
-{
-    color:#009;
-}
-
-div.bmlt_table_display_div_theme_BlueAndWhite table.bmlt_table th
-{
-    border-top:2px solid white;
-    border-left:1px solid white;
-}
-
-div.bmlt_table_display_div_theme_BlueAndWhite .bmlt_table_header_weekday_list span.bmlt_table_mouseover,
-div.bmlt_table_display_div_theme_BlueAndWhite table.bmlt_table th span.bmlt_table_mouseover
+div.bmlt_table_display_div_theme_BlueAndWhite ul.bmlt_table_header_weekday_list li.bmlt_table_mouseover
 {
     color: #f30;
 }
 
-div.bmlt_table_display_div_theme_BlueAndWhite table.bmlt_table th.bmlt_table_header_th_time
+/************************************************************/
+/*          The selected tab reverses the colors.           */
+/************************************************************/
+div.bmlt_table_display_div_theme_BlueAndWhite ul.bmlt_table_header_weekday_list li.is_selected
 {
-    width: 7%;
+    background-color:white;
+    border-color: #009;
+    color:#009;
 }
 
-div.bmlt_table_display_div_theme_BlueAndWhite table.bmlt_table th.bmlt_table_header_th_town
+/************************************************************/
+/*                      The data table                      */
+/************************************************************/
+/************************************************************/
+/*                      The table header                    */
+/************************************************************/
+div.bmlt_table_display_div_theme_BlueAndWhite ul.bmlt_table_header_ul,
+div.bmlt_table_display_div_theme_BlueAndWhite ul.bmlt_table_header_ul li
 {
-    width: 10%;
+    border-color: white;
 }
 
-div.bmlt_table_display_div_theme_BlueAndWhite table.bmlt_table th.bmlt_table_header_th_name
+div.bmlt_table_display_div_theme_BlueAndWhite ul.bmlt_table_header_ul li
 {
-    width: 30%;
+    background-color:#009;
+    border-color: white;
+    color:white;
 }
 
-div.bmlt_table_display_div_theme_BlueAndWhite table.bmlt_table th.bmlt_table_header_th_address
+div.bmlt_table_display_div_theme_BlueAndWhite ul.bmlt_table_header_ul li.bmlt_table_header_li span.bmlt_table_mouseover
 {
-    width: 43%;
+    color: #f30;
 }
 
-div.bmlt_table_display_div_theme_BlueAndWhite table.bmlt_table th.bmlt_table_header_th_format
-{
-    width: 10%;
-}
-
-div.bmlt_table_display_div_theme_BlueAndWhite table.bmlt_table th span
-{
-    background-color: #009;
-    color: white;
-}
-
-div.bmlt_table_display_div_theme_BlueAndWhite table.bmlt_table th span.bmlt_table_header_selected_sort_direction_asc
+/************************************************************/
+/*           Selected Element Sort Direction Image          */
+/************************************************************/
+div.bmlt_table_display_div_theme_BlueAndWhite ul.bmlt_table_header_ul li.bmlt_table_header_li span.bmlt_table_header_selected.bmlt_table_header_selected_sort_direction_asc
 {
     background-image:url("themes/BlueAndWhite/images/TableSortAsc.gif");
 }
 
-div.bmlt_table_display_div_theme_BlueAndWhite table.bmlt_table th span.bmlt_table_header_selected_sort_direction_asc.bmlt_table_mouseover
+div.bmlt_table_display_div_theme_BlueAndWhite ul.bmlt_table_header_ul li.bmlt_table_header_li span.bmlt_table_header_selected.bmlt_table_header_selected_sort_direction_asc.bmlt_table_mouseover
 {
     background-image:url("themes/BlueAndWhite/images/TableSortAsc_mouseover.gif");
 }
 
-div.bmlt_table_display_div_theme_BlueAndWhite table.bmlt_table th span.bmlt_table_header_selected_sort_direction_desc
+div.bmlt_table_display_div_theme_BlueAndWhite ul.bmlt_table_header_ul li.bmlt_table_header_li span.bmlt_table_header_selected.bmlt_table_header_selected_sort_direction_desc
 {
     background-image:url("themes/BlueAndWhite/images/TableSortDesc.gif");
 }
 
-div.bmlt_table_display_div_theme_BlueAndWhite table.bmlt_table th span.bmlt_table_header_selected_sort_direction_desc.bmlt_table_mouseover
+div.bmlt_table_display_div_theme_BlueAndWhite ul.bmlt_table_header_ul li.bmlt_table_header_li span.bmlt_table_header_selected.bmlt_table_header_selected_sort_direction_desc.bmlt_table_mouseover
 {
     background-image:url("themes/BlueAndWhite/images/TableSortDesc_mouseover.gif");
 }
 
-div.bmlt_table_display_div_theme_BlueAndWhite table.bmlt_table th.bmlt_table_header_th_format span
+/************************************************************/
+/*                       The table Data                     */
+/************************************************************/
+
+div.bmlt_table_display_div_theme_BlueAndWhite ul.bmlt_table_data_ul li.bmlt_table_data_ul_li
 {
-    color: white;
 }
 
-div.bmlt_table_display_div_theme_BlueAndWhite table.bmlt_table td span
+div.bmlt_table_display_div_theme_BlueAndWhite ul.bmlt_table_data_ul li.bmlt_table_data_ul_li.bmlt_row_even
 {
-    color: #009;
+    background-color:#efefef;
 }
 
-div.bmlt_table_display_div_theme_BlueAndWhite table.bmlt_table td div.bmlt_formats_div span
+div.bmlt_table_display_div_theme_BlueAndWhite ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_formats div.bmlt_formats_div span
 {
-    color: white;
-    background-color: #009;
+    background-color:#009;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
 }
 
-div.bmlt_table_display_div_theme_BlueAndWhite table.bmlt_table td div.bmlt_formats_div span.bmlt_table_mouseover
+div.bmlt_table_display_div_theme_BlueAndWhite ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_formats div.bmlt_formats_div span.bmlt_table_mouseover
 {
-    color: #f30;
+    color:#f30;
 }
 
-div.bmlt_table_display_div_theme_BlueAndWhite table.bmlt_table tr.bmlt_row_odd td
-{
-    background-color: #efefef;
-}
-
-div.bmlt_table_display_div_theme_BlueAndWhite table.bmlt_table tr td
-{
-    padding:0.25em;
-}
-
-div.bmlt_table_display_div_theme_BlueAndWhite table.bmlt_table tr.bmlt_table_tbody_comments_tr td span
+div.bmlt_table_display_div_theme_BlueAndWhite ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_comments span
 {
     font-style:italic;
 }
