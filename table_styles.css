@@ -353,7 +353,7 @@ div.bmlt_table_display_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_
     font-size:smaller;
 }
 
-@media only screen and (max-width: 640px)
+@media only screen and (max-width: 700px)
 {
     div.bmlt_table_display_div ul.bmlt_table_header_ul li.bmlt_table_header_li
     {
