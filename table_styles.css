@@ -298,8 +298,7 @@ div.bmlt_table_display_div ul.bmlt_table_data_ul li
     padding-bottom:0.125em;
 }
 
-div.bmlt_table_display_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li span.bmlt_table_data_ul_li_ul_li_span,
-div.bmlt_table_display_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li a
+div.bmlt_table_display_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li span.bmlt_table_data_ul_li_ul_li_span
 {
     display:block;
 }
@@ -422,6 +421,11 @@ div.bmlt_table_display_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_
     div.bmlt_table_display_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_comments span
     {
         padding-left: 0;
+    }
+    
+    div.bmlt_table_display_div ul.bmlt_table_header_ul li.bmlt_table_header_li.bmlt_table_header_li_format
+    {
+        display:none;
     }
 }
 

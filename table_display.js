@@ -850,6 +850,10 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
             rowElement.appendChild ( comments_column );
             };
         
+        var div = document.createElement ( 'div' );
+        div.className = 'bmlt_breaker_div';
+        rowElement.appendChild ( div );
+        
         return rowElement;
     };
     
