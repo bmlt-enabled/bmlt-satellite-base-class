@@ -222,13 +222,13 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
 	{
 	    var ret = in_time_string;
 	    var time_array = in_time_string.split ( ":" );
+        var hours = parseInt ( time_array[0] );
+        var minutes = parseInt ( time_array[1] ).toString();
+	        
 	    
 	    if ( !this.my_military_time )
 	        {
 	        var ampm = g_table_ampm_array[0];
-	        
-	        var hours = parseInt ( time_array[0] );
-	        var minutes = parseInt ( time_array[1] ).toString();
 	        
 	        // Padding with a leading 0.
 	        if ( parseInt ( time_array[1] ) < 10 )
@@ -278,6 +278,15 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
 	    else if ( (parseInt ( time_array[0] ) == 23) && (parseInt ( time_array[1] ) >= 55) )
             {
             ret = g_table_ampm_array[3];
+            }
+        else
+            {
+	        if ( parseInt ( time_array[1] ) < 10 )
+	            {
+	            minutes = "0" + minutes;
+	            };
+	        
+            ret = hours.toString() + ':' + minutes.toString();
             };
         
         return ret;
