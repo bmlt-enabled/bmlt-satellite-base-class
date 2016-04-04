@@ -193,22 +193,22 @@ div.bmlt_table_display_div ul.bmlt_table_header_ul li
 /************************************************************/
 div.bmlt_table_display_div ul.bmlt_table_header_ul li.bmlt_table_header_li_time
 {
-    width: 7%;
+    width: 10%;
 }
 
 div.bmlt_table_display_div ul.bmlt_table_header_ul li.bmlt_table_header_li_town
 {
-    width: 10%;
+    width: 15%;
 }
 
 div.bmlt_table_display_div ul.bmlt_table_header_ul li.bmlt_table_header_li_name
 {
-    width: 30%;
+    width: 25%;
 }
 
 div.bmlt_table_display_div ul.bmlt_table_header_ul li.bmlt_table_header_li_address
 {
-    width: 43%;
+    width: 40%;
 }
 
 div.bmlt_table_display_div ul.bmlt_table_header_ul li.bmlt_table_header_li_format
@@ -315,22 +315,22 @@ div.bmlt_table_display_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_
 /************************************************************/
 div.bmlt_table_display_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_time
 {
-    width: 7%;
+    width: 10%;
 }
 
 div.bmlt_table_display_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_town
 {
-    width: 10%;
+    width: 15%;
 }
 
 div.bmlt_table_display_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_name
 {
-    width: 30%;
+    width: 25%;
 }
 
 div.bmlt_table_display_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_address
 {
-    width: 43%;
+    width: 40%;
 }
 
 div.bmlt_table_display_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_formats
