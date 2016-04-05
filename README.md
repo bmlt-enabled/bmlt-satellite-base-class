@@ -28,6 +28,8 @@ CHANGELIST
 *3.3.1*
 * TBD
 * Made the weekday tab overflow hidden.
+* The format circles now float to the right.
+* Made the busy throbber stay up a bit longer when loading a new weekday.
 
 *3.3.0*
 * April 4, 2016

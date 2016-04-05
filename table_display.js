@@ -635,11 +635,11 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
                         };
                     };
             
-                this.className = this.rest_className + ' is_selected';
                 this.handler.my_selected_tab = this;
                 this.sort_key = this.handler.my_selected_sort_key;
                 this.sort_dir = this.handler.my_sort_dir;
                 this.handler.domBuilder_PopulateWeekday ( this.weekday_json_data, this.index, this.sort_key, this.sort_dir );
+                this.className = this.rest_className + ' is_selected';
                 };
             };
         

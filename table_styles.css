@@ -352,7 +352,7 @@ div.bmlt_table_display_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_
 div.bmlt_table_display_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_formats div.bmlt_formats_div span
 {
     display:table;
-    float:left;
+    float:right;
     height:3em;
     width:3em;
     line-height:3em;
@@ -412,6 +412,7 @@ div.bmlt_table_display_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_
     div.bmlt_table_display_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_formats div.bmlt_formats_div span
     {
         clear:none;
+        float:left;
     }
     
     div.bmlt_table_display_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_time span
