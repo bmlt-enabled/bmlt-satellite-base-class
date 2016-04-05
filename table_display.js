@@ -638,8 +638,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
                 this.handler.my_selected_tab = this;
                 this.sort_key = this.handler.my_selected_sort_key;
                 this.sort_dir = this.handler.my_sort_dir;
-                this.handler.domBuilder_PopulateWeekday ( this.weekday_json_data, this.index, this.sort_key, this.sort_dir );
-                this.className = this.rest_className + ' is_selected';
+                this.handler.domBuilder_PopulateWeekday ( this.weekday_json_data, this.index, this.sort_key, this.sort_dir, this );
                 };
             };
         
@@ -652,7 +651,8 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     this.domBuilder_PopulateWeekday = function (    in_search_results_json,     ///< A JSON object with the meeting search results.
 	                                                in_index,                   ///< The 0-based weekday index.
 	                                                in_sort_key,                ///< The sort key, for the data sort.
-	                                                in_sort_dir                 ///< The sort direction, for the data sort. It will be 'asc' or 'desc'.
+	                                                in_sort_dir,                ///< The sort direction, for the data sort. It will be 'asc' or 'desc'.
+	                                                in_tabObject                ///< The tab object, which will be set to selected when the weekday is done.
                                                 )
     {
         if ( null != this.my_body_container )   // Clear any preexisting condition.
@@ -670,6 +670,8 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
         this.my_container_object.appendChild ( this.my_body_container );        
         this.my_body_container.appendChild ( this.domBuilder_PopulateWeekdayHeader ( in_index, in_sort_key, in_sort_dir ) );
         this.my_body_container.appendChild ( this.domBuilder_PopulateWeekdayBody ( in_search_results_json ) );
+        
+        in_tabObject.className = in_tabObject.rest_className + ' is_selected';
     };
     
     /************************************************************************************//**
