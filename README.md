@@ -25,6 +25,10 @@ INSTALLATION
 
 CHANGELIST
 ----------
+*3.3.1*
+* TBD
+* Made the weekday tab overflow hidden.
+
 *3.3.0*
 * April 4, 2016
 * Made it so that we can have specialized themes, amied at only certain shortcodes.
