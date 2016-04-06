@@ -916,7 +916,7 @@ function MapSearch (
 			}
 		else
 			{
-			if ( (parseInt ( time[0] ) == 23) && (parseInt ( time[1] ) >= 50) )
+			if ( ((parseInt ( time[0] ) == 23) && (parseInt ( time[1] ) >= 55)) || ((parseInt ( time[0] ) == 0) && (parseInt ( time[1] ) == 0)) )
 				{
 				time_str += c_g_Midnight;
 				}

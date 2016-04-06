@@ -1721,7 +1721,7 @@ function NouveauMapSearch ( in_unique_id,           ///< The UID of the containe
             {
             st = g_Nouveau_noon;
             }
-        else if ( (time[0] == 23) && (time[1] > 45) )
+        else if ( ((time[0] == 23) && (time[1] >= 55)) || (((time[0] == 0) && (time[1] == 0))) )
             {
             st = g_Nouveau_midnight;
             }
@@ -3719,7 +3719,7 @@ function NouveauMapSearch ( in_unique_id,           ///< The UID of the containe
             {
             time_string = g_Nouveau_noon;
             }
-        else if ( (time[0] == 23) && (time[1] > 45) )
+        else if ( ((time[0] == 23) && (time[1] >= 55)) || ((time[0] == 0) && (time[1] == 0)) )
             {
             time_string = g_Nouveau_midnight;
             }

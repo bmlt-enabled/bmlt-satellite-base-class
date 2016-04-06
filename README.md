@@ -31,6 +31,7 @@ CHANGELIST
 * The format circles now float to the right.
 * Added a display for days with no meetings.
 * Fixed a bug in the [[bmlt_table]] shortcode, where the loading throbber would get replaced too quickly when selecting weekday tabs.
+* Corrected a bug that allowed "00:00" times (should be "Midnight").
 
 *3.3.0*
 * April 4, 2016

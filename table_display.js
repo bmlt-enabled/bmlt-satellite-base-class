@@ -223,68 +223,45 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
 	    var ret = in_time_string;
 	    var time_array = in_time_string.split ( ":" );
         var hours = parseInt ( time_array[0] );
-        var minutes = parseInt ( time_array[1] ).toString();
+        var minutes = parseInt ( time_array[1] );
 	        
-	    
-	    if ( !this.my_military_time )
+	    // We use "Noon" and "Midnight" strings for those times.
+        // Kludge, to make "Midnight" late, as the computer wants it to be early.
+        // Anything over 23:54:59 is "Midnight."
+	    if ( ((0 == hours) && (0 == minutes)) || ((hours == 23) && (minutes >= 55)) )
 	        {
-	        var ampm = g_table_ampm_array[0];
-	        
-	        // Padding with a leading 0.
-	        if ( parseInt ( time_array[1] ) < 10 )
-	            {
-	            minutes = "0" + minutes;
-	            };
+            ret = g_table_ampm_array[3];    // Midnight
+	        }
+	    if ( (12 == hours) && (0 == minutes) )
+	        {
+            ret = g_table_ampm_array[2];    // Noon
+	        }
+	    else if ( !this.my_military_time )
+	        {
+	        var ampm = ( hours >= 12 ) ? g_table_ampm_array[1] : g_table_ampm_array[0];
 	        
 	        // Subtract 12 from afternoon.
 	        if ( hours > 12 )
 	            {
 	            hours -= 12;
-	            ampm = g_table_ampm_array[1];
-	            }
-	        else if ( hours == 12 )
-	            {
-	            // We use "Noon" and "Midnight" strings for those times.
-	            if ( (parseInt ( time_array[0] ) == 12) && (parseInt ( time_array[1] ) == 0) )
-	                {
-	                hours = g_table_ampm_array[2];
-	                minutes = "";
-	                ampm = "";
-	                }
-	            else
-	                {
-	                ampm = g_table_ampm_array[1];
-	                };
-	            }
-            // Kludge, to make "Midnight" late, as the computer wants it to be early.
-            // Anything over 23:54:59 is "Midnight."
-	        else if ( (parseInt ( time_array[0] ) == 23) && (parseInt ( time_array[1] ) >= 55) )
-	            {
-                hours = g_table_ampm_array[3];
-                minutes = "";
-                ampm = "";
 	            };
 	        
-	        ret = hours.toString() + ((minutes != "") ? (':' + minutes + ' ' + ampm) : "");
+	        // Padding with a leading 0.
+	        if ( minutes < 10 )
+	            {
+	            minutes = "0" + minutes.toString();
+	            };
+	        
+	        ret = hours.toString() + ':' + minutes + ' ' + ampm;
 	        }
-	    // We use "Noon" and "Midnight" strings for those times.
-	    // We use these, even for military time, which is why we are doing this here.
-	    else if ( (parseInt ( time_array[0] ) == 12) && (parseInt ( time_array[1] ) == 0) )
-            {
-            ret = g_table_ampm_array[2];
-            }
-        // Kludge, to make "Midnight" late, as the computer wants it to be early.
-        // Anything over 23:54:59 is "Midnight."
-	    else if ( (parseInt ( time_array[0] ) == 23) && (parseInt ( time_array[1] ) >= 55) )
-            {
-            ret = g_table_ampm_array[3];
-            }
         else
             {
-	        if ( parseInt ( time_array[1] ) < 10 )
+	        // Padding with a leading 0.
+	        if ( minutes < 10 )
 	            {
-	            minutes = "0" + minutes;
+	            minutes = "0" + minutes.toString();
 	            };
+	        
 	        
             ret = hours.toString() + ':' + minutes.toString();
             };
