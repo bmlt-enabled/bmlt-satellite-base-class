@@ -29,7 +29,8 @@ CHANGELIST
 * TBD
 * Made the weekday tab overflow hidden.
 * The format circles now float to the right.
-* Made the busy throbber stay up a bit longer when loading a new weekday.
+* Added a display for days with no meetings.
+* Fixed a bug in the [[bmlt_table]] shortcode, where the loading throbber would get replaced too quickly when selecting weekday tabs.
 
 *3.3.0*
 * April 4, 2016

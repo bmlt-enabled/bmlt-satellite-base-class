@@ -558,18 +558,21 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
         
         textNode.onmouseover = function ()
             {
-            if ( this.parentNode.handler.my_selected_tab != this.parentNode )
+            if ( this.parentNode.className != (this.parentNode.rest_className + ' is_loading') )
                 {
-                this.parentNode.className = this.parentNode.rest_className + ' bmlt_table_mouseover';
+                if ( this.parentNode.handler.my_selected_tab != this.parentNode )
+                    {
+                    this.parentNode.className = this.parentNode.rest_className + ' bmlt_table_mouseover';
+                    };
                 };
             };
         
+        // We restore the class when we mouse out. However, we ignore it if we are loading.
         textNode.onmouseout = function ()
             {
-            this.parentNode.className = this.parentNode.rest_className;
-            if ( this.parentNode.handler.my_selected_tab == this.parentNode )
+            if ( this.parentNode.className != (this.parentNode.rest_className + ' is_loading') )
                 {
-                this.parentNode.className += ' is_selected';
+                this.parentNode.className = this.parentNode.rest_className + ' is_selected';
                 };
             };
         
@@ -663,7 +666,8 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
             };
         
         this.my_body_container = document.createElement ( 'div' );        // Create the main table element.
-        this.my_body_container.className = 'bmlt_table_div';
+        this.my_body_container.rest_className = 'bmlt_table_div';
+        this.my_body_container.className = this.my_body_container.rest_className;
         this.my_body_container_header = null;
         this.my_body_container_body = null;
         
