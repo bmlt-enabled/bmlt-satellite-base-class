@@ -570,9 +570,13 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
         // We restore the class when we mouse out. However, we ignore it if we are loading.
         textNode.onmouseout = function ()
             {
-            if ( this.parentNode.className != (this.parentNode.rest_className + ' is_loading') )
+            if ( !this.parentNode.className.match (/is_loading/) )
                 {
-                this.parentNode.className = this.parentNode.rest_className + ' is_selected';
+                this.parentNode.className = this.parentNode.rest_className;
+                if ( this.parentNode.handler.my_selected_tab == this.parentNode )
+                    {
+                    this.parentNode.className += ' is_selected';
+                    }
                 };
             };
         
