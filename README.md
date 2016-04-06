@@ -26,7 +26,7 @@ INSTALLATION
 CHANGELIST
 ----------
 *3.3.1*
-* TBD
+* April 6, 2016
 * Made the weekday tab overflow hidden.
 * The format circles now float to the right.
 * Added a display for days with no meetings.
