@@ -256,7 +256,7 @@ class BMLT_Localized_BaseClass
     /************************************************************************************//**
     *                   TABLE SHORTCODE STATIC DATA MEMBERS (LOCALIZABLE)                    *
     ****************************************************************************************/
-    static  $local_table_tab_loading_tile_format        = 'Getting meetings for %s';
+    static  $local_table_tab_loading_title_format       = 'Getting meetings for %s';
     static  $local_table_header_time_label              = 'Time';
     static  $local_table_header_meeting_name_label      = 'Meeting Name';
     static  $local_table_header_town_label              = 'Town';
@@ -264,6 +264,7 @@ class BMLT_Localized_BaseClass
     static  $local_table_header_format_label            = 'Format';
     static  $local_table_header_tab_title_format        = 'Display meetings for %s';
     static  $local_table_ante_meridian                  = '"AM","PM","Noon","Midnight"';
+    static  $local_table_no_meetings_format             = 'No meetings on %s';
                                                 
     /************************************************************************************//**
     * STATIC DATA MEMBERS (SPECIAL LOCALIZABLE)                                             *

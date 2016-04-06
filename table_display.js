@@ -810,6 +810,13 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
                 listElement.appendChild ( meeting_object );
                 this.my_body_container_body.appendChild ( listElement );
                 };
+            }
+        else
+            {
+            var listElement = document.createElement ( 'li' );
+            listElement.className = 'bmlt_table_data_ul_no_meetings_li';
+            listElement.innerHTML = '<span class="bmlt_table_no_meetings_span">' + this.sprintf ( g_table_no_meetings_format, g_table_weekday_long_name_array[this.my_selected_tab.index] ) + '</span>';
+            this.my_body_container_body.appendChild ( listElement );
             };
         
         return this.my_body_container_body;
