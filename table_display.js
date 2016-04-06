@@ -224,7 +224,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
 	    var time_array = in_time_string.split ( ":" );
         var hours = parseInt ( time_array[0] );
         var minutes = parseInt ( time_array[1] );
-	        
+        
 	    // We use "Noon" and "Midnight" strings for those times.
         // Kludge, to make "Midnight" late, as the computer wants it to be early.
         // Anything over 23:54:59 is "Midnight."
@@ -232,7 +232,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
 	        {
             ret = g_table_ampm_array[3];    // Midnight
 	        }
-	    if ( (12 == hours) && (0 == minutes) )
+	    else if ( (12 == hours) && (0 == minutes) )
 	        {
             ret = g_table_ampm_array[2];    // Noon
 	        }
