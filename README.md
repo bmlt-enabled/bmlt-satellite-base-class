@@ -25,6 +25,10 @@ INSTALLATION
 
 CHANGELIST
 ----------
+*3.3.2*
+* TBD
+* Added a "breaker" div element to the [[bmlt_table]] display.
+
 *3.3.1*
 * April 6, 2016
 * Made the weekday tab overflow hidden.

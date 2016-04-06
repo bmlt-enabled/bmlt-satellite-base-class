@@ -2,7 +2,7 @@
 * \file table_display.js																    *
 * \brief Javascript functions for the basic table display.                                  *
 *                                                                                           *
-*   \version 3.3.1                                                                          *
+*   \version 3.3.2                                                                          *
 *                                                                                           *
 *   This file contains a function/object that implements the Fast Table Shortcode. Upon     *
 *   instantiation, it uses the page DOM to create a tabular display of meetings that are    *
@@ -656,6 +656,10 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
         this.my_body_container.appendChild ( this.domBuilder_PopulateWeekdayHeader ( in_index, in_sort_key, in_sort_dir ) );
         this.my_body_container.appendChild ( this.domBuilder_PopulateWeekdayBody ( in_search_results_json ) );
         
+        var div = document.createElement ( 'div' );
+        div.className = 'bmlt_breaker_div';
+        this.my_body_container.appendChild ( div );
+
         in_tabObject.className = in_tabObject.rest_className + ' is_selected';
     };
     
