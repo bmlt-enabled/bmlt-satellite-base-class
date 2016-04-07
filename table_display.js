@@ -100,9 +100,9 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     *   \returns a new XMLHTTPRequest object.                                               *
     ****************************************************************************************/
     
-    this.utility_AjaxRequest = function (   url,        ///< The URI to be called
+    this.utility_AjaxRequest = function (   url,        ///< The URI to be called. This should include all parameters in GET form (even if this is POST).
                                             callback,   ///< The success callback
-                                            method,     ///< The method ('get' or 'post')
+                                            method,     ///< The method ('get', 'GET', 'post' or 'POST')
                                             extra_data  ///< If supplied, extra data to be delivered to the callback.
                                         )
     {
@@ -116,15 +116,18 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     
         function createXMLHTTPObject()
         {
+            // Various systems will produce one or more instances of these classes.
             var XMLHttpArray = [
-                function() {return new XMLHttpRequest()},
-                function() {return new ActiveXObject("Msxml2.XMLHTTP")},
+                function() {return new XMLHttpRequest()},                   // Your average browser.
+                function() {return new ActiveXObject("Msxml2.XMLHTTP")},    // These are for Microsoft browsers.
                 function() {return new ActiveXObject("Msxml2.XMLHTTP")},
                 function() {return new ActiveXObject("Microsoft.XMLHTTP")}
                 ];
             
             var xmlhttp = false;
-        
+            
+            // Go through the array until you hit a dispatcher that was properly instantiated.
+            // Once you find it, make that our dispatcher.
             for ( var i=0; i < XMLHttpArray.length; i++ )
                 {
                 try
@@ -140,12 +143,12 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
         
             return xmlhttp;
         };
-    
+        
+        // Set up a dispatcher.
         var req = createXMLHTTPObject();
-        req.finalCallback = callback;
+        req.finalCallback = callback;   // Point to the given callback.
         var sVars = null;
-        method = method.toString().toUpperCase();
-        var drupal_kludge = '';
+        method = method.toString().toUpperCase();   // Clean the input method to all uppercase.
     
         // Split the URL up, if this is a POST.
         if ( method == "POST" )
@@ -161,24 +164,33 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
                 sVars = rmatch_kludge[2];
                 };
             };
+        
+        // If we are passing some extra data to the callback, we do so here.
         if ( extra_data )
             {
             req.extra_data = extra_data;
             };
+        
+        // Create the HTTPRequest
         req.open ( method, url, true );
+        
+        // In the case of POST, our data is separate from the URI.
         if ( method == "POST" )
             {
-            req.setRequestHeader("Method", "POST "+url+" HTTP/1.1");
-            req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            req.setRequestHeader ( "Method", "POST "+url+" HTTP/1.1" );
+            req.setRequestHeader ( "Content-Type", "application/x-www-form-urlencoded" );
             };
+        
+        // Set the function to be called as the request does its thing.
         req.onreadystatechange = function ( )
             {
-            if ( req.readyState != 4 ) return;
-            if( req.status != 200 ) return;
-            callback ( req, req.extra_data );
-            req = null;
+            if ( req.readyState != 4 ) return;  // We only care about the end.
+            if( req.status != 200 ) return;     // If we failed, we drop out.
+            callback ( req, req.extra_data );   // If we made it this far, we call our callback.
+            req = null;                         // Kill the request.
             };
-        req.send ( sVars );
+        
+        req.send ( sVars ); // Throw the switch, Igor!
     
         return req;
     };
@@ -191,6 +203,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
 	this.utility_loadWeekdayData = function (   in_tab_object       ///< The tab object.
 	                                        )
 	{
+	    // We append the weekday, sort and sort order parameters to the URI.
 	    var uri = encodeURI ( this.my_search_query_params + '&sort_keys=' + this.my_selected_sort_key  + ((this.my_sort_dir == 'desc') ? ',desc' : '') +'&bmlt_settings_id=' + this.my_settings_id + '&weekdays[]=' + (parseInt (in_tab_object.index) + 1).toString() ).toString();
 	    uri =  this.my_ajax_base_uri + encodeURI ( 'switcher=GetSearchResults&' ) + uri;
         this.m_ajax_request = this.utility_AjaxRequest ( uri, TableSearchDisplay.prototype.callback_loadWeekdayData, 'get', in_tab_object );
@@ -203,12 +216,15 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     ****************************************************************************************/
 	this.utility_loadFormatData = function()
 	{
+	    // Since loading the formats happens, regardless of the weekday, we set all the spinners going.
 	    for ( var i = 0; i < 7; i++ )
 	        {
 	        var tab_object = this.my_weekday_links[i];
 	        tab_object.className = 'bmlt_table_header_weekday_list_element is_loading';
 	        };
 	    
+	    // Ask for the formats used by the search set (not every format in the database).
+	    // Tell the formats to come alone, bearing small, unmarked bills.
 	    var uri = encodeURI ( this.my_search_query_params + '&bmlt_settings_id=' + this.my_settings_id + '&get_formats_only=1' ).toString();
 	    uri =  this.my_ajax_base_uri + encodeURI ( 'switcher=GetSearchResults&' ) + uri;
         this.m_ajax_request = this.utility_AjaxRequest ( uri, TableSearchDisplay.prototype.callback_loadFormatData, 'get', this );
@@ -347,6 +363,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
 	
     /************************************************************************************//**
     *	\brief  This builds a div element for the given formats.
+    *           The div is filled with spans; one for each format.
     ****************************************************************************************/
 	this.utility_createFormats = function ( in_formats_string    ///< The JSON data for one meeting.
 	                                        )
@@ -380,7 +397,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
 	};
 	
     /************************************************************************************//**
-    *	\brief  This builds a span element for the given formats.
+    *	\brief  This builds a span element for the given format.
     ****************************************************************************************/
 	this.utility_createOneFormatSpan = function ( in_format_string    ///< The JSON data for one format.
 	                                        )
@@ -513,56 +530,22 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     this.domBuilder_CreateOneWeekday = function ( in_weekday_index  ///< The index of the weekday to be created. 0 is Sunday, 6 is Saturday.
                                                 )
     {
-        var weekdayElement = document.createElement ( 'li' );        // Create the basic anchor element.
-        // Add the text for it.
-        weekdayElement.handler = this;
-        weekdayElement.index = in_weekday_index;
+        // First set up the weekday tab element. It will anchor the context for the data.
+        var weekdayElement = document.createElement ( 'li' );        // Create the basic list element.
+        weekdayElement.handler = this;  // We will do this a lot. It allows anyone to grab the object context from the element.
+        weekdayElement.index = in_weekday_index;    // This is the 0-based weekday index.
         weekdayElement.rest_className = 'bmlt_table_header_weekday_list_element';
+        weekdayElement.className = weekdayElement.rest_className;
         
+        // Today is a great day!
         var d = new Date();
         if ( d.getDay() == in_weekday_index )
             {
             weekdayElement.rest_className += ' is_today';
             };
         
+        // If we click, we select.
         weekdayElement.onclick = function () {this.select()};
-        weekdayElement.className = weekdayElement.rest_className;
-        
-        var textNode = document.createElement ( 'span' );
-        textNode.appendChild ( document.createTextNode ( g_table_weekday_name_array[in_weekday_index] ) );
-        textNode.rest_className = 'bmlt_table_weekday_span';
-        textNode.className = textNode.rest_className;
-        
-        textNode.onmouseover = function ()
-            {
-            if ( this.parentNode.className != (this.parentNode.rest_className + ' is_loading') )
-                {
-                if ( this.parentNode.handler.my_selected_tab != this.parentNode )
-                    {
-                    this.parentNode.className = this.parentNode.rest_className + ' bmlt_table_mouseover';
-                    };
-                };
-            };
-        
-        // We restore the class when we mouse out. However, we ignore it if we are loading.
-        textNode.onmouseout = function ()
-            {
-            if ( !this.parentNode.className.match (/is_loading/) )
-                {
-                this.parentNode.className = this.parentNode.rest_className;
-                if ( this.parentNode.handler.my_selected_tab == this.parentNode )
-                    {
-                    this.parentNode.className += ' is_selected';
-                    }
-                };
-            };
-        
-        weekdayElement.appendChild ( textNode );
-        
-        var throbberImage = document.createElement ( 'img' );   // This will be the throbber.
-        throbberImage.src = g_table_throbber_img_src;
-        throbberImage.className = 'bmlt_table_throbber_image';
-        weekdayElement.appendChild ( throbberImage );
         
         // This inline function will force a reload of the search for the given weekday.
         weekdayElement.reload = function()
@@ -625,6 +608,45 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
                 this.handler.domBuilder_PopulateWeekday ( this.weekday_json_data, this.index, this.sort_key, this.sort_dir, this );
                 };
             };
+        
+        // This will be the span element that holds the weekday name.
+        var textNode = document.createElement ( 'span' );
+        textNode.appendChild ( document.createTextNode ( g_table_weekday_name_array[in_weekday_index] ) );
+        textNode.rest_className = 'bmlt_table_weekday_span';
+        textNode.className = textNode.rest_className;
+        
+        // We add these functions to handle changing the class when the cursor moves over the tab.
+        textNode.onmouseover = function ()
+            {
+            if ( this.parentNode.className != (this.parentNode.rest_className + ' is_loading') )
+                {
+                if ( this.parentNode.handler.my_selected_tab != this.parentNode )
+                    {
+                    this.parentNode.className = this.parentNode.rest_className + ' bmlt_table_mouseover';
+                    };
+                };
+            };
+        
+        // We restore the class when we mouse out. However, we ignore it if we are loading.
+        textNode.onmouseout = function ()
+            {
+            if ( !this.parentNode.className.match (/is_loading/) )
+                {
+                this.parentNode.className = this.parentNode.rest_className;
+                if ( this.parentNode.handler.my_selected_tab == this.parentNode )
+                    {
+                    this.parentNode.className += ' is_selected';
+                    }
+                };
+            };
+        
+        weekdayElement.appendChild ( textNode );
+        
+        // This is the throbber image. It will be hidden unless the weekday is loading.
+        var throbberImage = document.createElement ( 'img' );
+        throbberImage.src = g_table_throbber_img_src;   // This was passed in as a global.
+        throbberImage.className = 'bmlt_table_throbber_image';
+        weekdayElement.appendChild ( throbberImage );
         
         return weekdayElement;
     };
