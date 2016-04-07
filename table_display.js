@@ -440,43 +440,6 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
 	};
 	
     /****************************************************************************************
-    *##################################### AJAX CALLBACKS ##################################*
-    ****************************************************************************************/
-    /************************************************************************************//**
-    *	\brief  Called when the weekday data is loaded.
-    *           This loads the tab object with a cache of the retrieved JSON data, and has
-    *           the tab object select itself.
-    ****************************************************************************************/
-	this.callback_loadWeekdayData = function (  in_response_object, ///< The HTTPRequest response object.
-                                                in_tab_object       ///< The weekday index, plus one (because JS likes to undefine zeroes).
-                                             )
-    {
-        eval ( "var json_response = " + in_response_object.responseText + ";" );    // Extract the JSON object with the returned data.
-        in_tab_object.weekday_json_data = json_response;
-        in_tab_object.select();
-    };
-    
-    /************************************************************************************//**
-    *	\brief  Called when the weekday data is loaded.
-    *           This loads the tab object with a cache of the retrieved JSON data, and has
-    *           the tab object select itself.
-    ****************************************************************************************/
-	this.callback_loadFormatData = function (   in_response_object ///< The HTTPRequest response object.
-                                             )
-    {
-	    for ( var i = 0; i < 7; i++ )
-	        {
-	        var tab_object = this.my_weekday_links[i];
-	        tab_object.className = 'bmlt_table_header_weekday_list_element';
-	        };
-	    
-        eval ( "this.my_format_data = " + in_response_object.responseText + ";" );    // Extract the JSON object with the returned data.
-        this.my_format_data = this.my_format_data.formats;
-        var d = new Date();
-        this.my_header_container.selectTab ( d.getDay() );
-    };
-    
-    /****************************************************************************************
     *################################# INITIAL SETUP ROUTINES ##############################*
     ****************************************************************************************/
     /************************************************************************************//**
@@ -1063,6 +1026,10 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
 *##################################### CLASS FUNCTIONS #################################*
 ****************************************************************************************/
 
+/****************************************************************************************
+*##################################### AJAX CALLBACKS ##################################*
+****************************************************************************************/
+// These need to be class functions, because context is lost when going async.
 /************************************************************************************//**
 *	\brief  Called when the weekday data is loaded.
 *           This loads the tab object with a cache of the retrieved JSON data, and has
