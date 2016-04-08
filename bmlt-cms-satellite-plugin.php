@@ -1890,6 +1890,7 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
             if ( (is_array ( count ( $param_array ) ) && (count ( $param_array ) > 1)) || (intval ( $param_array[0] ) && preg_match ( '/^\d+$/', $param_array[0] )) )
                 {
                 $options = $this->getBMLTOptions_by_id ( $param_array[0] );
+                unset ( $param_array[0] );
                 $root_server_root = $options['root_server'];
                 }
             
@@ -1927,6 +1928,7 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                 if ( (is_array ( count ( $param_array ) ) && (count ( $param_array ) > 1)) || (intval ( $param_array[0] ) && preg_match ( '/^\d+$/', $param_array[0] )) )
                     {
                     $options_id = intval ( $param_array[0] );
+                    unset ( $param_array[0] );
                     }
 
                 $params = (count ($param_array) > 0) ? '?'.str_replace ( array ( '&#038;', '&#038;#038;', '&#038;amp;', '&#038;amp;', '&amp;#038;', '&amp;', '&amp;amp;' ), '&', $param_array[count ( $param_array )-1] ) : null;
