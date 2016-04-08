@@ -60,12 +60,14 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
 	*									INSTANCE DATA MEMBERS								*
 	****************************************************************************************/
 
+    // These are the parameters passed in.
 	var my_settings_id;             ///< This is the unique ID of the BMLT settings that we use to reference default values.
 	var my_ajax_base_uri;           ///< This is the base URI for our AJAX calls.
 	var my_search_query_params;     ///< These are the search parameters that we use to populate the search.
 	var my_start_weekday;           ///< The day of week that starts the header (0 is Sunday, 6 is Saturday).
 	var my_military_time;           ///< True, if the start time is military.
 	
+	// These are DOM elements that we track.
 	var my_container_object;        ///< This is the div block that surrounds this table.
 	var my_header_container;        ///< The div element that will contain the weekday tabs.
 	var my_body_container;          ///< The table element that will contain the search results.
@@ -74,17 +76,24 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
 	var my_weekday_links;           ///< An array of li elements, containing the weekday tabs
 	var my_selected_tab;            ///< This will be the selected tab object.
 	
-	var my_format_data;             ///< This is the JSON object that contains the format data for the search.
+	var my_selected_sort_key;       ///< The currently selected sort key.
+	var my_sort_dir;                ///< The currently selected sort direction.
 	
+	var my_format_data;             ///< This is the JSON object that contains the format data for the search. It is loaded at startup.
+	
+	// These are basically constants. They are the sort keys.
 	var my_sort_key_time;           ///< The sort keys for sorting by start time.
 	var my_sort_key_meeting_name;   ///< The sort keys for sorting by meeting name.
 	var my_sort_key_town;           ///< The sort keys for sorting by borough/town.
 	var my_sort_key_address;        ///< The sort keys for sorting by street address/location name.
-	var my_selected_sort_key;       ///< The currently selected sort key.
-	var my_sort_dir;                ///< The currently selected sort direction.
-	
+
+	this.my_sort_key_time = 'start_time,location_nation,location_province,location_sub_province,location_city_subsection,location_municipality,location_neighborhood,meeting_name';
+	this.my_sort_key_meeting_name = 'meeting_name,start_time,location_city_subsection,location_municipality';
+	this.my_sort_key_town = 'location_city_subsection,location_municipality,start_time,meeting_name';
+	this.my_sort_key_address = 'location_text,location_street,location_city_subsection,location_municipality,start_time,meeting_name';
+
     /****************************************************************************************
-    *								  INTERNAL CLASS FUNCTIONS							    *
+    *################################ INTERNAL CLASS FUNCTIONS #############################*
     ****************************************************************************************/
 	
     /****************************************************************************************
@@ -200,7 +209,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     *           This is called when the tab doesn't yet have a cache.
     *           This uses the filter established by the query parameters passed in on instantiation.
     ****************************************************************************************/
-	this.utility_loadWeekdayData = function (   in_tab_object       ///< The tab object.
+	this.utility_loadWeekdayData = function (   in_tab_object       ///< The tab DOM object.
 	                                        )
 	{
 	    // We append the weekday, sort and sort order parameters to the URI.
@@ -296,7 +305,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
 
 	    if ( in_json_data.location_text && in_json_data.location_text.toString() )
 	        {
-	        ret = '<span class="bmlt_table_location_text_span">';  // This allows folks to hide the state.
+	        ret = '<span class="bmlt_table_location_text_span">';  // This allows folks to hide the location name.
 	        ret += in_json_data.location_text.toString();
 	        ret += '</span>';
 	        };
@@ -361,87 +370,10 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
 	    return ret;
 	};
 	
-    /************************************************************************************//**
-    *	\brief  This builds a div element for the given formats.
-    *           The div is filled with spans; one for each format.
-    ****************************************************************************************/
-	this.utility_createFormats = function ( in_formats_string    ///< The JSON data for one meeting.
-	                                        )
-	{
-	    var ret = document.createElement ( 'div' );
-	    ret.className = 'bmlt_formats_div';
-	    var formatsArray = in_formats_string.split ( ',' );
-	    
-	    for ( var i = 0; i < formatsArray.length; i++ )
-	        {
-	        var format_string = formatsArray[i].toString();
-	        var span = this.utility_createOneFormatSpan ( format_string );
-	        if ( span )
-	            {
-	            ret.appendChild ( span );
-	            };
-	        };
-	    
-	    if ( ret.childNodes.length == 0 )
-	        {
-	        ret = null;
-	        }
-	    else
-	        {
-            var div = document.createElement ( 'div' );
-            div.className = 'bmlt_breaker_div';
-	        ret.appendChild ( div );
-	        };
-	    
-	    return ret;
-	};
-	
-    /************************************************************************************//**
-    *	\brief  This builds a span element for the given format.
-    ****************************************************************************************/
-	this.utility_createOneFormatSpan = function ( in_format_string    ///< The JSON data for one format.
-	                                        )
-	{
-	    if ( in_format_string )
-	        {
-            var ret = document.createElement ( 'span' );
-            ret.rest_className = 'bmlt_format_span bmlt_format_span_' + in_format_string;
-            ret.className = ret.rest_className;
-            ret.appendChild ( document.createTextNode ( in_format_string ) );
-            for ( var i = 0; i < this.my_format_data.length; i++ )
-                {
-                var format_object = this.my_format_data[i];
-                
-                if ( format_object.key_string == in_format_string )
-                    {
-                    var title_string = format_object.name_string;
-                    ret.setAttribute ( 'title', title_string );
-                    var description_string = format_object.description_string;
-                    ret.onclick = function()
-                        {
-                        alert ( description_string );
-                        };
-                
-                    ret.onmouseover = function ()
-                        {
-                        this.className = this.rest_className + ' bmlt_table_mouseover';
-                        };
-        
-                    ret.onmouseout = function ()
-                        {
-                        this.className = this.rest_className;
-                        };
-                    };
-                };
-            return ret;
-            };
-        
-        return null;
-	};
-	
     /****************************************************************************************
-    *################################# INITIAL SETUP ROUTINES ##############################*
+    *################################### DOM SETUP ROUTINES ################################*
     ****************************************************************************************/
+
     /************************************************************************************//**
     *	\brief Creates the weekday selection header.
     ****************************************************************************************/
@@ -854,7 +786,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
 
         if ( in_tag == 'formats' )
             {
-            var formats_div = this.utility_createFormats ( in_string );
+            var formats_div = this.domBuilder_createFormats ( in_string );
             if ( formats_div )
                 {
                 columnElement.appendChild ( formats_div );
@@ -881,6 +813,84 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
             
         return columnElement;
     };
+	
+    /************************************************************************************//**
+    *	\brief  This builds a div element for the given formats.
+    *           The div is filled with spans; one for each format.
+    ****************************************************************************************/
+	this.domBuilder_createFormats = function ( in_formats_string    ///< The JSON data for one meeting.
+	                                        )
+	{
+	    var ret = document.createElement ( 'div' );
+	    ret.className = 'bmlt_formats_div';
+	    var formatsArray = in_formats_string.split ( ',' );
+	    
+	    for ( var i = 0; i < formatsArray.length; i++ )
+	        {
+	        var format_string = formatsArray[i].toString();
+	        var span = this.domBuilder_createOneFormatSpan ( format_string );
+	        if ( span )
+	            {
+	            ret.appendChild ( span );
+	            };
+	        };
+	    
+	    if ( ret.childNodes.length == 0 )
+	        {
+	        ret = null;
+	        }
+	    else
+	        {
+            var div = document.createElement ( 'div' );
+            div.className = 'bmlt_breaker_div';
+	        ret.appendChild ( div );
+	        };
+	    
+	    return ret;
+	};
+	
+    /************************************************************************************//**
+    *	\brief  This builds a span element for the given format.
+    ****************************************************************************************/
+	this.domBuilder_createOneFormatSpan = function ( in_format_string    ///< The JSON data for one format.
+	                                        )
+	{
+	    if ( in_format_string )
+	        {
+            var ret = document.createElement ( 'span' );
+            ret.rest_className = 'bmlt_format_span bmlt_format_span_' + in_format_string;
+            ret.className = ret.rest_className;
+            ret.appendChild ( document.createTextNode ( in_format_string ) );
+            for ( var i = 0; i < this.my_format_data.length; i++ )
+                {
+                var format_object = this.my_format_data[i];
+                
+                if ( format_object.key_string == in_format_string )
+                    {
+                    var title_string = format_object.name_string;
+                    ret.setAttribute ( 'title', title_string );
+                    var description_string = format_object.description_string;
+                    ret.onclick = function()
+                        {
+                        alert ( description_string );
+                        };
+                
+                    ret.onmouseover = function ()
+                        {
+                        this.className = this.rest_className + ' bmlt_table_mouseover';
+                        };
+        
+                    ret.onmouseout = function ()
+                        {
+                        this.className = this.rest_className;
+                        };
+                    };
+                };
+            return ret;
+            };
+        
+        return null;
+	};
 
     /****************************************************************************************
     *#################################### THIRD-PARTY CODE #################################*
@@ -934,18 +944,18 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
      who warned me about a bug in 0.5, I discovered that the last update was
      a regress. I appologize for that.
     **/
-
-    this.str_repeat = function (i,
-                                m
-                                )
-    {
-        for (var o = []; m > 0; o[--m] = i);
-        return o.join('');
-    };
-
     this.sprintf = function ()
     {
+        function str_repeat (   i,
+                                m
+                            )
+        {
+            for (var o = []; m > 0; o[--m] = i);
+            return o.join('');
+        };
+        
         var i = 0, a, f = arguments[i++], o = [], m, p, c, x, s = '';
+        
         while (f)
             {
             if (m = /^[^\x25]+/.exec(f))
@@ -985,7 +995,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
                 a = (/[def]/.test(m[7]) && m[2] && a >= 0 ? '+' + a : a);
                 c = m[3] ? m[3] == '0' ? '0' : m[3].charAt(1) : ' ';
                 x = m[5] - String(a).length - s.length;
-                p = m[5] ? this.str_repeat(c, x) : '';
+                p = m[5] ? str_repeat(c, x) : '';
                 o.push(s + (m[4] ? a + p : p + a));
                 }
             else
@@ -995,26 +1005,25 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
             
             f = f.substring(m[0].length);
             };
+        
         return o.join('');
     };
+	
     /****************************************************************************************
     *################################### MAIN FUNCTION CODE ################################*
     ****************************************************************************************/
     
+    // Start off by getting our container.
     this.my_container_object = document.getElementById ( in_display_id );
-    this.my_container_object.handlerObject = this;
+    this.my_container_object.handlerObject = this;  // Attach a context object (this function instance).
     
+    // Set up the parameters passed in.
     this.my_settings_id = in_settings_id;
     this.my_ajax_base_uri = in_ajax_base_uri;
     this.my_start_weekday = in_start_weekday;
     this.my_search_query_params = in_search_params;
     this.my_military_time = in_is_military_time;
 	
-	this.my_sort_key_time = 'start_time,location_nation,location_province,location_sub_province,location_city_subsection,location_municipality,location_neighborhood,meeting_name';
-	this.my_sort_key_meeting_name = 'meeting_name,start_time,location_city_subsection,location_municipality';
-	this.my_sort_key_town = 'location_city_subsection,location_municipality,start_time,meeting_name';
-	this.my_sort_key_address = 'location_text,location_street,location_city_subsection,location_municipality,start_time,meeting_name';
-
     this.my_selected_sort_key = this.my_sort_key_time;
     this.my_sort_dir = 'asc';
     
