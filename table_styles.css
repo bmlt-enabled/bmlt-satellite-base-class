@@ -405,17 +405,13 @@ div.bmlt_table_display_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_
         border:none;
     }
     
-    div.bmlt_table_display_div ul.bmlt_table_header_ul li.bmlt_table_header_li
-    {
-        width: 100%;
-    }
-    
+    div.bmlt_table_display_div ul.bmlt_table_header_ul li.bmlt_table_header_li,
     div.bmlt_table_display_div ul.bmlt_table_data_ul li,
     div.bmlt_table_display_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li
     {
-        display: block;
+        width: 100%;
+        clear:both;
         float:none;
-        width:100%;
     }
     
     div.bmlt_table_display_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li
