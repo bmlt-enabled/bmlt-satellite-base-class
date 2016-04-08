@@ -79,7 +79,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
 	var my_selected_sort_key;       ///< The currently selected sort key.
 	var my_sort_dir;                ///< The currently selected sort direction.
 	
-	var my_format_data;             ///< This is the JSON object that contains the format data for the search. It is loaded at startup.
+	var my_format_data;             ///< This is the JSON object that contains the format data for the search. It is loaded at startup, and not changed afterwards.
 	
 	// These are basically constants. They are the sort keys.
 	var my_sort_key_time;           ///< The sort keys for sorting by start time.
@@ -240,7 +240,9 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
 	};
 	
     /************************************************************************************//**
-    *	\brief  This turns military time to ante meridian format.
+    *	\brief  This turns military time to ante meridian format or cleaned military time.
+    *           If the time is midnight or noon, the localized string for that is returned.
+    *   \returns A string, with the properly formatted time ("Noon", "Midnight", "HH:MM" or "HH:MM AM|PM").
     ****************************************************************************************/
 	this.utility_convertTime = function ( in_time_string  ///< A string with the time in military format.
 	                                        )
@@ -297,6 +299,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     /************************************************************************************//**
     *	\brief  This builds a readable aggregated street address from the components in the JSON.
     *           Very simply, we just do the location name and street address.
+    *   \returns a string, with the address.
     ****************************************************************************************/
 	this.utility_createStreetAddress = function ( in_json_data    ///< The JSON data for one meeting.
 	                                        )
@@ -325,6 +328,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
 	
     /************************************************************************************//**
     *	\brief  This builds an aggregated town from the components in the JSON.
+    *   \returns a string, with the town.
     ****************************************************************************************/
 	this.utility_createAddressTown = function ( in_json_data    ///< The JSON data for one meeting.
 	                                        )
@@ -376,6 +380,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
 
     /************************************************************************************//**
     *	\brief Creates the weekday selection header.
+    ^   \returns the instantiated DOM object.
     ****************************************************************************************/
     this.domBuilder_CreateHeader = function ()
     {
@@ -421,6 +426,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     
     /************************************************************************************//**
     *	\brief Creates one weekday button for the header.
+    ^   \returns the instantiated DOM object.
     ****************************************************************************************/
     this.domBuilder_CreateOneWeekday = function ( in_weekday_index  ///< The index of the weekday to be created. 0 is Sunday, 6 is Saturday.
                                                 )
@@ -548,6 +554,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     
     /************************************************************************************//**
     *	\brief Populates the meeting result table for the given data.
+    ^   \returns the instantiated DOM object.
     ****************************************************************************************/
     this.domBuilder_PopulateWeekday = function (    in_search_results_json,     ///< A JSON object with the meeting search results.
 	                                                in_index,                   ///< The 0-based weekday index.
@@ -582,6 +589,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     
     /************************************************************************************//**
     *	\brief Populates the header for the meetings table.
+    ^   \returns the instantiated DOM object.
     ****************************************************************************************/
     this.domBuilder_PopulateWeekdayHeader = function (  in_index,       ///< The 0-based weekday index.
 	                                                    in_sort_key,    ///< The sort key, for the data sort.
@@ -623,6 +631,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     
     /************************************************************************************//**
     *	\brief Populates the header for the meetings table.
+    ^   \returns the instantiated DOM object.
     ****************************************************************************************/
     this.domBuilder_PopulateWeekdayHeaderColumn = function (    in_name,        ///< The text name for the column.
 	                                                            in_sort_key,    ///< The sort key, for the data sort.
@@ -690,6 +699,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     
     /************************************************************************************//**
     *	\brief Populates the main table for the meetings table.
+    ^   \returns the instantiated DOM object.
     ****************************************************************************************/
     this.domBuilder_PopulateWeekdayBody = function (  in_json_data  ///< The JSON data for the meetings.
                                                     )
@@ -730,7 +740,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     
     /************************************************************************************//**
     *	\brief  Populates one row
-    *           This returns an array, because comments can create an extra row,
+    ^   \returns the instantiated DOM object.
     ****************************************************************************************/
     this.domBuilder_PopulateWeekdayBody_one_meeting = function (  in_json_data  ///< The JSON data for the meetings.
                                                                 )
@@ -774,6 +784,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     
     /************************************************************************************//**
     *	\brief Populates one row 
+    ^   \returns the instantiated DOM object.
     ****************************************************************************************/
     this.domBuilder_PopulateWeekdayBody_one_column = function ( in_tag,
                                                                 in_string,
@@ -817,6 +828,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     /************************************************************************************//**
     *	\brief  This builds a div element for the given formats.
     *           The div is filled with spans; one for each format.
+    ^   \returns the instantiated DOM object.
     ****************************************************************************************/
 	this.domBuilder_createFormats = function ( in_formats_string    ///< The JSON data for one meeting.
 	                                        )
@@ -851,6 +863,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
 	
     /************************************************************************************//**
     *	\brief  This builds a span element for the given format.
+    ^   \returns the instantiated DOM object.
     ****************************************************************************************/
 	this.domBuilder_createOneFormatSpan = function ( in_format_string    ///< The JSON data for one format.
 	                                        )
