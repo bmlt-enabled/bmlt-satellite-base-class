@@ -113,7 +113,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     ****************************************************************************************/
 	
     /****************************************************************************************
-    *#################################### UTILITY ROUTINES #################################*
+    *############################### COMMUNICATIONS ROUTINES ###############################*
     ****************************************************************************************/
     /************************************************************************************//**
     *                                     AJAX HANDLER                                      *
@@ -125,7 +125,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     *   \returns a new XMLHTTPRequest object.                                               *
     ****************************************************************************************/
     
-    this.utility_AjaxRequest = function (   url,        ///< The URI to be called. This should include all parameters in GET form (even if this is POST).
+    this.comms_AjaxRequest = function (   url,        ///< The URI to be called. This should include all parameters in GET form (even if this is POST).
                                             callback,   ///< The success callback
                                             method,     ///< The method ('get', 'GET', 'post' or 'POST')
                                             extra_data  ///< If supplied, extra data to be delivered to the callback.
@@ -226,15 +226,15 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     *           from the Root server for switcher=GetSearchResults.
     *           This uses the filter established by the query parameters passed in on instantiation.
     *           This function initiates an AJAX call that will return and call the class function
-    *           callback_loadWeekdayData.
+    *           comms_callback_loadloadWeekdayData.
     ****************************************************************************************/
-	this.utility_loadWeekdayData = function (   in_tab_object       ///< The tab DOM object.
+	this.comms_loadWeekdayData = function (   in_tab_object       ///< The tab DOM object.
 	                                        )
 	{
 	    // We append the weekday, sort and sort order parameters to the URI.
 	    var uri = encodeURI ( this.my_search_query_params + '&sort_keys=' + this.my_selected_sort_key  + ((this.my_sort_dir == 'desc') ? ',desc' : '') +'&bmlt_settings_id=' + this.my_settings_id + '&weekdays[]=' + (parseInt (in_tab_object.index) + 1).toString() ).toString();
 	    uri =  this.my_ajax_base_uri + encodeURI ( 'switcher=GetSearchResults&' ) + uri;
-        this.m_ajax_request = this.utility_AjaxRequest ( uri, TableSearchDisplay.prototype.callback_loadWeekdayData, 'get', in_tab_object );
+        this.m_ajax_request = this.comms_AjaxRequest ( uri, this.comms_callback_loadloadWeekdayData, 'get', in_tab_object );
 	};
     
     /************************************************************************************//**
@@ -245,9 +245,9 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     *           allow the number of formats to be limited to only those used for the search results.
     *           This uses the filter established by the query parameters passed in on instantiation.
     *           This function initiates an AJAX call that will return and call the class function
-    *           callback_loadFormatData.
+    *           comms_callback_loadloadFormatData.
     ****************************************************************************************/
-	this.utility_loadFormatData = function()
+	this.comms_loadFormatData = function()
 	{
 	    // Since loading the formats happens, regardless of the weekday, we set all the spinners going.
 	    for ( var i = 0; i < 7; i++ )
@@ -260,9 +260,13 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
 	    // Tell the formats to come alone, bearing small, unmarked bills.
 	    var uri = encodeURI ( this.my_search_query_params + '&bmlt_settings_id=' + this.my_settings_id + '&get_formats_only=1' ).toString();
 	    uri =  this.my_ajax_base_uri + encodeURI ( 'switcher=GetSearchResults&' ) + uri;
-        this.m_ajax_request = this.utility_AjaxRequest ( uri, TableSearchDisplay.prototype.callback_loadFormatData, 'get', this );
+        this.m_ajax_request = this.comms_AjaxRequest ( uri, this.comms_callback_loadloadFormatData, 'get', this );
 	};
 	
+    /****************************************************************************************
+    *#################################### UTILITY ROUTINES #################################*
+    ****************************************************************************************/
+
     /************************************************************************************//**
     *	\brief  This turns military time to ante meridian format or cleaned military time.
     *           If the time is midnight or noon, the localized string for that is returned.
@@ -323,7 +327,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     /************************************************************************************//**
     *	\brief  This builds a readable aggregated street address from the components in the JSON.
     *           Very simply, we just do the location name and street address.
-    *   \returns a string, with the address.
+    *   \returns a string, with the address HTML.
     ****************************************************************************************/
 	this.utility_createStreetAddress = function ( in_json_data    ///< The JSON data for one meeting.
 	                                        )
@@ -353,7 +357,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
 	
     /************************************************************************************//**
     *	\brief  This builds an aggregated town from the components in the JSON.
-    *   \returns a string, with the town.
+    *   \returns a string, with the town HTML.
     ****************************************************************************************/
 	this.utility_createAddressTown = function ( in_json_data    ///< The JSON data for one meeting.
 	                                        )
@@ -395,7 +399,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
 	};
 	
     /****************************************************************************************
-    *################################### DOM SETUP ROUTINES ################################*
+    *################################## DOM BUILDER ROUTINES ###############################*
     ****************************************************************************************/
 
     /************************************************************************************//**
@@ -442,7 +446,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
                 };
             };
 
-        this.utility_loadFormatData();
+        this.comms_loadFormatData();
     };
     
     /************************************************************************************//**
@@ -487,7 +491,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
                 // Set a title, saying what is happening.
                 this.setAttribute ( 'title', this.handler.sprintf ( g_table_header_tab_loading_format, g_table_weekday_long_name_array[this.index] ) );
                 
-                this.handler.utility_loadWeekdayData ( this );
+                this.handler.comms_loadWeekdayData ( this );
                 };
             };
         
@@ -1061,10 +1065,14 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     this.my_search_query_params = in_search_params;
     this.my_military_time = in_is_military_time;
 	
+	// Initial values.
     this.my_selected_sort_key = this.my_sort_key_time;
     this.my_sort_dir = 'asc';
     
+    // This makes the elements visible (This means that non-JS browsers see nothing but the <noscript> element).
     this.my_container_object.style.display = 'block';
+    
+    // Fire off the first shot -get the formats, which will cascade to the first search.
     this.domBuilder_CreateHeader();
 };
     
@@ -1075,15 +1083,15 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
 /****************************************************************************************
 *##################################### AJAX CALLBACKS ##################################*
 ****************************************************************************************/
-// These need to be class functions, because context is lost when going async.
+// These need to be class functions, because context can get manky when going async.
 /************************************************************************************//**
 *	\brief  Called when the weekday data is loaded.
 *           This loads the tab object with a cache of the retrieved JSON data, and has
 *           the tab object select itself.
 ****************************************************************************************/
-TableSearchDisplay.prototype.callback_loadWeekdayData = function (  in_response_object, ///< The HTTPRequest response object.
-                                                                    in_tab_object       ///< The weekday index, plus one (because JS likes to undefine zeroes).
-                                                                    )
+TableSearchDisplay.prototype.comms_callback_loadloadWeekdayData = function (    in_response_object, ///< The HTTPRequest response object.
+                                                                                in_tab_object       ///< The weekday index, plus one (because JS likes to undefine zeroes).
+                                                                            )
 {
     eval ( "var json_response = " + in_response_object.responseText + ";" );    // Extract the JSON object with the returned data.
     in_tab_object.weekday_json_data = json_response;
@@ -1095,7 +1103,7 @@ TableSearchDisplay.prototype.callback_loadWeekdayData = function (  in_response_
 *           This loads the tab object with a cache of the retrieved JSON data, and has
 *           the tab object select itself.
 ****************************************************************************************/
-TableSearchDisplay.prototype.callback_loadFormatData = function (   in_response_object, ///< The HTTPRequest response object.
+TableSearchDisplay.prototype.comms_callback_loadloadFormatData = function (   in_response_object, ///< The HTTPRequest response object.
                                                                     in_context_object
                                          )
 {
@@ -1107,6 +1115,8 @@ TableSearchDisplay.prototype.callback_loadFormatData = function (   in_response_
     
     eval ( "var format_data = " + in_response_object.responseText + ";" );    // Extract the JSON object with the returned data.
     in_context_object.my_format_data = format_data.formats;
+    
+    // Now that we have the formats, get the meeting list for today.
     var d = new Date();
     in_context_object.my_header_container.selectTab ( d.getDay() );
 };

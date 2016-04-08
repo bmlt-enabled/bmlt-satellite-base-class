@@ -30,6 +30,7 @@ CHANGELIST
 * Added a "breaker" div element to the [[bmlt_table]] display.
 * Work on improving code quality.
 * Added more style hooks to the [[bmlt_table]] shortcode display.
+* Fixed a bug in the simple and table shortcodes that didn't honor just the settings ID (without the "##-##" splitter).
 
 *3.3.1*
 * April 6, 2016
