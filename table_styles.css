@@ -310,12 +310,12 @@ div.bmlt_table_display_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_
     text-align: right;
 }
 
-div.bmlt_table_display_div div.bmlt_table_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_no_meetings_li
+div.bmlt_table_display_div li.bmlt_table_data_ul_no_meetings_li
 {
     width: 100%;
 }
 
-div.bmlt_table_display_div div.bmlt_table_div ul.bmlt_table_data_ul li span.bmlt_table_no_meetings_span
+div.bmlt_table_display_div li.bmlt_table_data_ul_no_meetings_li span.bmlt_table_no_meetings_span
 {
     display:block;
     width: 100%;
