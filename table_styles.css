@@ -84,6 +84,7 @@ div.bmlt_table_display_div ul.bmlt_table_header_weekday_list li
     height:2em;
     text-align:center;
     vertical-align: middle;
+    overflow:hidden;
     cursor:pointer;
     display:block;
     float:left;
@@ -110,7 +111,6 @@ div.bmlt_table_display_div .bmlt_table_header_weekday_list li span.bmlt_table_we
     margin-left:0;
     margin-right:0;
     border:none;
-    overflow:hidden;
 }
 
 div.bmlt_table_display_div .bmlt_table_header_weekday_list img

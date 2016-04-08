@@ -21,8 +21,24 @@
 *   fetched and displayed. The dataset is retrieved through a standard JSON semantic query  *
 *   to the instance's Root Server.                                                          *
 *                                                                                           *
+*   The weekday tabs tend to be the "hubs" of the functionality. JSON search results are    *
+*   attached to the weekday tabs, and this data is used to create the weekday search        *
+*   display. The formats JSON is held by the main class, as that is used throughout the     *
+*   class. Otherwise, we try to encapsulate data and functionality as much as possible.     *
+*                                                                                           *
 *   This should only be used on Root Server version 2.7.8 or above, because the town sort   *
 *   will not work properly on older versions (but this will generally work, anyway).        *
+*                                                                                           *
+*   SOME NOTES ON CONVENTIONS:                                                              *
+*   You will notice an abundance of semicolons. This is because this file is passed through *
+*   an optimizer that crunches the entire file into one line. In this case, semicolons are  *
+*   absolutely vital.                                                                       *
+*                                                                                           *
+*   We use a lot of completion block functions, which is fairly standard for JavaScript.    *
+*   These are for things like mouseovers and click handlers.                                *
+*                                                                                           *
+*   We use ul elements, as opposed to table elements, in order to maximize the potential    *
+*   for CSS modification of the displayed results (such as for responsive design).          *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -206,8 +222,11 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     
     /************************************************************************************//**
     *	\brief  Called to load a weekday.
-    *           This is called when the tab doesn't yet have a cache.
+    *           This is called when the tab doesn't yet have a cache. It requests a JSON response
+    *           from the Root server for switcher=GetSearchResults.
     *           This uses the filter established by the query parameters passed in on instantiation.
+    *           This function initiates an AJAX call that will return and call the class function
+    *           callback_loadWeekdayData.
     ****************************************************************************************/
 	this.utility_loadWeekdayData = function (   in_tab_object       ///< The tab DOM object.
 	                                        )
@@ -220,8 +239,13 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     
     /************************************************************************************//**
     *	\brief  Called to load all the format objects for the search.
-    *           This will give us the "used formats" for the given filtered search.
+    *           This will give us the "used formats" for the given filtered search. This will
+    *           request a JSON response from the server. It does not use switcher=GetFormats.
+    *           Instead, it requests the formats only rom switcher=GetSearchResults. This will
+    *           allow the number of formats to be limited to only those used for the search results.
     *           This uses the filter established by the query parameters passed in on instantiation.
+    *           This function initiates an AJAX call that will return and call the class function
+    *           callback_loadFormatData.
     ****************************************************************************************/
 	this.utility_loadFormatData = function()
 	{
@@ -308,19 +332,20 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
 
 	    if ( in_json_data.location_text && in_json_data.location_text.toString() )
 	        {
-	        ret = '<span class="bmlt_table_location_text_span">';  // This allows folks to hide the location name.
+	        ret = '<span class="bmlt_table_location_text_span">';  // This allows folks to style the location name.
 	        ret += in_json_data.location_text.toString();
+            if ( (ret != '') && in_json_data.location_street && in_json_data.location_street.toString() )
+                {
+                ret += '<span class="bmlt_table_location_text_comma_span">, </span>';
+                };
 	        ret += '</span>';
 	        };
 	    
 	    if ( in_json_data.location_street && in_json_data.location_street.toString() )
 	        {
-	        if ( ret != '' )
-	            {
-	            ret += ', ';
-	            };
-	        
+	        ret = '<span class="bmlt_table_location_street_span">';  // This allows folks to style the street.
 	        ret += in_json_data.location_street.toString();
+	        ret += '</span>';
 	        };
 	        
 	    return ret;
@@ -333,40 +358,35 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
 	this.utility_createAddressTown = function ( in_json_data    ///< The JSON data for one meeting.
 	                                        )
 	{
-	    var ret = '';
+	    var hasTown = false;
+	    var ret = '<span class="bmlt_table_town_span">';  // This allows folks to style the town.
 	    
 	    // We prefer boroughs, as folks think of them as "towns."
 	    if ( in_json_data.location_city_subsection && in_json_data.location_city_subsection.toString() )
 	        {
-	        if ( ret != '' )
-	            {
-	            ret += ', ';
-	            };
-	        
-	        ret += in_json_data.location_city_subsection.toString();
+	        ret = in_json_data.location_city_subsection.toString();
+	        hasTown = true;
 	        }
 	    else
 	        {
             if ( in_json_data.location_municipality && in_json_data.location_municipality.toString() )
                 {
-                if ( ret != '' )
-                    {
-                    ret += ', ';
-                    };
-            
-                ret += in_json_data.location_municipality.toString();
+                ret = in_json_data.location_municipality.toString();
+	            hasTown = true;
                 };
             };
+        
+        if ( hasTown && in_json_data.location_province && in_json_data.location_province.toString() )
+            {
+            ret += '<span class="bmlt_table_town_comma_span">, </span>';
+            };
+	    
+	    ret += '</span>';
         
         // Add the state.
 	    if ( in_json_data.location_province && in_json_data.location_province.toString() )
 	        {
-	        ret += '<span class="bmlt_table_state_span">';  // This allows folks to hide the state.
-	        if ( ret != '' )
-	            {
-	            ret += ', ';
-	            };
-	        
+	        ret += '<span class="bmlt_table_state_span">';  // This allows folks to style the state.	        
 	        ret += in_json_data.location_province.toString();
 	        ret += '</span>';
 	        };
@@ -391,7 +411,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
         
         this.my_container_object.appendChild ( this.my_header_container );
 
-        var startingIndex = this.my_start_weekday;
+        var startingIndex = this.my_start_weekday;  // Allows us to start from different weekdays.
         
         // Build the list of weekday tab objects.
         for ( var i = 0; i < 7; i++ )
@@ -413,6 +433,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
                 {
                 if ( this.handler && this.handler.my_weekday_links && this.handler.my_weekday_links[i] )
                     {
+                    // If this is the day we are looking at, we select it.
                     if ( this.handler.my_weekday_links[i].index == in_weekday )
                         {
                         this.handler.my_weekday_links[i].select();
@@ -570,12 +591,15 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
             this.my_body_container = null;
             };
         
-        this.my_body_container = document.createElement ( 'div' );        // Create the main table element.
+        this.my_body_container = document.createElement ( 'div' );        // Create the main display container element.
         this.my_body_container.rest_className = 'bmlt_table_div';
+        this.my_body_container.rest_className += (' bmlt_table_' + ((in_sort_dir == 'asc') ? 'sort_asc' : 'sort_desc') + '_div');
+        this.my_body_container.rest_className += (' bmlt_table_sort_' + in_sort_key.replace ( /,/g, '_' ) + '_div');
         this.my_body_container.className = this.my_body_container.rest_className;
         this.my_body_container_header = null;
         this.my_body_container_body = null;
         
+        // Attach all the various DOM elements.
         this.my_container_object.appendChild ( this.my_body_container );        
         this.my_body_container.appendChild ( this.domBuilder_PopulateWeekdayHeader ( in_index, in_sort_key, in_sort_dir ) );
         this.my_body_container.appendChild ( this.domBuilder_PopulateWeekdayBody ( in_search_results_json ) );
