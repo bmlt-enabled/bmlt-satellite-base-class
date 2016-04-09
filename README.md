@@ -26,7 +26,7 @@ INSTALLATION
 CHANGELIST
 ----------
 *3.3.2*
-* TBD
+* April 9, 2016
 * Added a "breaker" div element to the [[bmlt_table]] display.
 * Work on improving code quality.
 * Added more style hooks to the [[bmlt_table]] shortcode display.
