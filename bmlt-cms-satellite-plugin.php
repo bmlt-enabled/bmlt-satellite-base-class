@@ -3,7 +3,7 @@
 *   \file   bmlt-cms-satellite-plugin.php                                                   *
 *                                                                                           *
 *   \brief  This is a generic CMS plugin class for a BMLT satellite client.                 *
-*   \version 3.3.2                                                                          *
+*   \version 3.3.3                                                                          *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -1883,9 +1883,16 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
 
         while ( $params = self::get_shortcode ( $in_content, 'bmlt_simple' ) )
             {
-            $param_array = explode ( '##-##', $params );    // You can specify a settings ID, by separating it from the URI parameters with a ##-##.
+            if ( $params === true )
+                {
+                $params = null;
+                }
+            else
+                {
+                $param_array = explode ( '##-##', $params );    // You can specify a settings ID, by separating it from the URI parameters with a ##-##.
             
-            $params = str_replace ( array ( '&#038;', '&#038;#038;', '&#038;amp;', '&#038;amp;', '&amp;#038;', '&amp;', '&amp;amp;' ), '&', $param_array[count ( $param_array )-1] );
+                $params = str_replace ( array ( '&#038;', '&#038;#038;', '&#038;amp;', '&#038;amp;', '&amp;#038;', '&amp;', '&amp;amp;' ), '&', $param_array[count ( $param_array )-1] );
+                }
             
             if ( (is_array ( count ( $param_array ) ) && (count ( $param_array ) > 1)) || (intval ( $param_array[0] ) && preg_match ( '/^\d+$/', $param_array[0] )) )
                 {
@@ -1919,24 +1926,35 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
         while ( $params = self::get_shortcode ( $in_content, 'bmlt_table' ) )
             {
             $options_id = $this->cms_get_page_settings_id( $in_content );
-
-            $param_array = explode ( '##-##', $params );    // You can specify a settings ID, by separating it from the URI parameters with a ##-##.
-            $params = null;
             
-            if ( is_array ( $param_array ) )
+            if ( $params !== true )
                 {
-                $params = str_replace ( array ( '&#038;', '&#038;#038;', '&#038;amp;', '&#038;amp;', '&amp;#038;', '&amp;', '&amp;amp;' ), '&', $param_array[count ( $param_array )-1] );
+                $param_array = explode ( '##-##', $params );    // You can specify a settings ID, by separating it from the URI parameters with a ##-##.
+                $params = null;
+                }
+            
+            if ( ($params === true) || is_array ( $param_array ) )
+                {
+                if ( $params === true )
+                    {
+                    $params = null;
+                    }
+                else
+                    {
+                    $params = str_replace ( array ( '&#038;', '&#038;#038;', '&#038;amp;', '&#038;amp;', '&amp;#038;', '&amp;', '&amp;amp;' ), '&', $param_array[count ( $param_array )-1] );
+                    }
                 
                 // See if there is an options ID in the parameter list.
                 if ( (is_array ( count ( $param_array ) ) && (count ( $param_array ) > 1)) || (intval ( $param_array[0] ) && preg_match ( '/^\d+$/', $param_array[0] )) )
                     {
+                
                     $options_id = intval ( $param_array[0] );
                     if ( count ( $param_array ) == 1 )
                         {
                         $params = null;
                         }
                     }
-                
+                $options = $this->getBMLTOptions_by_id ( $options_id );
                 // This strips weekday selectors out. We will be dealing with this ourselves.
                 $params = preg_replace ( '|(\&){0,1}weekdays(\[\]){0,1}=[0-9]{0,1}|', '', $params );
                 // We ignore the block_mode and sort key selectors as well. We'll be doing our own thing. It will be table-based, and sorted by time (to start).
@@ -1947,7 +1965,6 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                 $params = preg_replace ( '|[\&\?]$|', '', $params );
                 
                 $the_new_content = '<noscript>'.$this->process_text ( self::$local_noscript ).'</noscript>';    // We let non-JS browsers know that this won't work for them.
-                $options = $this->getBMLTOptions_by_id ( $options_id );
                 
                 // The first time through, we import our JS file. After that, we no longer need it.
                 if ( !$my_table_next_id )
