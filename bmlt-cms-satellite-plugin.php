@@ -1924,14 +1924,15 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
             
             if ( is_array ( $param_array ) )
                 {
+                $params = $param_array[count ( $param_array )-1];
+                
                 // See if there is an options ID in the parameter list.
                 if ( (is_array ( count ( $param_array ) ) && (count ( $param_array ) > 1)) || (intval ( $param_array[0] ) && preg_match ( '/^\d+$/', $param_array[0] )) )
                     {
                     $options_id = intval ( $param_array[0] );
-                    unset ( $param_array[0] );
                     }
 
-                $params = (count ($param_array) > 0) ? '?'.str_replace ( array ( '&#038;', '&#038;#038;', '&#038;amp;', '&#038;amp;', '&amp;#038;', '&amp;', '&amp;amp;' ), '&', $param_array[count ( $param_array )-1] ) : null;
+                $params = str_replace ( array ( '&#038;', '&#038;#038;', '&#038;amp;', '&#038;amp;', '&amp;#038;', '&amp;', '&amp;amp;' ), '&', $params );
                 
                 // This strips weekday selectors out. We will be dealing with this ourselves.
                 $params = preg_replace ( '|(\&){0,1}weekdays(\[\]){0,1}=[0-9]{0,1}|', '', $params );
