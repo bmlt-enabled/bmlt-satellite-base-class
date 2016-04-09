@@ -1885,16 +1885,17 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
             {
             $param_array = explode ( '##-##', $params );    // You can specify a settings ID, by separating it from the URI parameters with a ##-##.
             
-            $params = null;
+            $params = str_replace ( array ( '&#038;', '&#038;#038;', '&#038;amp;', '&#038;amp;', '&amp;#038;', '&amp;', '&amp;amp;' ), '&', $param_array[count ( $param_array )-1] );
             
             if ( (is_array ( count ( $param_array ) ) && (count ( $param_array ) > 1)) || (intval ( $param_array[0] ) && preg_match ( '/^\d+$/', $param_array[0] )) )
                 {
                 $options = $this->getBMLTOptions_by_id ( $param_array[0] );
-                unset ( $param_array[0] );
                 $root_server_root = $options['root_server'];
+                if ( count ( $param_array ) == 1 )
+                    {
+                    $params = null;
+                    }
                 }
-            
-            $params = (count ($param_array) > 0) ? '?'.str_replace ( array ( '&#038;', '&#038;#038;', '&#038;amp;', '&#038;amp;', '&amp;#038;', '&amp;', '&amp;amp;' ), '&', $param_array[count ( $param_array )-1] ) : null;
             
             $uri = $root_server_root."/client_interface/simple/index.php".$params;
 
@@ -1924,15 +1925,17 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
             
             if ( is_array ( $param_array ) )
                 {
-                $params = $param_array[count ( $param_array )-1];
+                $params = str_replace ( array ( '&#038;', '&#038;#038;', '&#038;amp;', '&#038;amp;', '&amp;#038;', '&amp;', '&amp;amp;' ), '&', $param_array[count ( $param_array )-1] );
                 
                 // See if there is an options ID in the parameter list.
                 if ( (is_array ( count ( $param_array ) ) && (count ( $param_array ) > 1)) || (intval ( $param_array[0] ) && preg_match ( '/^\d+$/', $param_array[0] )) )
                     {
                     $options_id = intval ( $param_array[0] );
+                    if ( count ( $param_array ) == 1 )
+                        {
+                        $params = null;
+                        }
                     }
-
-                $params = str_replace ( array ( '&#038;', '&#038;#038;', '&#038;amp;', '&#038;amp;', '&amp;#038;', '&amp;', '&amp;amp;' ), '&', $params );
                 
                 // This strips weekday selectors out. We will be dealing with this ourselves.
                 $params = preg_replace ( '|(\&){0,1}weekdays(\[\]){0,1}=[0-9]{0,1}|', '', $params );
