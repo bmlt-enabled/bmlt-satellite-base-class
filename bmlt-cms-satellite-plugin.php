@@ -1883,26 +1883,17 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
 
         while ( $params = self::get_shortcode ( $in_content, 'bmlt_simple' ) )
             {
-            if ( $params === true )
-                {
-                $params = null;
-                }
-            else
-                {
-                $param_array = explode ( '##-##', $params );    // You can specify a settings ID, by separating it from the URI parameters with a ##-##.
+            $param_array = explode ( '##-##', $params );    // You can specify a settings ID, by separating it from the URI parameters with a ##-##.
             
-                $params = str_replace ( array ( '&#038;', '&#038;#038;', '&#038;amp;', '&#038;amp;', '&amp;#038;', '&amp;', '&amp;amp;' ), '&', $param_array[count ( $param_array )-1] );
-                }
+            $params = null;
             
-            if ( (is_array ( count ( $param_array ) ) && (count ( $param_array ) > 1)) || (intval ( $param_array[0] ) && preg_match ( '/^\d+$/', $param_array[0] )) )
+            if ( is_array ( $param_array ) && (count ( $param_array ) > 1) )
                 {
                 $options = $this->getBMLTOptions_by_id ( $param_array[0] );
                 $root_server_root = $options['root_server'];
-                if ( count ( $param_array ) == 1 )
-                    {
-                    $params = null;
-                    }
                 }
+            
+            $params = (count ($param_array) > 0) ? '?'.str_replace ( array ( '&#038;', '&#038;#038;', '&#038;amp;', '&#038;amp;', '&amp;#038;', '&amp;', '&amp;amp;' ), '&', $param_array[count ( $param_array )-1] ) : null;
             
             $uri = $root_server_root."/client_interface/simple/index.php".$params;
 
