@@ -25,6 +25,10 @@ INSTALLATION
 
 CHANGELIST
 ----------
+*3.3.4*
+* TBD
+* Refactored to make the code more straightforward and reusable.
+
 *3.3.3*
 * April 9, 2016
 * Fixed a bug that could bork the [[bmlt_table]] shortcode when there are no parameters specified.

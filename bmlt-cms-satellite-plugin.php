@@ -3,7 +3,7 @@
 *   \file   bmlt-cms-satellite-plugin.php                                                   *
 *                                                                                           *
 *   \brief  This is a generic CMS plugin class for a BMLT satellite client.                 *
-*   \version 3.3.3                                                                          *
+*   \version 3.3.4                                                                          *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -109,7 +109,7 @@ require_once ( dirname ( __FILE__ )."/lang/lang_".$bmlt_localization.".php" );
 *   This plugin registers errors by echoing HTML comments, so look at the source code of    *
 *   the page if things aren't working right.                                                *
 ********************************************************************************************/
-class BMLTPlugin extends BMLT_Localized_BaseClass
+abstract class BMLTPlugin extends BMLT_Localized_BaseClass
 {
     /************************************************************************************//**
     *                           STATIC DATA MEMBERS (SINGLETON)                             *
@@ -959,7 +959,6 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                         $html .= "document.getElementById('BMLTPlugin_options_container').style.display='block';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
                         $html .= "var c_g_BMLTPlugin_no_name = '".$this->process_text ( self::$local_options_no_name_string )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
                         $html .= "var c_g_BMLTPlugin_no_root = '".$this->process_text ( self::$local_options_no_root_server_string )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-//                         $html .= "var c_g_BMLTPlugin_no_search = '".$this->process_text ( self::$local_options_no_new_search_string )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
                         $html .= "var c_g_BMLTPlugin_root_canal = '".self::$local_options_url_bad.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
                         $html .= "var c_g_BMLTPlugin_success_message = '".$this->process_text ( self::$local_options_save_success )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
                         $html .= "var c_g_BMLTPlugin_failure_message = '".$this->process_text ( self::$local_options_save_failure )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
@@ -1055,15 +1054,6 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
                         $ret .= '<div class="BMLTPlugin_option_sheet_Version" id="BMLTPlugin_option_sheet_version_indicator_'.$in_options_index.'"></div>';
                     $ret .= '</div>';
                 $ret .= '</div>';
-//                 $ret .= '<div class="BMLTPlugin_option_sheet_line_div">';
-//                     $id = 'BMLTPlugin_option_sheet_new_search_'.$in_options_index;
-//                     $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( self::$local_options_new_search_label ).'</label>';
-//                         $string = (isset ( $options['bmlt_new_search_url'] ) && $options['bmlt_new_search_url'] ? $options['bmlt_new_search_url'] : $this->process_text ( self::$local_options_no_new_search_string ) );
-//                     $ret .= '<input class="BMLTPlugin_option_sheet_line_new_search_text" id="'.htmlspecialchars ( $id ).'" type="text" value="'.htmlspecialchars ( $string ).'"';
-//                     $ret .= ' onfocus="BMLTPlugin_ClickInText(this.id,\''.$this->process_text ( self::$local_options_no_new_search_string).'\',false)"';
-//                     $ret .= ' onblur="BMLTPlugin_ClickInText(this.id,\''.$this->process_text ( self::$local_options_no_new_search_string).'\',true)"';
-//                     $ret .= ' onchange="BMLTPlugin_DirtifyOptionSheet()" onkeyup="BMLTPlugin_DirtifyOptionSheet()" />';
-//                 $ret .= '</div>';
                 $dir_res = opendir ( dirname ( __FILE__ ).'/themes' );
                 if ( $dir_res )
                     {
@@ -3379,120 +3369,9 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
     /************************************************************************************//**
     *                                THE CMS-SPECIFIC FUNCTIONS                             *
     *                                                                                       *
-    * These need to be overloaded by the subclasses.                                        *
+    * These may be overridden by the subclasses. Some are required to be overridden.        *
     ****************************************************************************************/
     
-    /************************************************************************************//**
-    *   \brief Return an HTTP path to the AJAX callback target for the mobile handler.      *
-    *                                                                                       *
-    *   \returns a string, containing the path. Defaults to the base URI.                   *
-    ****************************************************************************************/
-    protected function get_ajax_mobile_base_uri()
-        {
-        return $this->get_ajax_base_uri();
-        }
-    
-    /************************************************************************************//**
-    *   \brief Return an HTTP path to the AJAX callback target.                             *
-    *                                                                                       *
-    *   \returns a string, containing the path.                                             *
-    ****************************************************************************************/
-    protected function get_admin_ajax_base_uri()
-        {
-        return htmlspecialchars ( $this->get_ajax_base_uri() );
-        }
-    
-    /************************************************************************************//**
-    *   \brief Return an HTTP path to the basic admin form submit (action) URI              *
-    *                                                                                       *
-    *   \returns a string, containing the path.                                             *
-    ****************************************************************************************/
-    protected function get_admin_form_uri()
-        {
-        return null;
-        }
-    
-    /************************************************************************************//**
-    *   \brief Return an HTTP path to the AJAX callback target.                             *
-    *                                                                                       *
-    *   \returns a string, containing the path.                                             *
-    ****************************************************************************************/
-    protected function get_ajax_base_uri()
-        {
-        return $_SERVER['PHP_SELF'];
-        }
-    
-    /************************************************************************************//**
-    *   \brief Return an HTTP path to the plugin directory.                                 *
-    *                                                                                       *
-    *   \returns a string, containing the path.                                             *
-    ****************************************************************************************/
-    protected function get_plugin_path()
-        {
-        return null;
-        }
-    
-    /************************************************************************************//**
-    *   \brief This uses the WordPress text processor (__) to process the given string.     *
-    *                                                                                       *
-    *   This allows easier translation of displayed strings. All strings displayed by the   *
-    *   plugin should go through this function.                                             *
-    *                                                                                       *
-    *   \returns a string, processed by WP.                                                 *
-    ****************************************************************************************/
-    protected function process_text (  $in_string  ///< The string to be processed.
-                                    )
-        {
-        return htmlspecialchars ( $in_string );
-        }
-        
-    /************************************************************************************//**
-    *   \brief Sets up the admin and handler callbacks.                                     *
-    ****************************************************************************************/
-    protected function set_callbacks ( )
-        {
-        }
-
-    /************************************************************************************//**
-    *   \brief This gets the admin options from the database (allows CMS abstraction).      *
-    *                                                                                       *
-    *   \returns an associative array, with the option settings.                            *
-    ****************************************************************************************/
-    protected function cms_get_option ( $in_option_key    ///< The name of the option
-                                        )
-        {
-        return null;
-        }
-    
-    /************************************************************************************//**
-    *   \brief This gets the admin options from the database (allows CMS abstraction).      *
-    ****************************************************************************************/
-    protected function cms_set_option ( $in_option_key,   ///< The name of the option
-                                        $in_option_value  ///< the values to be set (associative array)
-                                        )
-        {
-        }
-    
-    /************************************************************************************//**
-    *   \brief Deletes a stored option (allows CMS abstraction).                            *
-    ****************************************************************************************/
-    protected function cms_delete_option ( $in_option_key   ///< The name of the option
-                                        )
-        {
-        }
-
-    /************************************************************************************//**
-    *   \brief This gets the page meta for the given page. (allows CMS abstraction).        *
-    *                                                                                       *
-    *   \returns a mixed type, with the meta data                                           *
-    ****************************************************************************************/
-    protected function cms_get_post_meta (  $in_page_id,    ///< The ID of the page/post
-                                            $in_settings_id ///< The ID of the meta tag to fetch
-                                            )
-        {
-        return null;
-        }
-
     /************************************************************************************//**
     *   \brief This function fetches the settings ID for a page (if there is one).          *
     *                                                                                       *
@@ -3548,41 +3427,119 @@ class BMLTPlugin extends BMLT_Localized_BaseClass
         
         return $my_option_id;
         }
+    
+    /************************************************************************************//**
+    *   \brief  Process the given string.                                                   *
+    *           NOTE: A good start has been given, but there's a very good chance this will *
+    *           need to be overridden.                                                      *
+    *                                                                                       *
+    *   This allows easier translation of displayed strings. All strings displayed by the   *
+    *   plugin should go through this function.                                             *
+    *                                                                                       *
+    *   \returns a string, processed by the CMS.                                            *
+    ****************************************************************************************/
+    protected function process_text (   $in_string  ///< The string to be processed.
+                                    )
+        {
+        return htmlspecialchars ( $in_string );
+        }
+    
+    /************************************************************************************//**
+    *   \brief  Return an HTTP path to the AJAX callback target.                            *
+    *           NOTE: A good start has been given, but there's a very good chance this will *
+    *           need to be overridden.                                                      *
+    *                                                                                       *
+    *   \returns a string, containing the path.                                             *
+    ****************************************************************************************/
+    protected function get_ajax_base_uri()
+        {
+        // We try to account for SSL and unusual TCP ports.
+        $port = $_SERVER['SERVER_PORT'] ;
+        // IIS puts "off" in the HTTPS field, so we need to test for that.
+        $https = (!empty ( $_SERVER['HTTPS'] ) && (($_SERVER['HTTPS'] !== 'off') || ($port == 443))); 
+        $server_path = $_SERVER['SERVER_NAME'];
+        $my_path = $_SERVER['PHP_SELF'];
+        $server_path .= trim ( (($https && ($port != 443)) || (!$https && ($port != 80))) ? ':'.$port : '', '/' );
+        $server_path = 'http'.($https ? 's' : '').'://'.$server_path.$my_path;
+        return $server_path;
+        }
 
     /************************************************************************************//**
-    *                                  THE CMS CALLBACKS                                    *
+    *   \brief  Sets up the admin and handler callbacks. Override this for your CMS.        *
+    *           NOTE: This may be ignored, but most CMSes have a system of callbacks, and   *
+    *           this function is a good place to establish those callbacks.                 *
+    *           It is called at the end of the base class constructor.                      *
     ****************************************************************************************/
-        
-    /************************************************************************************//**
-    *   \brief Presents the admin page.                                                     *
-    ****************************************************************************************/
-    function admin_page ( )
+    protected function set_callbacks()
         {
         }
-       
+    
     /************************************************************************************//**
-    *   \brief Presents the admin menu options.                                             *
+    *   \brief Return an HTTP path to the AJAX callback target for the mobile handler.      *
     *                                                                                       *
-    * NOTE: This function requires WP. Most of the rest can probably be more easily         *
-    * converted for other CMSes.                                                            *
+    *   \returns a string, containing the path. Defaults to the base URI.                   *
     ****************************************************************************************/
-    function option_menu ( )
+    protected function get_ajax_mobile_base_uri()
         {
+        return $this->get_ajax_base_uri();
         }
-        
+    
     /************************************************************************************//**
-    *   \brief Echoes any necessary head content.                                           *
+    *   \brief Return an HTTP path to the AJAX callback target.                             *
+    *                                                                                       *
+    *   \returns a string, containing the path.                                             *
     ****************************************************************************************/
-    function standard_head ( )
+    protected function get_admin_ajax_base_uri()
         {
+        return $this->get_ajax_base_uri();
         }
-        
+    
     /************************************************************************************//**
-    *   \brief Echoes any necessary head content for the admin.                             *
+    *   \brief Return an HTTP path to the basic admin form submit (action) URI              *
+    *                                                                                       *
+    *   \returns a string, containing the path.                                             *
     ****************************************************************************************/
-    function admin_head ( )
+    protected function get_admin_form_uri()
         {
+        return $this->get_ajax_base_uri();
         }
+
+    /************************************************************************************//**
+    *   \brief  Return an HTTP path to the plugin directory.                                *
+    *           NOTE: A good start has been given, but there's a very good chance this will *
+    *           need to be overridden.                                                      *
+    *                                                                                       *
+    *   \returns a string, containing the path.                                             *
+    ****************************************************************************************/
+    protected function get_plugin_path()
+        {
+        return dirname ( $this->get_ajax_base_uri() );
+        }
+
+    /************************************************************************************//**
+    *                      ABSTRACT (REQUIRED OVERRIDE) FUNCTIONS                           *
+    ****************************************************************************************/
+
+    /************************************************************************************//**
+    *   \brief This gets the admin options from the database (allows CMS abstraction).      *
+    *                                                                                       *
+    *   \returns an associative array, with the option settings.                            *
+    ****************************************************************************************/
+    abstract protected function cms_get_option (    $in_option_key    ///< The key for the option
+                                                    );
+    
+    /************************************************************************************//**
+    *   \brief This gets the admin options from the database (allows CMS abstraction).      *
+    ****************************************************************************************/
+    abstract protected function cms_set_option (    $in_option_key,   ///< The name of the option
+                                                    $in_option_value  ///< the values to be set (associative array)
+                                                );
+    
+    /************************************************************************************//**
+    *   \brief Deletes a stored option (allows CMS abstraction).                            *
+    ****************************************************************************************/
+    abstract protected function cms_delete_option ( $in_option_key   ///< The name of the option
+                                                    );
 };
 
 /***********************************************************************/
