@@ -62,7 +62,10 @@
 ********************************************************************************************/
 
 /****************************************************************************************//**
-*	\brief  
+*	\brief  This function implements the [[bmlt_table]] shortcode. Most of the shortcode
+*           functionality is JavaScript. This function builds a new DOM tree that contains
+*           a <div> element that will, in turn, contain a couple of lists that are warped
+*           using CSS into a semblance of a table.
 ********************************************************************************************/
 function TableSearchDisplay (   in_display_id,          ///< The element DOM ID of the container div.
                                 in_settings_id,         ///< The ID of the settings used for this table.
@@ -223,23 +226,6 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     };
     
     /************************************************************************************//**
-    *	\brief  Called to load a weekday.
-    *           This is called when the tab doesn't yet have a cache. It requests a JSON response
-    *           from the Root server for switcher=GetSearchResults.
-    *           This uses the filter established by the query parameters passed in on instantiation.
-    *           This function initiates an AJAX call that will return and call the class function
-    *           comms_callback_loadloadWeekdayData.
-    ****************************************************************************************/
-	this.comms_loadWeekdayData = function (   in_tab_object       ///< The tab DOM object.
-	                                        )
-	{
-	    // We append the weekday, sort and sort order parameters to the URI.
-	    var uri = encodeURI ( this.my_search_query_params + '&sort_keys=' + this.my_selected_sort_key  + ((this.my_sort_dir == 'desc') ? ',desc' : '') +'&bmlt_settings_id=' + this.my_settings_id + '&weekdays[]=' + (parseInt (in_tab_object.index) + 1).toString() ).toString();
-	    uri =  this.my_ajax_base_uri + encodeURI ( 'switcher=GetSearchResults&' ) + uri;
-        this.m_ajax_request = this.comms_AjaxRequest ( uri, this.comms_callback_loadloadWeekdayData, 'get', in_tab_object );
-	};
-    
-    /************************************************************************************//**
     *	\brief  Called to load all the format objects for the search.
     *           This will give us the "used formats" for the given filtered search. This will
     *           request a JSON response from the server. It does not use switcher=GetFormats.
@@ -264,6 +250,66 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
 	    uri =  this.my_ajax_base_uri + encodeURI ( 'switcher=GetSearchResults&' ) + uri;
         this.m_ajax_request = this.comms_AjaxRequest ( uri, this.comms_callback_loadloadFormatData, 'get', this );
 	};
+    
+    /************************************************************************************//**
+    *	\brief  Called to load a weekday.
+    *           This is called when the tab doesn't yet have a cache. It requests a JSON response
+    *           from the Root server for switcher=GetSearchResults.
+    *           This uses the filter established by the query parameters passed in on instantiation.
+    *           This function initiates an AJAX call that will return and call the class function
+    *           comms_callback_loadloadWeekdayData.
+    ****************************************************************************************/
+	this.comms_loadWeekdayData = function (   in_tab_object       ///< The tab DOM object.
+	                                        )
+	{
+	    // We append the weekday, sort and sort order parameters to the URI.
+	    var uri = encodeURI ( this.my_search_query_params + '&sort_keys=' + this.my_selected_sort_key  + ((this.my_sort_dir == 'desc') ? ',desc' : '') +'&bmlt_settings_id=' + this.my_settings_id + '&weekdays[]=' + (parseInt (in_tab_object.index) + 1).toString() ).toString();
+	    uri =  this.my_ajax_base_uri + encodeURI ( 'switcher=GetSearchResults&' ) + uri;
+        this.m_ajax_request = this.comms_AjaxRequest ( uri, this.comms_callback_loadloadWeekdayData, 'get', in_tab_object );
+	};
+
+    /****************************************************************************************
+    *##################################### AJAX CALLBACKS ##################################*
+    ****************************************************************************************/
+
+    /************************************************************************************//**
+    *	\brief  Called when the format data is loaded.
+    *           This loads the function object with a cache of the retrieved JSON data. This
+    *           data is loaded once, then used to construct the format objects in the table.
+    *           This is called once, at the start. After the format data has been loaded, the
+    *           callback then initiates a new search for the current weekday.
+    ****************************************************************************************/
+    this.comms_callback_loadloadFormatData = function ( in_response_object, ///< The HTTPRequest response object.
+                                                        in_context_object
+                                                        )
+    {
+        for ( var i = 0; i < 7; i++ )
+            {
+            var tab_object = in_context_object.my_weekday_links[i];
+            tab_object.className = 'bmlt_table_header_weekday_list_element';
+            };
+    
+        eval ( "var format_data = " + in_response_object.responseText + ";" );    // Extract the JSON object with the returned data.
+        in_context_object.my_format_data = format_data.formats;
+    
+        // Now that we have the formats, get the meeting list for today.
+        var d = new Date();
+        in_context_object.my_header_container.selectTab ( d.getDay() );
+    };
+
+    /************************************************************************************//**
+    *	\brief  Called when the weekday data is loaded.
+    *           This loads the tab object with a cache of the retrieved JSON data, and has
+    *           the tab object select itself.
+    ****************************************************************************************/
+    this.comms_callback_loadloadWeekdayData = function (    in_response_object, ///< The HTTPRequest response object.
+                                                            in_tab_object       ///< The weekday index, plus one (because JS likes to undefine zeroes).
+                                                        )
+    {
+        eval ( "var json_response = " + in_response_object.responseText + ";" );    // Extract the JSON object with the returned data.
+        in_tab_object.weekday_json_data = json_response;
+        in_tab_object.select();
+    };
 	
     /****************************************************************************************
     *#################################### UTILITY ROUTINES #################################*
@@ -399,11 +445,130 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
 	        
 	    return ret;
 	};
+
+    /****************************************************************************************
+    *#################################### THIRD-PARTY CODE #################################*
+    ****************************************************************************************/
+    /**
+    sprintf() for JavaScript 0.6
+
+    Copyright (c) Alexandru Marasteanu <alexaholic [at) gmail (dot] com>
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+        * Redistributions of source code must retain the above copyright
+          notice, this list of conditions and the following disclaimer.
+        * Redistributions in binary form must reproduce the above copyright
+          notice, this list of conditions and the following disclaimer in the
+          documentation and/or other materials provided with the distribution.
+        * Neither the name of sprintf() for JavaScript nor the
+          names of its contributors may be used to endorse or promote products
+          derived from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+    ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+    WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+    DISCLAIMED. IN NO EVENT SHALL Alexandru Marasteanu BE LIABLE FOR ANY
+    DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+    (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+    LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+    ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+    (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+    Changelog:
+    2007.04.03 - 0.1:
+     - initial release
+    2007.09.11 - 0.2:
+     - feature: added argument swapping
+    2007.09.17 - 0.3:
+     - bug fix: no longer throws exception on empty paramenters (Hans Pufal)
+    2007.10.21 - 0.4:
+     - unit test and patch (David Baird)
+    2010.05.09 - 0.5:
+     - bug fix: 0 is now preceeded with a + sign
+     - bug fix: the sign was not at the right position on padded results (Kamal Abdali)
+     - switched from GPL to BSD license
+    2010.05.22 - 0.6:
+     - reverted to 0.4 and fixed the bug regarding the sign of the number 0
+     Note:
+     Thanks to Raphael Pigulla <raph (at] n3rd [dot) org> (http://www.n3rd.org/)
+     who warned me about a bug in 0.5, I discovered that the last update was
+     a regress. I appologize for that.
+    **/
+    this.utility_sprintf = function ()
+    {
+        function str_repeat (   i,
+                                m
+                            )
+        {
+            for (var o = []; m > 0; o[--m] = i);
+            return o.join('');
+        };
+        
+        var i = 0, a, f = arguments[i++], o = [], m, p, c, x, s = '';
+        
+        while (f)
+            {
+            if (m = /^[^\x25]+/.exec(f))
+                {
+                o.push(m[0]);
+                }
+            else if (m = /^\x25{2}/.exec(f))
+                {
+                o.push('%');
+                }
+            else if (m = /^\x25(?:(\d+)\$)?(\+)?(0|'[^$])?(-)?(\d+)?(?:\.(\d+))?([b-fosuxX])/.exec(f))
+                {
+                if (((a = arguments[m[1] || i++]) == null) || (a == undefined))
+                    {
+                    throw('Too few arguments.');
+                    };
+                
+                if (/[^s]/.test(m[7]) && (typeof(a) != 'number'))
+                    {
+                    throw('Expecting number but found ' + typeof(a));
+                    };
+                
+                switch (m[7])
+                    {
+                    case 'b': a = a.toString(2); break;
+                    case 'c': a = String.fromCharCode(a); break;
+                    case 'd': a = parseInt(a,10); break;
+                    case 'e': a = m[6] ? a.toExponential(m[6]) : a.toExponential(); break;
+                    case 'f': a = m[6] ? parseFloat(a).toFixed(m[6]) : parseFloat(a); break;
+                    case 'o': a = a.toString(8); break;
+                    case 's': a = ((a = String(a)) && m[6] ? a.substring(0, m[6]) : a); break;
+                    case 'u': a = Math.abs(a); break;
+                    case 'x': a = a.toString(16); break;
+                    case 'X': a = a.toString(16).toUpperCase(); break;
+                    };
+                
+                a = (/[def]/.test(m[7]) && m[2] && a >= 0 ? '+' + a : a);
+                c = m[3] ? m[3] == '0' ? '0' : m[3].charAt(1) : ' ';
+                x = m[5] - String(a).length - s.length;
+                p = m[5] ? str_repeat(c, x) : '';
+                o.push(s + (m[4] ? a + p : p + a));
+                }
+            else
+                {
+                throw('Huh ?!');
+                };
+            
+            f = f.substring(m[0].length);
+            };
+        
+        return o.join('');
+    };
 	
     /****************************************************************************************
     *################################## DOM BUILDER ROUTINES ###############################*
     ****************************************************************************************/
-
+    // These routines all construct the DOM tree for the shortcode. The weekday header is
+    // displayed all the time (with the selected tab changing), but the table data (and the
+    // header) is reconstructed from scratch each time.
     /************************************************************************************//**
     *	\brief Creates the weekday selection header.
     ^   \returns the instantiated DOM object.
@@ -491,7 +656,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
                 this.className = this.rest_className + ' is_loading';
                 
                 // Set a title, saying what is happening.
-                this.setAttribute ( 'title', this.handler.sprintf ( g_table_header_tab_loading_format, g_table_weekday_long_name_array[this.index] ) );
+                this.setAttribute ( 'title', this.handler.utility_sprintf ( g_table_header_tab_loading_format, g_table_weekday_long_name_array[this.index] ) );
                 
                 this.handler.comms_loadWeekdayData ( this );
                 };
@@ -525,7 +690,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
                             // This is not selected or loading.
                             tabObject.className = tabObject.rest_className;
                             // Set a title, saying what will happen when this is clicked.
-                            tabObject.setAttribute ( 'title', this.handler.sprintf ( g_table_header_tab_format, g_table_weekday_long_name_array[tabObject.index] ) );
+                            tabObject.setAttribute ( 'title', this.handler.utility_sprintf ( g_table_header_tab_format, g_table_weekday_long_name_array[tabObject.index] ) );
                             };
                         };
                     };
@@ -763,7 +928,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
             {
             var listElement = document.createElement ( 'li' );
             listElement.className = 'bmlt_table_data_ul_no_meetings_li';
-            listElement.innerHTML = '<span class="bmlt_table_no_meetings_span">' + this.sprintf ( g_table_no_meetings_format, g_table_weekday_long_name_array[this.my_selected_tab.index] ) + '</span>';
+            listElement.innerHTML = '<span class="bmlt_table_no_meetings_span">' + this.utility_sprintf ( g_table_no_meetings_format, g_table_weekday_long_name_array[this.my_selected_tab.index] ) + '</span>';
             this.my_body_container_body.appendChild ( listElement );
             };
         
@@ -841,7 +1006,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
             textNode.className = 'bmlt_table_data_ul_li_ul_li_span bmlt_table_data_ul_li_ul_li_span_' + in_tag;
             var anchorNode = document.createElement ( 'a' );
             textNode.className = 'bmlt_table_data_ul_li_ul_li_span_a bmlt_table_data_ul_li_ul_li_span_a_' + in_tag;
-            anchorNode.href= this.sprintf ( g_table_map_link_uri_format, parseFloat ( in_latitude ), parseFloat ( in_longitude ) );
+            anchorNode.href= this.utility_sprintf ( g_table_map_link_uri_format, parseFloat ( in_latitude ), parseFloat ( in_longitude ) );
             anchorNode.innerHTML = in_string;
             textNode.appendChild ( anchorNode );
             columnElement.appendChild ( textNode );
@@ -936,164 +1101,6 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
         
         return null;
 	};
-
-    /****************************************************************************************
-    *#################################### THIRD-PARTY CODE #################################*
-    ****************************************************************************************/
-    /**
-    sprintf() for JavaScript 0.6
-
-    Copyright (c) Alexandru Marasteanu <alexaholic [at) gmail (dot] com>
-    All rights reserved.
-
-    Redistribution and use in source and binary forms, with or without
-    modification, are permitted provided that the following conditions are met:
-        * Redistributions of source code must retain the above copyright
-          notice, this list of conditions and the following disclaimer.
-        * Redistributions in binary form must reproduce the above copyright
-          notice, this list of conditions and the following disclaimer in the
-          documentation and/or other materials provided with the distribution.
-        * Neither the name of sprintf() for JavaScript nor the
-          names of its contributors may be used to endorse or promote products
-          derived from this software without specific prior written permission.
-
-    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-    ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-    WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-    DISCLAIMED. IN NO EVENT SHALL Alexandru Marasteanu BE LIABLE FOR ANY
-    DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-    (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-    LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-    ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-    (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-
-    Changelog:
-    2007.04.03 - 0.1:
-     - initial release
-    2007.09.11 - 0.2:
-     - feature: added argument swapping
-    2007.09.17 - 0.3:
-     - bug fix: no longer throws exception on empty paramenters (Hans Pufal)
-    2007.10.21 - 0.4:
-     - unit test and patch (David Baird)
-    2010.05.09 - 0.5:
-     - bug fix: 0 is now preceeded with a + sign
-     - bug fix: the sign was not at the right position on padded results (Kamal Abdali)
-     - switched from GPL to BSD license
-    2010.05.22 - 0.6:
-     - reverted to 0.4 and fixed the bug regarding the sign of the number 0
-     Note:
-     Thanks to Raphael Pigulla <raph (at] n3rd [dot) org> (http://www.n3rd.org/)
-     who warned me about a bug in 0.5, I discovered that the last update was
-     a regress. I appologize for that.
-    **/
-    this.sprintf = function ()
-    {
-        function str_repeat (   i,
-                                m
-                            )
-        {
-            for (var o = []; m > 0; o[--m] = i);
-            return o.join('');
-        };
-        
-        var i = 0, a, f = arguments[i++], o = [], m, p, c, x, s = '';
-        
-        while (f)
-            {
-            if (m = /^[^\x25]+/.exec(f))
-                {
-                o.push(m[0]);
-                }
-            else if (m = /^\x25{2}/.exec(f))
-                {
-                o.push('%');
-                }
-            else if (m = /^\x25(?:(\d+)\$)?(\+)?(0|'[^$])?(-)?(\d+)?(?:\.(\d+))?([b-fosuxX])/.exec(f))
-                {
-                if (((a = arguments[m[1] || i++]) == null) || (a == undefined))
-                    {
-                    throw('Too few arguments.');
-                    };
-                
-                if (/[^s]/.test(m[7]) && (typeof(a) != 'number'))
-                    {
-                    throw('Expecting number but found ' + typeof(a));
-                    };
-                
-                switch (m[7])
-                    {
-                    case 'b': a = a.toString(2); break;
-                    case 'c': a = String.fromCharCode(a); break;
-                    case 'd': a = parseInt(a,10); break;
-                    case 'e': a = m[6] ? a.toExponential(m[6]) : a.toExponential(); break;
-                    case 'f': a = m[6] ? parseFloat(a).toFixed(m[6]) : parseFloat(a); break;
-                    case 'o': a = a.toString(8); break;
-                    case 's': a = ((a = String(a)) && m[6] ? a.substring(0, m[6]) : a); break;
-                    case 'u': a = Math.abs(a); break;
-                    case 'x': a = a.toString(16); break;
-                    case 'X': a = a.toString(16).toUpperCase(); break;
-                    };
-                
-                a = (/[def]/.test(m[7]) && m[2] && a >= 0 ? '+' + a : a);
-                c = m[3] ? m[3] == '0' ? '0' : m[3].charAt(1) : ' ';
-                x = m[5] - String(a).length - s.length;
-                p = m[5] ? str_repeat(c, x) : '';
-                o.push(s + (m[4] ? a + p : p + a));
-                }
-            else
-                {
-                throw('Huh ?!');
-                };
-            
-            f = f.substring(m[0].length);
-            };
-        
-        return o.join('');
-    };
-
-    /****************************************************************************************
-    *##################################### AJAX CALLBACKS ##################################*
-    ****************************************************************************************/
-    // These need to be class functions, because context can get manky when going async.
-    /************************************************************************************//**
-    *	\brief  Called when the weekday data is loaded.
-    *           This loads the tab object with a cache of the retrieved JSON data, and has
-    *           the tab object select itself.
-    ****************************************************************************************/
-    this.comms_callback_loadloadWeekdayData = function (    in_response_object, ///< The HTTPRequest response object.
-                                                                                    in_tab_object       ///< The weekday index, plus one (because JS likes to undefine zeroes).
-                                                                                )
-    {
-        eval ( "var json_response = " + in_response_object.responseText + ";" );    // Extract the JSON object with the returned data.
-        in_tab_object.weekday_json_data = json_response;
-        in_tab_object.select();
-    };
-
-    /************************************************************************************//**
-    *	\brief  Called when the weekday data is loaded.
-    *           This loads the tab object with a cache of the retrieved JSON data, and has
-    *           the tab object select itself.
-    ****************************************************************************************/
-    this.comms_callback_loadloadFormatData = function (   in_response_object, ///< The HTTPRequest response object.
-                                                                        in_context_object
-                                             )
-    {
-        for ( var i = 0; i < 7; i++ )
-            {
-            var tab_object = in_context_object.my_weekday_links[i];
-            tab_object.className = 'bmlt_table_header_weekday_list_element';
-            };
-    
-        eval ( "var format_data = " + in_response_object.responseText + ";" );    // Extract the JSON object with the returned data.
-        in_context_object.my_format_data = format_data.formats;
-    
-        // Now that we have the formats, get the meeting list for today.
-        var d = new Date();
-        in_context_object.my_header_container.selectTab ( d.getDay() );
-    };
 	
     /****************************************************************************************
     *################################### MAIN FUNCTION CODE ################################*
