@@ -2,7 +2,7 @@ DESCRIPTION
 -----------
 
 The Basic Meeting List Toolbox (BMLT) is a powerful, database-driven system for tracking NA meetings.
-It is NOT an official product of NA ( http://na.org ). Rather, it is a project designed and implemented by
+It is NOT an official product of [NA](http://na.org). Rather, it is a project designed and implemented by
 NA members, and meant to be used by official NA Service bodies.
 
 This project is a CMS "base." It has a lot of functionality built into it, such as administration and various
@@ -22,6 +22,12 @@ This class uses the BMLT Satellite "Driver" Class, which is available on BitBuck
 
 INSTALLATION
 ------------
+
+This class is an abstract class that needs to be subclassed and extended.
+It uses a [Presentation Model](http://martinfowler.com/eaaDev/PresentationModel.html) pattern, and extensions
+are responsible for supplying Model storage management and View connectivity.
+
+The instructions for employment of this class are on [this page](http://bmlt.magshare.net/specific-topics/bmlt-satellite-base-class/).
 
 CHANGELIST
 ----------
