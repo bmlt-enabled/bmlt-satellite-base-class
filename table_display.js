@@ -66,6 +66,7 @@
 ********************************************************************************************/
 function TableSearchDisplay (   in_display_id,          ///< The element DOM ID of the container div.
                                 in_settings_id,         ///< The ID of the settings used for this table.
+                                in_theme_name,          ///< The name of the styling theme.
                                 in_ajax_base_uri,       ///< The base URI for AJAX callbacks.
                                 in_start_weekday,       ///< The weekday that starts the week. 0 is Sunday, 6 is Saturday.
                                 in_is_military_time,    ///< True, if the time is to be displayed as military.
@@ -79,6 +80,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     // These are the parameters passed in.
 	var my_settings_id;             ///< This is the unique ID of the BMLT settings that we use to reference default values.
 	var my_ajax_base_uri;           ///< This is the base URI for our AJAX calls.
+	var my_theme_name;              ///< This is the name of our styling theme.
 	var my_search_query_params;     ///< These are the search parameters that we use to populate the search.
 	var my_start_weekday;           ///< The day of week that starts the header (0 is Sunday, 6 is Saturday).
 	var my_military_time;           ///< True, if the start time is military.
@@ -570,7 +572,8 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
         
         // This is the throbber image. It will be hidden unless the weekday is loading.
         var throbberImage = document.createElement ( 'img' );
-        throbberImage.src = g_table_throbber_img_src;   // This was passed in as a global.
+        // We replace the "default" with our theme.
+        throbberImage.src = g_table_throbber_img_src.replace ( /\/default\//, '/' + this.my_theme_name + '/' );
         throbberImage.className = 'bmlt_table_throbber_image';
         weekdayElement.appendChild ( throbberImage );
         
@@ -1049,6 +1052,47 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
         
         return o.join('');
     };
+
+/****************************************************************************************
+*##################################### AJAX CALLBACKS ##################################*
+****************************************************************************************/
+// These need to be class functions, because context can get manky when going async.
+/************************************************************************************//**
+*	\brief  Called when the weekday data is loaded.
+*           This loads the tab object with a cache of the retrieved JSON data, and has
+*           the tab object select itself.
+****************************************************************************************/
+this.comms_callback_loadloadWeekdayData = function (    in_response_object, ///< The HTTPRequest response object.
+                                                                                in_tab_object       ///< The weekday index, plus one (because JS likes to undefine zeroes).
+                                                                            )
+{
+    eval ( "var json_response = " + in_response_object.responseText + ";" );    // Extract the JSON object with the returned data.
+    in_tab_object.weekday_json_data = json_response;
+    in_tab_object.select();
+};
+
+/************************************************************************************//**
+*	\brief  Called when the weekday data is loaded.
+*           This loads the tab object with a cache of the retrieved JSON data, and has
+*           the tab object select itself.
+****************************************************************************************/
+this.comms_callback_loadloadFormatData = function (   in_response_object, ///< The HTTPRequest response object.
+                                                                    in_context_object
+                                         )
+{
+    for ( var i = 0; i < 7; i++ )
+        {
+        var tab_object = in_context_object.my_weekday_links[i];
+        tab_object.className = 'bmlt_table_header_weekday_list_element';
+        };
+    
+    eval ( "var format_data = " + in_response_object.responseText + ";" );    // Extract the JSON object with the returned data.
+    in_context_object.my_format_data = format_data.formats;
+    
+    // Now that we have the formats, get the meeting list for today.
+    var d = new Date();
+    in_context_object.my_header_container.selectTab ( d.getDay() );
+};
 	
     /****************************************************************************************
     *################################### MAIN FUNCTION CODE ################################*
@@ -1061,6 +1105,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     // Set up the parameters passed in.
     this.my_settings_id = in_settings_id;
     this.my_ajax_base_uri = in_ajax_base_uri;
+    this.my_theme_name = in_theme_name;
     this.my_start_weekday = in_start_weekday;
     this.my_search_query_params = in_search_params;
     this.my_military_time = in_is_military_time;
@@ -1079,44 +1124,3 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
 /****************************************************************************************
 *##################################### CLASS FUNCTIONS #################################*
 ****************************************************************************************/
-
-/****************************************************************************************
-*##################################### AJAX CALLBACKS ##################################*
-****************************************************************************************/
-// These need to be class functions, because context can get manky when going async.
-/************************************************************************************//**
-*	\brief  Called when the weekday data is loaded.
-*           This loads the tab object with a cache of the retrieved JSON data, and has
-*           the tab object select itself.
-****************************************************************************************/
-TableSearchDisplay.prototype.comms_callback_loadloadWeekdayData = function (    in_response_object, ///< The HTTPRequest response object.
-                                                                                in_tab_object       ///< The weekday index, plus one (because JS likes to undefine zeroes).
-                                                                            )
-{
-    eval ( "var json_response = " + in_response_object.responseText + ";" );    // Extract the JSON object with the returned data.
-    in_tab_object.weekday_json_data = json_response;
-    in_tab_object.select();
-};
-
-/************************************************************************************//**
-*	\brief  Called when the weekday data is loaded.
-*           This loads the tab object with a cache of the retrieved JSON data, and has
-*           the tab object select itself.
-****************************************************************************************/
-TableSearchDisplay.prototype.comms_callback_loadloadFormatData = function (   in_response_object, ///< The HTTPRequest response object.
-                                                                    in_context_object
-                                         )
-{
-    for ( var i = 0; i < 7; i++ )
-        {
-        var tab_object = in_context_object.my_weekday_links[i];
-        tab_object.className = 'bmlt_table_header_weekday_list_element';
-        };
-    
-    eval ( "var format_data = " + in_response_object.responseText + ";" );    // Extract the JSON object with the returned data.
-    in_context_object.my_format_data = format_data.formats;
-    
-    // Now that we have the formats, get the meeting list for today.
-    var d = new Date();
-    in_context_object.my_header_container.selectTab ( d.getDay() );
-};

@@ -1954,7 +1954,7 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
                     $the_new_content .= "<script type=\"text/javascript\">".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
                     $the_new_content .= 'var g_table_weekday_name_array = new Array ( "'.join ( '","', self::$local_nouveau_weekday_short_array ).'" );'.(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
                     $the_new_content .= 'var g_table_weekday_long_name_array = new Array ( "'.join ( '","', self::$local_nouveau_weekday_long_array ).'" );'.(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
-                    $the_new_content .= "var g_table_throbber_img_src = '".htmlspecialchars ( $this->get_plugin_path().'themes/'.$options['theme'].'/images/TableThrobber.gif' ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                    $the_new_content .= "var g_table_throbber_img_src = '".htmlspecialchars ( $this->get_plugin_path().'themes/default/images/TableThrobber.gif' ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
                     $the_new_content .= "var g_table_time_header_text = '".$this->process_text ( self::$local_table_header_time_label )."';".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
                     $the_new_content .= "var g_table_name_header_text = '".$this->process_text ( self::$local_table_header_meeting_name_label )."';".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
                     $the_new_content .= "var g_table_town_header_text = '".$this->process_text ( self::$local_table_header_town_label )."';".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
@@ -1972,7 +1972,7 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
                 
                 $the_new_content .= '<div style="display_none" class="bmlt_table_display_div bmlt_table_display_div_theme_'.htmlspecialchars ( $options['theme'] ).'" id="bmlt_table_display_div_'.strval ( $my_table_next_id ).'"></div>'.(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
                 $theWeekday = strval ( intval ( $options['startWeekday'] - 1 ) );
-                $the_new_content .= "<script type=\"text/javascript\">var bmlt_table_display_func_".strval ( $my_table_next_id )." = new TableSearchDisplay ( 'bmlt_table_display_div_".strval ( $my_table_next_id )."', '$options_id', '".htmlspecialchars ( $this->get_ajax_base_uri() )."?redirect_ajax_json=', '$theWeekday', ".($options['military_time'] ? 'true' : 'false' ).", '$params' );</script>".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
+                $the_new_content .= "<script type=\"text/javascript\">var bmlt_table_display_func_".strval ( $my_table_next_id )." = new TableSearchDisplay ( 'bmlt_table_display_div_".strval ( $my_table_next_id )."', '$options_id', '".htmlspecialchars ( $options['theme'] )."','".htmlspecialchars ( $this->get_ajax_base_uri() )."?redirect_ajax_json=', '$theWeekday', ".($options['military_time'] ? 'true' : 'false' ).", '$params' );</script>".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
                 
                 $in_content = self::replace_shortcode ( $in_content, 'bmlt_table', $the_new_content );
                 }

@@ -255,6 +255,12 @@ function u_test_form()
                         $ret .= '<option value="[[bmlt_table]]">BMLT Table (Brackets -default)</option>';
                         $ret .= '<option value="[[BMLT_TABLE(1##-##meeting_key=location_city_subsection&meeting_key_value=Brooklyn)]]">BMLT Table (Brackets -ID 1, Brooklyn)</option>';
                         $ret .= '<option value="&lt;!--bmlt_table(2##-##meeting_key=location_city_subsection&meeting_key_value=Manhattan)--&gt;">BMLT Table (Comment -ID 2, Manhattan)</option>';
+                        $ret .= '<option value="&lt;table style=&quot;width:100%&quot;&gt;
+&lt;tr  style=&quot;vertical-align:top&quot;&gt;
+&lt;td width=&quot;50%&quot;&gt;[[BMLT_TABLE(meeting_key=location_city_subsection&meeting_key_value=Brooklyn)]]&lt;/td&gt;
+&lt;td width=&quot;50%&quot;&gt;[[BMLT_TABLE(meeting_key=location_city_subsection&meeting_key_value=Bronx)]]&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;">BMLT_TABLE (Brackets -Complex Table)</option>';
                         $ret .= '<option value="[[bmlt_changes(switcher=GetChanges&start_date='.date('Y-m-d',time()-(60 * 60 * 24 * 90)).')]]">BMLT Changes (Brackets -Last 90 days)</option>';
                         $ret .= '<option value="&lt;!-- bmlt_changes(switcher=GetChanges&start_date='.date('Y-m-d',time()-(60 * 60 * 24 * 180)).'&end_date='.date('Y-m-d',time()-(60 * 60 * 24 * 90)).') --&gt;">BMLT Changes (Comments -Last 180 - 90 days)</option>';
                         $ret .= '<option value="[[bmlt_changes(switcher=GetChanges&start_date='.date('Y-m-d',time()-(60 * 60 * 24 * 365)).'&service_body_id=1001)]]">BMLT Changes (Brackets -Last year in Suffolk Area Service)</option>';

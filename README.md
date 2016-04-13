@@ -25,6 +25,7 @@ CHANGELIST
 
 * Refactored to make the code more straightforward and reusable.
 * Refactored this file for better markdown display.
+* Fixed a bug, in which the proper throbber was not being displayed where multiple themes are on the same page for the [bmlt_table](http://bmlt.magshare.net/satellites/the-fast-table-display/) shortcode.
 
 ***Version 3.3.3** -April 9, 2016*
 
