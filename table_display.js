@@ -573,7 +573,8 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
         // This is the throbber image. It will be hidden unless the weekday is loading.
         var throbberImage = document.createElement ( 'img' );
         // We replace the "default" with our theme.
-        throbberImage.src = g_table_throbber_img_src.replace ( /\/default\//, '/' + this.my_theme_name + '/' );
+        var regex = /themes\x2Fdefault\x2F/;
+        throbberImage.src = g_table_throbber_img_src.replace ( regex, 'themes/' + this.my_theme_name.toString() + '/' );
         throbberImage.className = 'bmlt_table_throbber_image';
         weekdayElement.appendChild ( throbberImage );
         
@@ -1053,46 +1054,46 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
         return o.join('');
     };
 
-/****************************************************************************************
-*##################################### AJAX CALLBACKS ##################################*
-****************************************************************************************/
-// These need to be class functions, because context can get manky when going async.
-/************************************************************************************//**
-*	\brief  Called when the weekday data is loaded.
-*           This loads the tab object with a cache of the retrieved JSON data, and has
-*           the tab object select itself.
-****************************************************************************************/
-this.comms_callback_loadloadWeekdayData = function (    in_response_object, ///< The HTTPRequest response object.
-                                                                                in_tab_object       ///< The weekday index, plus one (because JS likes to undefine zeroes).
-                                                                            )
-{
-    eval ( "var json_response = " + in_response_object.responseText + ";" );    // Extract the JSON object with the returned data.
-    in_tab_object.weekday_json_data = json_response;
-    in_tab_object.select();
-};
+    /****************************************************************************************
+    *##################################### AJAX CALLBACKS ##################################*
+    ****************************************************************************************/
+    // These need to be class functions, because context can get manky when going async.
+    /************************************************************************************//**
+    *	\brief  Called when the weekday data is loaded.
+    *           This loads the tab object with a cache of the retrieved JSON data, and has
+    *           the tab object select itself.
+    ****************************************************************************************/
+    this.comms_callback_loadloadWeekdayData = function (    in_response_object, ///< The HTTPRequest response object.
+                                                                                    in_tab_object       ///< The weekday index, plus one (because JS likes to undefine zeroes).
+                                                                                )
+    {
+        eval ( "var json_response = " + in_response_object.responseText + ";" );    // Extract the JSON object with the returned data.
+        in_tab_object.weekday_json_data = json_response;
+        in_tab_object.select();
+    };
 
-/************************************************************************************//**
-*	\brief  Called when the weekday data is loaded.
-*           This loads the tab object with a cache of the retrieved JSON data, and has
-*           the tab object select itself.
-****************************************************************************************/
-this.comms_callback_loadloadFormatData = function (   in_response_object, ///< The HTTPRequest response object.
-                                                                    in_context_object
-                                         )
-{
-    for ( var i = 0; i < 7; i++ )
-        {
-        var tab_object = in_context_object.my_weekday_links[i];
-        tab_object.className = 'bmlt_table_header_weekday_list_element';
-        };
+    /************************************************************************************//**
+    *	\brief  Called when the weekday data is loaded.
+    *           This loads the tab object with a cache of the retrieved JSON data, and has
+    *           the tab object select itself.
+    ****************************************************************************************/
+    this.comms_callback_loadloadFormatData = function (   in_response_object, ///< The HTTPRequest response object.
+                                                                        in_context_object
+                                             )
+    {
+        for ( var i = 0; i < 7; i++ )
+            {
+            var tab_object = in_context_object.my_weekday_links[i];
+            tab_object.className = 'bmlt_table_header_weekday_list_element';
+            };
     
-    eval ( "var format_data = " + in_response_object.responseText + ";" );    // Extract the JSON object with the returned data.
-    in_context_object.my_format_data = format_data.formats;
+        eval ( "var format_data = " + in_response_object.responseText + ";" );    // Extract the JSON object with the returned data.
+        in_context_object.my_format_data = format_data.formats;
     
-    // Now that we have the formats, get the meeting list for today.
-    var d = new Date();
-    in_context_object.my_header_container.selectTab ( d.getDay() );
-};
+        // Now that we have the formats, get the meeting list for today.
+        var d = new Date();
+        in_context_object.my_header_container.selectTab ( d.getDay() );
+    };
 	
     /****************************************************************************************
     *################################### MAIN FUNCTION CODE ################################*
@@ -1120,7 +1121,3 @@ this.comms_callback_loadloadFormatData = function (   in_response_object, ///< T
     // Fire off the first shot -get the formats, which will cascade to the first search.
     this.domBuilder_CreateHeader();
 };
-    
-/****************************************************************************************
-*##################################### CLASS FUNCTIONS #################################*
-****************************************************************************************/
