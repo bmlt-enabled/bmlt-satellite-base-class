@@ -12,13 +12,11 @@ CMS implementations.
 REQUIREMENTS
 ------------
 
-The project requires a functioning BMLT root server ( http://magshare.org/blog/installing-the-root-server/ ).
+The project requires a functioning [BMLT root server](http://magshare.org/blog/installing-the-root-server/).
 It does not implement a root server, but connects to an existing one.
 It requires PHP 5.0 or above.
 
-This class uses the BMLT Satellite "Driver" Class, which is available on BitBucket, here:
-
-    https://bitbucket.org/bmlt/bmlt-satellite-driver.git
+This class uses the BMLT Satellite "Driver" Class, which is available [on BitBucket, here](https://bitbucket.org/bmlt/bmlt-satellite-driver.git).
 
 INSTALLATION
 ------------
@@ -37,13 +35,13 @@ CHANGELIST
 
 *3.3.3*
 * April 9, 2016
-* Fixed a bug that could bork the [[bmlt_table]] shortcode when there are no parameters specified.
+* Fixed a bug that could bork the [bmlt_table](http://bmlt.magshare.net/satellites/the-fast-table-display/) shortcode when there are no parameters specified.
 
 *3.3.2*
 * April 9, 2016
-* Added a "breaker" div element to the [[bmlt_table]] display.
+* Added a "breaker" div element to the [bmlt_table](http://bmlt.magshare.net/satellites/the-fast-table-display/) display.
 * Work on improving code quality.
-* Added more style hooks to the [[bmlt_table]] shortcode display.
+* Added more style hooks to the [bmlt_table](http://bmlt.magshare.net/satellites/the-fast-table-display/) shortcode display.
 * Fixed a bug in the simple and table shortcodes that didn't honor just the settings ID (without the "##-##" splitter).
 
 *3.3.1*
@@ -51,14 +49,14 @@ CHANGELIST
 * Made the weekday tab overflow hidden.
 * The format circles now float to the right.
 * Added a display for days with no meetings.
-* Fixed a bug in the [[bmlt_table]] shortcode, where the loading throbber would get replaced too quickly when selecting weekday tabs.
+* Fixed a bug in the [bmlt_table](http://bmlt.magshare.net/satellites/the-fast-table-display/) shortcode, where the loading throbber would get replaced too quickly when selecting weekday tabs.
 * Corrected a bug that allowed "00:00" times (should be "Midnight").
 * Fixed a bug in the "simple map search" that displayed the info windows offset.
 
 *3.3.0*
 * April 4, 2016
 * Made it so that we can have specialized themes, amied at only certain shortcodes.
-* Complete rewrite of the [[bmlt_table]] shortcode. Made it so that it can have simpler theming and be more responsive.
+* Complete rewrite of the [bmlt_table](http://bmlt.magshare.net/satellites/the-fast-table-display/) shortcode. Made it so that it can have simpler theming and be more responsive.
 
 *3.2.4*
 * April 1, 2016 (Happy April Fools'!)
@@ -87,7 +85,7 @@ CHANGELIST
 * Fixed the "Google Maps included two or more times" warning.
 * Removed unnecessary new search and duration items from admin page.
 * Fixed an issue where WordPress would sometimes HTML-entity the ampersand (&) character.
-* Added a very significant new shortcode: [[bmlt_table]].
+* Added a very significant new shortcode: [bmlt_table](http://bmlt.magshare.net/satellites/the-fast-table-display/).
 
 *3.1.1*
 * March 16, 2016
