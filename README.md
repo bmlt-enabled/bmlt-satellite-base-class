@@ -21,11 +21,12 @@ The instructions for employment of this class are on [this page](http://bmlt.mag
 
 CHANGELIST
 ----------
-***Version 3.3.4** -TBD*
+***Version 3.3.4** -April 13, 2016*
 
 * Refactored to make the code more straightforward and reusable.
 * Refactored this file for better markdown display.
 * Fixed a bug, in which the proper throbber was not being displayed where multiple themes are on the same page for the [bmlt_table](http://bmlt.magshare.net/satellites/the-fast-table-display/) shortcode.
+* Added a "Complex Table" preset to the unit test (Displays multiple [bmlt_table](http://bmlt.magshare.net/satellites/the-fast-table-display/) shortcodes).
 
 ***Version 3.3.3** -April 9, 2016*
 
