@@ -2,7 +2,7 @@
 * \file table_display.js																    *
 * \brief Javascript functions for the basic table display.                                  *
 *                                                                                           *
-*   \version 3.3.4                                                                          *
+*   \version 3.3.5                                                                          *
 *                                                                                           *
 *   This file contains a function/object that implements the Fast Table Shortcode. Upon     *
 *   instantiation, it uses the page DOM to create a tabular display of meetings that are    *
@@ -130,10 +130,10 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     *   \returns a new XMLHTTPRequest object.                                               *
     ****************************************************************************************/
     
-    this.comms_AjaxRequest = function (   url,        ///< The URI to be called. This should include all parameters in GET form (even if this is POST).
-                                            callback,   ///< The success callback
-                                            method,     ///< The method ('get', 'GET', 'post' or 'POST')
-                                            extra_data  ///< If supplied, extra data to be delivered to the callback.
+    this.comms_AjaxRequest = function ( url,        ///< The URI to be called. This should include all parameters in GET form (even if this is POST).
+                                        callback,   ///< The success callback
+                                        method,     ///< The method ('get', 'GET', 'post' or 'POST')
+                                        extra_data  ///< If supplied, extra data to be delivered to the callback.
                                         )
     {
         /********************************************************************************//**
@@ -936,7 +936,7 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     };
     
     /************************************************************************************//**
-    *	\brief  Populates one row
+    *	\brief  Populates one row (meeting)
     ^   \returns the instantiated DOM object.
     ****************************************************************************************/
     this.domBuilder_PopulateWeekdayBody_one_meeting = function (  in_json_data  ///< The JSON data for the meetings.
@@ -980,13 +980,13 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     };
     
     /************************************************************************************//**
-    *	\brief Populates one row 
+    *	\brief Populates one column of a meeting row.
     ^   \returns the instantiated DOM object.
     ****************************************************************************************/
-    this.domBuilder_PopulateWeekdayBody_one_column = function ( in_tag,
-                                                                in_string,
-                                                                in_latitude,
-                                                                in_longitude
+    this.domBuilder_PopulateWeekdayBody_one_column = function ( in_tag,         ///< The tag used as a key for this column
+                                                                in_string,      ///< The name of the column (displayed as a string)
+                                                                in_latitude,    ///< if supplied, the longitude of a meeting (is usually null)
+                                                                in_longitude    ///< if supplied, the latitude of a meeting (is usually null)
                                                                 )
     {
         var columnElement = document.createElement ( 'li' );
