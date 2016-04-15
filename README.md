@@ -1,3 +1,4 @@
+[comment]: @mainpage
 DESCRIPTION
 -----------
 

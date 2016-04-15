@@ -62,51 +62,51 @@
 ********************************************************************************************/
 
 /****************************************************************************************//**
-*	\brief  This function implements the [[bmlt_table]] shortcode. Most of the shortcode
+*	\brief  This class function implements the [[bmlt_table]] shortcode. Most of the shortcode
 *           functionality is JavaScript. This function builds a new DOM tree that contains
 *           a <div> element that will, in turn, contain a couple of lists that are warped
 *           using CSS into a semblance of a table.
+*   \param in_display_id The element DOM ID of the container div.
+*   \param in_settings_id The ID of the settings used for this table.
+*   \param in_theme_name The name of the styling theme.
+*   \param in_ajax_base_uri The base URI for AJAX callbacks.
+*   \param in_start_weekday The weekday that starts the week. 0 is Sunday, 6 is Saturday.
+*   \param in_is_military_time True, if the time is to be displayed as military.
+*   \param in_search_params The query parameters for the base search.
 ********************************************************************************************/
-function TableSearchDisplay (   in_display_id,          ///< The element DOM ID of the container div.
-                                in_settings_id,         ///< The ID of the settings used for this table.
-                                in_theme_name,          ///< The name of the styling theme.
-                                in_ajax_base_uri,       ///< The base URI for AJAX callbacks.
-                                in_start_weekday,       ///< The weekday that starts the week. 0 is Sunday, 6 is Saturday.
-                                in_is_military_time,    ///< True, if the time is to be displayed as military.
-                                in_search_params        ///< The query parameters for the base search.
-                            )
+function TableSearchDisplay ( in_display_id, in_settings_id, in_theme_name, in_ajax_base_uri, in_start_weekday, in_is_military_time, in_search_params )
 {
 	/****************************************************************************************
 	*									INSTANCE DATA MEMBERS								*
 	****************************************************************************************/
 
     // These are the parameters passed in.
-	var my_settings_id;             ///< This is the unique ID of the BMLT settings that we use to reference default values.
-	var my_ajax_base_uri;           ///< This is the base URI for our AJAX calls.
-	var my_theme_name;              ///< This is the name of our styling theme.
-	var my_search_query_params;     ///< These are the search parameters that we use to populate the search.
-	var my_start_weekday;           ///< The day of week that starts the header (0 is Sunday, 6 is Saturday).
-	var my_military_time;           ///< True, if the start time is military.
+	var my_settings_id;             ///\var my_settings_id This is the unique ID of the BMLT settings that we use to reference default values.
+	var my_ajax_base_uri;           ///\var my_ajax_base_uri This is the base URI for our AJAX calls.
+	var my_theme_name;              ///\var my_theme_name This is the name of our styling theme.
+	var my_search_query_params;     ///\var my_search_query_params These are the search parameters that we use to populate the search.
+	var my_start_weekday;           ///\var my_start_weekday The day of week that starts the header (0 is Sunday, 6 is Saturday).
+	var my_military_time;           ///\var my_military_time True, if the start time is military.
 	
 	// These are DOM elements that we track.
-	var my_container_object;        ///< This is the div block that surrounds this table.
-	var my_header_container;        ///< The div element that will contain the weekday tabs.
-	var my_body_container;          ///< The table element that will contain the search results.
-	var my_body_container_header;   ///< The table thead element that will contain the search results.
-	var my_body_container_body;     ///< The table tbody element that will contain the search results.
-	var my_weekday_links;           ///< An array of li elements, containing the weekday tabs
-	var my_selected_tab;            ///< This will be the selected tab object.
+	var my_container_object;        ///\var my_container_object This is the div block that surrounds this table.
+	var my_header_container;        ///\var my_header_container The div element that will contain the weekday tabs.
+	var my_body_container;          ///\var my_body_container The table element that will contain the search results.
+	var my_body_container_header;   ///\var my_body_container_header The table thead element that will contain the search results.
+	var my_body_container_body;     ///\var my_body_container_body The table tbody element that will contain the search results.
+	var my_weekday_links;           ///\var my_weekday_links An array of li elements, containing the weekday tabs
+	var my_selected_tab;            ///\var my_selected_tab This will be the selected tab object.
 	
-	var my_selected_sort_key;       ///< The currently selected sort key.
-	var my_sort_dir;                ///< The currently selected sort direction.
+	var my_selected_sort_key;       ///\var my_selected_sort_key The currently selected sort key.
+	var my_sort_dir;                ///\var my_sort_dir The currently selected sort direction.
 	
-	var my_format_data;             ///< This is the JSON object that contains the format data for the search. It is loaded at startup, and not changed afterwards.
+	var my_format_data;             ///\var my_format_data This is the JSON object that contains the format data for the search. It is loaded at startup, and not changed afterwards.
 	
 	// These are basically constants. They are the sort keys.
-	var my_sort_key_time;           ///< The sort keys for sorting by start time.
-	var my_sort_key_meeting_name;   ///< The sort keys for sorting by meeting name.
-	var my_sort_key_town;           ///< The sort keys for sorting by borough/town.
-	var my_sort_key_address;        ///< The sort keys for sorting by street address/location name.
+	var my_sort_key_time;           ///\var my_sort_key_time The sort keys for sorting by start time.
+	var my_sort_key_meeting_name;   ///\var my_sort_key_meeting_name The sort keys for sorting by meeting name.
+	var my_sort_key_town;           ///\var my_sort_key_town The sort keys for sorting by borough/town.
+	var my_sort_key_address;        ///\var my_sort_key_address The sort keys for sorting by street address/location name.
 
 	this.my_sort_key_time = 'start_time,location_nation,location_province,location_sub_province,location_city_subsection,location_municipality,location_neighborhood,meeting_name';
 	this.my_sort_key_meeting_name = 'meeting_name,start_time,location_city_subsection,location_municipality';
@@ -125,23 +125,20 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     ****************************************************************************************/
 
     /************************************************************************************//**
-    *   \brief A simple, generic AJAX request function.                                     *
-    *                                                                                       *
-    *   \returns a new XMLHTTPRequest object.                                               *
+    *   \brief A simple, generic AJAX request function.
+    *   \param url The URI to be called. This should include all parameters in GET form (even if this is POST).
+    *   \param callback The success callback
+    *   \param method The method ('get', 'GET', 'post' or 'POST')
+    *   \param extra_data If supplied, extra data to be delivered to the callback.
+    *   \returns a new XMLHTTPRequest object.
     ****************************************************************************************/
     
-    this.comms_AjaxRequest = function ( url,        ///< The URI to be called. This should include all parameters in GET form (even if this is POST).
-                                        callback,   ///< The success callback
-                                        method,     ///< The method ('get', 'GET', 'post' or 'POST')
-                                        extra_data  ///< If supplied, extra data to be delivered to the callback.
-                                        )
+    this.comms_AjaxRequest = function ( url, callback, method, extra_data )
     {
         /********************************************************************************//**
-        *   \brief Create a generic XMLHTTPObject.                                          *
-        *                                                                                   *
-        *   This will account for the various flavors imposed by different browsers.        *
-        *                                                                                   *
-        *   \returns a new XMLHTTPRequest object.                                           *
+        *   \brief Create a generic XMLHTTPObject.
+        *   This will account for the various flavors imposed by different browsers.
+        *   \returns a new XMLHTTPRequest object.
         ************************************************************************************/
     
         function createXMLHTTPObject()
@@ -258,9 +255,9 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     *           This uses the filter established by the query parameters passed in on instantiation.
     *           This function initiates an AJAX call that will return and call the class function
     *           comms_callback_loadloadWeekdayData.
+    *   \param in_tab_object The tab DOM object.
     ****************************************************************************************/
-	this.comms_loadWeekdayData = function (   in_tab_object       ///< The tab DOM object.
-	                                        )
+	this.comms_loadWeekdayData = function ( in_tab_object )
 	{
 	    // We append the weekday, sort and sort order parameters to the URI.
 	    var uri = encodeURI ( this.my_search_query_params + '&sort_keys=' + this.my_selected_sort_key  + ((this.my_sort_dir == 'desc') ? ',desc' : '') +'&bmlt_settings_id=' + this.my_settings_id + '&weekdays[]=' + (parseInt (in_tab_object.index) + 1).toString() ).toString();
@@ -278,10 +275,10 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     *           data is loaded once, then used to construct the format objects in the table.
     *           This is called once, at the start. After the format data has been loaded, the
     *           callback then initiates a new search for the current weekday.
+    *   \param in_response_object The HTTPRequest object for this AJAX call.
+    *   \param in_context_object The TableSearchDisplay object that initiated the call.
     ****************************************************************************************/
-    this.comms_callback_loadloadFormatData = function ( in_response_object, ///< The HTTPRequest response object.
-                                                        in_context_object
-                                                        )
+    this.comms_callback_loadloadFormatData = function ( in_response_object, in_context_object )
     {
         for ( var i = 0; i < 7; i++ )
             {
@@ -301,10 +298,10 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     *	\brief  Called when the weekday data is loaded.
     *           This loads the tab object with a cache of the retrieved JSON data, and has
     *           the tab object select itself.
+    *   \param in_response_object The HTTPRequest object for this AJAX call.
+    *   \param in_tab_object The Tab object that denotes the chosen weekday.
     ****************************************************************************************/
-    this.comms_callback_loadloadWeekdayData = function (    in_response_object, ///< The HTTPRequest response object.
-                                                            in_tab_object       ///< The weekday index, plus one (because JS likes to undefine zeroes).
-                                                        )
+    this.comms_callback_loadloadWeekdayData = function ( in_response_object, in_tab_object )
     {
         eval ( "var json_response = " + in_response_object.responseText + ";" );    // Extract the JSON object with the returned data.
         in_tab_object.weekday_json_data = json_response;
@@ -318,10 +315,10 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     /************************************************************************************//**
     *	\brief  This turns military time to ante meridian format or cleaned military time.
     *           If the time is midnight or noon, the localized string for that is returned.
+    *   \param in_time_string A string with the time in military format.
     *   \returns A string, with the properly formatted time ("Noon", "Midnight", "HH:MM" or "HH:MM AM|PM").
     ****************************************************************************************/
-	this.utility_convertTime = function ( in_time_string  ///< A string with the time in military format.
-	                                        )
+	this.utility_convertTime = function ( in_time_string )
 	{
 	    var ret = in_time_string;
 	    var time_array = in_time_string.split ( ":" );
@@ -375,10 +372,10 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     /************************************************************************************//**
     *	\brief  This builds a readable aggregated street address from the components in the JSON.
     *           Very simply, we just do the location name and street address.
+    *   \param in_json_data The JSON data for one meeting.
     *   \returns a string, with the address HTML.
     ****************************************************************************************/
-	this.utility_createStreetAddress = function ( in_json_data    ///< The JSON data for one meeting.
-	                                        )
+	this.utility_createStreetAddress = function ( in_json_data )
 	{
 	    var ret = '';
 
@@ -405,10 +402,10 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
 	
     /************************************************************************************//**
     *	\brief  This builds an aggregated town from the components in the JSON.
+    *   \param in_json_data The JSON data for one meeting.
     *   \returns a string, with the town HTML.
     ****************************************************************************************/
-	this.utility_createAddressTown = function ( in_json_data    ///< The JSON data for one meeting.
-	                                        )
+	this.utility_createAddressTown = function ( in_json_data )
 	{
 	    var hasTown = false;
 	    var ret = '<span class="bmlt_table_town_span">';  // This allows folks to style the town.
@@ -618,10 +615,10 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     
     /************************************************************************************//**
     *	\brief Creates one weekday button for the header.
-    ^   \returns the instantiated DOM object.
+    *   \param in_weekday_index The index of the weekday to be created. 0 is Sunday, 6 is Saturday.
+    *   \returns the instantiated DOM object.
     ****************************************************************************************/
-    this.domBuilder_CreateOneWeekday = function ( in_weekday_index  ///< The index of the weekday to be created. 0 is Sunday, 6 is Saturday.
-                                                )
+    this.domBuilder_CreateOneWeekday = function ( in_weekday_index )
     {
         // First set up the weekday tab element. It will anchor the context for the data.
         var weekdayElement = document.createElement ( 'li' );        // Create the basic list element.
@@ -748,14 +745,14 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     
     /************************************************************************************//**
     *	\brief Populates the meeting result table for the given data.
-    ^   \returns the instantiated DOM object.
+    *   \param in_search_results_json A JSON object with the meeting search results.
+    *   \param in_index The 0-based weekday index.
+    *   \param in_sort_key The sort key, for the data sort.
+    *   \param in_sort_dir The sort direction, for the data sort. It will be 'asc' or 'desc'.
+    *   \param in_tabObject The tab object, which will be set to selected when the weekday is done.
+    *   \returns the instantiated DOM object.
     ****************************************************************************************/
-    this.domBuilder_PopulateWeekday = function (    in_search_results_json,     ///< A JSON object with the meeting search results.
-	                                                in_index,                   ///< The 0-based weekday index.
-	                                                in_sort_key,                ///< The sort key, for the data sort.
-	                                                in_sort_dir,                ///< The sort direction, for the data sort. It will be 'asc' or 'desc'.
-	                                                in_tabObject                ///< The tab object, which will be set to selected when the weekday is done.
-                                                )
+    this.domBuilder_PopulateWeekday = function ( in_search_results_json, in_index, in_sort_key, in_sort_dir, in_tabObject )
     {
         if ( null != this.my_body_container )   // Clear any preexisting condition.
             {
@@ -786,12 +783,12 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     
     /************************************************************************************//**
     *	\brief Populates the header for the meetings table.
-    ^   \returns the instantiated DOM object.
+    *   \param in_index The 0-based weekday index.
+	*   \param in_sort_key The sort key, for the data sort.
+	*   \param in_sort_dir The sort direction, for the data sort. It will be 'asc' or 'desc'.
+    *   \returns the instantiated DOM object.
     ****************************************************************************************/
-    this.domBuilder_PopulateWeekdayHeader = function (  in_index,       ///< The 0-based weekday index.
-	                                                    in_sort_key,    ///< The sort key, for the data sort.
-	                                                    in_sort_dir     ///< The sort direction, for the data sort. It will be 'asc' or 'desc'.
-                                                    )
+    this.domBuilder_PopulateWeekdayHeader = function ( in_index, in_sort_key, in_sort_dir )
     {
         if ( null != this.my_body_container_header )   // Clear any preexisting condition.
             {
@@ -828,13 +825,13 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     
     /************************************************************************************//**
     *	\brief Populates the header for the meetings table.
-    ^   \returns the instantiated DOM object.
+    *   \param in_name The text name for the column.
+	*   \param in_sort_key The sort key, for the data sort.
+	*   \param in_sort_dir The sort direction, for the data sort. It will be 'asc' or 'desc'.
+	*   \param in_is_selected A boolean value. True, if this is the sort key.
+    *   \returns the instantiated DOM object.
     ****************************************************************************************/
-    this.domBuilder_PopulateWeekdayHeaderColumn = function (    in_name,        ///< The text name for the column.
-	                                                            in_sort_key,    ///< The sort key, for the data sort.
-	                                                            in_sort_dir,    ///< The sort direction, for the data sort. It will be 'asc' or 'desc'.
-	                                                            in_is_selected  ///< A boolean value. True, if this is the sort key.
-                                                            )
+    this.domBuilder_PopulateWeekdayHeaderColumn = function ( in_name, in_sort_key, in_sort_dir, in_is_selected )
     {
         var theElement =  document.createElement ( 'li' );       // Create the column element
         theElement.key = in_sort_key;                            // This will be the sort key for this column.
@@ -896,10 +893,10 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     
     /************************************************************************************//**
     *	\brief Populates the main table for the meetings table.
-    ^   \returns the instantiated DOM object.
+    *   \param in_json_data The JSON data for all the meetings.
+    *   \returns the instantiated DOM object.
     ****************************************************************************************/
-    this.domBuilder_PopulateWeekdayBody = function (  in_json_data  ///< The JSON data for the meetings.
-                                                    )
+    this.domBuilder_PopulateWeekdayBody = function ( in_json_data )
     {
         if ( null != this.my_body_container_body )   // Clear any preexisting condition.
             {
@@ -937,10 +934,10 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     
     /************************************************************************************//**
     *	\brief  Populates one row (meeting)
-    ^   \returns the instantiated DOM object.
+    *   \param in_json_data The JSON data for the meeting.
+    *   \returns the instantiated DOM object.
     ****************************************************************************************/
-    this.domBuilder_PopulateWeekdayBody_one_meeting = function (  in_json_data  ///< The JSON data for the meetings.
-                                                                )
+    this.domBuilder_PopulateWeekdayBody_one_meeting = function ( in_json_data )
     {
         var rowElement = document.createElement ( 'ul' );
         rowElement.className = 'bmlt_table_data_ul_li_ul';
@@ -981,13 +978,13 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     
     /************************************************************************************//**
     *	\brief Populates one column of a meeting row.
-    ^   \returns the instantiated DOM object.
+    *   \param in_tag The tag used as a key for this column
+    *   \param in_string The name of the column (displayed as a string)
+    *   \param in_latitude if supplied, the longitude of a meeting (is usually null)
+    *   \param in_longitude if supplied, the latitude of a meeting (is usually null)
+    *   \returns the instantiated DOM object.
     ****************************************************************************************/
-    this.domBuilder_PopulateWeekdayBody_one_column = function ( in_tag,         ///< The tag used as a key for this column
-                                                                in_string,      ///< The name of the column (displayed as a string)
-                                                                in_latitude,    ///< if supplied, the longitude of a meeting (is usually null)
-                                                                in_longitude    ///< if supplied, the latitude of a meeting (is usually null)
-                                                                )
+    this.domBuilder_PopulateWeekdayBody_one_column = function ( in_tag, in_string, in_latitude, in_longitude )
     {
         var columnElement = document.createElement ( 'li' );
         columnElement.className = 'bmlt_table_data_ul_li_ul_li bmlt_table_data_ul_li_ul_li_' + in_tag;
@@ -1025,10 +1022,10 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
     /************************************************************************************//**
     *	\brief  This builds a div element for the given formats.
     *           The div is filled with spans; one for each format.
-    ^   \returns the instantiated DOM object.
+    *   \param in_formats_string The JSON data for one meeting.
+    *   \returns the instantiated DOM object.
     ****************************************************************************************/
-	this.domBuilder_createFormats = function ( in_formats_string    ///< The JSON data for one meeting.
-	                                        )
+	this.domBuilder_createFormats = function ( in_formats_string )
 	{
 	    var ret = document.createElement ( 'div' );
 	    ret.className = 'bmlt_formats_div';
@@ -1060,10 +1057,10 @@ function TableSearchDisplay (   in_display_id,          ///< The element DOM ID 
 	
     /************************************************************************************//**
     *	\brief  This builds a span element for the given format.
-    ^   \returns the instantiated DOM object.
+    *   \param in_format_string format key.
+    *   \returns the instantiated DOM object.
     ****************************************************************************************/
-	this.domBuilder_createOneFormatSpan = function ( in_format_string    ///< The JSON data for one format.
-	                                        )
+	this.domBuilder_createOneFormatSpan = function ( in_format_string )
 	{
 	    if ( in_format_string )
 	        {
