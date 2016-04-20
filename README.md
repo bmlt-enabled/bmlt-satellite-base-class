@@ -22,7 +22,7 @@ The instructions for employment of this class are on [this page](http://bmlt.mag
 
 CHANGELIST
 ----------
-***Version 3.3.5** -TBD*
+***Version 3.3.6** -TBD*
 
 * Continuing refactoring for documentation purposes.
 * Added more [Doxygen](http://doxygen.nl) support. There is now a "doc" directory.
