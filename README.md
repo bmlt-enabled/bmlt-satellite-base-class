@@ -26,6 +26,7 @@ CHANGELIST
 
 * Continuing refactoring for documentation purposes.
 * Added more [Doxygen](http://doxygen.nl) support. There is now a "doc" directory.
+* Made it so that the details in the standard shortcode can be dismissed by clicking anywhere. I also now display a visible translucent mask.
 
 ***Version 3.3.4** -April 13, 2016*
 

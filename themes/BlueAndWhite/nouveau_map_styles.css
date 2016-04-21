@@ -1132,6 +1132,20 @@ div#bmlt_page_items.bmlt_page_items
 
 div#bmlt_page_items.bmlt_page_items
     div.bmlt_nouveau_div
+        div.bmlt_nouveau_details_mask_div_displayed
+{
+    background: rgba(0, 0, 0, 0.4);
+    display:block;
+    position:fixed;
+    top:0;
+    left:0;
+    bottom:0;
+    right:0;
+    
+}
+
+div#bmlt_page_items.bmlt_page_items
+    div.bmlt_nouveau_div
         div.bmlt_nouveau_throbber_inner_container_div
 {
     position:absolute;
@@ -1519,7 +1533,10 @@ div#bmlt_page_items.bmlt_page_items
             div.bmlt_nouveau_search_results_list_disclosure_div,
     div#bmlt_page_items.bmlt_page_items
         div.bmlt_nouveau_div
-            div.bmlt_nouveau_search_results_display_text_div
+            div.bmlt_nouveau_search_results_display_text_div,
+    div#bmlt_page_items.bmlt_page_items
+        div.bmlt_nouveau_div
+            div.bmlt_nouveau_details_mask_div_displayed
     {
         display:none;
     }

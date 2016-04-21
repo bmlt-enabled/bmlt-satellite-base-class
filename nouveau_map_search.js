@@ -2125,7 +2125,11 @@ function NouveauMapSearch ( in_unique_id,           ///< The UID of the containe
         
         var mask_div = document.createElement ( 'div' );
         mask_div.className = 'bmlt_nouveau_details_mask_div';
+        var ev = null;
+        eval ( 'ev = function () { g_instance_' + this.m_uid + '_js_handler.closeSingle(); };' );
+        mask_div.onclick = ev;
         this.m_details_div.appendChild ( mask_div );
+        this.m_details_div.my_mask_div = mask_div;
 
         this.m_details_inner_div = document.createElement ( 'div' );
         this.m_details_inner_div.className = 'bmlt_nouveau_details_inner_container_div';
@@ -2604,6 +2608,7 @@ function NouveauMapSearch ( in_unique_id,           ///< The UID of the containe
         document.body.scrollTop = document.documentElement.scrollTop = 0;
         this.m_display_div.className = 'bmlt_nouveau_div bmlt_nouveau_div_details_displayed';   // Used for pretty printing.
         this.m_details_div.className = 'bmlt_nouveau_details_div';
+        this.m_details_div.my_mask_div.className = 'bmlt_nouveau_details_mask_div_displayed';
         };
 
     /************************************************************************************//**
@@ -2613,6 +2618,7 @@ function NouveauMapSearch ( in_unique_id,           ///< The UID of the containe
         {
         this.m_display_div.className = 'bmlt_nouveau_div';
         this.m_details_div.className = 'bmlt_nouveau_details_div bmlt_nouveau_details_div_hidden';
+        this.m_details_div.my_mask_div.className = 'bmlt_nouveau_details_mask_div';
         };
                 
     /************************************************************************************//**
