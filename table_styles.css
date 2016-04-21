@@ -77,8 +77,9 @@ div.bmlt_table_display_div ul.bmlt_table_header_weekday_list
     padding:0;
 }
 
-div.bmlt_table_display_div ul.bmlt_table_header_weekday_list li
+div.bmlt_table_display_div ul.bmlt_table_header_weekday_list li.bmlt_table_header_weekday_list_element
 {
+    background-image:none;
     width:14.28%;
     line-height:2em;
     height:2em;
@@ -89,6 +90,7 @@ div.bmlt_table_display_div ul.bmlt_table_header_weekday_list li
     display:block;
     float:left;
     margin:0;
+    padding: 0;
     margin-left:-1px;
     margin-right:-1px;
     margin-bottom:0;
@@ -166,6 +168,7 @@ div.bmlt_table_display_div ul.bmlt_table_header_ul li
 {
     list-style-type:none;
     list-style-position:outside;
+    background-image:none;
     margin:0;
     padding:0;
 }
@@ -282,18 +285,22 @@ div.bmlt_table_display_div div.bmlt_table_div ul.bmlt_table_data_ul
 }
 
 div.bmlt_table_display_div div.bmlt_table_div ul.bmlt_table_data_ul,
+div.bmlt_table_display_div div.bmlt_table_div ul.bmlt_table_data_ul li,
 div.bmlt_table_display_div div.bmlt_table_div ul.bmlt_table_data_ul li.bmlt_table_data_ul_li
 {
     display: block;
-    width: 100%;
     list-style-type:none;
     list-style-position:outside;
+    background-image:none;
     margin:0;
     padding:0;
 }
 
 div.bmlt_table_display_div ul.bmlt_table_data_ul li
 {
+    background-image:none;
+    width: 100%;
+    display: block;
     float:left;
     padding-top:0.125em;
     padding-bottom:0.125em;

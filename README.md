@@ -22,11 +22,12 @@ The instructions for employment of this class are on [this page](http://bmlt.mag
 
 CHANGELIST
 ----------
-***Version 3.3.6** -TBD*
+***Version 3.3.6** -April 21, 2016*
 
 * Continuing refactoring for documentation purposes.
 * Added more [Doxygen](http://doxygen.nl) support. There is now a "doc" directory.
 * Made it so that the details in the standard shortcode can be dismissed by clicking anywhere. I also now display a visible translucent mask.
+* Fixed some style issues with the default display on Drupal. The default Drupal styles clobber the built-in ones, so I had to reinforce the built-in ones a bit.
 
 ***Version 3.3.4** -April 13, 2016*
 
