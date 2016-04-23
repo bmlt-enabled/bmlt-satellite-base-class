@@ -2,6 +2,8 @@
 /***********************************************************************/
 /**     \file   loadTable_StyleFiles.php
 
+    \version 3.3.7
+    
     \brief  This file reads in a CSS file, and optimizes it by stripping
     out comments and whitespace. It will also try to GZ compress the output
     using the standard OB functions. It can make a HUGE difference in size.
@@ -38,8 +40,8 @@ function loadTable_StyleFile ( $in_theme_dirname )
     {
     $pathname = dirname ( __FILE__ )."$in_theme_dirname/table_styles.css";
     $opt = file_get_contents ( $pathname );
-//     $opt = preg_replace( "|\/\*.*?\*\/|s", "", $opt );
-//     $opt = preg_replace( "|\s+|s", " ", $opt );
+    $opt = preg_replace( "|\/\*.*?\*\/|s", "", $opt );
+    $opt = preg_replace( "|\s+|s", " ", $opt );
     return $opt;
     }
 
@@ -53,7 +55,12 @@ if ( $dir_res )
         {
         if ( !preg_match ( '/^\./', $dir_name ) && is_dir ( dirname ( __FILE__ ).'/themes/'.$dir_name ) && file_exists ( dirname ( __FILE__ ).'/themes/'.$dir_name.'/table_styles.css' ) )
             {
-            $opt .= loadTable_StyleFile ( "/themes/$dir_name" );
+            $theme = isset ( $_GET['theme'] ) ? $_GET['theme'] : '';
+            
+            if ( !$theme || ($dir_name == $theme) )
+                {
+                $opt .= loadTable_StyleFile ( "/themes/$dir_name" );
+                }
             }
         }
 
