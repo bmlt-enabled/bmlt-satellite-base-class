@@ -1363,7 +1363,7 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
                 $uri = trim ( $this->my_http_vars['BMLTPlugin_AJAX_Call_Check_Root_URI'] );
                 
                 $test = new bmlt_satellite_controller ( $uri );
-                if ( $uri && ($uri != self::$local_options_no_root_server_string ) && $test instanceof bmlt_satellite_controller )
+                if ( $uri && ($uri != self::$local_options_no_root_server_string ) && ($test instanceof bmlt_satellite_controller) )
                     {
                     if ( !$test->get_m_error_message() )
                         {
