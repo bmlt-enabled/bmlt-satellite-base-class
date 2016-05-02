@@ -21,7 +21,7 @@ The instructions for employment of this class are on [this page](http://bmlt.mag
 
 CHANGELIST
 ----------
-***Version 3.3.7* ** *- TBD*
+***Version 3.3.7* ** *- May 2, 2016*
 
 - Fixed a very minor issue with the table styles, where they were not being properly optimized (makes the page load a teensy-tiny bit slower).
 - Added the ability to load only a selected theme for the [bmlt_table](http://bmlt.magshare.net/satellites/the-fast-table-display/) shortcode (only used by BMLT Basic).
