@@ -9,7 +9,7 @@
 *   little is done before execution time. A great deal of care has been taken to allow      *
 *   robust, complete CSS presentation management.                                           *
 *                                                                                           *
-*   \version 3.3.7                                                                          *
+*   \version 3.3.8                                                                          *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -230,6 +230,8 @@ function NouveauMapSearch ( in_unique_id,           ///< The UID of the containe
     ****************************************************************************************/
     this.buildDOMTree = function ()
         {
+        var this_object = this;
+        document.body.onkeyup = function(e){if (e.keyCode == 27) { this_object.hideDetails(); }};
         // First, create and set up the entire screen.
         this.m_display_div = document.createElement ( 'div' );
         this.m_display_div.className = 'bmlt_nouveau_div';
