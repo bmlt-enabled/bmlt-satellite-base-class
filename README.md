@@ -21,7 +21,7 @@ The instructions for employment of this class are on [this page](http://bmlt.mag
 
 CHANGELIST
 ----------
-***Version 3.3.8* ** *- TBD*
+***Version 3.3.9* ** *- TBD*
 
 - Now detect escape key to close meeting details overlay.
 
