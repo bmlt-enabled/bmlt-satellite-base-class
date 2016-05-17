@@ -518,7 +518,7 @@ function WhereAmI ( in_qualifier_day,	/**< A string. This determines whether to 
 		
 		url = '+(%22' + url + '%22)';
 		
-		url = 'http://maps.google.com/maps?q='+encodeURIComponent(in_meeting_obj.latitude.toString())+','+encodeURIComponent(in_meeting_obj.longitude.toString()) + url + '&amp;ll='+encodeURIComponent(in_meeting_obj.latitude.toString())+','+encodeURIComponent(in_meeting_obj.longitude.toString());
+		url = 'https://maps.google.com/maps?q='+encodeURIComponent(in_meeting_obj.latitude.toString())+','+encodeURIComponent(in_meeting_obj.longitude.toString()) + url + '&amp;ll='+encodeURIComponent(in_meeting_obj.latitude.toString())+','+encodeURIComponent(in_meeting_obj.longitude.toString());
 
 		ret += url + '" rel="external">'+c_g_map_link_text+'</a>';
 		ret += '</div>';

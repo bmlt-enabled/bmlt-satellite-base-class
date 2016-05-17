@@ -24,6 +24,7 @@ CHANGELIST
 ***Version 3.3.9* ** *- TBD*
 
 - Now detect escape key to close meeting details overlay.
+- The mobile JS file was importing a non-HTTPS Google Maps API. I changed this to use the HTTPS version.
 
 ***Version 3.3.7* ** *- May 2, 2016*
 
