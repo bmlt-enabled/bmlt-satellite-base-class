@@ -21,7 +21,7 @@ The instructions for employment of this class are on [this page](http://bmlt.mag
 
 CHANGELIST
 ----------
-***Version 3.3.9* ** *- TBD*
+***Version 3.3.9* ** *- May 22, 2016*
 
 - Now detect escape key to close meeting details overlay.
 - The mobile JS file was importing a non-HTTPS Google Maps API. I changed this to use the HTTPS version.
