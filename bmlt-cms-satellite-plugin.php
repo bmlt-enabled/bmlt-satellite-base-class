@@ -1718,7 +1718,7 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
             if ( $first )   // We only load this the first time.
                 {
                 // These are the basic global JavaScript properties.
-                $the_new_content .= $this->BMLTPlugin_nouveau_map_search_global_javascript_stuff ( );
+                $the_new_content .= $this->BMLTPlugin_nouveau_map_search_global_javascript_stuff ( $options_id );
                 // Most of the display is built in DOM, but this is how we get our localized strings into JS. We put them in globals.
                 $the_new_content .= '<script type="text/javascript">' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
                 $the_new_content .= "var g_NouveauMapSearch_advanced_name_string ='".$this->process_text ( self::$local_nouveau_advanced_button ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
@@ -2229,8 +2229,10 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
     *                                                                                       *
     *   \returns A string. The XHTML to be displayed.                                       *
     ****************************************************************************************/
-    function BMLTPlugin_nouveau_map_search_global_javascript_stuff()
+    function BMLTPlugin_nouveau_map_search_global_javascript_stuff($in_options_id  ///< The ID of our currently selected options.
+                                                                    )
         {
+        $options = $this->getBMLTOptions_by_id ( $in_options_id );
         // Include the Google Maps API V3 files.
         $ret = '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key='.$options['google_api_key'].'&libraries=geometry"></script>';       
         $ret .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'javascript.js" type="text/javascript"></script>';
