@@ -21,6 +21,10 @@ The instructions for employment of this class are on [this page](http://bmlt.mag
 
 CHANGELIST
 ----------
+***Version 3.4.0* ** *- October 16, 2016*
+
+- Reintroduced support for the Google API Key.
+
 ***Version 3.3.9* ** *- May 22, 2016*
 
 - Now detect escape key to close meeting details overlay.

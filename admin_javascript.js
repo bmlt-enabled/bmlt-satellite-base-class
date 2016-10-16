@@ -1,7 +1,7 @@
 /****************************************************************************************//**
 * \file admin_javascript.js                                                                 *
 * \brief The javascript for the BMLTPlugin class (Admin options).                           *
-*   \version 3.3.9                                                                          *
+*   \version 3.4.0                                                                          *
     
     This file is part of the BMLT Common Satellite Base Class Project. The project GitHub
     page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class
@@ -118,6 +118,23 @@ function BMLTPlugin_DeleteOptionSheet()
 };
 
 /****************************************************************************************//**
+*   \brief This spreads a new Google API Key to all options.                                *
+********************************************************************************************/
+function BMLTPlugin_PropagateAPIKey( in_key_value   ///< The value of the API Key to spread.
+                                    )
+{
+    for ( var option_index = 1; option_index <= c_g_BMLTPlugin_coords.length; option_index++ )
+        {
+        var apiKeyTextObject = document.getElementById ( 'BMLTPlugin_google_api_text_'+option_index );
+        
+        if ( apiKeyTextObject )
+            {
+            apiKeyTextObject.value = in_key_value;
+            };
+        };
+};
+
+/****************************************************************************************//**
 *   \brief This actually saves the new options.                                             *
 ********************************************************************************************/
 function BMLTPlugin_SaveOptions()
@@ -145,6 +162,10 @@ function BMLTPlugin_SaveOptions()
             {
             url += encodeURIComponent ( name );
             };
+        
+        var apiKey = document.getElementById ( 'BMLTPlugin_google_api_text_'+option_index ).value.toString();
+
+        url += '&BMLTPlugin_google_api_text_'+option_index+'=' + encodeURIComponent ( apiKey );
         
         var root_server = document.getElementById ( 'BMLTPlugin_option_sheet_root_server_'+option_index ).value.toString();
         

@@ -4,7 +4,7 @@
 * \file lang_sv.php                                                                         *
 *                                                                                           *
 * \brief This file contains Swedish localizations.                                          *
-* \version 3.3.9                                                                           *
+* \version 3.4.0                                                                           *
 *                                                                                           *
 * This file is part of the BMLT Common Satellite Base Class Project. The project GitHub     *
 * page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class          *
@@ -86,6 +86,8 @@ class BMLT_Localized_BaseClass
     static $local_options_time_format_prompt = 'Format För Tid:';  ///< The label for the time format selection popup.
     static $local_options_time_format_ampm = 'HH:MM AM/PM';        ///< Ante Meridian Format Option
     static $local_options_time_format_military = 'HH:MM';          ///< Military Time Format Option
+    
+    static  $local_options_google_api_label = 'Google Maps API Key:';       ///< The label for the Google Maps API Key Text Entry.
     
     static $local_options_week_begins_on_prompt = 'Veckor börjar på:';       ///< This is the label for the week start popup menu.
     

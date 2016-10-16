@@ -1,7 +1,7 @@
 /****************************************************************************************//**
 * \file admin_styles.css                                                                    *
 * \brief The CSS for the BMLTPlugin class (Admin options).                                  *
-*   \version 3.3.9                                                                          *
+*   \version 3.4.0                                                                          *
     
     This file is part of the BMLT Common Satellite Base Class Project. The project GitHub
     page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class
@@ -274,7 +274,8 @@
 #BMLTPlugin_options_container .BMLTPlugin_option_sheet_line_root_server_text,
 #BMLTPlugin_options_container .BMLTPlugin_option_sheet_line_new_search_text,
 #BMLTPlugin_options_container .BMLTPlugin_option_sheet_line_gkey_text,
-#BMLTPlugin_options_container .BMLTPlugin_option_sheet_line_name_text
+#BMLTPlugin_options_container .BMLTPlugin_option_sheet_line_name_text,
+#BMLTPlugin_options_container .BMLTPlugin_google_api_text
 {
     color: #36c;
     float:left;
@@ -435,4 +436,10 @@
     border:1px solid #6cf;
     font-family:monospace;
     color:#039;
+}
+
+#BMLTPlugin_options_container .BMLTPlugin_google_api_text
+{
+    width: 30em;
+    margin-right: 0px;
 }

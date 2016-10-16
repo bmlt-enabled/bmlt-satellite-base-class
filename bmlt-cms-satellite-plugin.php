@@ -3,7 +3,7 @@
 *   \file   bmlt-cms-satellite-plugin.php                                                   *
 *                                                                                           *
 *   \brief  This is a generic CMS plugin class for a BMLT satellite client.                 *
-*   \version 3.3.9                                                                          *
+*   \version 3.4.0                                                                          *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -428,7 +428,8 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
                         'grace_period' => self::$default_grace_period,
                         'time_offset' => self::$default_time_offset,
                         'military_time' => self::$default_military_time,
-                        'startWeekday' => self::$default_startWeekday
+                        'startWeekday' => self::$default_startWeekday,
+                        'google_api_key' => ''
                         );
         }
     
@@ -571,11 +572,21 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
             $name = self::$adminOptionsName.$option_number;
             
             // If this is a new option, then we also update the admin 2 options, incrementing the number of servers.
+            
             if ( intval ( $in_option_number ) == ($this->get_num_options ( ) + 1) )
                 {
                 $in_options['id'] = strval ( time() + intval(rand(0, 999)));   // This gives the option a unique slug
                 $admin2Options = array ('num_servers' => intval( $in_option_number ));
+                for ( $c = 0; $c < count ( $in_options ); $c++ )
+                    {
+                    if ( $num != $in_option_number )
+                        {
+                        $option = $this->getBMLTOptions ( $c );
+                        $option['google_api_key'] = $in_options['google_api_key'];
+                        }
+                    }
 
+                $admin2Options = array ('num_servers' => intval( $in_option_number ), 'google_api_key' => $in_options['google_api_key'] );
                 $this->setAdmin2Options ( $admin2Options );
                 }
             
@@ -613,7 +624,7 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
             }
         else
             {
-            $bmlt2_BMLTOptions = array ('num_servers' => 1 );
+            $bmlt2_BMLTOptions = array ('num_servers' => 1, 'google_api_key' => '' );
             $this->setAdmin2Options ( $old_BMLTOptions );
             }
         
@@ -653,7 +664,7 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
             }
         else    // If the options weren't already set, we create them now.
             {
-            $opts = array ( 'num_servers' => 1 );
+            $opts = array ( 'num_servers' => 1, 'google_api_key' => '' );
             $this->setAdmin2Options ( $opts );
             }
         return $ret;
@@ -751,8 +762,10 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
                 
                 $this->cms_delete_option ( $option_name );
                 
+                $admin2Options = $this->getAdmin2Options();
+                
                 // This actually decrements the number of available options.
-                $admin2Options = array ('num_servers' => $last_num - 1);
+                $admin2Options['num_servers'] = $last_num - 1;
 
                 $this->setAdmin2Options ( $admin2Options );
                 $ret = true;
@@ -1085,6 +1098,12 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
                 $ret .= '</div>';
                 $ret .= '<fieldset class="BMLTPlugin_option_sheet_mobile_settings_fieldset">';
                     $ret .= '<legend class="BMLTPlugin_gmap_caveat_legend">'.$this->process_text ( self::$local_options_mobile_legend ).'</legend>';
+                    $ret .= '<div class="BMLTPlugin_option_sheet_line_div BMLTPlugin_google_api_line">';
+                        $id = 'BMLTPlugin_google_api_label_'.$in_options_index;
+                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( self::$local_options_google_api_label ).'</label>';
+                        $id = 'BMLTPlugin_google_api_text_'.$in_options_index;
+                        $ret .= '<input class="BMLTPlugin_google_api_text" id="'.htmlspecialchars ( $id ).'" type="text" value="'.htmlspecialchars ( $options['google_api_key'] ).'" onchange="BMLTPlugin_DirtifyOptionSheet(); BMLTPlugin_PropagateAPIKey( this.value )" onkeyup="BMLTPlugin_DirtifyOptionSheet(); BMLTPlugin_PropagateAPIKey( this.value )">';
+                    $ret .= '</div>';
                     $ret .= '<div class="BMLTPlugin_option_sheet_line_div">';
                         $id = 'BMLTPlugin_option_sheet_distance_units_'.$in_options_index;
                         $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( self::$local_options_distance_prompt ).'</label>';
@@ -1242,6 +1261,18 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
                             else
                                 {
                                 $options['setting_name'] = '';
+                                }
+                            }
+                        
+                        if ( isset ( $this->my_http_vars['BMLTPlugin_google_api_text_'.$i] ) )
+                            {
+                            if ( trim ( $this->my_http_vars['BMLTPlugin_google_api_text_'.$i] ) )
+                                {
+                                $options['google_api_key'] = trim ( $this->my_http_vars['BMLTPlugin_google_api_text_'.$i] );
+                                }
+                            else
+                                {
+                                $options['google_api_key'] = '';
                                 }
                             }
                         
@@ -2010,7 +2041,7 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
             
             if ( $first )   // We only load this the first time.
                 {
-                $the_new_content .= $this->BMLTPlugin_map_search_global_javascript_stuff ( );
+                $the_new_content .= $this->BMLTPlugin_map_search_global_javascript_stuff ( $options_id );
                 $first = false;
                 }
 
@@ -2152,10 +2183,12 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
     *                                                                                       *
     *   \returns A string. The XHTML to be displayed.                                       *
     ****************************************************************************************/
-    function BMLTPlugin_map_search_global_javascript_stuff()
+    function BMLTPlugin_map_search_global_javascript_stuff( $in_options_id  ///< The ID of our currently selected options.
+                                                            )
         {
+        $options = $this->getBMLTOptions_by_id ( $in_options_id );
         // Include the Google Maps API V3 files.
-        $ret = '</script><script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=geometry"></script>';       
+        $ret = '</script><script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key='.$options['google_api_key'].'&libraries=geometry"></script>';       
         // Declare the various globals and display strings. This is how we pass strings to the JavaScript, as opposed to the clunky way we do it in the root server.
         $ret .= '<script type="text/javascript">' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $ret .= 'var c_g_cannot_determine_location = \''.$this->process_text ( self::$local_cannot_determine_location ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
@@ -2487,16 +2520,14 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
     *                                                                                       *
     *   \returns A string. The XHTML to be displayed.                                       *
     ****************************************************************************************/
-    function BMLTPlugin_fast_mobile_lookup_javascript_stuff( $in_sensor = true  ///< A Boolean. If false, then we will invoke the API with the sensor set false. Default is true.
-                                                            )
+    function BMLTPlugin_fast_mobile_lookup_javascript_stuff( )
         {
         $options = $this->getBMLTOptions_by_id ( $this->my_http_vars['bmlt_settings_id'] );
             
         $ret = '';
-        $sensor = $in_sensor ? 'true' : 'false';
 
         // Include the Google Maps API V3 files.
-        $ret .= '<script type="text/javascript" src="https://maps.google.com/maps/api/js"></script>';
+        $ret .= '<script type="text/javascript" src="https://maps.google.com/maps/api/js?key='.$options['google_api_key'].'></script>';
         
         // Declare the various globals and display strings. This is how we pass strings to the JavaScript, as opposed to the clunky way we do it in the root server.
         $ret .= '<script type="text/javascript">' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
@@ -3177,7 +3208,7 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
                                                         $url .= ($comma ? ',+' : '').urlencode($meeting['location_province']);
                                                         }
                                                     
-                                                    $url = 'https://maps.google.com/maps?q='.urlencode($meeting['latitude']).','.urlencode($meeting['longitude']) . '+(%22'.str_replace ( "%28", '-', str_replace ( "%29", '-', $url )).'%22)';
+                                                    $url = 'https://maps.google.com/maps?key='.$options['google_api_key'].'&q='.urlencode($meeting['latitude']).','.urlencode($meeting['longitude']) . '+(%22'.str_replace ( "%28", '-', str_replace ( "%29", '-', $url )).'%22)';
                                                     $url .= '&ll='.urlencode($meeting['latitude']).','.urlencode($meeting['longitude']);
                                                     $ret .= '<a rel="external nofollow" accesskey="'.$index.'" href="'.htmlspecialchars ( $url ).'" title="'.htmlspecialchars($meeting['meeting_name']).'">'.$this->process_text ( self::$local_map_link ).'</a>';
                                                     $ret .= '<script type="text/javascript">document.getElementById(\'maplink_'.intval($meeting['id_bigint']).'\').style.display=\'block\';var c_BMLTPlugin_settings_id = '.htmlspecialchars ( $this->my_http_vars['bmlt_settings_id'] ).';</script>';
