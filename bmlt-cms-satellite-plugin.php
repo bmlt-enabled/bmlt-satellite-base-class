@@ -439,7 +439,7 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
     *   \returns an associative array, with the option settings.                            *
     ****************************************************************************************/
     function getBMLTOptions ( $in_option_number = null  /**<    It is possible to store multiple options.
-                                                                If there is a number here (>1), that will be used.
+                                                                If there is a number here (>=1), that will be used.
                                                                 If <0, a new option will be returned (not saved).
                                                         */
                             )
