@@ -2232,7 +2232,7 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
     function BMLTPlugin_nouveau_map_search_global_javascript_stuff()
         {
         // Include the Google Maps API V3 files.
-        $ret = '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=geometry"></script>';       
+        $ret = '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key='.$options['google_api_key'].'&libraries=geometry"></script>';       
         $ret .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'javascript.js" type="text/javascript"></script>';
         $ret .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'nouveau_map_search.js" type="text/javascript"></script>';
 
