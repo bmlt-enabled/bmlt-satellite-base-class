@@ -429,7 +429,7 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
                         'time_offset' => self::$default_time_offset,
                         'military_time' => self::$default_military_time,
                         'startWeekday' => self::$default_startWeekday,
-                        'google_api_key' => ''
+                        'google_api_key' => 'INVALID'
                         );
         }
     
@@ -2187,6 +2187,11 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
                                                             )
         {
         $options = $this->getBMLTOptions_by_id ( $in_options_id );
+        if ( !isset ( $options['google_api_key'] ) || ('' == $options['google_api_key']) )
+            {
+            $options['google_api_key'] = 'INVALID';
+            }
+
         // Include the Google Maps API V3 files.
         $ret = '</script><script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key='.$options['google_api_key'].'&libraries=geometry"></script>';       
         // Declare the various globals and display strings. This is how we pass strings to the JavaScript, as opposed to the clunky way we do it in the root server.
@@ -2525,11 +2530,16 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
     function BMLTPlugin_fast_mobile_lookup_javascript_stuff( )
         {
         $options = $this->getBMLTOptions_by_id ( $this->my_http_vars['bmlt_settings_id'] );
+        
+        if ( !isset ( $options['google_api_key'] ) || ('' == $options['google_api_key']) )
+            {
+            $options['google_api_key'] = 'INVALID';
+            }
             
         $ret = '';
 
         // Include the Google Maps API V3 files.
-        $ret .= '<script type="text/javascript" src="https://maps.google.com/maps/api/js?key='.$options['google_api_key'].'></script>';
+        $ret .= '<script type="text/javascript" src="https://maps.google.com/maps/api/js?key='.$options['google_api_key'].'"></script>';
         
         // Declare the various globals and display strings. This is how we pass strings to the JavaScript, as opposed to the clunky way we do it in the root server.
         $ret .= '<script type="text/javascript">' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
@@ -2556,14 +2566,12 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
         $ret .= 'var c_g_distance_units_are_km = '.((strtolower ($options['distance_units']) == 'km' ) ? 'true' : 'false').';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $ret .= 'var c_g_distance_units = \''.((strtolower ($options['distance_units']) == 'km' ) ? $this->process_text ( self::$local_mobile_kilometers ) : $this->process_text ( self::$local_mobile_miles ) ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $ret .= 'var c_BMLTPlugin_files_uri = \''.htmlspecialchars ( $this->get_ajax_mobile_base_uri() ).'?\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-        $ret .= 'var c_bmlt_settings_id='.intVal ( ((isset( $this->my_http_vars['bmlt_settings_id'] ) && $this->my_http_vars['bmlt_settings_id']) ? $this->my_http_vars['bmlt_settings_id'] : '')) .';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');        
-        $url = $this->get_plugin_path();
+        $ret .= 'var c_bmlt_settings_id='.intVal ( ((isset( $this->my_http_vars['bmlt_settings_id'] ) && $this->my_http_vars['bmlt_settings_id']) ? $this->my_http_vars['bmlt_settings_id'] : '')) .';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');       
 
-        $img_url = $url."google_map_images";
-
-        $img_url = htmlspecialchars ( $img_url );
+        $img_url = htmlspecialchars ( $this->get_plugin_path()."google_map_images" );
         
         $ret .= "var c_g_BMLTPlugin_images = '$img_url';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_googleURI = \'https://maps.google.com/maps?key='.$options['google_api_key'].'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $ret .= '</script>';
        
         $ret .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'javascript.js" type="text/javascript"></script>';
