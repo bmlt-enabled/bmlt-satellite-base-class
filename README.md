@@ -21,6 +21,10 @@ The instructions for employment of this class are on [this page](http://bmlt.mag
 
 CHANGELIST
 ----------
+***Version 3.4.2* ** *- TBD*
+
+- Added the "GNYR2" theme.
+
 ***Version 3.4.1* ** *- November 6, 2016*
 
 - There was one more place in the mobile implementation that needed the key.
