@@ -2,7 +2,7 @@
     This file is part of the BMLT Common Satellite Base Class Project. The project GitHub
     page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class
 
-    \version 3.4.2
+    \version 3.4.1
     
     This file is part of the BMLT Common Satellite Base Class Project. The project GitHub
     page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class
@@ -31,6 +31,62 @@ div#bmlt_page_items.bmlt_page_items
 {
     clear:both;
     float:none;
+}
+
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_switch_a,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_switch_a:visited,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_search_results_map_disclosure_a,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_search_results_map_disclosure_a:visited,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_advanced_switch_disclosure_a,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_advanced_switch_disclosure_a:visited,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_advanced_switch_disclosure_open_a,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_advanced_switch_disclosure_open_a:visited,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_advanced_weekdays_disclosure_a,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_advanced_weekdays_disclosure_a:visited,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_advanced_formats_disclosure_a,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_advanced_formats_disclosure_a:visited,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_advanced_service_bodies_disclosure_a,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_advanced_service_bodies_disclosure_a:visited,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_advanced_weekdays_disclosure_open_a,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_advanced_weekdays_disclosure_open_a:visited,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_advanced_formats_disclosure_open_a,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_advanced_formats_disclosure_open_a:visited,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_advanced_service_bodies_disclosure_open_a,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_advanced_service_bodies_disclosure_open_a:visited,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_search_results_list_disclosure_a,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_search_results_list_disclosure_a:visited,
+div#bmlt_page_items.bmlt_page_items a.bmlt_search_spec_switch_a,
+div#bmlt_page_items.bmlt_page_items a.bmlt_search_spec_switch_a:visited
+{
+    color: #ACCACB !important;
+}
+
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_switch_a:hover,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_switch_a:active,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_search_results_map_disclosure_a:hover,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_search_results_map_disclosure_a:active,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_advanced_switch_disclosure_a:hover,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_advanced_switch_disclosure_a:active,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_advanced_switch_disclosure_open_a:hover,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_advanced_switch_disclosure_open_a:active,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_advanced_weekdays_disclosure_a:hover,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_advanced_weekdays_disclosure_a:active,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_advanced_formats_disclosure_a:hover,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_advanced_formats_disclosure_a:active,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_advanced_service_bodies_disclosure_a:hover,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_advanced_service_bodies_disclosure_a:active,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_advanced_weekdays_disclosure_open_a:hover,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_advanced_weekdays_disclosure_open_a:active,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_advanced_formats_disclosure_open_a:hover,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_advanced_formats_disclosure_open_a:active,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_advanced_service_bodies_disclosure_open_a:hover,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_advanced_service_bodies_disclosure_open_a:active,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_search_results_list_disclosure_a:hover,
+div#bmlt_page_items.bmlt_page_items a.bmlt_nouveau_search_results_list_disclosure_a:active,
+div#bmlt_page_items.bmlt_page_items a.bmlt_search_spec_switch_a:hover,
+div#bmlt_page_items.bmlt_page_items a.bmlt_search_spec_switch_a:active
+{
+    color: #FFCC66 !important;
 }
 
 div#bmlt_page_items.bmlt_page_items
@@ -1010,7 +1066,7 @@ div#bmlt_page_items.bmlt_page_items
     div.bmlt_nouveau_div
         tr.bmlt_nouveau_search_results_list_body_tr_even td
 {
-    background-color:#eef;
+    background-color:#ACCACB;
     color: black;
 }
 

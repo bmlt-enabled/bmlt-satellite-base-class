@@ -1,5 +1,5 @@
 /*    
-    \version 3.4.2
+    \version 3.4.1
     
     This file is part of the BMLT Common Satellite Base Class Project. The project GitHub
     page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class
@@ -35,6 +35,8 @@ div.bmlt_table_display_div_theme_GNYR2 ul.bmlt_table_header_weekday_list li
 {
     background-color:#0C71C3;
     color:white;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 div.bmlt_table_display_div_theme_GNYR2 ul.bmlt_table_header_weekday_list li,
@@ -68,6 +70,8 @@ div.bmlt_table_display_div_theme_GNYR2 ul.bmlt_table_header_ul,
 div.bmlt_table_display_div_theme_GNYR2 ul.bmlt_table_header_ul li
 {
     border-color: white;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 div.bmlt_table_display_div_theme_GNYR2 ul.bmlt_table_header_ul li
