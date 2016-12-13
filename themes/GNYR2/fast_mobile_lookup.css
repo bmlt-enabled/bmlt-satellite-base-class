@@ -47,7 +47,7 @@ body
 {
 	font-family:Helvetica,Arial,San-Serif;
 	text-align:center;
-    background-color:;
+    background-color:#0C71C3;
 }
 
 #search_form_body div.search_div,
@@ -71,7 +71,7 @@ body
 .multi_meeting_div a:hover,
 .multi_meeting_div a:active
 {
-	color:#eee;
+    color:#fc6;
 	text-decoration:none;
 }
 
@@ -83,7 +83,7 @@ body
 	margin:0;
 	padding: 0;
 	width: 100%;
-    border: 1px solid ;
+    border: 1px solid #0C71C3;
 }
 
 .results_map_div

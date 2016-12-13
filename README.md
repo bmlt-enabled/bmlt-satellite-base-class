@@ -21,7 +21,7 @@ The instructions for employment of this class are on [this page](http://bmlt.mag
 
 CHANGELIST
 ----------
-***Version 3.4.2* ** *- TBD*
+***Version 3.4.2* ** *- December 13, 2016*
 
 - Added the "GNYR2" theme.
 
