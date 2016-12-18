@@ -1418,16 +1418,28 @@ div#bmlt_page_items.bmlt_page_items
     font-style:italic;
 }
 
+div#bmlt_page_items.bmlt_page_items img
+{
+    border:none;
+    outline: none;
+    margin: 0;
+    padding: 0;
+    background-color:transparent;
+    max-width:auto;
+    max-height:auto;
+}
+
 div#bmlt_page_items img.bmlt_nouveau_throbber_img
 {
-    margin: 0 !important;
-    margin-top: 8px !important;
-    margin-left: 8px !important;
+    border:none;
+    outline: none;
+    background-color:transparent;
+    padding:0;
+    margin:0;
+    display: block;
     -moz-border-radius: 40px;
     -webkit-border-radius: 40px;
     border-radius: 40px;
-
-    display: block;
 }
 
 div#bmlt_page_items.bmlt_page_items

@@ -31,12 +31,18 @@
 /************************************************************/
 /*                      Most tabs                           */
 /************************************************************/
+div.bmlt_table_display_div_theme_GNYR2 img
+{
+    border:none;
+    background-color:transparent;
+    padding:0;
+    margin:0;
+}
+
 div.bmlt_table_display_div_theme_GNYR2 ul.bmlt_table_header_weekday_list li
 {
     background-color:#0C71C3;
     color:white;
-    margin: 0 !important;
-    padding: 0 !important;
 }
 
 div.bmlt_table_display_div_theme_GNYR2 ul.bmlt_table_header_weekday_list li,
@@ -47,7 +53,7 @@ div.bmlt_table_display_div_theme_GNYR2 .bmlt_table_header_weekday_list li span.b
 
 div.bmlt_table_display_div_theme_GNYR2 ul.bmlt_table_header_weekday_list li.bmlt_table_mouseover
 {
-    color: #fc6;
+    color: #fc5;
 }
 
 /************************************************************/
@@ -70,8 +76,6 @@ div.bmlt_table_display_div_theme_GNYR2 ul.bmlt_table_header_ul,
 div.bmlt_table_display_div_theme_GNYR2 ul.bmlt_table_header_ul li
 {
     border-color: white;
-    margin: 0 !important;
-    padding: 0 !important;
 }
 
 div.bmlt_table_display_div_theme_GNYR2 ul.bmlt_table_header_ul li
@@ -83,7 +87,7 @@ div.bmlt_table_display_div_theme_GNYR2 ul.bmlt_table_header_ul li
 
 div.bmlt_table_display_div_theme_GNYR2 ul.bmlt_table_header_ul li.bmlt_table_header_li span.bmlt_table_mouseover
 {
-    color: #fc6;
+    color: #fc5;
 }
 
 /************************************************************/
@@ -131,9 +135,11 @@ div.bmlt_table_display_div_theme_GNYR2 ul.bmlt_table_data_ul li.bmlt_table_data_
     cursor:pointer;
 }
 
+div.bmlt_table_display_div_theme_GNYR2 ul.bmlt_table_data_ul ul.bmlt_table_data_ul_li_ul a:hover,
+div.bmlt_table_display_div_theme_GNYR2 ul.bmlt_table_data_ul ul.bmlt_table_data_ul_li_ul a:active,
 div.bmlt_table_display_div_theme_GNYR2 ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_formats div.bmlt_formats_div span.bmlt_table_mouseover
 {
-    color:#fc6;
+    color:#fc5;
 }
 
 div.bmlt_table_display_div_theme_GNYR2 ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_comments span
