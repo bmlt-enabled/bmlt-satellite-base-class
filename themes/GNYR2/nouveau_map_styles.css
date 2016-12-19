@@ -577,10 +577,35 @@ div#bmlt_page_items.bmlt_page_items
 {
     margin-top:4px;
     border:7px solid white;
-    background-color:white;
     -moz-border-radius: 8px;
     -webkit-border-radius: 8px;
     border-radius: 8px;
+}
+
+div#bmlt_page_items.bmlt_page_items
+    div.bmlt_nouveau_div
+        tr.bmlt_nouveau_search_results_list_header_tr
+{
+    color: white;
+}
+
+div#bmlt_page_items.bmlt_page_items
+    div.bmlt_nouveau_div
+        div.bmlt_nouveau_search_results_map_inner_container_div,
+div#bmlt_page_items.bmlt_page_items
+    div.bmlt_nouveau_div
+        div.bmlt_nouveau_advanced_weekdays_content_div,
+div#bmlt_page_items.bmlt_page_items
+    div.bmlt_nouveau_div
+        div.bmlt_nouveau_advanced_formats_content_div,
+div#bmlt_page_items.bmlt_page_items
+    div.bmlt_nouveau_div
+        div.bmlt_nouveau_advanced_service_bodies_content_div,
+div#bmlt_page_items.bmlt_page_items
+    div.bmlt_nouveau_div
+        div.bmlt_nouveau_advanced_map_options_div
+{
+    background-color:white;
 }
 
 div#bmlt_page_items.bmlt_page_items
@@ -1066,7 +1091,7 @@ div#bmlt_page_items.bmlt_page_items
     div.bmlt_nouveau_div
         tr.bmlt_nouveau_search_results_list_body_tr_even td
 {
-    background-color:#ACCACB;
+    background-color:rgba(172,202,203,0.75);
     color: black;
 }
 
@@ -1075,7 +1100,7 @@ div#bmlt_page_items.bmlt_page_items
         tr.bmlt_nouveau_search_results_list_body_tr_odd td
 {
     background-color:none;
-    color: black;
+    color: white;
 }
 
 div#bmlt_page_items.bmlt_page_items
