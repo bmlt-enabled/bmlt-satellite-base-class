@@ -418,7 +418,7 @@ TableSearchDisplay.prototype.utility_createStreetAddress = function ( in_json_da
     
     if ( in_json_data.location_street && in_json_data.location_street.toString() )
         {
-        ret = '<span class="bmlt_table_location_street_span">';  // This allows folks to style the street.
+        ret += '<span class="bmlt_table_location_street_span">';  // This allows folks to style the street.
         ret += in_json_data.location_street.toString();
         ret += '</span>';
         };
