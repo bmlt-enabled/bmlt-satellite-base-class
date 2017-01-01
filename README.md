@@ -25,6 +25,7 @@ CHANGELIST
 
 - Enhanced the "GNYR2" theme.
 - Fixed a bug in the fast table display, where venue names were not being displayed.
+- Couple of minor tweaks in the Google API includes. Probably makes no difference.
 
 ***Version 3.4.2* ** *- December 13, 2016*
 

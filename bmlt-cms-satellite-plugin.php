@@ -2193,7 +2193,7 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
             }
 
         // Include the Google Maps API V3 files.
-        $ret = '</script><script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key='.$options['google_api_key'].'&libraries=geometry"></script>';       
+        $ret = '</script><script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key='.$options['google_api_key'].'"></script>';       
         // Declare the various globals and display strings. This is how we pass strings to the JavaScript, as opposed to the clunky way we do it in the root server.
         $ret .= '<script type="text/javascript">' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $ret .= 'var c_g_cannot_determine_location = \''.$this->process_text ( self::$local_cannot_determine_location ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
@@ -2239,7 +2239,7 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
         {
         $options = $this->getBMLTOptions_by_id ( $in_options_id );
         // Include the Google Maps API V3 files.
-        $ret = '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key='.$options['google_api_key'].'&libraries=geometry"></script>';       
+        $ret = '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key='.$options['google_api_key'].'"></script>';       
         $ret .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'javascript.js" type="text/javascript"></script>';
         $ret .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'nouveau_map_search.js" type="text/javascript"></script>';
 
@@ -2539,7 +2539,7 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
         $ret = '';
 
         // Include the Google Maps API V3 files.
-        $ret .= '<script type="text/javascript" src="https://maps.google.com/maps/api/js?key='.$options['google_api_key'].'"></script>';
+        $ret .= '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key='.$options['google_api_key'].'"></script>';
         
         // Declare the various globals and display strings. This is how we pass strings to the JavaScript, as opposed to the clunky way we do it in the root server.
         $ret .= '<script type="text/javascript">' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
@@ -2571,7 +2571,7 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
         $img_url = htmlspecialchars ( $this->get_plugin_path()."google_map_images" );
         
         $ret .= "var c_g_BMLTPlugin_images = '$img_url';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-        $ret .= 'var c_g_googleURI = \'https://maps.google.com/maps?key='.$options['google_api_key'].'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_googleURI = \'https://maps.google.com/maps/api/js?key='.$options['google_api_key'].'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $ret .= '</script>';
        
         $ret .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'javascript.js" type="text/javascript"></script>';
