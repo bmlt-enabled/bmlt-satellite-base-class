@@ -21,7 +21,7 @@ The instructions for employment of this class are on [this page](http://bmlt.mag
 
 CHANGELIST
 ----------
-***Version 3.4.3* ** *- TBD*
+***Version 3.4.3* ** *- January 1, 2017*
 
 - Enhanced the "GNYR2" theme.
 - Fixed a bug in the fast table display, where venue names were not being displayed.
