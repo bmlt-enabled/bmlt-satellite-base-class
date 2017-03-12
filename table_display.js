@@ -2,7 +2,7 @@
   \file table_display.js                                                                    *
   \brief Javascript functions for the basic table display.                                  *
                                                                                             *
-    \version 3.4.3                                                                          *
+    \version 3.4.4                                                                          *
                                                                                             *
     This file contains a function/object that implements the Fast Table Shortcode. Upon     *
     instantiation, it uses the page DOM to create a tabular display of meetings that are    *
@@ -439,14 +439,14 @@ TableSearchDisplay.prototype.utility_createAddressTown = function ( in_json_data
     // We prefer boroughs, as folks think of them as "towns."
     if ( in_json_data.location_city_subsection && in_json_data.location_city_subsection.toString() )
         {
-        ret = in_json_data.location_city_subsection.toString();
+        ret += in_json_data.location_city_subsection.toString();
         hasTown = true;
         }
     else
         {
         if ( in_json_data.location_municipality && in_json_data.location_municipality.toString() )
             {
-            ret = in_json_data.location_municipality.toString();
+            ret += in_json_data.location_municipality.toString();
             hasTown = true;
             };
         };
@@ -465,7 +465,7 @@ TableSearchDisplay.prototype.utility_createAddressTown = function ( in_json_data
         ret += in_json_data.location_province.toString();
         ret += '</span>';
         };
-        
+    
     return ret;
 };
 
@@ -1040,7 +1040,7 @@ TableSearchDisplay.prototype.domBuilder_PopulateWeekdayBody_one_column = functio
         {
         var textNode = document.createElement ( 'span' );
         textNode.className = 'bmlt_table_data_ul_li_ul_li_span bmlt_table_data_ul_li_ul_li_span_' + in_tag;
-        textNode.innerHTML = in_string;
+        textNode.innerHTML = in_string ? in_string : '&nbsp;';
         columnElement.appendChild ( textNode );
         };
         
