@@ -21,6 +21,10 @@ The instructions for employment of this class are on [this page](http://bmlt.mag
 
 CHANGELIST
 ----------
+***Version 3.4.5* ** *- March 17, 2017*
+
+- Added blank "index.php" files to all the directories to prevent listing directories.
+
 ***Version 3.4.4* ** *- March 12, 2017*
 
 - Added a fix to the [[BMLT_TABLE]] shortcode that ensures that empty columns in the table get non-breaking spaces if the value is empty.

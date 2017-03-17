@@ -2,7 +2,7 @@
 /***********************************************************************/
 /**     \file   loadTable_StyleFiles.php
 
-    \version 3.4.4
+    \version 3.4.5
     
     \brief  This file reads in a CSS file, and optimizes it by stripping
     out comments and whitespace. It will also try to GZ compress the output
