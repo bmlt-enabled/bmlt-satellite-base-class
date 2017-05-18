@@ -4,7 +4,7 @@
 *   \file   lang_da.php                                                                     *
 *                                                                                           *
 *   \brief  This file contains Danish localizations.                                        *
-*   \version 3.4.5                                                                          *
+*   \version 3.4.6                                                                          *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -68,6 +68,7 @@ class BMLT_Localized_BaseClass
     static  $local_options_map_label = 'Vælg Et Midterpunkt og Zoom Niveau';             ///< The Label for the map.
     static  $local_options_mobile_legend = 'Dette Påvirker Forskellige Visninger (som Kort, Mobil og Avanceret)';  ///< This indicates that the enclosed settings are for the fast mobile lookup.
     static  $local_options_mobile_grace_period_label = 'Tidsfrist inden møde:';     ///< When you do a "later today" search, you get a "Grace Period."
+    static  $local_options_mobile_region_bias_label = 'Region Bias:';       ///< The label for the Region Bias Selector.
     static  $local_options_mobile_time_offset_label = 'Time Offset:';       ///< This may have an offset (time zone difference) from the main server.
     static  $local_options_initial_view = array (                           ///< The list of choices for presentation in the popup.
                                                 'kort' => 'Kort', 'tekst' => 'Tekst', 'advanceret_kort' => 'Advanceret Kort', 'advanceret_tekst' => 'Advanceret Tekst'

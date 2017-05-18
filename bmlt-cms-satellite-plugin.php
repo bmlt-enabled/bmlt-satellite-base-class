@@ -3,7 +3,7 @@
 *   \file   bmlt-cms-satellite-plugin.php                                                   *
 *                                                                                           *
 *   \brief  This is a generic CMS plugin class for a BMLT satellite client.                 *
-*   \version 3.4.5                                                                          *
+*   \version 3.4.6                                                                          *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -429,7 +429,8 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
                         'time_offset' => self::$default_time_offset,
                         'military_time' => self::$default_military_time,
                         'startWeekday' => self::$default_startWeekday,
-                        'google_api_key' => 'INVALID'
+                        'google_api_key' => 'INVALID',
+                        'region_bias' => 'us'
                         );
         }
     
@@ -1203,6 +1204,11 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
                         $ret .= '</select>';
                         $ret .= '<div class="BMLTPlugin_option_sheet_text_div">'.$this->process_text ( self::$local_options_grace_period_disclaimer ).'</div>';
                     $ret .= '</div>';
+                    $ret .= '<div class="BMLTPlugin_option_sheet_line_div">';
+                        $id = 'BMLTPlugin_option_sheet_region_bias_'.$in_options_index;
+                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( self::$local_options_mobile_region_bias_label ).'</label>';
+                        $ret .= $this->bmlt_create_region_bias_select($id, $options);
+                    $ret .= '</div>';
                 $ret .= '</fieldset>';
             $ret .= '</div>';
             }
@@ -1212,6 +1218,40 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
             }
         
         return $ret;
+        }
+
+        /*******************************************************************/
+        /** \brief Creates the select element for the Region bias.
+
+            \returns a string, containing the select element HTML.
+        */
+        function bmlt_create_region_bias_select($in_id, $in_options)
+        {
+            $ret = '';
+    
+            $file_path = dirname ( __FILE__ ).'/country_names_and_code_elements.txt';
+            $cc_array = explode ( "\n", file_get_contents ( $file_path ) );
+            
+            $ret .= '<select onchange="BMLTPlugin_DirtifyOptionSheet()" id="'.$in_id.'">';
+                foreach ( $cc_array as $cc )
+                    {
+                    $cc_elem = explode ( "\t", trim ( $cc ) );
+            
+                    if ( isset ( $cc_elem ) && is_array ( $cc_elem ) && (count ( $cc_elem ) == 2) )
+                        {
+                        $name = ucwords ( strtolower ( trim ( $cc_elem[0] ) ) );
+                        $code = strtolower ( trim ( $cc_elem[1] ) );
+                        $ret .= '<option value="'.htmlspecialchars ( $code ).'"';
+                            if ( strtolower ( $in_options['region_bias'] ) == $code )
+                                {
+                                $ret .= ' selected="selected"';
+                                }
+                        $ret .= '>'.htmlspecialchars ( $name ).'</option>';
+                        }
+                    }
+            $ret .= '</select>';
+        
+            return $ret;
         }
         
     /************************************************************************************//**
@@ -1357,6 +1397,11 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
                         if ( isset ( $this->my_http_vars['BMLTPlugin_option_sheet_grace_period_'.$i] ) )
                             {
                             $options['grace_period'] = $this->my_http_vars['BMLTPlugin_option_sheet_grace_period_'.$i];
+                            }
+                        
+                        if ( isset ( $this->my_http_vars['BMLTPlugin_option_sheet_region_bias_'.$i] ) )
+                            {
+                            $options['region_bias'] = $this->my_http_vars['BMLTPlugin_option_sheet_region_bias_'.$i];
                             }
                         
                         if ( isset ( $this->my_http_vars['BMLTPlugin_option_sheet_time_offset_'.$i] ) )
@@ -2192,8 +2237,8 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
             $options['google_api_key'] = 'INVALID';
             }
 
-        // Include the Google Maps API V3 files.
-        $ret = '</script><script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key='.$options['google_api_key'].'"></script>';       
+        // Include the Google Maps API files.
+        $ret = '</script><script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key='.$options['google_api_key'].'&region='.strtoupper ( $options['region_bias'] ).'"></script>';       
         // Declare the various globals and display strings. This is how we pass strings to the JavaScript, as opposed to the clunky way we do it in the root server.
         $ret .= '<script type="text/javascript">' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $ret .= 'var c_g_cannot_determine_location = \''.$this->process_text ( self::$local_cannot_determine_location ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
@@ -2239,7 +2284,7 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
         {
         $options = $this->getBMLTOptions_by_id ( $in_options_id );
         // Include the Google Maps API V3 files.
-        $ret = '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key='.$options['google_api_key'].'"></script>';       
+        $ret = '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key='.$options['google_api_key'].'&region='.strtoupper ( $options['region_bias'] ).'"></script>';       
         $ret .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'javascript.js" type="text/javascript"></script>';
         $ret .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'nouveau_map_search.js" type="text/javascript"></script>';
 
@@ -2539,7 +2584,7 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
         $ret = '';
 
         // Include the Google Maps API V3 files.
-        $ret .= '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key='.$options['google_api_key'].'"></script>';
+        $ret .= '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key='.$options['google_api_key'].'&region='.strtoupper ( $options['region_bias'] ).'"></script>';
         
         // Declare the various globals and display strings. This is how we pass strings to the JavaScript, as opposed to the clunky way we do it in the root server.
         $ret .= '<script type="text/javascript">' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
@@ -2571,7 +2616,7 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
         $img_url = htmlspecialchars ( $this->get_plugin_path()."google_map_images" );
         
         $ret .= "var c_g_BMLTPlugin_images = '$img_url';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-        $ret .= 'var c_g_googleURI = \'https://maps.google.com/maps/api/js?key='.$options['google_api_key'].'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_googleURI = \'https://maps.google.com/maps/api/js?key='.$options['google_api_key'].'&region='.strtoupper ( $options['region_bias'] ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $ret .= '</script>';
        
         $ret .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'javascript.js" type="text/javascript"></script>';
@@ -3218,7 +3263,7 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
                                                         $url .= ($comma ? ',+' : '').urlencode($meeting['location_province']);
                                                         }
                                                     
-                                                    $url = 'https://maps.google.com/maps?key='.$options['google_api_key'].'&q='.urlencode($meeting['latitude']).','.urlencode($meeting['longitude']) . '+(%22'.str_replace ( "%28", '-', str_replace ( "%29", '-', $url )).'%22)';
+                                                    $url = 'https://maps.google.com/maps?key='.$options['google_api_key'].'&region='.strtoupper ( $options['region_bias'] ).'&q='.urlencode($meeting['latitude']).','.urlencode($meeting['longitude']) . '+(%22'.str_replace ( "%28", '-', str_replace ( "%29", '-', $url )).'%22)';
                                                     $url .= '&ll='.urlencode($meeting['latitude']).','.urlencode($meeting['longitude']);
                                                     $ret .= '<a rel="external nofollow" accesskey="'.$index.'" href="'.htmlspecialchars ( $url ).'" title="'.htmlspecialchars($meeting['meeting_name']).'">'.$this->process_text ( self::$local_map_link ).'</a>';
                                                     $ret .= '<script type="text/javascript">document.getElementById(\'maplink_'.intval($meeting['id_bigint']).'\').style.display=\'block\';var c_BMLTPlugin_settings_id = '.htmlspecialchars ( $this->my_http_vars['bmlt_settings_id'] ).';</script>';

@@ -1,7 +1,7 @@
 /****************************************************************************************//**
 * \file admin_javascript.js                                                                 *
 * \brief The javascript for the BMLTPlugin class (Admin options).                           *
-*   \version 3.4.5                                                                          *
+*   \version 3.4.6                                                                          *
     
     This file is part of the BMLT Common Satellite Base Class Project. The project GitHub
     page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class
@@ -190,6 +190,16 @@ function BMLTPlugin_SaveOptions()
              if ( grace_period )
                 {
                 url += '&BMLTPlugin_option_sheet_grace_period_'+option_index+'='+encodeURIComponent ( grace_period );
+                }
+            }
+        
+        if ( document.getElementById ( 'BMLTPlugin_option_sheet_region_bias_'+option_index ) )
+            {
+            var region_bias = document.getElementById ( 'BMLTPlugin_option_sheet_region_bias_'+option_index ).value.toString();
+        
+             if ( region_bias )
+                {
+                url += '&BMLTPlugin_option_sheet_region_bias_'+option_index+'='+encodeURIComponent ( region_bias );
                 }
             }
         

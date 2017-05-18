@@ -4,7 +4,7 @@
 *   \file   lang_br.php                                                                     *
 *                                                                                           *
 *   \brief  This file contains Brazilian Portuguese localizations.                          *
-*   \version 3.4.5                                                                          *
+*   \version 3.4.6                                                                          *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -68,6 +68,7 @@ class BMLT_Localized_BaseClass
     static  $local_options_map_label = 'Selecione o Ponto Central e Nível de Zoom inicial do Mapa.';             ///< The Label for the map.
     static  $local_options_mobile_legend = 'Estas configurações afetam as Buscas Interativas (tais como Mapas, Dispositivos Móveis e Avançadas)';  ///< This indicates that the enclosed settings are for the fast mobile lookup.
     static  $local_options_mobile_grace_period_label = 'Período de Atraso:';     ///< When you do a "later today" search, you get a "Grace Period."
+    static  $local_options_mobile_region_bias_label = 'Region Bias:';       ///< The label for the Region Bias Selector.
     static  $local_options_mobile_time_offset_label = 'Diferença de Fuso Horário para o Servidor Raiz:';       ///< This may have an offset (time zone difference) from the main server.
     static  $local_options_initial_view = array (                           ///< The list of choices for presentation in the popup.
                                                 'map' => 'Mapa', 'text' => 'Texto', 'advanced_map' => 'Mapa Avançado', 'advanced_text' => 'Texto Avançado'

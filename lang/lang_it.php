@@ -4,7 +4,7 @@
 *   \file   lang_it.php                                                                     *
 *                                                                                           *
 *   \brief  This file contains Italian localizations.                                       *
-*   \version 3.4.5                                                                          *
+*   \version 3.4.6                                                                          *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -68,6 +68,7 @@ class BMLT_Localized_BaseClass
     static  $local_options_map_label = 'Select a Center Point and Zoom Level for Map Displays';             ///< The Label for the map.
     static  $local_options_mobile_legend = 'These affect the Various Interactive Searches (such as Map, Mobile and Advanced)';  ///< This indicates that the enclosed settings are for the fast mobile lookup.
     static  $local_options_mobile_grace_period_label = 'Grace Period:';     ///< When you do a "later today" search, you get a "Grace Period."
+    static  $local_options_mobile_region_bias_label = 'Region Bias:';       ///< The label for the Region Bias Selector.
     static  $local_options_mobile_time_offset_label = 'Time Offset:';       ///< This may have an offset (time zone difference) from the main server.
     static  $local_options_initial_view = array (                           ///< The list of choices for presentation in the popup.
                                                 'map' => 'Map', 'text' => 'Text', 'advanced_map' => 'Advanced Map', 'advanced_text' => 'Advanced Text'
