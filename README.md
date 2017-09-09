@@ -23,6 +23,8 @@ CHANGELIST
 ----------
 ***Version 3.5.0* ** *- TBD*
 
+- Added the capability to have different localizations apply to different settings.
+
 ***Version 3.4.7* ** *- June 17, 2017*
 
 - Added a workaround for nonstandard SSL certs.

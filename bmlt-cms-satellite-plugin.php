@@ -1088,7 +1088,7 @@ abstract class BMLTPlugin
         
         if ( !$BMLTOptions['lang'] )
             {
-            $BMLTOptions['lang'] = 'en';
+            $BMLTOptions['lang'] = self::$default_language;
             }
             
         return $BMLTOptions;
