@@ -4,7 +4,7 @@
 *   \file   lang_br.php                                                                     *
 *                                                                                           *
 *   \brief  This file contains Brazilian Portuguese localizations.                          *
-*   \version 3.4.7                                                                          *
+*   \version 3.5.0                                                                          *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -34,6 +34,7 @@ class BMLT_Localized_BaseClass
     ****************************************************************************************/
     
     /// These are all for the admin pages.
+    static  $local_options_lang_prompt = 'Language:';                       ///< The label for the Language Selector.
     static  $local_options_title = 'Opções da Ferramenta Básica de Lista de Reuniões';    	///< This is the title that is displayed over the options.
     static  $local_menu_string = 'Opções BMLT';                            					///< The name of the menu item.
     static  $local_options_prefix = 'Selecionar configuração';                  		    ///< The string displayed before each number in the options popup.
@@ -56,6 +57,7 @@ class BMLT_Localized_BaseClass
     /// These are all for the admin page option sheets.
     static  $local_options_name_label = 'Nome da Configuração:';                    ///< The Label for the setting name item.
     static  $local_options_rootserver_label = 'Servidor Raiz:';               ///< The Label for the root server item.
+    static  $local_options_new_search_label = 'New Search URL:';            ///< The Label for the new search item.
     static  $local_options_gkey_label = 'Chave API do Google Maps:';             ///< The Label for the Google Maps API Key item.
     static  $local_options_no_name_string = 'Digite o Nome da Configuração';           ///< The Value to use for a name field for a setting with no name.
     static  $local_options_no_root_server_string = 'Digite o endereço de um Servidor Raiz:';                               ///< The Value to use for a root with no URL.

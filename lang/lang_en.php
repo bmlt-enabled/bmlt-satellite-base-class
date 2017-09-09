@@ -4,7 +4,7 @@
 *   \file   lang_en.php                                                                     *
 *                                                                                           *
 *   \brief  This file contains English localizations.                                       *
-*   \version 3.4.7                                                                          *
+*   \version 3.5.0                                                                          *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -34,6 +34,7 @@ class BMLT_Localized_BaseClass
     ****************************************************************************************/
     
     /// These are all for the admin pages.
+    static  $local_options_lang_prompt = 'Language:';                       ///< The label for the Language Selector.
     static  $local_options_title = 'Basic Meeting List Toolbox Options';    ///< This is the title that is displayed over the options.
     static  $local_menu_string = 'BMLT Options';                            ///< The name of the menu item.
     static  $local_options_prefix = 'Select Setting ';                      ///< The string displayed before each number in the options popup.

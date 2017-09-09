@@ -3,7 +3,7 @@
 *   \file   bmlt-cms-satellite-plugin.php                                                   *
 *                                                                                           *
 *   \brief  This is a generic CMS plugin class for a BMLT satellite client.                 *
-*   \version 3.4.7                                                                          *
+*   \version 3.5.0                                                                          *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -83,22 +83,7 @@ if ( !$tmp_local )
     $tmp_local = 'en';
     }
 
-// If we changed the language from the default, we set it as a cookie for next time.
-if ( $tmp_local != $bmlt_localization )
-    {
-    // We set the global to whatever language we selected.
-    $bmlt_localization = $tmp_local;
-
-    $expires = time() + (60 * 60 * 24 * 365);   // Expire in one year.
-    setcookie ( _LANG_COOKIE_NAME, $tmp_local, $expires, '/' );
-    }
-else    // Otherwise, delete the cookie.
-    {
-    setcookie ( _LANG_COOKIE_NAME, null, -1, '/' );
-    }
-
-// Load the language base class.
-require_once ( dirname ( __FILE__ )."/lang/lang_".$bmlt_localization.".php" );
+$bmlt_localization = $tmp_local;
 
 /****************************************************************************************//**
 *   \class BMLTPlugin                                                                       *
@@ -109,7 +94,7 @@ require_once ( dirname ( __FILE__ )."/lang/lang_".$bmlt_localization.".php" );
 *   This plugin registers errors by echoing HTML comments, so look at the source code of    *
 *   the page if things aren't working right.                                                *
 ********************************************************************************************/
-abstract class BMLTPlugin extends BMLT_Localized_BaseClass
+abstract class BMLTPlugin
 {
     /************************************************************************************//**
     *                           STATIC DATA MEMBERS (SINGLETON)                             *
@@ -156,6 +141,317 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
     
     static  $local_options_success_time = 2000;                             ///< The number of milliseconds a success message is displayed.
     static  $local_options_failure_time = 5000;                             ///< The number of milliseconds a failure message is displayed.
+    
+    /************************************************************************************//**
+    *                           STATIC DATA MEMBERS (LOCALIZABLE)                           *
+    ****************************************************************************************/
+    
+    /// These are all for the admin pages.
+    static  $local_options_lang_prompt = NULL;                       ///< The label for the Language Selector.
+    static  $local_options_title = NULL;    ///< This is the title that is displayed over the options.
+    static  $local_menu_string = NULL;                            ///< The name of the menu item.
+    static  $local_options_prefix = NULL;                      ///< The string displayed before each number in the options popup.
+    static  $local_options_add_new = NULL;                   ///< The string displayed in the "Add New Option" button.
+    static  $local_options_save = NULL;                           ///< The string displayed in the "Save Changes" button.
+    static  $local_options_delete_option = NULL;           ///< The string displayed in the "Delete Option" button.
+    static  $local_options_delete_failure = NULL; ///< The string displayed upon unsuccessful deletion of an option page.
+    static  $local_options_create_failure = NULL; ///< The string displayed upon unsuccessful creation of an option page.
+    static  $local_options_delete_option_confirm = NULL;    ///< The string displayed in the "Are you sure?" confirm.
+    static  $local_options_delete_success = NULL;                        ///< The string displayed upon successful deletion of an option page.
+    static  $local_options_create_success = NULL;                        ///< The string displayed upon successful creation of an option page.
+    static  $local_options_save_success = NULL;                        ///< The string displayed upon successful update of an option page.
+    static  $local_options_save_failure = NULL;                                 ///< The string displayed upon unsuccessful update of an option page.
+    static  $local_options_url_bad = NULL;                 ///< The string displayed if a root server URI fails to point to a valid root server.
+    static  $local_options_access_failure = NULL;               ///< This is displayed if a user attempts a no-no.
+    static  $local_options_unsaved_message = NULL;   ///< This is displayed if a user attempts to leave a page without saving the options.
+    static  $local_options_settings_id_prompt = NULL;                              ///< This is so that users can see the ID for the setting.
+    static  $local_options_settings_location_checkbox_label = NULL;                              ///< This is so that users can see the ID for the setting.
+    
+    /// These are all for the admin page option sheets.
+    static  $local_options_name_label = NULL;                    ///< The Label for the setting name item.
+    static  $local_options_rootserver_label = NULL;               ///< The Label for the root server item.
+    static  $local_options_new_search_label = NULL;            ///< The Label for the new search item.
+    static  $local_options_gkey_label = NULL;             ///< The Label for the Google Maps API Key item.
+    static  $local_options_no_name_string = NULL;           ///< The Value to use for a name field for a setting with no name.
+    static  $local_options_no_root_server_string = NULL;                               ///< The Value to use for a root with no URL.
+    static  $local_options_no_new_search_string = NULL; ///< The Value to use for a new search with no URL.
+    static  $local_options_no_gkey_string = NULL;          ///< The Value to use for a new search with no URL.
+    static  $local_options_test_server = NULL;                            ///< This is the title for the "test server" button.
+    static  $local_options_test_server_success = NULL;                ///< This is a prefix for the version, on success.
+    static  $local_options_test_server_failure = NULL;                       ///< This is a prefix for the version, on failure.
+    static  $local_options_test_server_tooltip = NULL;         ///< This is the tooltip text for the "test server" button.
+    static  $local_options_map_label = NULL;             ///< The Label for the map.
+    static  $local_options_mobile_legend = NULL;  ///< This indicates that the enclosed settings are for the fast mobile lookup.
+    static  $local_options_mobile_grace_period_label = NULL;     ///< When you do a "later today" search, you get a "Grace Period."
+    static  $local_options_mobile_region_bias_label = NULL;       ///< The label for the Region Bias Selector.
+    static  $local_options_mobile_time_offset_label = NULL;       ///< This may have an offset (time zone difference) from the main server.
+    static  $local_options_initial_view = array ( );
+    static  $local_options_initial_view_prompt = NULL;    ///< The label for the initial view popup.
+    static  $local_options_theme_prompt = NULL;          ///< The label for the theme selection popup.
+    static  $local_options_more_styles_label = NULL;                             ///< The label for the Additional CSS textarea.
+    static  $local_options_distance_prompt = NULL;             ///< This is for the distance units select.
+    static  $local_options_distance_disclaimer = NULL;               ///< This tells the admin that only some stuff will be affected.
+    static  $local_options_grace_period_disclaimer = NULL;      ///< This explains what the grace period means.
+    static  $local_options_time_offset_disclaimer = NULL;            ///< This explains what the time offset means.
+    static  $local_options_miles = NULL;                                 ///< The string for miles.
+    static  $local_options_kilometers = NULL;                       ///< The string for kilometers.
+    static  $local_options_selectLocation_checkbox_text = NULL;  ///< The label for the location services checkbox.
+    
+    static  $local_options_time_format_prompt = NULL;             ///< The label for the time format selection popup.
+    static  $local_options_time_format_ampm = NULL;    ///< Ante Meridian Format Option
+    static  $local_options_time_format_military = NULL;       ///< Military Time Format Option
+    
+    static  $local_options_google_api_label = NULL;       ///< The label for the Google Maps API Key Text Entry.
+    
+    static  $local_options_week_begins_on_prompt = NULL;       ///< This is the label for the week start popup menu.
+
+    static  $local_no_root_server = NULL;    ///< Displayed if there was no root server provided.
+
+    /// These are for the actual search displays
+    static  $local_select_search = NULL;                 ///< Used for the "filler" in the quick search popup.
+    static  $local_clear_search = NULL;                   ///< Used for the "Clear" item in the quick search popup.
+    static  $local_menu_new_search_text = NULL;                     ///< For the new search menu in the old-style BMLT search.
+    static  $local_cant_find_meetings_display = NULL; ///< When the new map search cannot find any meetings.
+    static  $local_single_meeting_tooltip = NULL; ///< The tooltip shown for a single meeting.
+    static  $local_gm_link_tooltip = NULL;    ///< The tooltip shown for the Google Maps link.
+    
+    /// These are for the change display
+    static  $local_change_label_date = NULL;                     ///< The date when the change was made.
+    static  $local_change_label_meeting_name = NULL;            ///< The name of the changed meeting.
+    static  $local_change_label_service_body_name = NULL;       ///< The name of the meeting's Service body.
+    static  $local_change_label_admin_name = NULL;                ///< The name of the Service Body Admin that made the change.
+    static  $local_change_label_description = NULL;              ///< The description of the change.
+    static  $local_change_date_format = NULL;                ///< The format in which the change date/time is displayed.
+    
+    /// A simple message for most <noscript> elements. We have a different one for the older interactive search (below).
+    static  $local_noscript = NULL;             ///< The string displayed in a <noscript> element.
+    
+    /************************************************************************************//**
+    *                   NEW SHORTCODE STATIC DATA MEMBERS (LOCALIZABLE)                     *
+    ****************************************************************************************/
+    
+    /// These are all for the [[bmlt_nouveau]] shortcode.
+    static  $local_nouveau_advanced_button = NULL;                ///< The button name for the advanced search in the nouveau search.
+    static  $local_nouveau_map_button = NULL;    ///< The button name for the map search in the nouveau search.
+    static  $local_nouveau_text_button = NULL;   ///< The button name for the text search in the nouveau search.
+    static  $local_nouveau_text_go_button = NULL;                           ///< The button name for the "GO" button in the text search in the nouveau search.
+    static  $local_nouveau_text_item_default_text = NULL;    ///< The text that fills an empty text item.
+    static  $local_nouveau_text_location_label_text = NULL;         ///< The label text for the location checkbox.
+    static  $local_nouveau_advanced_map_radius_label_1 = NULL;                ///< The label text for the radius popup.
+    static  $local_nouveau_advanced_map_radius_label_2 = NULL;             ///< The second part of the label.
+    static  $local_nouveau_advanced_map_radius_value_auto = NULL;   ///< The second part of the label, if Miles
+    static  $local_nouveau_advanced_map_radius_value_km = NULL;                                 ///< The second part of the popup value, if Kilometers
+    static  $local_nouveau_advanced_map_radius_value_mi = NULL;                              ///< The second part of the popup value, if Miles
+    static  $local_nouveau_advanced_weekdays_disclosure_text = NULL;             ///< The text that is used for the weekdays disclosure link.
+    static  $local_nouveau_advanced_formats_disclosure_text = NULL;               ///< The text that is used for the formats disclosure link.
+    static  $local_nouveau_advanced_service_bodies_disclosure_text = NULL; ///< The text that is used for the service bodies disclosure link.
+    static  $local_nouveau_select_search_spec_text = NULL;                    ///< The text that is used for the link that tells you to select the search specification.
+    static  $local_nouveau_select_search_results_text = NULL;  ///< The text that is used for the link that tells you to select the search results.
+    static  $local_nouveau_cant_find_meetings_display = NULL;     ///< When the new map search cannot find any meetings.
+    static  $local_nouveau_cant_lookup_display = NULL;          ///< Displayed if the app is unable to determine the location.
+    static  $local_nouveau_display_map_results_text = NULL;    ///< The text for the display map results disclosure link.
+    static  $local_nouveau_display_list_results_text = NULL;  ///< The text for the display list results disclosure link.
+    static  $local_nouveau_table_header_array = NULL;
+    static  $local_nouveau_weekday_long_array = NULL;
+    static  $local_nouveau_weekday_short_array = NULL;
+    
+    static  $local_nouveau_meeting_results_count_sprintf_format = NULL;
+    static  $local_nouveau_meeting_results_selection_count_sprintf_format = NULL;
+    static  $local_nouveau_meeting_results_single_selection_count_sprintf_format = NULL;
+    static  $local_nouveau_single_time_sprintf_format = NULL;
+    static  $local_nouveau_single_duration_sprintf_format_1_hr = NULL;
+    static  $local_nouveau_single_duration_sprintf_format_mins = NULL;
+    static  $local_nouveau_single_duration_sprintf_format_hrs = NULL;
+    static  $local_nouveau_single_duration_sprintf_format_hr_mins = NULL;
+    static  $local_nouveau_single_duration_sprintf_format_hrs_mins = NULL;
+    
+    /// These are all variants of the text that explains the location of a single meeting (Details View).
+    static  $local_nouveau_location_sprintf_format_loc_street_info = NULL;
+    static  $local_nouveau_location_sprintf_format_loc_street = NULL;
+    static  $local_nouveau_location_sprintf_format_street_info = NULL;
+    static  $local_nouveau_location_sprintf_format_loc_info = NULL;
+    static  $local_nouveau_location_sprintf_format_street = NULL;
+    static  $local_nouveau_location_sprintf_format_loc = NULL;
+    
+    static  $local_nouveau_location_sprintf_format_single_loc_street_info_town_province_zip = NULL;
+    static  $local_nouveau_location_sprintf_format_single_loc_street_town_province_zip = NULL;
+    static  $local_nouveau_location_sprintf_format_single_street_info_town_province_zip = NULL;
+    static  $local_nouveau_location_sprintf_format_single_loc_info_town_province_zip = NULL;
+    static  $local_nouveau_location_sprintf_format_single_street_town_province_zip = NULL;
+    static  $local_nouveau_location_sprintf_format_single_loc_town_province_zip = NULL;
+    
+    static  $local_nouveau_location_sprintf_format_single_loc_street_info_town_province = NULL;
+    static  $local_nouveau_location_sprintf_format_single_loc_street_town_province = NULL;
+    static  $local_nouveau_location_sprintf_format_single_street_info_town_province = NULL;
+    static  $local_nouveau_location_sprintf_format_single_loc_info_town_province = NULL;
+    static  $local_nouveau_location_sprintf_format_single_street_town_province = NULL;
+    static  $local_nouveau_location_sprintf_format_single_loc_town_province = NULL;
+    
+    static  $local_nouveau_location_sprintf_format_single_loc_street_info_town_zip = NULL;
+    static  $local_nouveau_location_sprintf_format_single_loc_street_town_zip = NULL;
+    static  $local_nouveau_location_sprintf_format_single_street_info_town_zip = NULL;
+    static  $local_nouveau_location_sprintf_format_single_loc_info_town_zip = NULL;
+    static  $local_nouveau_location_sprintf_format_single_street_town_zip = NULL;
+    static  $local_nouveau_location_sprintf_format_single_loc_town_zip = NULL;
+    
+    static  $local_nouveau_location_sprintf_format_single_loc_street_info_province_zip = NULL;
+    static  $local_nouveau_location_sprintf_format_single_loc_street_province_zip = NULL;
+    static  $local_nouveau_location_sprintf_format_single_street_info_province_zip = NULL;
+    static  $local_nouveau_location_sprintf_format_single_loc_info_province_zip = NULL;
+    static  $local_nouveau_location_sprintf_format_single_street_province_zip = NULL;
+    static  $local_nouveau_location_sprintf_format_single_loc_province_zip = NULL;
+    
+    static  $local_nouveau_location_sprintf_format_single_loc_street_info_province = NULL;
+    static  $local_nouveau_location_sprintf_format_single_loc_street_province = NULL;
+    static  $local_nouveau_location_sprintf_format_single_street_info_province = NULL;
+    static  $local_nouveau_location_sprintf_format_single_loc_info_province = NULL;
+    static  $local_nouveau_location_sprintf_format_single_street_province = NULL;
+    static  $local_nouveau_location_sprintf_format_single_loc_province = NULL;
+    
+    static  $local_nouveau_location_sprintf_format_single_loc_street_info_zip = NULL;
+    static  $local_nouveau_location_sprintf_format_single_loc_street_zip = NULL;
+    static  $local_nouveau_location_sprintf_format_single_street_info_zip = NULL;
+    static  $local_nouveau_location_sprintf_format_single_loc_info_zip = NULL;
+    static  $local_nouveau_location_sprintf_format_single_street_zip = NULL;
+    static  $local_nouveau_location_sprintf_format_single_loc_zip = NULL;
+    
+    static  $local_nouveau_location_sprintf_format_single_loc_street_info = NULL;
+    static  $local_nouveau_location_sprintf_format_single_loc_street = NULL;
+    static  $local_nouveau_location_sprintf_format_single_street_info = NULL;
+    static  $local_nouveau_location_sprintf_format_single_loc_info = NULL;
+    static  $local_nouveau_location_sprintf_format_single_street = NULL;
+    static  $local_nouveau_location_sprintf_format_single_loc = NULL;
+    
+    static  $local_nouveau_location_sprintf_format_wtf = NULL;
+    
+    static  $local_nouveau_location_services_set_my_location_advanced_button = NULL;
+    static  $local_nouveau_location_services_find_all_meetings_nearby_button = NULL;
+    static  $local_nouveau_location_services_find_all_meetings_nearby_later_today_button = NULL;
+    static  $local_nouveau_location_services_find_all_meetings_nearby_tomorrow_button = NULL;
+    
+    static  $local_nouveau_location_sprintf_format_duration_title = NULL;
+    static  $local_nouveau_location_sprintf_format_duration_hour_only_title = NULL;
+    static  $local_nouveau_location_sprintf_format_duration_hour_only_and_minutes_title = NULL;
+    static  $local_nouveau_location_sprintf_format_duration_hours_only_title = NULL;
+    static  $local_nouveau_lookup_location_failed = NULL;
+    static  $local_nouveau_lookup_location_server_error = NULL;
+    static  $local_nouveau_time_sprintf_format = NULL;
+    static  $local_nouveau_am = NULL;
+    static  $local_nouveau_pm = NULL;
+    static  $local_nouveau_noon = NULL;
+    static  $local_nouveau_midnight = NULL;
+    static  $local_nouveau_advanced_map_radius_value_array = NULL;
+    static  $local_nouveau_meeting_details_link_title = NULL;
+    static  $local_nouveau_meeting_details_map_link_uri_format = NULL;
+    static  $local_nouveau_meeting_details_map_link_text = NULL;
+
+    static  $local_nouveau_single_formats_label = NULL;
+    static  $local_nouveau_single_service_body_label = NULL;
+
+    static  $local_nouveau_prompt_array = array ( );
+    
+    /************************************************************************************//**
+    *                   TABLE SHORTCODE STATIC DATA MEMBERS (LOCALIZABLE)                    *
+    ****************************************************************************************/
+    static  $local_table_tab_loading_title_format        = NULL;
+    static  $local_table_header_time_label              = NULL;
+    static  $local_table_header_meeting_name_label      = NULL;
+    static  $local_table_header_town_label              = NULL;
+    static  $local_table_header_address_label           = NULL;
+    static  $local_table_header_format_label            = NULL;
+    static  $local_table_header_tab_title_format        = NULL;
+    static  $local_table_ante_meridian                  = NULL;
+    static  $local_table_no_meetings_format             = NULL;
+                                                
+    /************************************************************************************//**
+    *                      STATIC DATA MEMBERS (SPECIAL LOCALIZABLE)                        *
+    ****************************************************************************************/
+    
+    /// This is the only localizable string that is not processed. This is because it contains HTML. However, it is also a "hidden" string that is only displayed when the browser does not support JS.
+    static  $local_no_js_warning = NULL; ///< This is the noscript presented for the old-style meeting search. It directs the user to the root server, which will support non-JS browsers.
+                                    
+    /************************************************************************************//**
+    *                       STATIC DATA MEMBERS (NEW MAP LOCALIZABLE)                       *
+    ****************************************************************************************/
+                                    
+    static  $local_new_map_option_1_label = NULL;
+    static  $local_new_map_weekdays = NULL;
+    static  $local_new_map_all_weekdays = NULL;
+    static  $local_new_map_all_weekdays_title = NULL;
+    static  $local_new_map_weekdays_title = NULL;
+    static  $local_new_map_formats = NULL;
+    static  $local_new_map_all_formats = NULL;
+    static  $local_new_map_all_formats_title = NULL;
+    static  $local_new_map_js_center_marker_current_radius_1 = NULL;
+    static  $local_new_map_js_center_marker_current_radius_2_km = NULL;
+    static  $local_new_map_js_center_marker_current_radius_2_mi = NULL;
+    static  $local_new_map_js_diameter_choices = NULL;
+    static  $local_new_map_js_new_search = NULL;
+    static  $local_new_map_option_loc_label = NULL;
+    static  $local_new_map_option_loc_popup_label_1 = NULL;
+    static  $local_new_map_option_loc_popup_label_2 = NULL;
+    static  $local_new_map_option_loc_popup_km = NULL;
+    static  $local_new_map_option_loc_popup_mi = NULL;
+    static  $local_new_map_option_loc_popup_auto = NULL;
+    static  $local_new_map_center_marker_distance_suffix = NULL;
+    static  $local_new_map_center_marker_description = NULL;
+    static  $local_new_map_text_entry_fieldset_label = NULL;
+    static  $local_new_map_text_entry_default_text = NULL;
+    static  $local_new_map_location_submit_button_text = NULL;
+    
+    /************************************************************************************//**
+    *                       STATIC DATA MEMBERS (MOBILE LOCALIZABLE)                        *
+    ****************************************************************************************/
+    
+    /// The units for distance.
+    static  $local_mobile_kilometers = NULL;
+    static  $local_mobile_miles = NULL;
+    static  $local_mobile_distance = NULL;  ///< Distance (the string)
+    
+    /// The page titles.
+    static  $local_mobile_results_page_title = NULL;
+    static  $local_mobile_results_form_title = NULL;
+    
+    /// The fast GPS lookup links.
+    static  $local_GPS_banner = NULL;
+    static  $local_GPS_banner_subtext = NULL;
+    static  $local_search_all = NULL;
+    static  $local_search_today = NULL;
+    static  $local_search_tomorrow = NULL;
+    
+    /// The search for an address form.
+    static  $local_list_check = NULL;
+    static  $local_search_address_single = NULL;
+    
+    /// Used instead of "near my present location."
+    static  $local_search_all_address = NULL;
+    static  $local_search_submit_button = NULL;
+    
+    /// This is what is entered into the text box.
+    static  $local_enter_an_address = NULL;
+    
+    /// Error messages.
+    static  $local_mobile_fail_no_meetings = NULL;
+    static  $local_server_fail = NULL;
+    static  $local_cant_find_address = NULL;
+    static  $local_cannot_determine_location = NULL;
+    static  $local_enter_address_alert = NULL;
+    
+    /// The text for the "Map to Meeting" links
+    static  $local_map_link = NULL;
+    
+    /// Only used for WML pages
+    static  $local_next_card = NULL;
+    static  $local_prev_card = NULL;
+    
+    /// Used for the info and list windows.
+    static  $local_formats = NULL;
+    static  $local_noon = NULL;
+    static  $local_midnight = NULL;
+    
+    /// This array has the weekdays, spelled out. Since weekdays start at 1 (Sunday), we consider 0 to be an error.
+    static	$local_weekdays = NULL;
+    static	$local_weekdays_short = NULL;
 
     /************************************************************************************//**
     *                                  DYNAMIC DATA MEMBERS                                 *
@@ -169,6 +465,313 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
     /************************************************************************************//**
     *                                    FUNCTIONS/METHODS                                  *
     ****************************************************************************************/
+    
+    /************************************************************************************//**
+    *   \brief Adapts all the static data members to the selected language.                 *
+    ****************************************************************************************/
+    static function adapt_to_lang ( $in_lang = "en" ///< The language code. Default is English.
+                                    )
+        {
+        $filename = dirname ( __FILE__  ). "/lang/lang_" . $in_lang .".php";
+        
+        if ( file_exists ( $filename ) )
+            {
+            include ( $filename );
+        
+            /************************************************************************************//**
+            *                           STATIC DATA MEMBERS (LOCALIZABLE)                           *
+            ****************************************************************************************/
+    
+            /// These are all for the admin pages.
+            self::$local_options_lang_prompt = BMLT_Localized_BaseClass::$local_options_lang_prompt;
+            self::$local_options_title = BMLT_Localized_BaseClass::$local_options_title;
+            self::$local_menu_string = BMLT_Localized_BaseClass::$local_menu_string;
+            self::$local_options_prefix = BMLT_Localized_BaseClass::$local_options_prefix;
+            self::$local_options_add_new = BMLT_Localized_BaseClass::$local_options_add_new;
+            self::$local_options_save = BMLT_Localized_BaseClass::$local_options_save;
+            self::$local_options_delete_option = BMLT_Localized_BaseClass::$local_options_delete_option;
+            self::$local_options_delete_failure = BMLT_Localized_BaseClass::$local_options_delete_failure;
+            self::$local_options_create_failure = BMLT_Localized_BaseClass::$local_options_create_failure;
+            self::$local_options_delete_option_confirm = BMLT_Localized_BaseClass::$local_options_delete_option_confirm;
+            self::$local_options_delete_success = BMLT_Localized_BaseClass::$local_options_delete_success;
+            self::$local_options_create_success = BMLT_Localized_BaseClass::$local_options_create_success;
+            self::$local_options_save_success = BMLT_Localized_BaseClass::$local_options_save_success;
+            self::$local_options_save_failure = BMLT_Localized_BaseClass::$local_options_save_failure;
+            self::$local_options_url_bad = BMLT_Localized_BaseClass::$local_options_url_bad;
+            self::$local_options_access_failure = BMLT_Localized_BaseClass::$local_options_access_failure;
+            self::$local_options_unsaved_message = BMLT_Localized_BaseClass::$local_options_unsaved_message;
+            self::$local_options_settings_id_prompt = BMLT_Localized_BaseClass::$local_options_settings_id_prompt;
+            self::$local_options_settings_location_checkbox_label = BMLT_Localized_BaseClass::$local_options_settings_location_checkbox_label;
+    
+            /// These are all for the admin page option sheets.
+            self::$local_options_name_label = BMLT_Localized_BaseClass::$local_options_name_label;
+            self::$local_options_rootserver_label = BMLT_Localized_BaseClass::$local_options_rootserver_label;
+            self::$local_options_new_search_label = BMLT_Localized_BaseClass::$local_options_new_search_label;
+            self::$local_options_gkey_label = BMLT_Localized_BaseClass::$local_options_gkey_label;
+            self::$local_options_no_name_string = BMLT_Localized_BaseClass::$local_options_no_name_string;
+            self::$local_options_no_root_server_string = BMLT_Localized_BaseClass::$local_options_no_root_server_string;
+            self::$local_options_no_new_search_string = BMLT_Localized_BaseClass::$local_options_no_new_search_string;
+            self::$local_options_no_gkey_string = BMLT_Localized_BaseClass::$local_options_no_gkey_string;
+            self::$local_options_test_server = BMLT_Localized_BaseClass::$local_options_test_server;
+            self::$local_options_test_server_success = BMLT_Localized_BaseClass::$local_options_test_server_success;
+            self::$local_options_test_server_failure = BMLT_Localized_BaseClass::$local_options_test_server_failure;
+            self::$local_options_test_server_tooltip = BMLT_Localized_BaseClass::$local_options_test_server_tooltip;
+            self::$local_options_map_label = BMLT_Localized_BaseClass::$local_options_map_label;
+            self::$local_options_mobile_legend = BMLT_Localized_BaseClass::$local_options_mobile_legend;
+            self::$local_options_mobile_grace_period_label = BMLT_Localized_BaseClass::$local_options_mobile_grace_period_label;
+            self::$local_options_mobile_region_bias_label = BMLT_Localized_BaseClass::$local_options_mobile_region_bias_label;
+            self::$local_options_mobile_time_offset_label = BMLT_Localized_BaseClass::$local_options_mobile_time_offset_label;
+            self::$local_options_initial_view = BMLT_Localized_BaseClass::$local_options_initial_view;
+            self::$local_options_initial_view_prompt = BMLT_Localized_BaseClass::$local_options_initial_view_prompt;
+            self::$local_options_theme_prompt = BMLT_Localized_BaseClass::$local_options_theme_prompt;
+            self::$local_options_more_styles_label = BMLT_Localized_BaseClass::$local_options_more_styles_label;
+            self::$local_options_distance_prompt = BMLT_Localized_BaseClass::$local_options_distance_prompt;
+            self::$local_options_distance_disclaimer = BMLT_Localized_BaseClass::$local_options_distance_disclaimer;
+            self::$local_options_grace_period_disclaimer = BMLT_Localized_BaseClass::$local_options_grace_period_disclaimer;
+            self::$local_options_time_offset_disclaimer = BMLT_Localized_BaseClass::$local_options_time_offset_disclaimer;
+            self::$local_options_miles = BMLT_Localized_BaseClass::$local_options_miles;
+            self::$local_options_kilometers = BMLT_Localized_BaseClass::$local_options_kilometers;
+            self::$local_options_selectLocation_checkbox_text = BMLT_Localized_BaseClass::$local_options_selectLocation_checkbox_text;
+            self::$local_options_time_format_prompt = BMLT_Localized_BaseClass::$local_options_time_format_prompt;
+            self::$local_options_time_format_ampm = BMLT_Localized_BaseClass::$local_options_time_format_ampm;
+            self::$local_options_time_format_military = BMLT_Localized_BaseClass::$local_options_time_format_military;
+            self::$local_options_google_api_label = BMLT_Localized_BaseClass::$local_options_google_api_label;
+            self::$local_options_week_begins_on_prompt = BMLT_Localized_BaseClass::$local_options_week_begins_on_prompt;
+            self::$local_no_root_server = BMLT_Localized_BaseClass::$local_no_root_server;
+
+            /// These are for the actual search displays
+            self::$local_select_search = BMLT_Localized_BaseClass::$local_select_search;
+            self::$local_clear_search = BMLT_Localized_BaseClass::$local_clear_search;
+            self::$local_menu_new_search_text = BMLT_Localized_BaseClass::$local_menu_new_search_text;
+            self::$local_cant_find_meetings_display = BMLT_Localized_BaseClass::$local_cant_find_meetings_display;
+            self::$local_single_meeting_tooltip = BMLT_Localized_BaseClass::$local_single_meeting_tooltip;
+            self::$local_gm_link_tooltip = BMLT_Localized_BaseClass::$local_gm_link_tooltip;
+    
+            /// These are for the change display
+            self::$local_change_label_date = BMLT_Localized_BaseClass::$local_change_label_date;
+            self::$local_change_label_meeting_name = BMLT_Localized_BaseClass::$local_change_label_meeting_name;
+            self::$local_change_label_service_body_name = BMLT_Localized_BaseClass::$local_change_label_service_body_name;
+            self::$local_change_label_admin_name = BMLT_Localized_BaseClass::$local_change_label_admin_name;
+            self::$local_change_label_description = BMLT_Localized_BaseClass::$local_change_label_description;
+            self::$local_change_date_format = BMLT_Localized_BaseClass::$local_change_date_format;
+    
+            /// A simple message for most <noscript> elements. We have a different one for the older interactive search (below).
+            self::$local_noscript = BMLT_Localized_BaseClass::$local_noscript;
+    
+            /************************************************************************************//**
+            *                   NEW SHORTCODE STATIC DATA MEMBERS (LOCALIZABLE)                     *
+            ****************************************************************************************/
+    
+            /// These are all for the [[bmlt_nouveau]] shortcode.
+            self::$local_nouveau_advanced_button = BMLT_Localized_BaseClass::$local_nouveau_advanced_button;
+            self::$local_nouveau_map_button = BMLT_Localized_BaseClass::$local_nouveau_map_button;
+            self::$local_nouveau_text_button = BMLT_Localized_BaseClass::$local_nouveau_text_button;
+            self::$local_nouveau_text_go_button = BMLT_Localized_BaseClass::$local_nouveau_text_go_button;
+            self::$local_nouveau_text_item_default_text = BMLT_Localized_BaseClass::$local_nouveau_text_item_default_text;
+            self::$local_nouveau_text_location_label_text = BMLT_Localized_BaseClass::$local_nouveau_text_location_label_text;
+            self::$local_nouveau_advanced_map_radius_label_1 = BMLT_Localized_BaseClass::$local_nouveau_advanced_map_radius_label_1;
+            self::$local_nouveau_advanced_map_radius_label_2 = BMLT_Localized_BaseClass::$local_nouveau_advanced_map_radius_label_2;
+            self::$local_nouveau_advanced_map_radius_value_auto = BMLT_Localized_BaseClass::$local_nouveau_advanced_map_radius_value_auto;
+            self::$local_nouveau_advanced_map_radius_value_km = BMLT_Localized_BaseClass::$local_nouveau_advanced_map_radius_value_km;
+            self::$local_nouveau_advanced_map_radius_value_mi = BMLT_Localized_BaseClass::$local_nouveau_advanced_map_radius_value_mi;
+            self::$local_nouveau_advanced_weekdays_disclosure_text = BMLT_Localized_BaseClass::$local_nouveau_advanced_weekdays_disclosure_text;
+            self::$local_nouveau_advanced_formats_disclosure_text = BMLT_Localized_BaseClass::$local_nouveau_advanced_formats_disclosure_text;
+            self::$local_nouveau_advanced_service_bodies_disclosure_text = BMLT_Localized_BaseClass::$local_nouveau_advanced_service_bodies_disclosure_text;
+            self::$local_nouveau_select_search_spec_text = BMLT_Localized_BaseClass::$local_nouveau_select_search_spec_text;
+            self::$local_nouveau_select_search_results_text = BMLT_Localized_BaseClass::$local_nouveau_select_search_results_text;
+            self::$local_nouveau_cant_find_meetings_display = BMLT_Localized_BaseClass::$local_nouveau_cant_find_meetings_display;
+            self::$local_nouveau_cant_lookup_display = BMLT_Localized_BaseClass::$local_nouveau_cant_lookup_display;
+            self::$local_nouveau_display_map_results_text = BMLT_Localized_BaseClass::$local_nouveau_display_map_results_text;
+            self::$local_nouveau_display_list_results_text = BMLT_Localized_BaseClass::$local_nouveau_display_list_results_text;
+            self::$local_nouveau_table_header_array = BMLT_Localized_BaseClass::$local_nouveau_table_header_array;
+            self::$local_nouveau_weekday_long_array = BMLT_Localized_BaseClass::$local_nouveau_weekday_long_array;
+            self::$local_nouveau_weekday_short_array = BMLT_Localized_BaseClass::$local_nouveau_weekday_short_array;
+            self::$local_nouveau_meeting_results_count_sprintf_format = BMLT_Localized_BaseClass::$local_nouveau_meeting_results_count_sprintf_format;
+            self::$local_nouveau_meeting_results_selection_count_sprintf_format = BMLT_Localized_BaseClass::$local_nouveau_meeting_results_selection_count_sprintf_format;
+            self::$local_nouveau_meeting_results_single_selection_count_sprintf_format = BMLT_Localized_BaseClass::$local_nouveau_meeting_results_single_selection_count_sprintf_format;
+            self::$local_nouveau_single_time_sprintf_format = BMLT_Localized_BaseClass::$local_nouveau_single_time_sprintf_format;
+            self::$local_nouveau_single_duration_sprintf_format_1_hr = BMLT_Localized_BaseClass::$local_nouveau_single_duration_sprintf_format_1_hr;
+            self::$local_nouveau_single_duration_sprintf_format_mins = BMLT_Localized_BaseClass::$local_nouveau_single_duration_sprintf_format_mins;
+            self::$local_nouveau_single_duration_sprintf_format_hrs = BMLT_Localized_BaseClass::$local_nouveau_single_duration_sprintf_format_hrs;
+            self::$local_nouveau_single_duration_sprintf_format_hr_mins = BMLT_Localized_BaseClass::$local_nouveau_single_duration_sprintf_format_hr_mins;
+            self::$local_nouveau_single_duration_sprintf_format_hrs_mins = BMLT_Localized_BaseClass::$local_nouveau_single_duration_sprintf_format_hrs_mins;
+    
+            /// These are all variants of the text that explains the location of a single meeting (Details View).
+            self::$local_nouveau_location_sprintf_format_loc_street_info = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_loc_street_info;
+            self::$local_nouveau_location_sprintf_format_loc_street = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_loc_street;
+            self::$local_nouveau_location_sprintf_format_street_info = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_street_info;
+            self::$local_nouveau_location_sprintf_format_loc_info = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_loc_info;
+            self::$local_nouveau_location_sprintf_format_street = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_street;
+            self::$local_nouveau_location_sprintf_format_loc = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_loc;
+            self::$local_nouveau_location_sprintf_format_single_loc_street_info_town_province_zip = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_loc_street_info_town_province_zip;
+            self::$local_nouveau_location_sprintf_format_single_loc_street_town_province_zip = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_loc_street_town_province_zip;
+            self::$local_nouveau_location_sprintf_format_single_street_info_town_province_zip = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_street_info_town_province_zip;
+            self::$local_nouveau_location_sprintf_format_single_loc_info_town_province_zip = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_loc_info_town_province_zip;
+            self::$local_nouveau_location_sprintf_format_single_street_town_province_zip = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_street_town_province_zip;
+            self::$local_nouveau_location_sprintf_format_single_loc_town_province_zip = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_loc_town_province_zip;
+            self::$local_nouveau_location_sprintf_format_single_loc_street_info_town_province = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_loc_street_info_town_province;
+            self::$local_nouveau_location_sprintf_format_single_loc_street_town_province = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_loc_street_town_province;
+            self::$local_nouveau_location_sprintf_format_single_street_info_town_province = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_street_info_town_province;
+            self::$local_nouveau_location_sprintf_format_single_loc_info_town_province = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_loc_info_town_province;
+            self::$local_nouveau_location_sprintf_format_single_street_town_province = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_street_town_province;
+            self::$local_nouveau_location_sprintf_format_single_loc_town_province = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_loc_town_province;
+            self::$local_nouveau_location_sprintf_format_single_loc_street_info_town_zip = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_loc_street_info_town_zip;
+            self::$local_nouveau_location_sprintf_format_single_loc_street_town_zip = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_loc_street_town_zip;
+            self::$local_nouveau_location_sprintf_format_single_street_info_town_zip = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_street_info_town_zip;
+            self::$local_nouveau_location_sprintf_format_single_loc_info_town_zip = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_loc_info_town_zip;
+            self::$local_nouveau_location_sprintf_format_single_street_town_zip = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_street_town_zip;
+            self::$local_nouveau_location_sprintf_format_single_loc_town_zip = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_loc_town_zip;
+            self::$local_nouveau_location_sprintf_format_single_loc_street_info_province_zip = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_loc_street_info_province_zip;
+            self::$local_nouveau_location_sprintf_format_single_loc_street_province_zip = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_loc_street_province_zip;
+            self::$local_nouveau_location_sprintf_format_single_street_info_province_zip = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_street_info_province_zip;
+            self::$local_nouveau_location_sprintf_format_single_loc_info_province_zip = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_loc_info_province_zip;
+            self::$local_nouveau_location_sprintf_format_single_street_province_zip = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_street_province_zip;
+            self::$local_nouveau_location_sprintf_format_single_loc_province_zip = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_loc_province_zip;
+            self::$local_nouveau_location_sprintf_format_single_loc_street_info_province = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_loc_street_info_province;
+            self::$local_nouveau_location_sprintf_format_single_loc_street_province = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_loc_street_province;
+            self::$local_nouveau_location_sprintf_format_single_street_info_province = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_street_info_province;
+            self::$local_nouveau_location_sprintf_format_single_loc_info_province = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_loc_info_province;
+            self::$local_nouveau_location_sprintf_format_single_street_province = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_street_province;
+            self::$local_nouveau_location_sprintf_format_single_loc_province = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_loc_province;
+            self::$local_nouveau_location_sprintf_format_single_loc_street_info_zip = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_loc_street_info_zip;
+            self::$local_nouveau_location_sprintf_format_single_loc_street_zip = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_loc_street_zip;
+            self::$local_nouveau_location_sprintf_format_single_street_info_zip = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_street_info_zip;
+            self::$local_nouveau_location_sprintf_format_single_loc_info_zip = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_loc_info_zip;
+            self::$local_nouveau_location_sprintf_format_single_street_zip = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_street_zip;
+            self::$local_nouveau_location_sprintf_format_single_loc_zip = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_loc_zip;
+            self::$local_nouveau_location_sprintf_format_single_loc_street_info = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_loc_street_info;
+            self::$local_nouveau_location_sprintf_format_single_loc_street = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_loc_street;
+            self::$local_nouveau_location_sprintf_format_single_street_info = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_street_info;
+            self::$local_nouveau_location_sprintf_format_single_loc_info = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_loc_info;
+            self::$local_nouveau_location_sprintf_format_single_street = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_street;
+            self::$local_nouveau_location_sprintf_format_single_loc = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_single_loc;
+            self::$local_nouveau_location_sprintf_format_wtf = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_wtf;
+            self::$local_nouveau_location_services_set_my_location_advanced_button = BMLT_Localized_BaseClass::$local_nouveau_location_services_set_my_location_advanced_button;
+            self::$local_nouveau_location_services_find_all_meetings_nearby_button = BMLT_Localized_BaseClass::$local_nouveau_location_services_find_all_meetings_nearby_button;
+            self::$local_nouveau_location_services_find_all_meetings_nearby_later_today_button = BMLT_Localized_BaseClass::$local_nouveau_location_services_find_all_meetings_nearby_later_today_button;
+            self::$local_nouveau_location_services_find_all_meetings_nearby_tomorrow_button = BMLT_Localized_BaseClass::$local_nouveau_location_services_find_all_meetings_nearby_tomorrow_button;
+            self::$local_nouveau_location_sprintf_format_duration_title = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_duration_title;
+            self::$local_nouveau_location_sprintf_format_duration_hour_only_title = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_duration_hour_only_title;
+            self::$local_nouveau_location_sprintf_format_duration_hour_only_and_minutes_title = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_duration_hour_only_and_minutes_title;
+            self::$local_nouveau_location_sprintf_format_duration_hours_only_title = BMLT_Localized_BaseClass::$local_nouveau_location_sprintf_format_duration_hours_only_title;
+            self::$local_nouveau_lookup_location_failed = BMLT_Localized_BaseClass::$local_nouveau_lookup_location_failed;
+            self::$local_nouveau_lookup_location_server_error = BMLT_Localized_BaseClass::$local_nouveau_lookup_location_server_error;
+            self::$local_nouveau_time_sprintf_format = BMLT_Localized_BaseClass::$local_nouveau_time_sprintf_format;
+            self::$local_nouveau_am = BMLT_Localized_BaseClass::$local_nouveau_am;
+            self::$local_nouveau_pm = BMLT_Localized_BaseClass::$local_nouveau_pm;
+            self::$local_nouveau_noon = BMLT_Localized_BaseClass::$local_nouveau_noon;
+            self::$local_nouveau_midnight = BMLT_Localized_BaseClass::$local_nouveau_midnight;
+            self::$local_nouveau_advanced_map_radius_value_array = BMLT_Localized_BaseClass::$local_nouveau_advanced_map_radius_value_array;
+            self::$local_nouveau_meeting_details_link_title = BMLT_Localized_BaseClass::$local_nouveau_meeting_details_link_title;
+            self::$local_nouveau_meeting_details_map_link_uri_format = BMLT_Localized_BaseClass::$local_nouveau_meeting_details_map_link_uri_format;
+            self::$local_nouveau_meeting_details_map_link_text = BMLT_Localized_BaseClass::$local_nouveau_meeting_details_map_link_text;
+            self::$local_nouveau_single_formats_label = BMLT_Localized_BaseClass::$local_nouveau_single_formats_label;
+            self::$local_nouveau_single_service_body_label = BMLT_Localized_BaseClass::$local_nouveau_single_service_body_label;
+            self::$local_nouveau_prompt_array = BMLT_Localized_BaseClass::$local_nouveau_prompt_array;
+    
+            /************************************************************************************//**
+            *                   TABLE SHORTCODE STATIC DATA MEMBERS (LOCALIZABLE)                    *
+            ****************************************************************************************/
+            self::$local_table_tab_loading_title_format        = BMLT_Localized_BaseClass::$local_table_tab_loading_title_format;
+            self::$local_table_header_time_label              = BMLT_Localized_BaseClass::$local_table_header_time_label;
+            self::$local_table_header_meeting_name_label      = BMLT_Localized_BaseClass::$local_table_header_meeting_name_label;
+            self::$local_table_header_town_label              = BMLT_Localized_BaseClass::$local_table_header_town_label;
+            self::$local_table_header_address_label           = BMLT_Localized_BaseClass::$local_table_header_address_label;
+            self::$local_table_header_format_label            = BMLT_Localized_BaseClass::$local_table_header_format_label;
+            self::$local_table_header_tab_title_format        = BMLT_Localized_BaseClass::$local_table_header_tab_title_format;
+            self::$local_table_ante_meridian                  = BMLT_Localized_BaseClass::$local_table_ante_meridian;
+            self::$local_table_no_meetings_format             = BMLT_Localized_BaseClass::$local_table_no_meetings_format;
+                                                
+            /************************************************************************************//**
+            *                      STATIC DATA MEMBERS (SPECIAL LOCALIZABLE)                        *
+            ****************************************************************************************/
+    
+            /// This is the only localizable string that is not processed. This is because it contains HTML. However, it is also a "hidden" string that is only displayed when the browser does not support JS.
+            self::$local_no_js_warning = BMLT_Localized_BaseClass::$local_no_js_warning;
+                                    
+            /************************************************************************************//**
+            *                       STATIC DATA MEMBERS (NEW MAP LOCALIZABLE)                       *
+            ****************************************************************************************/
+            self::$local_new_map_option_1_label = BMLT_Localized_BaseClass::$local_new_map_option_1_label;
+            self::$local_new_map_weekdays = BMLT_Localized_BaseClass::$local_new_map_weekdays;
+            self::$local_new_map_all_weekdays = BMLT_Localized_BaseClass::$local_new_map_all_weekdays;
+            self::$local_new_map_all_weekdays_title = BMLT_Localized_BaseClass::$local_new_map_all_weekdays_title;
+            self::$local_new_map_weekdays_title = BMLT_Localized_BaseClass::$local_new_map_weekdays_title;
+            self::$local_new_map_formats = BMLT_Localized_BaseClass::$local_new_map_formats;
+            self::$local_new_map_all_formats = BMLT_Localized_BaseClass::$local_new_map_all_formats;
+            self::$local_new_map_all_formats_title = BMLT_Localized_BaseClass::$local_new_map_all_formats_title;
+            self::$local_new_map_js_center_marker_current_radius_1 = BMLT_Localized_BaseClass::$local_new_map_js_center_marker_current_radius_1;
+            self::$local_new_map_js_center_marker_current_radius_2_km = BMLT_Localized_BaseClass::$local_new_map_js_center_marker_current_radius_2_km;
+            self::$local_new_map_js_center_marker_current_radius_2_mi = BMLT_Localized_BaseClass::$local_new_map_js_center_marker_current_radius_2_mi;
+            self::$local_new_map_js_diameter_choices = BMLT_Localized_BaseClass::$local_new_map_js_diameter_choices;
+            self::$local_new_map_js_new_search = BMLT_Localized_BaseClass::$local_new_map_js_new_search;
+            self::$local_new_map_option_loc_label = BMLT_Localized_BaseClass::$local_new_map_option_loc_label;
+            self::$local_new_map_option_loc_popup_label_1 = BMLT_Localized_BaseClass::$local_new_map_option_loc_popup_label_1;
+            self::$local_new_map_option_loc_popup_label_2 = BMLT_Localized_BaseClass::$local_new_map_option_loc_popup_label_2;
+            self::$local_new_map_option_loc_popup_km = BMLT_Localized_BaseClass::$local_new_map_option_loc_popup_km;
+            self::$local_new_map_option_loc_popup_mi = BMLT_Localized_BaseClass::$local_new_map_option_loc_popup_mi;
+            self::$local_new_map_option_loc_popup_auto = BMLT_Localized_BaseClass::$local_new_map_option_loc_popup_auto;
+            self::$local_new_map_center_marker_distance_suffix = BMLT_Localized_BaseClass::$local_new_map_center_marker_distance_suffix;
+            self::$local_new_map_center_marker_description = BMLT_Localized_BaseClass::$local_new_map_center_marker_description;
+            self::$local_new_map_text_entry_fieldset_label = BMLT_Localized_BaseClass::$local_new_map_text_entry_fieldset_label;
+            self::$local_new_map_text_entry_default_text = BMLT_Localized_BaseClass::$local_new_map_text_entry_default_text;
+            self::$local_new_map_location_submit_button_text = BMLT_Localized_BaseClass::$local_new_map_location_submit_button_text;
+    
+            /************************************************************************************//**
+            *                       STATIC DATA MEMBERS (MOBILE LOCALIZABLE)                        *
+            ****************************************************************************************/
+    
+            /// The units for distance.
+            self::$local_mobile_kilometers = BMLT_Localized_BaseClass::$local_mobile_kilometers;
+            self::$local_mobile_miles = BMLT_Localized_BaseClass::$local_mobile_miles;
+            self::$local_mobile_distance = BMLT_Localized_BaseClass::$local_mobile_distance;
+    
+            /// The page titles.
+            self::$local_mobile_results_page_title = BMLT_Localized_BaseClass::$local_mobile_results_page_title;
+            self::$local_mobile_results_form_title = BMLT_Localized_BaseClass::$local_mobile_results_form_title;
+    
+            /// The fast GPS lookup links.
+            self::$local_GPS_banner = BMLT_Localized_BaseClass::$local_GPS_banner;
+            self::$local_GPS_banner_subtext = BMLT_Localized_BaseClass::$local_GPS_banner_subtext;
+            self::$local_search_all = BMLT_Localized_BaseClass::$local_search_all;
+            self::$local_search_today = BMLT_Localized_BaseClass::$local_search_today;
+            self::$local_search_tomorrow = BMLT_Localized_BaseClass::$local_search_tomorrow;
+    
+            /// The search for an address form.
+            self::$local_list_check = BMLT_Localized_BaseClass::$local_list_check;
+            self::$local_search_address_single = BMLT_Localized_BaseClass::$local_search_address_single;
+    
+            /// Used instead of "near my present location."
+            self::$local_search_all_address = BMLT_Localized_BaseClass::$local_search_all_address;
+            self::$local_search_submit_button = BMLT_Localized_BaseClass::$local_search_submit_button;
+    
+            /// This is what is entered into the text box.
+            self::$local_enter_an_address = BMLT_Localized_BaseClass::$local_enter_an_address;
+    
+            /// Error messages.
+            self::$local_mobile_fail_no_meetings = BMLT_Localized_BaseClass::$local_mobile_fail_no_meetings;
+            self::$local_server_fail = BMLT_Localized_BaseClass::$local_server_fail;
+            self::$local_cant_find_address = BMLT_Localized_BaseClass::$local_cant_find_address;
+            self::$local_cannot_determine_location = BMLT_Localized_BaseClass::$local_cannot_determine_location;
+            self::$local_enter_address_alert = BMLT_Localized_BaseClass::$local_enter_address_alert;
+    
+            /// The text for the "Map to Meeting" links
+            self::$local_map_link = BMLT_Localized_BaseClass::$local_map_link;
+    
+            /// Only used for WML pages
+            self::$local_next_card = BMLT_Localized_BaseClass::$local_next_card;
+            self::$local_prev_card = BMLT_Localized_BaseClass::$local_prev_card;
+    
+            /// Used for the info and list windows.
+            self::$local_formats = BMLT_Localized_BaseClass::$local_formats;
+            self::$local_noon = BMLT_Localized_BaseClass::$local_noon;
+            self::$local_midnight = BMLT_Localized_BaseClass::$local_midnight;
+    
+            /// This array has the weekdays, spelled out. Since weekdays start at 1 (Sunday), we consider 0 to be an error.
+            self::$local_weekdays = BMLT_Localized_BaseClass::$local_weekdays;
+            self::$local_weekdays_short = BMLT_Localized_BaseClass::$local_weekdays_short;
+            }
+        }
     
     /************************************************************************************//**
     *   \brief Get the instance                                                             *
@@ -430,7 +1033,8 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
                         'military_time' => self::$default_military_time,
                         'startWeekday' => self::$default_startWeekday,
                         'google_api_key' => 'INVALID',
-                        'region_bias' => 'us'
+                        'region_bias' => 'us',
+                        'lang' => ''
                         );
         }
     
@@ -474,7 +1078,19 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
             // Strip off the trailing slash.
             $BMLTOptions['root_server'] = preg_replace ( "#\/$#", "", trim($BMLTOptions['root_server']), 1 );
             }
+            
+        if ( !$BMLTOptions['lang'] )
+            {
+            global $bmlt_localization;
         
+            $BMLTOptions['lang'] = $bmlt_localization;
+            }
+        
+        if ( !$BMLTOptions['lang'] )
+            {
+            $BMLTOptions['lang'] = 'en';
+            }
+            
         return $BMLTOptions;
         }
     
@@ -1124,47 +1740,44 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
                         $ret .= '</select>';
                     $ret .= '</div>';
                     $ret .= '<div class="BMLTPlugin_option_sheet_line_div">';
-                        $id = 'BMLTPlugin_option_sheet_initial_view_'.$in_options_index;
-                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( self::$local_options_initial_view_prompt ).'</label>';
+                        $id = 'BMLTPlugin_option_sheet_lang_'.$in_options_index;
+                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( self::$local_options_lang_prompt ).'</label>';
                         $ret .= '<select id="'.htmlspecialchars ( $id ).'" onchange="BMLTPlugin_DirtifyOptionSheet()">';
-                            foreach ( self::$local_options_initial_view as $value => $prompt )
+                            $dirname = dirname ( __FILE__ ) . "/lang";
+                            $dir = new DirectoryIterator ( $dirname );
+                            foreach ( $dir as $fileinfo )
                                 {
-                                $ret .= '<option value="'.htmlspecialchars ( $value ).'"';
-                                if ( $value == $options['bmlt_initial_view'] )
+                                if ( !$fileinfo->isDot () )
                                     {
-                                    $ret .= ' selected="selected"';
+                                    $fName = $fileinfo->getFilename ();
+                                    if ( $fName != "index.php" )
+                                        {
+                                        $fPath = $dirname . "/" . $fName;
+                                        if ( $file = fopen ( $fPath, "r" ) )
+                                            {
+                                            $line0 = fgets ( $file );
+                                            $line1 = fgets ( $file );
+                                            $lang_name = trim ( substr ( $line1, 3 ) );
+                                            $lang_key = trim ( substr ( $fName, 5, -4 ) );
+                                            if ( $lang_name && $lang_key )
+                                                {
+                                                $ret .= '<option value="' . $lang_key .'"';
+                                                if ( $options['lang'] == $lang_key )
+                                                    {
+                                                    $ret .= ' selected="selected"';
+                                                    }
+                                                $ret .= '>' . $this->process_text ( $lang_name ) .'</option>';
+                                                }
+                                            }
+                                        }
                                     }
-                                $ret .= '>'.$this->process_text ( $prompt ).'</option>';
                                 }
                         $ret .= '</select>';
                     $ret .= '</div>';
-                    $ret .= '<div class="BMLTPlugin_option_sheet_line_div BMLTPlugin_location_checkbox_line">';
-                        $id = 'BMLTPlugin_location_selected_checkbox_'.$in_options_index;
-                        $ret .= '<div class="BMLTPlugin_option_sheet_checkbox_div"><input class="BMLTPlugin_option_sheet_line_location_checkbox" onchange="BMLTPlugin_DirtifyOptionSheet()" id="'.htmlspecialchars ( $id ).'" type="checkbox"'.($options['bmlt_location_checked'] == 1 ? ' checked="checked"' : '' ).'"></div>';
-                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( self::$local_options_settings_location_checkbox_label ).'</label>';
-                    $ret .= '</div>';
-                    $ret .= '<div class="BMLTPlugin_option_sheet_line_div BMLTPlugin_location_checkbox_line">';
-                        $id = 'BMLTPlugin_location_services_checkbox_'.$in_options_index;
-                        $ret .= '<div class="BMLTPlugin_option_sheet_checkbox_div"><input class="BMLTPlugin_option_sheet_line_location_services_checkbox" onchange="BMLTPlugin_DirtifyOptionSheet()" id="'.htmlspecialchars ( $id ).'" type="checkbox"'.($options['bmlt_location_services'] == 1 ? ' checked="checked"' : '' ).'"></div>';
-                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( self::$local_options_selectLocation_checkbox_text ).'</label>';
-                    $ret .= '</div>';
                     $ret .= '<div class="BMLTPlugin_option_sheet_line_div">';
-                        $id = 'BMLTPlugin_option_sheet_time_format_'.$in_options_index;
-                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( self::$local_options_time_format_prompt ).'</label>';
-                        $ret .= '<select id="'.htmlspecialchars ( $id ).'" onchange="BMLTPlugin_DirtifyOptionSheet()">';
-                            $ret .= '<option';
-                                if ( !$options['military_time'] )
-                                    {
-                                    $ret .= ' selected="selected"';
-                                    }
-                            $ret .= '>'.$this->process_text ( self::$local_options_time_format_ampm ).'</option>';
-                            $ret .= '<option';
-                                if ( $options['military_time'] )
-                                    {
-                                    $ret .= ' selected="selected"';
-                                    }
-                            $ret .= '>'.$this->process_text ( self::$local_options_time_format_military ).'</option>';
-                        $ret .= '</select>';
+                        $id = 'BMLTPlugin_option_sheet_region_bias_'.$in_options_index;
+                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( self::$local_options_mobile_region_bias_label ).'</label>';
+                        $ret .= $this->bmlt_create_region_bias_select($id, $options);
                     $ret .= '</div>';
                     $ret .= '<div class="BMLTPlugin_option_sheet_line_div">';
                         $id = 'BMLTPlugin_option_sheet_week_begins_'.$in_options_index;
@@ -1189,6 +1802,49 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
                         $ret .= '</select>';
                     $ret .= '</div>';
                     $ret .= '<div class="BMLTPlugin_option_sheet_line_div">';
+                        $id = 'BMLTPlugin_option_sheet_time_format_'.$in_options_index;
+                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( self::$local_options_time_format_prompt ).'</label>';
+                        $ret .= '<select id="'.htmlspecialchars ( $id ).'" onchange="BMLTPlugin_DirtifyOptionSheet()">';
+                            $ret .= '<option';
+                                if ( !$options['military_time'] )
+                                    {
+                                    $ret .= ' selected="selected"';
+                                    }
+                            $ret .= '>'.$this->process_text ( self::$local_options_time_format_ampm ).'</option>';
+                            $ret .= '<option';
+                                if ( $options['military_time'] )
+                                    {
+                                    $ret .= ' selected="selected"';
+                                    }
+                            $ret .= '>'.$this->process_text ( self::$local_options_time_format_military ).'</option>';
+                        $ret .= '</select>';
+                    $ret .= '<div class="BMLTPlugin_option_sheet_line_div">';
+                        $id = 'BMLTPlugin_option_sheet_initial_view_'.$in_options_index;
+                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( self::$local_options_initial_view_prompt ).'</label>';
+                        $ret .= '<select id="'.htmlspecialchars ( $id ).'" onchange="BMLTPlugin_DirtifyOptionSheet()">';
+                            foreach ( self::$local_options_initial_view as $value => $prompt )
+                                {
+                                $ret .= '<option value="'.htmlspecialchars ( $value ).'"';
+                                if ( $value == $options['bmlt_initial_view'] )
+                                    {
+                                    $ret .= ' selected="selected"';
+                                    }
+                                $ret .= '>'.$this->process_text ( $prompt ).'</option>';
+                                }
+                        $ret .= '</select>';
+                    $ret .= '</div>';
+                    $ret .= '<div class="BMLTPlugin_option_sheet_line_div BMLTPlugin_location_checkbox_line">';
+                        $id = 'BMLTPlugin_location_selected_checkbox_'.$in_options_index;
+                        $ret .= '<div class="BMLTPlugin_option_sheet_checkbox_div"><input class="BMLTPlugin_option_sheet_line_location_checkbox" onchange="BMLTPlugin_DirtifyOptionSheet()" id="'.htmlspecialchars ( $id ).'" type="checkbox"'.($options['bmlt_location_checked'] == 1 ? ' checked="checked"' : '' ).'"></div>';
+                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( self::$local_options_settings_location_checkbox_label ).'</label>';
+                    $ret .= '</div>';
+                    $ret .= '<div class="BMLTPlugin_option_sheet_line_div BMLTPlugin_location_checkbox_line">';
+                        $id = 'BMLTPlugin_location_services_checkbox_'.$in_options_index;
+                        $ret .= '<div class="BMLTPlugin_option_sheet_checkbox_div"><input class="BMLTPlugin_option_sheet_line_location_services_checkbox" onchange="BMLTPlugin_DirtifyOptionSheet()" id="'.htmlspecialchars ( $id ).'" type="checkbox"'.($options['bmlt_location_services'] == 1 ? ' checked="checked"' : '' ).'"></div>';
+                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( self::$local_options_selectLocation_checkbox_text ).'</label>';
+                    $ret .= '</div>';
+                    $ret .= '</div>';
+                    $ret .= '<div class="BMLTPlugin_option_sheet_line_div">';
                         $id = 'BMLTPlugin_option_sheet_grace_period_'.$in_options_index;
                         $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( self::$local_options_mobile_grace_period_label ).'</label>';
                         $ret .= '<select id="'.htmlspecialchars ( $id ).'" onchange="BMLTPlugin_DirtifyOptionSheet()">';
@@ -1203,11 +1859,6 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
                                 }
                         $ret .= '</select>';
                         $ret .= '<div class="BMLTPlugin_option_sheet_text_div">'.$this->process_text ( self::$local_options_grace_period_disclaimer ).'</div>';
-                    $ret .= '</div>';
-                    $ret .= '<div class="BMLTPlugin_option_sheet_line_div">';
-                        $id = 'BMLTPlugin_option_sheet_region_bias_'.$in_options_index;
-                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( self::$local_options_mobile_region_bias_label ).'</label>';
-                        $ret .= $this->bmlt_create_region_bias_select($id, $options);
                     $ret .= '</div>';
                 $ret .= '</fieldset>';
             $ret .= '</div>';
@@ -1402,6 +2053,11 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
                         if ( isset ( $this->my_http_vars['BMLTPlugin_option_sheet_region_bias_'.$i] ) )
                             {
                             $options['region_bias'] = $this->my_http_vars['BMLTPlugin_option_sheet_region_bias_'.$i];
+                            }
+                        
+                        if ( isset ( $this->my_http_vars['BMLTPlugin_option_sheet_lang_'.$i] ) )
+                            {
+                            $options['lang'] = $this->my_http_vars['BMLTPlugin_option_sheet_lang_'.$i];
                             }
                         
                         if ( isset ( $this->my_http_vars['BMLTPlugin_option_sheet_time_offset_'.$i] ) )
@@ -3419,6 +4075,10 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
             {
             self::$g_s_there_can_only_be_one = $this;
             
+            $options = $this->getBMLTOptions_by_id ( $this->my_http_vars['bmlt_settings_id'] );
+            
+            self::adapt_to_lang ( $options['lang'] );
+            
             $this->my_http_vars = array_merge_recursive ( $_GET, $_POST );
                 
             if ( !(isset ( $this->my_http_vars['search_form'] ) && $this->my_http_vars['search_form'] )
@@ -3453,7 +4113,7 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
         }
     
     /************************************************************************************//**
-    *                                THE CMS-SPECIFIC FUNCTIONS                             *
+    *                            THE CMS-SPECIFIC FUNCTIONS                                 *
     *                                                                                       *
     * These may be overridden by the subclasses. Some are required to be overridden.        *
     ****************************************************************************************/
@@ -3540,7 +4200,7 @@ abstract class BMLTPlugin extends BMLT_Localized_BaseClass
     protected function get_ajax_base_uri()
         {
         // We try to account for SSL and unusual TCP ports.
-        $port = $_SERVER['SERVER_PORT'] ;
+        $port = $_SERVER['SERVER_PORT'];
         // IIS puts "off" in the HTTPS field, so we need to test for that.
         $https = (!empty ( $_SERVER['HTTPS'] ) && (($_SERVER['HTTPS'] !== 'off') || ($port == 443))); 
         $server_path = $_SERVER['SERVER_NAME'];

@@ -21,6 +21,8 @@ The instructions for employment of this class are on [this page](http://bmlt.mag
 
 CHANGELIST
 ----------
+***Version 3.5.0* ** *- TBD*
+
 ***Version 3.4.7* ** *- June 17, 2017*
 
 - Added a workaround for nonstandard SSL certs.

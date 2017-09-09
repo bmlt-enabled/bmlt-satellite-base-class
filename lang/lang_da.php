@@ -4,7 +4,7 @@
 *   \file   lang_da.php                                                                     *
 *                                                                                           *
 *   \brief  This file contains Danish localizations.                                        *
-*   \version 3.4.7                                                                          *
+*   \version 3.5.0                                                                          *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -34,6 +34,7 @@ class BMLT_Localized_BaseClass
     ****************************************************************************************/
     
     /// These are all for the admin pages.
+    static  $local_options_lang_prompt = 'Language:';                       ///< The label for the Language Selector.
     static  $local_options_title = 'Indstillinger BMLT';    ///< This is the title that is displayed over the options.
     static  $local_menu_string = 'BMLT Indstillinger';                            ///< The name of the menu item.
     static  $local_options_prefix = 'Vælg instilling';                      ///< The string displayed before each number in the options popup.
@@ -56,6 +57,7 @@ class BMLT_Localized_BaseClass
     /// These are all for the admin page option sheets.
     static  $local_options_name_label = 'Indstillings Navn:';                    ///< The Label for the setting name item.
     static  $local_options_rootserver_label = 'Root Server:';               ///< The Label for the root server item.
+    static  $local_options_new_search_label = 'New Search URL:';            ///< The Label for the new search item.
     static  $local_options_gkey_label = 'Google Maps API Key:';             ///< The Label for the Google Maps API Key item.
     static  $local_options_no_name_string = 'Indstillings Navn';           ///< The Value to use for a name field for a setting with no name.
     static  $local_options_no_root_server_string = 'Indtast Root Server URL';                               ///< The Value to use for a root with no URL.
