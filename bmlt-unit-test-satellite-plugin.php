@@ -252,6 +252,8 @@ class BMLTUTestPlugin extends BMLTPlugin
                                                  $in_check_mobile = false   ///< True if this includes a check for mobile. Default is false.
                                                 )
         {
+        $my_option_id = NULL;
+        
         if ( !$in_check_mobile && isset ( $this->my_http_vars['bmlt_settings_id'] ) && is_array ($this->getBMLTOptions ( $this->my_http_vars['bmlt_settings_id'] )) )
             {
             $my_option_id = $this->my_http_vars['bmlt_settings_id'];
@@ -291,7 +293,7 @@ class BMLTUTestPlugin extends BMLTPlugin
                 }
             }
         
-        return (isset ( $my_option_id ) ? $my_option_id : null);
+        return $my_option_id ;
         }
         
     /************************************************************************************//**
