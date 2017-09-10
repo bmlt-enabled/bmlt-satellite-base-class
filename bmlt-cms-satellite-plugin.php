@@ -2196,7 +2196,7 @@ abstract class BMLTPlugin
                         $handler = "ob_gzhandler";
                         }
                     
-                    header( "Content-type: text/html; charset=ISO-8859-1" );
+                    header( "Content-type: text/html; charset=UTF-8" );
                     ob_start($handler);
                         echo $ret;
                     ob_end_flush();
@@ -2259,7 +2259,7 @@ abstract class BMLTPlugin
                         $handler = "ob_gzhandler";
                         }
                     
-                    header( "Content-type: text/html; charset=ISO-8859-1" );
+                    header( "Content-type: text/html; charset=UTF-8" );
                     ob_start($handler);
                         echo $result;
                     ob_end_flush();
@@ -2330,8 +2330,28 @@ abstract class BMLTPlugin
                                     &$out_count     ///< This is set to 1, if a substitution was made.
                                     )
         {
-        if ( $in_text && self::get_shortcode ( $in_content, 'simple_search_list' ) )
+        $options_id = $this->cms_get_page_settings_id( $in_content );
+        $params = self::get_shortcode ( $in_content, 'simple_search_list' );
+        if ( $in_text && $params )
             {
+            $temp_id = $this->cms_get_page_settings_id($in_content);
+            
+            if ( $temp_id )
+                {
+                $options_id = $temp_id;
+                }
+                
+            if ( $params !== true && intval ( $params ) )
+                {
+                $options_id = intval ( $params );
+                }
+
+            if ( $options_id )
+                {
+                $options = $this->getBMLTOptions_by_id ( $options_id );
+                $this->adapt_to_lang ( $options['lang'] );
+                }
+                
             $display .= '';
 
             $text_ar = explode ( "\n", $in_text );
@@ -2351,7 +2371,7 @@ abstract class BMLTPlugin
                     $line['prompt'] = trim($text_ar[$lines++]);
                     if ( $line['parameters'] && $line['prompt'] )
                         {
-                        $uri = $this->get_ajax_base_uri().'?bmlt_settings_id='.$this->cms_get_page_settings_id($in_content).'&amp;direct_simple&amp;search_parameters='.urlencode ( $line['parameters'] );
+                        $uri = $this->get_ajax_base_uri().'?bmlt_settings_id='.$options_id.'&amp;direct_simple&amp;search_parameters='.urlencode ( $line['parameters'] );
                         $display .= '<option value="'.$uri.'">'.__($line['prompt']).'</option>';
                         }
                     }
@@ -2362,9 +2382,6 @@ abstract class BMLTPlugin
                 $display .= '<script type="text/javascript">' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
                 $display .= 'document.getElementById(\'interactive_form_div\').style.display=\'block\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
                 $display .= 'document.getElementById(\'meeting_search_select\').selectedIndex=0;' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-
-                $options = $this->getBMLTOptions_by_id ( $this->cms_get_page_settings_id($in_content) );
-                $this->adapt_to_lang ( $options['lang'] );
                 $url = $this->get_plugin_path();
                 $img_url .= htmlspecialchars ( $url.'themes/'.$options['theme'].'/images/' );
                 
@@ -2597,32 +2614,34 @@ abstract class BMLTPlugin
                                     )
         {
         $options_id = $this->cms_get_page_settings_id( $in_content );
+        
         if ( $options_id )
             {
             $options = $this->getBMLTOptions_by_id ( $options_id );
             $this->adapt_to_lang ( $options['lang'] );
-            $root_server_root = $options['root_server'];
+            }
+        
+        $root_server_root = $options['root_server'];
 
-            while ( $params = self::get_shortcode ( $in_content, 'bmlt_simple' ) )
+        while ( $params = self::get_shortcode ( $in_content, 'bmlt_simple' ) )
+            {
+            $param_array = explode ( '##-##', $params );    // You can specify a settings ID, by separating it from the URI parameters with a ##-##.
+        
+            $params = null;
+        
+            if ( is_array ( $param_array ) && (count ( $param_array ) > 1) )
                 {
-                $param_array = explode ( '##-##', $params );    // You can specify a settings ID, by separating it from the URI parameters with a ##-##.
-            
-                $params = null;
-            
-                if ( is_array ( $param_array ) && (count ( $param_array ) > 1) )
-                    {
-                    $options = $this->getBMLTOptions_by_id ( $param_array[0] );
-                    $this->adapt_to_lang ( $options['lang'] );
-                    $root_server_root = $options['root_server'];
-                    }
-            
-                $params = (count ($param_array) > 0) ? '?'.str_replace ( array ( '&#038;', '&#038;#038;', '&#038;amp;', '&#038;amp;', '&amp;#038;', '&amp;', '&amp;amp;' ), '&', $param_array[count ( $param_array )-1] ) : null;
-            
-                $uri = $root_server_root."/client_interface/simple/index.php".$params;
-
-                $the_new_content = bmlt_satellite_controller::call_curl ( $uri );
-                $in_content = self::replace_shortcode ( $in_content, 'bmlt_simple', $the_new_content );
+                $options = $this->getBMLTOptions_by_id ( $param_array[0] );
+                $this->adapt_to_lang ( $options['lang'] );
+                $root_server_root = $options['root_server'];
                 }
+        
+            $params = (count ($param_array) > 0) ? '?'.str_replace ( array ( '&#038;', '&#038;#038;', '&#038;amp;', '&#038;amp;', '&amp;#038;', '&amp;', '&amp;amp;' ), '&', $param_array[count ( $param_array )-1] ) : null;
+        
+            $uri = $root_server_root."/client_interface/simple/index.php".$params;
+
+            $the_new_content = bmlt_satellite_controller::call_curl ( $uri );
+            $in_content = self::replace_shortcode ( $in_content, 'bmlt_simple', $the_new_content );
             }
         
         return $in_content;
