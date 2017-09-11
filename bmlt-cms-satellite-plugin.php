@@ -444,6 +444,7 @@ abstract class BMLTPlugin
     ****************************************************************************************/
     protected function geDefaultBMLTOptions ()
         {
+        global $bmlt_localization;
         // These are the defaults. If the saved option has a different value, it replaces the ones in here.
         return array (  'root_server' => self::$default_rootserver,
                         'map_center_latitude' => self::$default_map_center_latitude,
@@ -463,7 +464,7 @@ abstract class BMLTPlugin
                         'startWeekday' => self::$default_startWeekday,
                         'google_api_key' => 'INVALID',
                         'region_bias' => 'us',
-                        'lang' => ''
+                        'lang' => $bmlt_localization
                         );
         }
     
@@ -583,6 +584,18 @@ abstract class BMLTPlugin
                     echo "<!-- BMLTPlugin ERROR (getBMLTOptions_by_id)! No options found for $name! -->";
                     }
                 }
+            }
+            
+        if ( !$BMLTOptions['lang'] )
+            {
+            global $bmlt_localization;
+        
+            $BMLTOptions['lang'] = $bmlt_localization;
+            }
+        
+        if ( !$BMLTOptions['lang'] )
+            {
+            $BMLTOptions['lang'] = self::$default_language;
             }
         
         return $BMLTOptions;
