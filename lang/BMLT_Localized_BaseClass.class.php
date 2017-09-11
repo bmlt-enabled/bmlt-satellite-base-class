@@ -4,7 +4,7 @@
 *   \file   BMLT_Localized_BaseClass.class.php                                              *
 *                                                                                           *
 *   \brief  This file contains The base localizations c;ass                                 *
-*   \version 3.5.0                                                                          *
+*   \version 3.5.1                                                                          *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
