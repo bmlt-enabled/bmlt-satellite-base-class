@@ -27,7 +27,9 @@
 *   along with this code.  If not, see <http://www.gnu.org/licenses/>.                      *
 ********************************************************************************************/
 
-class BMLT_Localized_BaseClass_fr
+require_once ( dirname ( __FILE__ ) . '/BMLT_Localized_BaseClass.class.php' );
+
+class BMLT_Localized_BaseClass_fr extends BMLT_Localized_BaseClass
     {
     function __construct ()
         {
