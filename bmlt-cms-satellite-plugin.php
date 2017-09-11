@@ -3,7 +3,7 @@
 *   \file   bmlt-cms-satellite-plugin.php                                                   *
 *                                                                                           *
 *   \brief  This is a generic CMS plugin class for a BMLT satellite client.                 *
-*   \version 3.5.0                                                                          *
+*   \version 3.5.1                                                                          *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -28,34 +28,29 @@
 
 // define ( '_DEBUG_MODE_', 1 ); //Uncomment for easier JavaScript debugging.
 
-global $g_my_languages;
+// Include the satellite driver class.
+require_once ( dirname ( __FILE__ ).'/BMLT-Satellite-Driver/bmlt_satellite_controller.class.php' );
 
-$g_my_languages = array();
+global $g_lang_keys;
+
+$g_lang_keys = array();
 
 $dirname = dirname ( __FILE__ ) . "/lang";
 $dir = new DirectoryIterator ( $dirname );
+
 foreach ( $dir as $fileinfo )
     {
     if ( !$fileinfo->isDot () )
         {
         $fName = $fileinfo->getFilename ();
-        if ( ($fName != "index.php") && preg_match("|^lang_|", $fName) )
+        if ( $fName != "index.php" )
             {
             $fPath = $dirname . "/" . $fName;
-            if ( $file = fopen ( $fPath, "r" ) )
+            $lang_key = trim ( substr ( $fName, 5, -4 ) );
+            if ( $lang_key )
                 {
-                $line0 = fgets ( $file );
-                $line1 = fgets ( $file );
-                $lang_name = trim ( substr ( $line1, 3 ) );
-                $lang_key = trim ( substr ( $fName, 5, -4 ) );
-                if ( $lang_name && $lang_key )
-                    {
-                    include_once ( $fPath );
-
-                    $eval_string = '$lang_instance = new BMLT_Localized_BaseClass_' . $lang_key . '();';
-                    eval ( $eval_string );
-                    $g_my_languages[$lang_key] = $lang_instance;
-                    }
+                require_once ( $fPath );
+                array_push($g_lang_keys, $lang_key);
                 }
             }
         }
@@ -66,9 +61,6 @@ if ( !defined ( '_LANG_COOKIE_NAME' ) )
     {
     define ( '_LANG_COOKIE_NAME', 'bmlt_admin_lang_pref' );
     }
-
-// Include the satellite driver class.
-require_once ( dirname ( __FILE__ ).'/BMLT-Satellite-Driver/bmlt_satellite_controller.class.php' );
 
 global $bmlt_localization;  ///< Use this to control the localization.
 $tmp_local = false;         ///< This will hold the selected language as we test for an explicit one.
@@ -174,7 +166,7 @@ abstract class BMLTPlugin
     
     static  $local_options_success_time = 2000;                             ///< The number of milliseconds a success message is displayed.
     static  $local_options_failure_time = 5000;                             ///< The number of milliseconds a failure message is displayed.
-
+    
     /************************************************************************************//**
     *                                  DYNAMIC DATA MEMBERS                                 *
     ****************************************************************************************/
@@ -183,11 +175,311 @@ abstract class BMLTPlugin
     var $my_params = null;              ///< This will contain the $this->my_http_vars and $_POST query variables.
     var $my_http_vars = null;           ///< This will hold all of the query arguments.
     var $my_table_next_id = 0;          ///< The next ID to use for the table.
-    var $my_current_language;           ///< This contains whetever the current localization object is.
+    var $my_languages = array();        ///< This will be an array of translations.
     
     /************************************************************************************//**
     *                                    FUNCTIONS/METHODS                                  *
     ****************************************************************************************/
+    
+    /************************************************************************************//**
+    *   \brief Adapts all the local data members to the selected language.                  *
+    ****************************************************************************************/
+    function adapt_to_lang ( $in_lang = "en" ///< The language code. Default is English.
+                            )
+        {
+        /************************************************************************************//**
+        *                           STATIC DATA MEMBERS (LOCALIZABLE)                           *
+        ****************************************************************************************/
+
+        /// These are all for the admin pages.
+        $this->local_options_lang_prompt = $this->my_languages[$in_lang]->local_options_lang_prompt;
+        $this->local_options_title = $this->my_languages[$in_lang]->local_options_title;
+        $this->local_menu_string = $this->my_languages[$in_lang]->local_menu_string;
+        $this->local_options_prefix = $this->my_languages[$in_lang]->local_options_prefix;
+        $this->local_options_add_new = $this->my_languages[$in_lang]->local_options_add_new;
+        $this->local_options_save = $this->my_languages[$in_lang]->local_options_save;
+        $this->local_options_delete_option = $this->my_languages[$in_lang]->local_options_delete_option;
+        $this->local_options_delete_failure = $this->my_languages[$in_lang]->local_options_delete_failure;
+        $this->local_options_create_failure = $this->my_languages[$in_lang]->local_options_create_failure;
+        $this->local_options_delete_option_confirm = $this->my_languages[$in_lang]->local_options_delete_option_confirm;
+        $this->local_options_delete_success = $this->my_languages[$in_lang]->local_options_delete_success;
+        $this->local_options_create_success = $this->my_languages[$in_lang]->local_options_create_success;
+        $this->local_options_save_success = $this->my_languages[$in_lang]->local_options_save_success;
+        $this->local_options_save_failure = $this->my_languages[$in_lang]->local_options_save_failure;
+        $this->local_options_url_bad = $this->my_languages[$in_lang]->local_options_url_bad;
+        $this->local_options_access_failure = $this->my_languages[$in_lang]->local_options_access_failure;
+        $this->local_options_unsaved_message = $this->my_languages[$in_lang]->local_options_unsaved_message;
+        $this->local_options_settings_id_prompt = $this->my_languages[$in_lang]->local_options_settings_id_prompt;
+        $this->local_options_settings_location_checkbox_label = $this->my_languages[$in_lang]->local_options_settings_location_checkbox_label;
+
+        /// These are all for the admin page option sheets.
+        $this->local_options_name_label = $this->my_languages[$in_lang]->local_options_name_label;
+        $this->local_options_rootserver_label = $this->my_languages[$in_lang]->local_options_rootserver_label;
+        $this->local_options_new_search_label = $this->my_languages[$in_lang]->local_options_new_search_label;
+        $this->local_options_gkey_label = $this->my_languages[$in_lang]->local_options_gkey_label;
+        $this->local_options_no_name_string = $this->my_languages[$in_lang]->local_options_no_name_string;
+        $this->local_options_no_root_server_string = $this->my_languages[$in_lang]->local_options_no_root_server_string;
+        $this->local_options_no_new_search_string = $this->my_languages[$in_lang]->local_options_no_new_search_string;
+        $this->local_options_no_gkey_string = $this->my_languages[$in_lang]->local_options_no_gkey_string;
+        $this->local_options_test_server = $this->my_languages[$in_lang]->local_options_test_server;
+        $this->local_options_test_server_success = $this->my_languages[$in_lang]->local_options_test_server_success;
+        $this->local_options_test_server_failure = $this->my_languages[$in_lang]->local_options_test_server_failure;
+        $this->local_options_test_server_tooltip = $this->my_languages[$in_lang]->local_options_test_server_tooltip;
+        $this->local_options_map_label = $this->my_languages[$in_lang]->local_options_map_label;
+        $this->local_options_mobile_legend = $this->my_languages[$in_lang]->local_options_mobile_legend;
+        $this->local_options_mobile_grace_period_label = $this->my_languages[$in_lang]->local_options_mobile_grace_period_label;
+        $this->local_options_mobile_region_bias_label = $this->my_languages[$in_lang]->local_options_mobile_region_bias_label;
+        $this->local_options_mobile_time_offset_label = $this->my_languages[$in_lang]->local_options_mobile_time_offset_label;
+        $this->local_options_initial_view = $this->my_languages[$in_lang]->local_options_initial_view;
+        $this->local_options_initial_view_prompt = $this->my_languages[$in_lang]->local_options_initial_view_prompt;
+        $this->local_options_theme_prompt = $this->my_languages[$in_lang]->local_options_theme_prompt;
+        $this->local_options_more_styles_label = $this->my_languages[$in_lang]->local_options_more_styles_label;
+        $this->local_options_distance_prompt = $this->my_languages[$in_lang]->local_options_distance_prompt;
+        $this->local_options_distance_disclaimer = $this->my_languages[$in_lang]->local_options_distance_disclaimer;
+        $this->local_options_grace_period_disclaimer = $this->my_languages[$in_lang]->local_options_grace_period_disclaimer;
+        $this->local_options_time_offset_disclaimer = $this->my_languages[$in_lang]->local_options_time_offset_disclaimer;
+        $this->local_options_miles = $this->my_languages[$in_lang]->local_options_miles;
+        $this->local_options_kilometers = $this->my_languages[$in_lang]->local_options_kilometers;
+        $this->local_options_selectLocation_checkbox_text = $this->my_languages[$in_lang]->local_options_selectLocation_checkbox_text;
+        $this->local_options_time_format_prompt = $this->my_languages[$in_lang]->local_options_time_format_prompt;
+        $this->local_options_time_format_ampm = $this->my_languages[$in_lang]->local_options_time_format_ampm;
+        $this->local_options_time_format_military = $this->my_languages[$in_lang]->local_options_time_format_military;
+        $this->local_options_google_api_label = $this->my_languages[$in_lang]->local_options_google_api_label;
+        $this->local_options_week_begins_on_prompt = $this->my_languages[$in_lang]->local_options_week_begins_on_prompt;
+        $this->local_no_root_server = $this->my_languages[$in_lang]->local_no_root_server;
+
+        /// These are for the actual search displays
+        $this->local_select_search = $this->my_languages[$in_lang]->local_select_search;
+        $this->local_clear_search = $this->my_languages[$in_lang]->local_clear_search;
+        $this->local_menu_new_search_text = $this->my_languages[$in_lang]->local_menu_new_search_text;
+        $this->local_cant_find_meetings_display = $this->my_languages[$in_lang]->local_cant_find_meetings_display;
+        $this->local_single_meeting_tooltip = $this->my_languages[$in_lang]->local_single_meeting_tooltip;
+        $this->local_gm_link_tooltip = $this->my_languages[$in_lang]->local_gm_link_tooltip;
+
+        /// These are for the change display
+        $this->local_change_label_date = $this->my_languages[$in_lang]->local_change_label_date;
+        $this->local_change_label_meeting_name = $this->my_languages[$in_lang]->local_change_label_meeting_name;
+        $this->local_change_label_service_body_name = $this->my_languages[$in_lang]->local_change_label_service_body_name;
+        $this->local_change_label_admin_name = $this->my_languages[$in_lang]->local_change_label_admin_name;
+        $this->local_change_label_description = $this->my_languages[$in_lang]->local_change_label_description;
+        $this->local_change_date_format = $this->my_languages[$in_lang]->local_change_date_format;
+
+        /// A simple message for most <noscript> elements. We have a different one for the older interactive search (below).
+        $this->local_noscript = $this->my_languages[$in_lang]->local_noscript;
+
+        /************************************************************************************//**
+        *                   NEW SHORTCODE STATIC DATA MEMBERS (LOCALIZABLE)                     *
+        ****************************************************************************************/
+
+        /// These are all for the [[bmlt_nouveau]] shortcode.
+        $this->local_nouveau_advanced_button = $this->my_languages[$in_lang]->local_nouveau_advanced_button;
+        $this->local_nouveau_map_button = $this->my_languages[$in_lang]->local_nouveau_map_button;
+        $this->local_nouveau_text_button = $this->my_languages[$in_lang]->local_nouveau_text_button;
+        $this->local_nouveau_text_go_button = $this->my_languages[$in_lang]->local_nouveau_text_go_button;
+        $this->local_nouveau_text_item_default_text = $this->my_languages[$in_lang]->local_nouveau_text_item_default_text;
+        $this->local_nouveau_text_location_label_text = $this->my_languages[$in_lang]->local_nouveau_text_location_label_text;
+        $this->local_nouveau_advanced_map_radius_label_1 = $this->my_languages[$in_lang]->local_nouveau_advanced_map_radius_label_1;
+        $this->local_nouveau_advanced_map_radius_label_2 = $this->my_languages[$in_lang]->local_nouveau_advanced_map_radius_label_2;
+        $this->local_nouveau_advanced_map_radius_value_auto = $this->my_languages[$in_lang]->local_nouveau_advanced_map_radius_value_auto;
+        $this->local_nouveau_advanced_map_radius_value_km = $this->my_languages[$in_lang]->local_nouveau_advanced_map_radius_value_km;
+        $this->local_nouveau_advanced_map_radius_value_mi = $this->my_languages[$in_lang]->local_nouveau_advanced_map_radius_value_mi;
+        $this->local_nouveau_advanced_weekdays_disclosure_text = $this->my_languages[$in_lang]->local_nouveau_advanced_weekdays_disclosure_text;
+        $this->local_nouveau_advanced_formats_disclosure_text = $this->my_languages[$in_lang]->local_nouveau_advanced_formats_disclosure_text;
+        $this->local_nouveau_advanced_service_bodies_disclosure_text = $this->my_languages[$in_lang]->local_nouveau_advanced_service_bodies_disclosure_text;
+        $this->local_nouveau_select_search_spec_text = $this->my_languages[$in_lang]->local_nouveau_select_search_spec_text;
+        $this->local_nouveau_select_search_results_text = $this->my_languages[$in_lang]->local_nouveau_select_search_results_text;
+        $this->local_nouveau_cant_find_meetings_display = $this->my_languages[$in_lang]->local_nouveau_cant_find_meetings_display;
+        $this->local_nouveau_cant_lookup_display = $this->my_languages[$in_lang]->local_nouveau_cant_lookup_display;
+        $this->local_nouveau_display_map_results_text = $this->my_languages[$in_lang]->local_nouveau_display_map_results_text;
+        $this->local_nouveau_display_list_results_text = $this->my_languages[$in_lang]->local_nouveau_display_list_results_text;
+        $this->local_nouveau_table_header_array = $this->my_languages[$in_lang]->local_nouveau_table_header_array;
+        $this->local_nouveau_weekday_long_array = $this->my_languages[$in_lang]->local_nouveau_weekday_long_array;
+        $this->local_nouveau_weekday_short_array = $this->my_languages[$in_lang]->local_nouveau_weekday_short_array;
+        $this->local_nouveau_meeting_results_count_sprintf_format = $this->my_languages[$in_lang]->local_nouveau_meeting_results_count_sprintf_format;
+        $this->local_nouveau_meeting_results_selection_count_sprintf_format = $this->my_languages[$in_lang]->local_nouveau_meeting_results_selection_count_sprintf_format;
+        $this->local_nouveau_meeting_results_single_selection_count_sprintf_format = $this->my_languages[$in_lang]->local_nouveau_meeting_results_single_selection_count_sprintf_format;
+        $this->local_nouveau_single_time_sprintf_format = $this->my_languages[$in_lang]->local_nouveau_single_time_sprintf_format;
+        $this->local_nouveau_single_duration_sprintf_format_1_hr = $this->my_languages[$in_lang]->local_nouveau_single_duration_sprintf_format_1_hr;
+        $this->local_nouveau_single_duration_sprintf_format_mins = $this->my_languages[$in_lang]->local_nouveau_single_duration_sprintf_format_mins;
+        $this->local_nouveau_single_duration_sprintf_format_hrs = $this->my_languages[$in_lang]->local_nouveau_single_duration_sprintf_format_hrs;
+        $this->local_nouveau_single_duration_sprintf_format_hr_mins = $this->my_languages[$in_lang]->local_nouveau_single_duration_sprintf_format_hr_mins;
+        $this->local_nouveau_single_duration_sprintf_format_hrs_mins = $this->my_languages[$in_lang]->local_nouveau_single_duration_sprintf_format_hrs_mins;
+
+        /// These are all variants of the text that explains the location of a single meeting (Details View).
+        $this->local_nouveau_location_sprintf_format_loc_street_info = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_loc_street_info;
+        $this->local_nouveau_location_sprintf_format_loc_street = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_loc_street;
+        $this->local_nouveau_location_sprintf_format_street_info = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_street_info;
+        $this->local_nouveau_location_sprintf_format_loc_info = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_loc_info;
+        $this->local_nouveau_location_sprintf_format_street = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_street;
+        $this->local_nouveau_location_sprintf_format_loc = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_loc;
+        $this->local_nouveau_location_sprintf_format_single_loc_street_info_town_province_zip = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_loc_street_info_town_province_zip;
+        $this->local_nouveau_location_sprintf_format_single_loc_street_town_province_zip = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_loc_street_town_province_zip;
+        $this->local_nouveau_location_sprintf_format_single_street_info_town_province_zip = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_street_info_town_province_zip;
+        $this->local_nouveau_location_sprintf_format_single_loc_info_town_province_zip = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_loc_info_town_province_zip;
+        $this->local_nouveau_location_sprintf_format_single_street_town_province_zip = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_street_town_province_zip;
+        $this->local_nouveau_location_sprintf_format_single_loc_town_province_zip = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_loc_town_province_zip;
+        $this->local_nouveau_location_sprintf_format_single_loc_street_info_town_province = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_loc_street_info_town_province;
+        $this->local_nouveau_location_sprintf_format_single_loc_street_town_province = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_loc_street_town_province;
+        $this->local_nouveau_location_sprintf_format_single_street_info_town_province = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_street_info_town_province;
+        $this->local_nouveau_location_sprintf_format_single_loc_info_town_province = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_loc_info_town_province;
+        $this->local_nouveau_location_sprintf_format_single_street_town_province = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_street_town_province;
+        $this->local_nouveau_location_sprintf_format_single_loc_town_province = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_loc_town_province;
+        $this->local_nouveau_location_sprintf_format_single_loc_street_info_town_zip = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_loc_street_info_town_zip;
+        $this->local_nouveau_location_sprintf_format_single_loc_street_town_zip = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_loc_street_town_zip;
+        $this->local_nouveau_location_sprintf_format_single_street_info_town_zip = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_street_info_town_zip;
+        $this->local_nouveau_location_sprintf_format_single_loc_info_town_zip = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_loc_info_town_zip;
+        $this->local_nouveau_location_sprintf_format_single_street_town_zip = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_street_town_zip;
+        $this->local_nouveau_location_sprintf_format_single_loc_town_zip = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_loc_town_zip;
+        $this->local_nouveau_location_sprintf_format_single_loc_street_info_province_zip = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_loc_street_info_province_zip;
+        $this->local_nouveau_location_sprintf_format_single_loc_street_province_zip = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_loc_street_province_zip;
+        $this->local_nouveau_location_sprintf_format_single_street_info_province_zip = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_street_info_province_zip;
+        $this->local_nouveau_location_sprintf_format_single_loc_info_province_zip = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_loc_info_province_zip;
+        $this->local_nouveau_location_sprintf_format_single_street_province_zip = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_street_province_zip;
+        $this->local_nouveau_location_sprintf_format_single_loc_province_zip = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_loc_province_zip;
+        $this->local_nouveau_location_sprintf_format_single_loc_street_info_province = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_loc_street_info_province;
+        $this->local_nouveau_location_sprintf_format_single_loc_street_province = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_loc_street_province;
+        $this->local_nouveau_location_sprintf_format_single_street_info_province = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_street_info_province;
+        $this->local_nouveau_location_sprintf_format_single_loc_info_province = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_loc_info_province;
+        $this->local_nouveau_location_sprintf_format_single_street_province = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_street_province;
+        $this->local_nouveau_location_sprintf_format_single_loc_province = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_loc_province;
+        $this->local_nouveau_location_sprintf_format_single_loc_street_info_zip = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_loc_street_info_zip;
+        $this->local_nouveau_location_sprintf_format_single_loc_street_zip = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_loc_street_zip;
+        $this->local_nouveau_location_sprintf_format_single_street_info_zip = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_street_info_zip;
+        $this->local_nouveau_location_sprintf_format_single_loc_info_zip = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_loc_info_zip;
+        $this->local_nouveau_location_sprintf_format_single_street_zip = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_street_zip;
+        $this->local_nouveau_location_sprintf_format_single_loc_zip = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_loc_zip;
+        $this->local_nouveau_location_sprintf_format_single_loc_street_info = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_loc_street_info;
+        $this->local_nouveau_location_sprintf_format_single_loc_street = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_loc_street;
+        $this->local_nouveau_location_sprintf_format_single_street_info = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_street_info;
+        $this->local_nouveau_location_sprintf_format_single_loc_info = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_loc_info;
+        $this->local_nouveau_location_sprintf_format_single_street = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_street;
+        $this->local_nouveau_location_sprintf_format_single_loc = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_single_loc;
+        $this->local_nouveau_location_sprintf_format_wtf = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_wtf;
+        $this->local_nouveau_location_services_set_my_location_advanced_button = $this->my_languages[$in_lang]->local_nouveau_location_services_set_my_location_advanced_button;
+        $this->local_nouveau_location_services_find_all_meetings_nearby_button = $this->my_languages[$in_lang]->local_nouveau_location_services_find_all_meetings_nearby_button;
+        $this->local_nouveau_location_services_find_all_meetings_nearby_later_today_button = $this->my_languages[$in_lang]->local_nouveau_location_services_find_all_meetings_nearby_later_today_button;
+        $this->local_nouveau_location_services_find_all_meetings_nearby_tomorrow_button = $this->my_languages[$in_lang]->local_nouveau_location_services_find_all_meetings_nearby_tomorrow_button;
+        $this->local_nouveau_location_sprintf_format_duration_title = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_duration_title;
+        $this->local_nouveau_location_sprintf_format_duration_hour_only_title = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_duration_hour_only_title;
+        $this->local_nouveau_location_sprintf_format_duration_hour_only_and_minutes_title = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_duration_hour_only_and_minutes_title;
+        $this->local_nouveau_location_sprintf_format_duration_hours_only_title = $this->my_languages[$in_lang]->local_nouveau_location_sprintf_format_duration_hours_only_title;
+        $this->local_nouveau_lookup_location_failed = $this->my_languages[$in_lang]->local_nouveau_lookup_location_failed;
+        $this->local_nouveau_lookup_location_server_error = $this->my_languages[$in_lang]->local_nouveau_lookup_location_server_error;
+        $this->local_nouveau_time_sprintf_format = $this->my_languages[$in_lang]->local_nouveau_time_sprintf_format;
+        $this->local_nouveau_am = $this->my_languages[$in_lang]->local_nouveau_am;
+        $this->local_nouveau_pm = $this->my_languages[$in_lang]->local_nouveau_pm;
+        $this->local_nouveau_noon = $this->my_languages[$in_lang]->local_nouveau_noon;
+        $this->local_nouveau_midnight = $this->my_languages[$in_lang]->local_nouveau_midnight;
+        $this->local_nouveau_advanced_map_radius_value_array = $this->my_languages[$in_lang]->local_nouveau_advanced_map_radius_value_array;
+        $this->local_nouveau_meeting_details_link_title = $this->my_languages[$in_lang]->local_nouveau_meeting_details_link_title;
+        $this->local_nouveau_meeting_details_map_link_uri_format = $this->my_languages[$in_lang]->local_nouveau_meeting_details_map_link_uri_format;
+        $this->local_nouveau_meeting_details_map_link_text = $this->my_languages[$in_lang]->local_nouveau_meeting_details_map_link_text;
+        $this->local_nouveau_single_formats_label = $this->my_languages[$in_lang]->local_nouveau_single_formats_label;
+        $this->local_nouveau_single_service_body_label = $this->my_languages[$in_lang]->local_nouveau_single_service_body_label;
+        $this->local_nouveau_prompt_array = $this->my_languages[$in_lang]->local_nouveau_prompt_array;
+
+        /************************************************************************************//**
+        *                   TABLE SHORTCODE STATIC DATA MEMBERS (LOCALIZABLE)                    *
+        ****************************************************************************************/
+        $this->local_table_tab_loading_title_format        = $this->my_languages[$in_lang]->local_table_tab_loading_title_format;
+        $this->local_table_header_time_label              = $this->my_languages[$in_lang]->local_table_header_time_label;
+        $this->local_table_header_meeting_name_label      = $this->my_languages[$in_lang]->local_table_header_meeting_name_label;
+        $this->local_table_header_town_label              = $this->my_languages[$in_lang]->local_table_header_town_label;
+        $this->local_table_header_address_label           = $this->my_languages[$in_lang]->local_table_header_address_label;
+        $this->local_table_header_format_label            = $this->my_languages[$in_lang]->local_table_header_format_label;
+        $this->local_table_header_tab_title_format        = $this->my_languages[$in_lang]->local_table_header_tab_title_format;
+        $this->local_table_ante_meridian                  = $this->my_languages[$in_lang]->local_table_ante_meridian;
+        $this->local_table_no_meetings_format             = $this->my_languages[$in_lang]->local_table_no_meetings_format;
+                                            
+        /************************************************************************************//**
+        *                      STATIC DATA MEMBERS (SPECIAL LOCALIZABLE)                        *
+        ****************************************************************************************/
+
+        /// This is the only localizable string that is not processed. This is because it contains HTML. However, it is also a "hidden" string that is only displayed when the browser does not support JS.
+        $this->local_no_js_warning = $this->my_languages[$in_lang]->local_no_js_warning;
+                                
+        /************************************************************************************//**
+        *                       STATIC DATA MEMBERS (NEW MAP LOCALIZABLE)                       *
+        ****************************************************************************************/
+        $this->local_new_map_option_1_label = $this->my_languages[$in_lang]->local_new_map_option_1_label;
+        $this->local_new_map_weekdays = $this->my_languages[$in_lang]->local_new_map_weekdays;
+        $this->local_new_map_all_weekdays = $this->my_languages[$in_lang]->local_new_map_all_weekdays;
+        $this->local_new_map_all_weekdays_title = $this->my_languages[$in_lang]->local_new_map_all_weekdays_title;
+        $this->local_new_map_weekdays_title = $this->my_languages[$in_lang]->local_new_map_weekdays_title;
+        $this->local_new_map_formats = $this->my_languages[$in_lang]->local_new_map_formats;
+        $this->local_new_map_all_formats = $this->my_languages[$in_lang]->local_new_map_all_formats;
+        $this->local_new_map_all_formats_title = $this->my_languages[$in_lang]->local_new_map_all_formats_title;
+        $this->local_new_map_js_center_marker_current_radius_1 = $this->my_languages[$in_lang]->local_new_map_js_center_marker_current_radius_1;
+        $this->local_new_map_js_center_marker_current_radius_2_km = $this->my_languages[$in_lang]->local_new_map_js_center_marker_current_radius_2_km;
+        $this->local_new_map_js_center_marker_current_radius_2_mi = $this->my_languages[$in_lang]->local_new_map_js_center_marker_current_radius_2_mi;
+        $this->local_new_map_js_diameter_choices = $this->my_languages[$in_lang]->local_new_map_js_diameter_choices;
+        $this->local_new_map_js_new_search = $this->my_languages[$in_lang]->local_new_map_js_new_search;
+        $this->local_new_map_option_loc_label = $this->my_languages[$in_lang]->local_new_map_option_loc_label;
+        $this->local_new_map_option_loc_popup_label_1 = $this->my_languages[$in_lang]->local_new_map_option_loc_popup_label_1;
+        $this->local_new_map_option_loc_popup_label_2 = $this->my_languages[$in_lang]->local_new_map_option_loc_popup_label_2;
+        $this->local_new_map_option_loc_popup_km = $this->my_languages[$in_lang]->local_new_map_option_loc_popup_km;
+        $this->local_new_map_option_loc_popup_mi = $this->my_languages[$in_lang]->local_new_map_option_loc_popup_mi;
+        $this->local_new_map_option_loc_popup_auto = $this->my_languages[$in_lang]->local_new_map_option_loc_popup_auto;
+        $this->local_new_map_center_marker_distance_suffix = $this->my_languages[$in_lang]->local_new_map_center_marker_distance_suffix;
+        $this->local_new_map_center_marker_description = $this->my_languages[$in_lang]->local_new_map_center_marker_description;
+        $this->local_new_map_text_entry_fieldset_label = $this->my_languages[$in_lang]->local_new_map_text_entry_fieldset_label;
+        $this->local_new_map_text_entry_default_text = $this->my_languages[$in_lang]->local_new_map_text_entry_default_text;
+        $this->local_new_map_location_submit_button_text = $this->my_languages[$in_lang]->local_new_map_location_submit_button_text;
+
+        /************************************************************************************//**
+        *                       STATIC DATA MEMBERS (MOBILE LOCALIZABLE)                        *
+        ****************************************************************************************/
+
+        /// The units for distance.
+        $this->local_mobile_kilometers = $this->my_languages[$in_lang]->local_mobile_kilometers;
+        $this->local_mobile_miles = $this->my_languages[$in_lang]->local_mobile_miles;
+        $this->local_mobile_distance = $this->my_languages[$in_lang]->local_mobile_distance;
+
+        /// The page titles.
+        $this->local_mobile_results_page_title = $this->my_languages[$in_lang]->local_mobile_results_page_title;
+        $this->local_mobile_results_form_title = $this->my_languages[$in_lang]->local_mobile_results_form_title;
+
+        /// The fast GPS lookup links.
+        $this->local_GPS_banner = $this->my_languages[$in_lang]->local_GPS_banner;
+        $this->local_GPS_banner_subtext = $this->my_languages[$in_lang]->local_GPS_banner_subtext;
+        $this->local_search_all = $this->my_languages[$in_lang]->local_search_all;
+        $this->local_search_today = $this->my_languages[$in_lang]->local_search_today;
+        $this->local_search_tomorrow = $this->my_languages[$in_lang]->local_search_tomorrow;
+
+        /// The search for an address form.
+        $this->local_list_check = $this->my_languages[$in_lang]->local_list_check;
+        $this->local_search_address_single = $this->my_languages[$in_lang]->local_search_address_single;
+
+        /// Used instead of "near my present location."
+        $this->local_search_all_address = $this->my_languages[$in_lang]->local_search_all_address;
+        $this->local_search_submit_button = $this->my_languages[$in_lang]->local_search_submit_button;
+
+        /// This is what is entered into the text box.
+        $this->local_enter_an_address = $this->my_languages[$in_lang]->local_enter_an_address;
+
+        /// Error messages.
+        $this->local_mobile_fail_no_meetings = $this->my_languages[$in_lang]->local_mobile_fail_no_meetings;
+        $this->local_server_fail = $this->my_languages[$in_lang]->local_server_fail;
+        $this->local_cant_find_address = $this->my_languages[$in_lang]->local_cant_find_address;
+        $this->local_cannot_determine_location = $this->my_languages[$in_lang]->local_cannot_determine_location;
+        $this->local_enter_address_alert = $this->my_languages[$in_lang]->local_enter_address_alert;
+
+        /// The text for the "Map to Meeting" links
+        $this->local_map_link = $this->my_languages[$in_lang]->local_map_link;
+
+        /// Only used for WML pages
+        $this->local_next_card = $this->my_languages[$in_lang]->local_next_card;
+        $this->local_prev_card = $this->my_languages[$in_lang]->local_prev_card;
+
+        /// Used for the info and list windows.
+        $this->local_formats = $this->my_languages[$in_lang]->local_formats;
+        $this->local_noon = $this->my_languages[$in_lang]->local_noon;
+        $this->local_midnight = $this->my_languages[$in_lang]->local_midnight;
+
+        /// This array has the weekdays, spelled out. Since weekdays start at 1 (Sunday), we consider 0 to be an error.
+        $this->local_weekdays = $this->my_languages[$in_lang]->local_weekdays;
+        $this->local_weekdays_short = $this->my_languages[$in_lang]->local_weekdays_short;
+        }
     
     /************************************************************************************//**
     *   \brief Get the instance                                                             *
@@ -267,17 +559,6 @@ abstract class BMLTPlugin
     /************************************************************************************//**
     *                           ACCESSORS AND INTERNAL FUNCTIONS                            *
     ****************************************************************************************/
-    
-    /************************************************************************************//**
-    *   \brief Adapts all the static data members to the selected language.                 *
-    ****************************************************************************************/
-    function adapt_to_lang ( $in_lang = "en" ///< The language code. Default is English.
-                                    )
-        {
-        global $g_my_languages;
-
-        $this->my_current_language = $g_my_languages[$in_lang];
-        }
     
     /************************************************************************************//**
     *   \brief Accessor: This gets the driver object.                                       *
@@ -849,9 +1130,8 @@ abstract class BMLTPlugin
                                 )
         {
         $out_option_number = 1;
-        global $bmlt_localization;
-        $this->adapt_to_lang($bmlt_localization);
-        $timing = $this->my_current_language->local_options_success_time;    // Success is a shorter fade, but failure is longer.
+        
+        $timing = self::$local_options_success_time;    // Success is a shorter fade, but failure is longer.
         $ret = '<div id="BMLTPlugin_Message_bar_div" class="BMLTPlugin_Message_bar_div">';
             if ( isset ( $this->my_http_vars['BMLTPlugin_create_option'] ) )
                 {
@@ -868,14 +1148,14 @@ abstract class BMLTPlugin
                     $this->setBMLTOptions ( $new_options, $out_option_number );
                     
                     $ret .= '<h2 id="BMLTPlugin_Fader" class="BMLTPlugin_Message_bar_success">';
-                        $ret .= $this->process_text ( $this->my_current_language->local_options_create_success );
+                        $ret .= $this->process_text ( $this->local_options_create_success );
                     $ret .= '</h2>';
                     }
                 else
                     {
-                    $timing = $this->my_current_language->local_options_failure_time;
+                    $timing = self::$local_options_failure_time;
                     $ret .= '<h2 id="BMLTPlugin_Fader" class="BMLTPlugin_Message_bar_fail">';
-                        $ret .= $this->process_text ( $this->my_current_language->local_options_create_failure );
+                        $ret .= $this->process_text ( $this->local_options_create_failure );
                     $ret .= '</h2>';
                     }
                 }
@@ -886,14 +1166,14 @@ abstract class BMLTPlugin
                 if ( $this->delete_options ( $option_index ) )
                     {
                     $ret .= '<h2 id="BMLTPlugin_Fader" class="BMLTPlugin_Message_bar_success">';
-                        $ret .= $this->process_text ( $this->my_current_language->local_options_delete_success );
+                        $ret .= $this->process_text ( $this->local_options_delete_success );
                     $ret .= '</h2>';
                     }
                 else
                     {
-                    $timing = $this->my_current_language->local_options_failure_time;
+                    $timing = self::$local_options_failure_time;
                     $ret .= '<h2 id="BMLTPlugin_Fader" class="BMLTPlugin_Message_bar_fail">';
-                        $ret .= $this->process_text ( $this->my_current_language->local_options_delete_failure );
+                        $ret .= $this->process_text ( $this->local_options_delete_failure );
                     $ret .= '</h2>';
                     }
                 }
@@ -918,9 +1198,9 @@ abstract class BMLTPlugin
         $options_coords = array();
 
         $html = '<div class="BMLTPlugin_option_page" id="BMLTPlugin_option_page_div">';
-            $html .= '<noscript class="no_js">'.$this->process_text ( $this->my_current_language->local_noscript ).'</noscript>';
+            $html .= '<noscript class="no_js">'.$this->process_text ( $this->local_noscript ).'</noscript>';
             $html .= '<div id="BMLTPlugin_options_container" style="display:none">';    // This is displayed using JavaScript.
-                $html .= '<h1 class="BMLTPlugin_Admin_h1">'.$this->process_text ( $this->my_current_language->local_options_title ).'</h1>';
+                $html .= '<h1 class="BMLTPlugin_Admin_h1">'.$this->process_text ( $this->local_options_title ).'</h1>';
                 $html .= $process_html;
                 $html .= '<form class="BMLTPlugin_sheet_form" id="BMLTPlugin_sheet_form" action ="'.$this->get_admin_form_uri().'" method="get" onsubmit="function(){return false}">';
                     $html .= '<fieldset class="BMLTPlugin_option_fieldset" id="BMLTPlugin_option_fieldset">';
@@ -952,7 +1232,7 @@ abstract class BMLTPlugin
                                                     }
                                                 else
                                                     {
-                                                    $html .= $this->process_text ( $this->my_current_language->local_options_prefix ).$i;
+                                                    $html .= $this->process_text ( $this->local_options_prefix ).$i;
                                                     }
                                             $html .= '</option>';
                                             }
@@ -973,7 +1253,7 @@ abstract class BMLTPlugin
                                     }
                                 else
                                     {
-                                    $html .= $this->process_text ( $this->my_current_language->local_options_prefix ).'1';
+                                    $html .= $this->process_text ( $this->local_options_prefix ).'1';
                                     }
                                 }
                             else
@@ -994,40 +1274,40 @@ abstract class BMLTPlugin
                                 {
                                 $html .= '<div class="BMLTPlugin_toolbar_button_line_left">';
                                     $html .= '<script type="text/javascript">';
-                                        $html .= "var c_g_delete_confirm_message='".$this->process_text ( $this->my_current_language->local_options_delete_option_confirm ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                                        $html .= "var c_g_delete_confirm_message='".$this->process_text ( $this->local_options_delete_option_confirm ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
                                     $html .= '</script>';
-                                    $html .= '<input type="button" id="BMLTPlugin_toolbar_button_del" class="BMLTPlugin_delete_button" value="'.$this->process_text ( $this->my_current_language->local_options_delete_option ).'" onclick="BMLTPlugin_DeleteOptionSheet()" />';
+                                    $html .= '<input type="button" id="BMLTPlugin_toolbar_button_del" class="BMLTPlugin_delete_button" value="'.$this->process_text ( $this->local_options_delete_option ).'" onclick="BMLTPlugin_DeleteOptionSheet()" />';
                                 $html .= '</div>';
                                 }
                             
-                            $html .= '<input type="submit" id="BMLTPlugin_toolbar_button_new" class="BMLTPlugin_create_button" name="BMLTPlugin_create_option" value="'.$this->process_text ( $this->my_current_language->local_options_add_new ).'" />';
+                            $html .= '<input type="submit" id="BMLTPlugin_toolbar_button_new" class="BMLTPlugin_create_button" name="BMLTPlugin_create_option" value="'.$this->process_text ( $this->local_options_add_new ).'" />';
                             
                             $html .= '<div class="BMLTPlugin_toolbar_button_line_right">';
-                                $html .= '<input id="BMLTPlugin_toolbar_button_save" type="button" value="'.$this->process_text ( $this->my_current_language->local_options_save ).'" onclick="BMLTPlugin_SaveOptions()" />';
+                                $html .= '<input id="BMLTPlugin_toolbar_button_save" type="button" value="'.$this->process_text ( $this->local_options_save ).'" onclick="BMLTPlugin_SaveOptions()" />';
                             $html .= '</div>';
                         $html .= '</div>';
                     $html .= '</form>';
                 $html .= '</div>';
                 $html .= '<div class="BMLTPlugin_toolbar_line_map">';
-                    $html .= '<h2 class="BMLTPlugin_map_label_h2">'.$this->process_text ( $this->my_current_language->local_options_map_label ).'</h2>';
+                    $html .= '<h2 class="BMLTPlugin_map_label_h2">'.$this->process_text ( $this->local_options_map_label ).'</h2>';
                     $html .= '<div class="BMLTPlugin_Map_Div" id="BMLTPlugin_Map_Div"></div>';
                     $html .= '<script type="text/javascript">' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
                         $html .= "BMLTPlugin_DirtifyOptionSheet(true);" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');    // This sets up the "Save Changes" button as disabled.
                         // This is a trick I use to hide irrelevant content from non-JS browsers. The element is drawn, hidden, then uses JS to show. No JS, no element.
                         $html .= "document.getElementById('BMLTPlugin_options_container').style.display='block';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-                        $html .= "var c_g_BMLTPlugin_no_name = '".$this->process_text ( $this->my_current_language->local_options_no_name_string )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-                        $html .= "var c_g_BMLTPlugin_no_root = '".$this->process_text ( $this->my_current_language->local_options_no_root_server_string )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-                        $html .= "var c_g_BMLTPlugin_root_canal = '".$this->my_current_language->local_options_url_bad.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                        $html .= "var c_g_BMLTPlugin_success_message = '".$this->process_text ( $this->my_current_language->local_options_save_success )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-                        $html .= "var c_g_BMLTPlugin_failure_message = '".$this->process_text ( $this->my_current_language->local_options_save_failure )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-                        $html .= "var c_g_BMLTPlugin_success_time = ".intval ( $this->my_current_language->local_options_success_time ).";" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-                        $html .= "var c_g_BMLTPlugin_failure_time = ".intval ( $this->my_current_language->local_options_failure_time ).";" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-                        $html .= "var c_g_BMLTPlugin_unsaved_prompt = '".$this->process_text ( $this->my_current_language->local_options_unsaved_message )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-                        $html .= "var c_g_BMLTPlugin_test_server_success = '".$this->process_text ( $this->my_current_language->local_options_test_server_success )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-                        $html .= "var c_g_BMLTPlugin_test_server_failure = '".$this->process_text ( $this->my_current_language->local_options_test_server_failure )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+                        $html .= "var c_g_BMLTPlugin_no_name = '".$this->process_text ( $this->local_options_no_name_string )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+                        $html .= "var c_g_BMLTPlugin_no_root = '".$this->process_text ( $this->local_options_no_root_server_string )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+                        $html .= "var c_g_BMLTPlugin_root_canal = '".$this->local_options_url_bad.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                        $html .= "var c_g_BMLTPlugin_success_message = '".$this->process_text ( $this->local_options_save_success )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+                        $html .= "var c_g_BMLTPlugin_failure_message = '".$this->process_text ( $this->local_options_save_failure )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+                        $html .= "var c_g_BMLTPlugin_success_time = ".intval ( self::$local_options_success_time ).";" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+                        $html .= "var c_g_BMLTPlugin_failure_time = ".intval ( self::$local_options_failure_time ).";" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+                        $html .= "var c_g_BMLTPlugin_unsaved_prompt = '".$this->process_text ( $this->local_options_unsaved_message )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+                        $html .= "var c_g_BMLTPlugin_test_server_success = '".$this->process_text ( $this->local_options_test_server_success )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+                        $html .= "var c_g_BMLTPlugin_test_server_failure = '".$this->process_text ( $this->local_options_test_server_failure )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
                         $html .= "var c_g_BMLTPlugin_coords = new Array();" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-                        $html .= "var g_BMLTPlugin_TimeToFade = ".intval ( $this->my_current_language->local_options_success_time ).";" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-                        $html .= "var g_BMLTPlugin_no_gkey_string = '".$this->process_text ( $this->my_current_language->local_options_no_gkey_string)."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+                        $html .= "var g_BMLTPlugin_TimeToFade = ".intval ( self::$local_options_success_time ).";" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+                        $html .= "var g_BMLTPlugin_no_gkey_string = '".$this->process_text ( $this->local_options_no_gkey_string)."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
                         if ( is_array ( $options_coords ) && count ( $options_coords ) )
                             {
                             foreach ( $options_coords as $value )
@@ -1087,27 +1367,27 @@ abstract class BMLTPlugin
             {
             $ret .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'javascript.js" type="text/javascript"></script>';
             $ret .= '<div class="BMLTPlugin_option_sheet" id="BMLTPlugin_option_sheet_'.$in_options_index.'_div" style="display:'.htmlspecialchars ( $display_mode ).'">';
-                $ret .= '<h2 class="BMLTPlugin_option_id_h2">'.$this->process_text ( $this->my_current_language->local_options_settings_id_prompt ).htmlspecialchars ( $options['id'] ).'</h2>';
+                $ret .= '<h2 class="BMLTPlugin_option_id_h2">'.$this->process_text ( $this->local_options_settings_id_prompt ).htmlspecialchars ( $options['id'] ).'</h2>';
                 $ret .= '<input type="hidden" name="actual_options_id" id="BMLTPlugin_option_sheet_'.$in_options_index.'_actual_options_id" value="'.htmlspecialchars ( $options['id'] ).'" />';
                 $ret .= '<div class="BMLTPlugin_option_sheet_line_div">';
                     $id = 'BMLTPlugin_option_sheet_name_'.$in_options_index;
-                    $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( $this->my_current_language->local_options_name_label ).'</label>';
-                        $string = (isset ( $options['setting_name'] ) && $options['setting_name'] ? $options['setting_name'] : $this->process_text ( $this->my_current_language->local_options_no_name_string ) );
+                    $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( $this->local_options_name_label ).'</label>';
+                        $string = (isset ( $options['setting_name'] ) && $options['setting_name'] ? $options['setting_name'] : $this->process_text ( $this->local_options_no_name_string ) );
                     $ret .= '<input class="BMLTPlugin_option_sheet_line_name_text" id="'.htmlspecialchars ( $id ).'" type="text" value="'.htmlspecialchars ( $string ).'"';
-                    $ret .= ' onfocus="BMLTPlugin_ClickInText(this.id,\''.$this->process_text ( $this->my_current_language->local_options_no_name_string ).'\',false)"';
-                    $ret .= ' onblur="BMLTPlugin_ClickInText(this.id,\''.$this->process_text ( $this->my_current_language->local_options_no_name_string ).'\',true)"';
+                    $ret .= ' onfocus="BMLTPlugin_ClickInText(this.id,\''.$this->process_text ( $this->local_options_no_name_string ).'\',false)"';
+                    $ret .= ' onblur="BMLTPlugin_ClickInText(this.id,\''.$this->process_text ( $this->local_options_no_name_string ).'\',true)"';
                     $ret .= ' onchange="BMLTPlugin_DirtifyOptionSheet()" onkeyup="BMLTPlugin_DirtifyOptionSheet()" />';
                 $ret .= '</div>';
                 $ret .= '<div class="BMLTPlugin_option_sheet_line_div">';
                     $id = 'BMLTPlugin_option_sheet_root_server_'.$in_options_index;
-                    $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( $this->my_current_language->local_options_rootserver_label ).'</label>';
-                        $string = (isset ( $options['root_server'] ) && $options['root_server'] ? $options['root_server'] : $this->process_text ( $this->my_current_language->local_options_no_root_server_string ) );
+                    $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( $this->local_options_rootserver_label ).'</label>';
+                        $string = (isset ( $options['root_server'] ) && $options['root_server'] ? $options['root_server'] : $this->process_text ( $this->local_options_no_root_server_string ) );
                     $ret .= '<input class="BMLTPlugin_option_sheet_line_root_server_text" id="'.htmlspecialchars ( $id ).'" type="text" value="'.htmlspecialchars ( $string ).'"';
-                    $ret .= ' onfocus="BMLTPlugin_ClickInText(this.id,\''.$this->process_text ( $this->my_current_language->local_options_no_root_server_string).'\',false)"';
-                    $ret .= ' onblur="BMLTPlugin_ClickInText(this.id,\''.$this->process_text ( $this->my_current_language->local_options_no_root_server_string).'\',true)"';
+                    $ret .= ' onfocus="BMLTPlugin_ClickInText(this.id,\''.$this->process_text ( $this->local_options_no_root_server_string).'\',false)"';
+                    $ret .= ' onblur="BMLTPlugin_ClickInText(this.id,\''.$this->process_text ( $this->local_options_no_root_server_string).'\',true)"';
                     $ret .= ' onchange="BMLTPlugin_DirtifyOptionSheet()" onkeyup="BMLTPlugin_DirtifyOptionSheet()" />';
                     $ret .= '<div class="BMLTPlugin_option_sheet_Test_Button_div">';
-                        $ret .= '<input type="button" value="'.$this->process_text ( $this->my_current_language->local_options_test_server ).'" onclick="BMLTPlugin_TestRootUri_call()" title="'.$this->process_text ( $this->my_current_language->local_options_test_server_tooltip ).'" />';
+                        $ret .= '<input type="button" value="'.$this->process_text ( $this->local_options_test_server ).'" onclick="BMLTPlugin_TestRootUri_call()" title="'.$this->process_text ( $this->local_options_test_server_tooltip ).'" />';
                         $ret .= '<div class="BMLTPlugin_option_sheet_NEUT" id="BMLTPlugin_option_sheet_indicator_'.$in_options_index.'"></div>';
                         $ret .= '<div class="BMLTPlugin_option_sheet_Version" id="BMLTPlugin_option_sheet_version_indicator_'.$in_options_index.'"></div>';
                     $ret .= '</div>';
@@ -1117,7 +1397,7 @@ abstract class BMLTPlugin
                     {
                     $ret .= '<div class="BMLTPlugin_option_sheet_line_div">';
                         $id = 'BMLTPlugin_option_sheet_theme_'.$in_options_index;
-                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( $this->my_current_language->local_options_theme_prompt ).'</label>';
+                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( $this->local_options_theme_prompt ).'</label>';
                         $ret .= '<select id="'.htmlspecialchars ( $id ).'" onchange="BMLTPlugin_DirtifyOptionSheet()">';
                             while ( false !== ( $file_name = readdir ( $dir_res ) ) )
                                 {
@@ -1136,40 +1416,40 @@ abstract class BMLTPlugin
                     }
                 $ret .= '<div class="BMLTPlugin_option_sheet_line_div BMLTPlugin_additional_css_line">';
                     $id = 'BMLTPlugin_option_sheet_additional_css_'.$in_options_index;
-                    $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( $this->my_current_language->local_options_more_styles_label ).'</label>';
+                    $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( $this->local_options_more_styles_label ).'</label>';
                     $ret .= '<textarea class="BMLTPlugin_option_sheet_additional_css_textarea" id="'.htmlspecialchars ( $id ).'" onchange="BMLTPlugin_DirtifyOptionSheet()" onkeyup="BMLTPlugin_DirtifyOptionSheet()">';
                     $ret .= htmlspecialchars ( $options['additional_css'] );
                     $ret .= '</textarea>';
                 $ret .= '</div>';
                 $ret .= '<fieldset class="BMLTPlugin_option_sheet_mobile_settings_fieldset">';
-                    $ret .= '<legend class="BMLTPlugin_gmap_caveat_legend">'.$this->process_text ( $this->my_current_language->local_options_mobile_legend ).'</legend>';
+                    $ret .= '<legend class="BMLTPlugin_gmap_caveat_legend">'.$this->process_text ( $this->local_options_mobile_legend ).'</legend>';
                     $ret .= '<div class="BMLTPlugin_option_sheet_line_div BMLTPlugin_google_api_line">';
                         $id = 'BMLTPlugin_google_api_label_'.$in_options_index;
-                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( $this->my_current_language->local_options_google_api_label ).'</label>';
+                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( $this->local_options_google_api_label ).'</label>';
                         $id = 'BMLTPlugin_google_api_text_'.$in_options_index;
                         $ret .= '<input class="BMLTPlugin_google_api_text" id="'.htmlspecialchars ( $id ).'" type="text" value="'.htmlspecialchars ( $options['google_api_key'] ).'" onchange="BMLTPlugin_DirtifyOptionSheet(); BMLTPlugin_PropagateAPIKey( this.value )" onkeyup="BMLTPlugin_DirtifyOptionSheet(); BMLTPlugin_PropagateAPIKey( this.value )">';
                     $ret .= '</div>';
                     $ret .= '<div class="BMLTPlugin_option_sheet_line_div">';
                         $id = 'BMLTPlugin_option_sheet_distance_units_'.$in_options_index;
-                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( $this->my_current_language->local_options_distance_prompt ).'</label>';
+                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( $this->local_options_distance_prompt ).'</label>';
                         $ret .= '<select id="'.htmlspecialchars ( $id ).'" onchange="BMLTPlugin_DirtifyOptionSheet()">';
                             $ret .= '<option value="mi"';
                             if ( 'mi' == $options['distance_units'] )
                                 {
                                 $ret .= ' selected="selected"';
                                 }
-                            $ret .= '>'.$this->process_text ( $this->my_current_language->local_options_miles ).'</option>';
+                            $ret .= '>'.$this->process_text ( $this->local_options_miles ).'</option>';
                             $ret .= '<option value="km"';
                             if ( 'km' == $options['distance_units'] )
                                 {
                                 $ret .= ' selected="selected"';
                                 }
-                            $ret .= '>'.$this->process_text ( $this->my_current_language->local_options_kilometers ).'</option>';
+                            $ret .= '>'.$this->process_text ( $this->local_options_kilometers ).'</option>';
                         $ret .= '</select>';
                     $ret .= '</div>';
                     $ret .= '<div class="BMLTPlugin_option_sheet_line_div">';
                         $id = 'BMLTPlugin_option_sheet_lang_'.$in_options_index;
-                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( $this->my_current_language->local_options_lang_prompt ).'</label>';
+                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( $this->local_options_lang_prompt ).'</label>';
                         $ret .= '<select id="'.htmlspecialchars ( $id ).'" onchange="BMLTPlugin_DirtifyOptionSheet()">';
                             $dirname = dirname ( __FILE__ ) . "/lang";
                             $dir = new DirectoryIterator ( $dirname );
@@ -1204,17 +1484,17 @@ abstract class BMLTPlugin
                     $ret .= '</div>';
                     $ret .= '<div class="BMLTPlugin_option_sheet_line_div">';
                         $id = 'BMLTPlugin_option_sheet_region_bias_'.$in_options_index;
-                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( $this->my_current_language->local_options_mobile_region_bias_label ).'</label>';
+                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( $this->local_options_mobile_region_bias_label ).'</label>';
                         $ret .= $this->bmlt_create_region_bias_select($id, $options);
                     $ret .= '</div>';
                     $ret .= '<div class="BMLTPlugin_option_sheet_line_div">';
                         $id = 'BMLTPlugin_option_sheet_week_begins_'.$in_options_index;
-                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( $this->my_current_language->local_options_week_begins_on_prompt ).'</label>';
+                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( $this->local_options_week_begins_on_prompt ).'</label>';
                         $ret .= '<select id="'.htmlspecialchars ( $id ).'" onchange="BMLTPlugin_DirtifyOptionSheet()">';
                             $sel_weekday = intval ( (isset ( $options['startWeekday']) && $options['startWeekday']) ? $options['startWeekday'] : self::$default_startWeekday );
                             
                             $counter = 1;
-                            $weekdays = $this->my_current_language->local_nouveau_weekday_long_array;
+                            $weekdays = $this->local_nouveau_weekday_long_array;
                             
                             foreach ( $weekdays as $weekday_text )
                                 {
@@ -1231,26 +1511,26 @@ abstract class BMLTPlugin
                     $ret .= '</div>';
                     $ret .= '<div class="BMLTPlugin_option_sheet_line_div">';
                         $id = 'BMLTPlugin_option_sheet_time_format_'.$in_options_index;
-                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( $this->my_current_language->local_options_time_format_prompt ).'</label>';
+                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( $this->local_options_time_format_prompt ).'</label>';
                         $ret .= '<select id="'.htmlspecialchars ( $id ).'" onchange="BMLTPlugin_DirtifyOptionSheet()">';
                             $ret .= '<option';
                                 if ( !$options['military_time'] )
                                     {
                                     $ret .= ' selected="selected"';
                                     }
-                            $ret .= '>'.$this->process_text ( $this->my_current_language->local_options_time_format_ampm ).'</option>';
+                            $ret .= '>'.$this->process_text ( $this->local_options_time_format_ampm ).'</option>';
                             $ret .= '<option';
                                 if ( $options['military_time'] )
                                     {
                                     $ret .= ' selected="selected"';
                                     }
-                            $ret .= '>'.$this->process_text ( $this->my_current_language->local_options_time_format_military ).'</option>';
+                            $ret .= '>'.$this->process_text ( $this->local_options_time_format_military ).'</option>';
                         $ret .= '</select>';
                     $ret .= '<div class="BMLTPlugin_option_sheet_line_div">';
                         $id = 'BMLTPlugin_option_sheet_initial_view_'.$in_options_index;
-                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( $this->my_current_language->local_options_initial_view_prompt ).'</label>';
+                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( $this->local_options_initial_view_prompt ).'</label>';
                         $ret .= '<select id="'.htmlspecialchars ( $id ).'" onchange="BMLTPlugin_DirtifyOptionSheet()">';
-                            foreach ( $this->my_current_language->local_options_initial_view as $value => $prompt )
+                            foreach ( $this->local_options_initial_view as $value => $prompt )
                                 {
                                 $ret .= '<option value="'.htmlspecialchars ( $value ).'"';
                                 if ( $value == $options['bmlt_initial_view'] )
@@ -1264,17 +1544,17 @@ abstract class BMLTPlugin
                     $ret .= '<div class="BMLTPlugin_option_sheet_line_div BMLTPlugin_location_checkbox_line">';
                         $id = 'BMLTPlugin_location_selected_checkbox_'.$in_options_index;
                         $ret .= '<div class="BMLTPlugin_option_sheet_checkbox_div"><input class="BMLTPlugin_option_sheet_line_location_checkbox" onchange="BMLTPlugin_DirtifyOptionSheet()" id="'.htmlspecialchars ( $id ).'" type="checkbox"'.($options['bmlt_location_checked'] == 1 ? ' checked="checked"' : '' ).'"></div>';
-                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( $this->my_current_language->local_options_settings_location_checkbox_label ).'</label>';
+                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( $this->local_options_settings_location_checkbox_label ).'</label>';
                     $ret .= '</div>';
                     $ret .= '<div class="BMLTPlugin_option_sheet_line_div BMLTPlugin_location_checkbox_line">';
                         $id = 'BMLTPlugin_location_services_checkbox_'.$in_options_index;
                         $ret .= '<div class="BMLTPlugin_option_sheet_checkbox_div"><input class="BMLTPlugin_option_sheet_line_location_services_checkbox" onchange="BMLTPlugin_DirtifyOptionSheet()" id="'.htmlspecialchars ( $id ).'" type="checkbox"'.($options['bmlt_location_services'] == 1 ? ' checked="checked"' : '' ).'"></div>';
-                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( $this->my_current_language->local_options_selectLocation_checkbox_text ).'</label>';
+                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( $this->local_options_selectLocation_checkbox_text ).'</label>';
                     $ret .= '</div>';
                     $ret .= '</div>';
                     $ret .= '<div class="BMLTPlugin_option_sheet_line_div">';
                         $id = 'BMLTPlugin_option_sheet_grace_period_'.$in_options_index;
-                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( $this->my_current_language->local_options_mobile_grace_period_label ).'</label>';
+                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( $this->local_options_mobile_grace_period_label ).'</label>';
                         $ret .= '<select id="'.htmlspecialchars ( $id ).'" onchange="BMLTPlugin_DirtifyOptionSheet()">';
                             for ( $minute = 0; $minute < 60; $minute += 5 )
                                 {
@@ -1286,7 +1566,7 @@ abstract class BMLTPlugin
                                 $ret .= '>'.$minute.'</option>';
                                 }
                         $ret .= '</select>';
-                        $ret .= '<div class="BMLTPlugin_option_sheet_text_div">'.$this->process_text ( $this->my_current_language->local_options_grace_period_disclaimer ).'</div>';
+                        $ret .= '<div class="BMLTPlugin_option_sheet_text_div">'.$this->process_text ( $this->local_options_grace_period_disclaimer ).'</div>';
                     $ret .= '</div>';
                 $ret .= '</fieldset>';
             $ret .= '</div>';
@@ -1523,7 +1803,7 @@ abstract class BMLTPlugin
                 $uri = trim ( $this->my_http_vars['BMLTPlugin_AJAX_Call_Check_Root_URI'] );
                 
                 $test = new bmlt_satellite_controller ( $uri );
-                if ( $uri && ($uri != $this->my_current_language->local_options_no_root_server_string ) && ($test instanceof bmlt_satellite_controller) )
+                if ( $uri && ($uri != $this->local_options_no_root_server_string ) && ($test instanceof bmlt_satellite_controller) )
                     {
                     if ( !$test->get_m_error_message() )
                         {
@@ -1677,9 +1957,9 @@ abstract class BMLTPlugin
                             }
                         if ( $single_uri )
                             {
-                            $result = preg_replace ( '|\<a [^>]*href="'.preg_quote($options['root_server']).'.*?single_meeting_id=(\d+)[^>]*>|', "<a rel=\"nofollow\" title=\"".$this->process_text ( $this->my_current_language->local_single_meeting_tooltip)."\" href=\"".$single_uri."=$1&amp;supports_ajax=yes\">", $result );
+                            $result = preg_replace ( '|\<a [^>]*href="'.preg_quote($options['root_server']).'.*?single_meeting_id=(\d+)[^>]*>|', "<a rel=\"nofollow\" title=\"".$this->process_text ( $this->local_single_meeting_tooltip)."\" href=\"".$single_uri."=$1&amp;supports_ajax=yes\">", $result );
                             }
-                        $result = preg_replace ( '|\<a rel="external"|','<a rel="nofollow external" title="'.$this->process_text ( $this->my_current_language->local_gm_link_tooltip).'"', $result );
+                        $result = preg_replace ( '|\<a rel="external"|','<a rel="nofollow external" title="'.$this->process_text ( $this->local_gm_link_tooltip).'"', $result );
                         }
 
                     if ( ob_get_level () )         ob_end_clean(); // Just in case we are in an OB
@@ -1790,11 +2070,11 @@ abstract class BMLTPlugin
             
             if ( is_array ( $text_ar ) && count ( $text_ar ) )
                 {
-                $display .= '<noscript class="no_js">'.$this->process_text ( $this->my_current_language->local_noscript ).'</noscript>';
+                $display .= '<noscript class="no_js">'.$this->process_text ( $this->local_noscript ).'</noscript>';
                 $display .= '<div id="interactive_form_div" class="interactive_form_div" style="display:none"><form action="#" onsubmit="return false"><div>';
                 $display .= '<label class="meeting_search_select_label" for="meeting_search_select">Find Meetings:</label> ';
                 $display .= '<select id="meeting_search_select"class="simple_search_list" onchange="BMLTPlugin_simple_div_filler (this.value,this.options[this.selectedIndex].text);this.options[this.options.length-1].disabled=(this.selectedIndex==0)">';
-                $display .= '<option disabled="disabled" selected="selected">'.$this->process_text ( $this->my_current_language->local_select_search ).'</option>';
+                $display .= '<option disabled="disabled" selected="selected">'.$this->process_text ( $this->local_select_search ).'</option>';
                 $lines_max = count ( $text_ar );
                 $lines = 0;
                 while ( $lines < $lines_max )
@@ -1808,7 +2088,7 @@ abstract class BMLTPlugin
                         }
                     }
                 $display .= '<option disabled="disabled"></option>';
-                $display .= '<option disabled="disabled" value="">'.$this->process_text ( $this->my_current_language->local_clear_search ).'</option>';
+                $display .= '<option disabled="disabled" value="">'.$this->process_text ( $this->local_clear_search ).'</option>';
                 $display .= '</select></div></form>';
                 
                 $display .= '<script type="text/javascript">' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
@@ -1861,7 +2141,7 @@ abstract class BMLTPlugin
             $this->adapt_to_lang ( $options['lang'] );
             $uid = htmlspecialchars ( 'bmlt_nouveau_'.uniqid() );
         
-            $the_new_content = '<noscript>'.$this->process_text ( $this->my_current_language->local_noscript ).'</noscript>';    // We let non-JS browsers know that this won't work for them.
+            $the_new_content = '<noscript>'.$this->process_text ( $this->local_noscript ).'</noscript>';    // We let non-JS browsers know that this won't work for them.
         
             if ( $first )   // We only load this the first time.
                 {
@@ -1869,107 +2149,107 @@ abstract class BMLTPlugin
                 $the_new_content .= $this->BMLTPlugin_nouveau_map_search_global_javascript_stuff ( $options_id );
                 // Most of the display is built in DOM, but this is how we get our localized strings into JS. We put them in globals.
                 $the_new_content .= '<script type="text/javascript">' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-                $the_new_content .= "var g_NouveauMapSearch_advanced_name_string ='".$this->process_text ( $this->my_current_language->local_nouveau_advanced_button ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_NouveauMapSearch_map_name_string ='".$this->process_text ( $this->my_current_language->local_nouveau_map_button ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_NouveauMapSearch_text_name_string ='".$this->process_text ( $this->my_current_language->local_nouveau_text_button ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_text_go_button_string ='".$this->process_text ( $this->my_current_language->local_nouveau_text_go_button ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_text_location_label_text ='".$this->process_text ( $this->my_current_language->local_nouveau_text_location_label_text ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_text_item_default_text ='".$this->process_text ( $this->my_current_language->local_nouveau_text_item_default_text ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_advanced_weekdays_disclosure_text ='".$this->process_text ( $this->my_current_language->local_nouveau_advanced_weekdays_disclosure_text ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_advanced_formats_disclosure_text ='".$this->process_text ( $this->my_current_language->local_nouveau_advanced_formats_disclosure_text ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_advanced_service_bodies_disclosure_text ='".$this->process_text ( $this->my_current_language->local_nouveau_advanced_service_bodies_disclosure_text ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_no_search_results_text ='".$this->process_text ( $this->my_current_language->local_nouveau_cant_find_meetings_display ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_cant_lookup_display ='".$this->process_text ( $this->my_current_language->local_nouveau_cant_lookup_display ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_select_search_spec_text ='".$this->process_text ( $this->my_current_language->local_nouveau_select_search_spec_text ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_select_search_results_text ='".$this->process_text ( $this->my_current_language->local_nouveau_select_search_results_text ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_display_map_results_text ='".$this->process_text ( $this->my_current_language->local_nouveau_display_map_results_text ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_display_list_results_text ='".$this->process_text ( $this->my_current_language->local_nouveau_display_list_results_text ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_NouveauMapSearch_advanced_name_string ='".$this->process_text ( $this->local_nouveau_advanced_button ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_NouveauMapSearch_map_name_string ='".$this->process_text ( $this->local_nouveau_map_button ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_NouveauMapSearch_text_name_string ='".$this->process_text ( $this->local_nouveau_text_button ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_text_go_button_string ='".$this->process_text ( $this->local_nouveau_text_go_button ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_text_location_label_text ='".$this->process_text ( $this->local_nouveau_text_location_label_text ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_text_item_default_text ='".$this->process_text ( $this->local_nouveau_text_item_default_text ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_advanced_weekdays_disclosure_text ='".$this->process_text ( $this->local_nouveau_advanced_weekdays_disclosure_text ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_advanced_formats_disclosure_text ='".$this->process_text ( $this->local_nouveau_advanced_formats_disclosure_text ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_advanced_service_bodies_disclosure_text ='".$this->process_text ( $this->local_nouveau_advanced_service_bodies_disclosure_text ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_no_search_results_text ='".$this->process_text ( $this->local_nouveau_cant_find_meetings_display ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_cant_lookup_display ='".$this->process_text ( $this->local_nouveau_cant_lookup_display ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_select_search_spec_text ='".$this->process_text ( $this->local_nouveau_select_search_spec_text ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_select_search_results_text ='".$this->process_text ( $this->local_nouveau_select_search_results_text ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_display_map_results_text ='".$this->process_text ( $this->local_nouveau_display_map_results_text ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_display_list_results_text ='".$this->process_text ( $this->local_nouveau_display_list_results_text ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
             
-                $the_new_content .= "var g_Nouveau_location_services_set_my_location_advanced_button ='".$this->process_text ( $this->my_current_language->local_nouveau_location_services_set_my_location_advanced_button ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_services_find_all_meetings_nearby_button ='".$this->process_text ( $this->my_current_language->local_nouveau_location_services_find_all_meetings_nearby_button ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_services_find_all_meetings_nearby_later_today_button ='".$this->process_text ( $this->my_current_language->local_nouveau_location_services_find_all_meetings_nearby_later_today_button ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_services_find_all_meetings_nearby_tomorrow_button ='".$this->process_text ( $this->my_current_language->local_nouveau_location_services_find_all_meetings_nearby_tomorrow_button ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_services_set_my_location_advanced_button ='".$this->process_text ( $this->local_nouveau_location_services_set_my_location_advanced_button ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_services_find_all_meetings_nearby_button ='".$this->process_text ( $this->local_nouveau_location_services_find_all_meetings_nearby_button ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_services_find_all_meetings_nearby_later_today_button ='".$this->process_text ( $this->local_nouveau_location_services_find_all_meetings_nearby_later_today_button ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_services_find_all_meetings_nearby_tomorrow_button ='".$this->process_text ( $this->local_nouveau_location_services_find_all_meetings_nearby_tomorrow_button ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
 
-                $the_new_content .= "var g_Nouveau_meeting_results_count_sprintf_format ='".$this->my_current_language->local_nouveau_meeting_results_count_sprintf_format.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_meeting_results_selection_count_sprintf_format ='".$this->my_current_language->local_nouveau_meeting_results_selection_count_sprintf_format.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_meeting_results_single_selection_count_sprintf_format ='".$this->my_current_language->local_nouveau_meeting_results_single_selection_count_sprintf_format.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_single_time_sprintf_format ='".$this->my_current_language->local_nouveau_single_time_sprintf_format.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_meeting_results_count_sprintf_format ='".$this->local_nouveau_meeting_results_count_sprintf_format.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_meeting_results_selection_count_sprintf_format ='".$this->local_nouveau_meeting_results_selection_count_sprintf_format.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_meeting_results_single_selection_count_sprintf_format ='".$this->local_nouveau_meeting_results_single_selection_count_sprintf_format.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_single_time_sprintf_format ='".$this->local_nouveau_single_time_sprintf_format.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
             
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_loc_street_info = '".$this->my_current_language->local_nouveau_location_sprintf_format_loc_street_info.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_loc_street = '".$this->my_current_language->local_nouveau_location_sprintf_format_loc_street.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_street_info = '".$this->my_current_language->local_nouveau_location_sprintf_format_street_info.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_loc_info = '".$this->my_current_language->local_nouveau_location_sprintf_format_loc_info.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_street = '".$this->my_current_language->local_nouveau_location_sprintf_format_street.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_loc = '".$this->my_current_language->local_nouveau_location_sprintf_format_loc.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_loc_street_info = '".$this->local_nouveau_location_sprintf_format_loc_street_info.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_loc_street = '".$this->local_nouveau_location_sprintf_format_loc_street.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_street_info = '".$this->local_nouveau_location_sprintf_format_street_info.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_loc_info = '".$this->local_nouveau_location_sprintf_format_loc_info.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_street = '".$this->local_nouveau_location_sprintf_format_street.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_loc = '".$this->local_nouveau_location_sprintf_format_loc.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
 
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_info_town_province_zip = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_loc_street_info_town_province_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_town_province_zip = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_loc_street_town_province_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_info_town_province_zip = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_street_info_town_province_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_info_town_province_zip = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_loc_info_town_province_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_town_province_zip = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_street_town_province_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_town_province_zip = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_loc_town_province_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_info_town_province_zip = '".$this->local_nouveau_location_sprintf_format_single_loc_street_info_town_province_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_town_province_zip = '".$this->local_nouveau_location_sprintf_format_single_loc_street_town_province_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_info_town_province_zip = '".$this->local_nouveau_location_sprintf_format_single_street_info_town_province_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_info_town_province_zip = '".$this->local_nouveau_location_sprintf_format_single_loc_info_town_province_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_town_province_zip = '".$this->local_nouveau_location_sprintf_format_single_street_town_province_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_town_province_zip = '".$this->local_nouveau_location_sprintf_format_single_loc_town_province_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
 
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_info_town_province = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_loc_street_info_town_province.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_town_province = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_loc_street_town_province.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_info_town_province = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_street_info_town_province.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_info_town_province = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_loc_info_town_province.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_town_province = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_street_town_province.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_town_province = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_loc_town_province.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_info_town_province = '".$this->local_nouveau_location_sprintf_format_single_loc_street_info_town_province.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_town_province = '".$this->local_nouveau_location_sprintf_format_single_loc_street_town_province.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_info_town_province = '".$this->local_nouveau_location_sprintf_format_single_street_info_town_province.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_info_town_province = '".$this->local_nouveau_location_sprintf_format_single_loc_info_town_province.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_town_province = '".$this->local_nouveau_location_sprintf_format_single_street_town_province.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_town_province = '".$this->local_nouveau_location_sprintf_format_single_loc_town_province.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
 
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_info_town_zip = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_loc_street_info_town_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_town_zip = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_loc_street_town_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_info_town_zip = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_street_info_town_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_info_town_zip = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_loc_info_town_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_town_zip = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_street_town_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_town_zip = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_loc_town_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_info_town_zip = '".$this->local_nouveau_location_sprintf_format_single_loc_street_info_town_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_town_zip = '".$this->local_nouveau_location_sprintf_format_single_loc_street_town_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_info_town_zip = '".$this->local_nouveau_location_sprintf_format_single_street_info_town_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_info_town_zip = '".$this->local_nouveau_location_sprintf_format_single_loc_info_town_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_town_zip = '".$this->local_nouveau_location_sprintf_format_single_street_town_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_town_zip = '".$this->local_nouveau_location_sprintf_format_single_loc_town_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
 
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_info_province_zip = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_loc_street_info_province_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_province_zip = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_loc_street_province_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_info_province_zip = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_street_info_province_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_info_province_zip = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_loc_info_province_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_province_zip = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_street_province_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_province_zip = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_loc_province_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_info_province_zip = '".$this->local_nouveau_location_sprintf_format_single_loc_street_info_province_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_province_zip = '".$this->local_nouveau_location_sprintf_format_single_loc_street_province_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_info_province_zip = '".$this->local_nouveau_location_sprintf_format_single_street_info_province_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_info_province_zip = '".$this->local_nouveau_location_sprintf_format_single_loc_info_province_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_province_zip = '".$this->local_nouveau_location_sprintf_format_single_street_province_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_province_zip = '".$this->local_nouveau_location_sprintf_format_single_loc_province_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
 
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_info_province = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_loc_street_info_province.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_province = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_loc_street_province.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_info_province = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_street_info_province.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_info_province = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_loc_info_province.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_province = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_street_province.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_province = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_loc_province.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_info_province = '".$this->local_nouveau_location_sprintf_format_single_loc_street_info_province.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_province = '".$this->local_nouveau_location_sprintf_format_single_loc_street_province.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_info_province = '".$this->local_nouveau_location_sprintf_format_single_street_info_province.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_info_province = '".$this->local_nouveau_location_sprintf_format_single_loc_info_province.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_province = '".$this->local_nouveau_location_sprintf_format_single_street_province.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_province = '".$this->local_nouveau_location_sprintf_format_single_loc_province.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
 
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_info_zip = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_loc_street_info_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_zip = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_loc_street_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_info_zip = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_street_info_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_info_zip = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_loc_info_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_zip = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_street_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_zip = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_loc_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_info_zip = '".$this->local_nouveau_location_sprintf_format_single_loc_street_info_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_zip = '".$this->local_nouveau_location_sprintf_format_single_loc_street_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_info_zip = '".$this->local_nouveau_location_sprintf_format_single_street_info_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_info_zip = '".$this->local_nouveau_location_sprintf_format_single_loc_info_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_zip = '".$this->local_nouveau_location_sprintf_format_single_street_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_zip = '".$this->local_nouveau_location_sprintf_format_single_loc_zip.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
 
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_info = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_loc_street_info.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_loc_street.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_info = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_street_info.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_info = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_loc_info.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_street.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc = '".$this->my_current_language->local_nouveau_location_sprintf_format_single_loc.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street_info = '".$this->local_nouveau_location_sprintf_format_single_loc_street_info.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_street = '".$this->local_nouveau_location_sprintf_format_single_loc_street.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street_info = '".$this->local_nouveau_location_sprintf_format_single_street_info.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc_info = '".$this->local_nouveau_location_sprintf_format_single_loc_info.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_street = '".$this->local_nouveau_location_sprintf_format_single_street.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_single_loc = '".$this->local_nouveau_location_sprintf_format_single_loc.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
 
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_wtf ='".$this->process_text ( $this->my_current_language->local_nouveau_location_sprintf_format_wtf ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_wtf ='".$this->process_text ( $this->local_nouveau_location_sprintf_format_wtf ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
 
-                $the_new_content .= "var g_Nouveau_time_sprintf_format = '".$this->my_current_language->local_nouveau_time_sprintf_format.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_am ='".$this->process_text ( $this->my_current_language->local_nouveau_am ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_pm ='".$this->process_text ( $this->my_current_language->local_nouveau_pm ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_noon ='".$this->process_text ( $this->my_current_language->local_nouveau_noon ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_midnight ='".$this->process_text ( $this->my_current_language->local_nouveau_midnight ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_advanced_map_radius_label_1 ='".$this->process_text ( $this->my_current_language->local_nouveau_advanced_map_radius_label_1 ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_advanced_map_radius_label_2 ='".$this->process_text ( $this->my_current_language->local_nouveau_advanced_map_radius_label_2 ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_advanced_map_radius_value_2_km ='".$this->process_text ( $this->my_current_language->local_nouveau_advanced_map_radius_value_km ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_advanced_map_radius_value_2_mi ='".$this->process_text ( $this->my_current_language->local_nouveau_advanced_map_radius_value_mi ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_advanced_map_radius_value_auto ='".$this->process_text ( $this->my_current_language->local_nouveau_advanced_map_radius_value_auto ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_advanced_map_radius_value_array = [ ".$this->my_current_language->local_nouveau_advanced_map_radius_value_array." ];";
-                $the_new_content .= "var g_Nouveau_meeting_details_link_title = '".$this->process_text ( $this->my_current_language->local_nouveau_meeting_details_link_title ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_meeting_details_map_link_uri_format = '".htmlspecialchars ( $this->my_current_language->local_nouveau_meeting_details_map_link_uri_format ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_meeting_details_map_link_text = '".$this->process_text ( $this->my_current_language->local_nouveau_meeting_details_map_link_text ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_time_sprintf_format = '".$this->local_nouveau_time_sprintf_format.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_am ='".$this->process_text ( $this->local_nouveau_am ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_pm ='".$this->process_text ( $this->local_nouveau_pm ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_noon ='".$this->process_text ( $this->local_nouveau_noon ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_midnight ='".$this->process_text ( $this->local_nouveau_midnight ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_advanced_map_radius_label_1 ='".$this->process_text ( $this->local_nouveau_advanced_map_radius_label_1 ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_advanced_map_radius_label_2 ='".$this->process_text ( $this->local_nouveau_advanced_map_radius_label_2 ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_advanced_map_radius_value_2_km ='".$this->process_text ( $this->local_nouveau_advanced_map_radius_value_km ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_advanced_map_radius_value_2_mi ='".$this->process_text ( $this->local_nouveau_advanced_map_radius_value_mi ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_advanced_map_radius_value_auto ='".$this->process_text ( $this->local_nouveau_advanced_map_radius_value_auto ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_advanced_map_radius_value_array = [ ".$this->local_nouveau_advanced_map_radius_value_array." ];";
+                $the_new_content .= "var g_Nouveau_meeting_details_link_title = '".$this->process_text ( $this->local_nouveau_meeting_details_link_title ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_meeting_details_map_link_uri_format = '".htmlspecialchars ( $this->local_nouveau_meeting_details_map_link_uri_format ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_meeting_details_map_link_text = '".$this->process_text ( $this->local_nouveau_meeting_details_map_link_text ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
                 $the_new_content .= "var g_Nouveau_array_keys = {";
                     $first = true;
-                    foreach ( $this->my_current_language->local_nouveau_prompt_array as $key => $value )
+                    foreach ( $this->local_nouveau_prompt_array as $key => $value )
                         {
                         if ( !$first )
                             {
@@ -1982,29 +2262,29 @@ abstract class BMLTPlugin
                 $the_new_content .= "};";
                 $the_new_content .= 'var g_Nouveau_military_time = '.((isset ( $options['military_time'] ) && $options['military_time']) ? 'true' : 'false' ).';';
                 $the_new_content .= 'var g_Nouveau_start_week = '.((isset ( $options['startWeekday'] ) && $options['startWeekday']) ? $options['startWeekday'] : self::$default_startWeekday ).';';
-                $the_new_content .= 'var g_Nouveau_array_header_text = new Array ( "'.join ( '","', $this->my_current_language->local_nouveau_table_header_array ).'");';
-                $the_new_content .= 'var g_Nouveau_weekday_long_array = new Array ( "'.join ( '","', $this->my_current_language->local_nouveau_weekday_long_array ).'");';
-                $the_new_content .= 'var g_Nouveau_weekday_short_array = new Array ( "'.join ( '","', $this->my_current_language->local_nouveau_weekday_short_array ).'");';
-                $the_new_content .= "var g_Nouveau_lookup_location_failed = '".$this->process_text ( $this->my_current_language->local_nouveau_lookup_location_failed ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");              
-                $the_new_content .= "var g_Nouveau_lookup_location_server_error = '".$this->process_text ( $this->my_current_language->local_nouveau_lookup_location_server_error ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");              
+                $the_new_content .= 'var g_Nouveau_array_header_text = new Array ( "'.join ( '","', $this->local_nouveau_table_header_array ).'");';
+                $the_new_content .= 'var g_Nouveau_weekday_long_array = new Array ( "'.join ( '","', $this->local_nouveau_weekday_long_array ).'");';
+                $the_new_content .= 'var g_Nouveau_weekday_short_array = new Array ( "'.join ( '","', $this->local_nouveau_weekday_short_array ).'");';
+                $the_new_content .= "var g_Nouveau_lookup_location_failed = '".$this->process_text ( $this->local_nouveau_lookup_location_failed ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");              
+                $the_new_content .= "var g_Nouveau_lookup_location_server_error = '".$this->process_text ( $this->local_nouveau_lookup_location_server_error ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");              
                 $the_new_content .= "var g_Nouveau_default_geo_width = -10;";
                 $the_new_content .= "var g_Nouveau_default_details_map_zoom = ".self::$default_details_map_zoom.';';
                 $the_new_content .= "var g_Nouveau_default_marker_aggregation_threshold_in_pixels = 8;";
 
-                $the_new_content .= "var g_Nouveau_single_formats_label = '".$this->process_text ( $this->my_current_language->local_nouveau_single_formats_label ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_single_service_body_label = '".$this->process_text ( $this->my_current_language->local_nouveau_single_service_body_label ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_single_formats_label = '".$this->process_text ( $this->local_nouveau_single_formats_label ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_single_service_body_label = '".$this->process_text ( $this->local_nouveau_single_service_body_label ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
                 
                 $the_new_content .= "var g_Nouveau_user_logged_in = '".((isset ( $this->m_is_logged_in_user ) && $this->m_is_logged_in_user) ? "true" : "false" ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
                 $the_new_content .= "var g_Nouveau_default_duration = '".self::$default_duration."';";
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_duration_title = '".$this->my_current_language->local_nouveau_location_sprintf_format_duration_title.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_duration_hour_only_title = '".$this->my_current_language->local_nouveau_location_sprintf_format_duration_hour_only_title.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_duration_hour_only_and_minutes_title = '".$this->my_current_language->local_nouveau_location_sprintf_format_duration_hour_only_and_minutes_title.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_location_sprintf_format_duration_hours_only_title = '".$this->my_current_language->local_nouveau_location_sprintf_format_duration_hours_only_title.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_single_duration_sprintf_format_1_hr ='".$this->my_current_language->local_nouveau_single_duration_sprintf_format_1_hr.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_single_duration_sprintf_format_mins ='".$this->my_current_language->local_nouveau_single_duration_sprintf_format_mins.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_single_duration_sprintf_format_hrs ='".$this->my_current_language->local_nouveau_single_duration_sprintf_format_hrs.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_single_duration_sprintf_format_hr_mins ='".$this->my_current_language->local_nouveau_single_duration_sprintf_format_hr_mins.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                $the_new_content .= "var g_Nouveau_single_duration_sprintf_format_hrs_mins ='".$this->my_current_language->local_nouveau_single_duration_sprintf_format_hrs_mins.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_duration_title = '".$this->local_nouveau_location_sprintf_format_duration_title.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_duration_hour_only_title = '".$this->local_nouveau_location_sprintf_format_duration_hour_only_title.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_duration_hour_only_and_minutes_title = '".$this->local_nouveau_location_sprintf_format_duration_hour_only_and_minutes_title.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_location_sprintf_format_duration_hours_only_title = '".$this->local_nouveau_location_sprintf_format_duration_hours_only_title.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_single_duration_sprintf_format_1_hr ='".$this->local_nouveau_single_duration_sprintf_format_1_hr.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_single_duration_sprintf_format_mins ='".$this->local_nouveau_single_duration_sprintf_format_mins.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_single_duration_sprintf_format_hrs ='".$this->local_nouveau_single_duration_sprintf_format_hrs.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_single_duration_sprintf_format_hr_mins ='".$this->local_nouveau_single_duration_sprintf_format_hr_mins.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                $the_new_content .= "var g_Nouveau_single_duration_sprintf_format_hrs_mins ='".$this->local_nouveau_single_duration_sprintf_format_hrs_mins.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
                 
                 $the_new_content .= '</script>';
                 $first = false;
@@ -2051,29 +2331,31 @@ abstract class BMLTPlugin
             {
             $options = $this->getBMLTOptions_by_id ( $options_id );
             $this->adapt_to_lang ( $options['lang'] );
+            $root_server_root = $options['root_server'];
             }
         
-        $root_server_root = $options['root_server'];
-
-        while ( $params = self::get_shortcode ( $in_content, 'bmlt_simple' ) )
+        if ( $root_server_root )
             {
-            $param_array = explode ( '##-##', $params );    // You can specify a settings ID, by separating it from the URI parameters with a ##-##.
-        
-            $params = null;
-        
-            if ( is_array ( $param_array ) && (count ( $param_array ) > 1) )
+            while ( $params = self::get_shortcode ( $in_content, 'bmlt_simple' ) )
                 {
-                $options = $this->getBMLTOptions_by_id ( $param_array[0] );
-                $this->adapt_to_lang ( $options['lang'] );
-                $root_server_root = $options['root_server'];
-                }
+                $param_array = explode ( '##-##', $params );    // You can specify a settings ID, by separating it from the URI parameters with a ##-##.
         
-            $params = (count ($param_array) > 0) ? '?'.str_replace ( array ( '&#038;', '&#038;#038;', '&#038;amp;', '&#038;amp;', '&amp;#038;', '&amp;', '&amp;amp;' ), '&', $param_array[count ( $param_array )-1] ) : null;
+                $params = null;
         
-            $uri = $root_server_root."/client_interface/simple/index.php".$params;
+                if ( is_array ( $param_array ) && (count ( $param_array ) > 1) )
+                    {
+                    $options = $this->getBMLTOptions_by_id ( $param_array[0] );
+                    $this->adapt_to_lang ( $options['lang'] );
+                    $root_server_root = $options['root_server'];
+                    }
+        
+                $params = (count ($param_array) > 0) ? '?'.str_replace ( array ( '&#038;', '&#038;#038;', '&#038;amp;', '&#038;amp;', '&amp;#038;', '&amp;', '&amp;amp;' ), '&', $param_array[count ( $param_array )-1] ) : null;
+        
+                $uri = $root_server_root."/client_interface/simple/index.php".$params;
 
-            $the_new_content = bmlt_satellite_controller::call_curl ( $uri );
-            $in_content = self::replace_shortcode ( $in_content, 'bmlt_simple', $the_new_content );
+                $the_new_content = bmlt_satellite_controller::call_curl ( $uri );
+                $in_content = self::replace_shortcode ( $in_content, 'bmlt_simple', $the_new_content );
+                }
             }
         
         return $in_content;
@@ -2132,26 +2414,26 @@ abstract class BMLTPlugin
                 $params = preg_replace ( '|^[\&\?]|', '', $params );
                 $params = preg_replace ( '|[\&\?]$|', '', $params );
                 
-                $the_new_content = '<noscript>'.$this->process_text ( $this->my_current_language->local_noscript ).'</noscript>';    // We let non-JS browsers know that this won't work for them.
+                $the_new_content = '<noscript>'.$this->process_text ( $this->local_noscript ).'</noscript>';    // We let non-JS browsers know that this won't work for them.
                 
                 // The first time through, we import our JS file. After that, we no longer need it.
                 if ( !$my_table_next_id )
                     {
                     $the_new_content .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'table_display.js" type="text/javascript"></script>'.(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
                     $the_new_content .= "<script type=\"text/javascript\">".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
-                    $the_new_content .= 'var g_table_weekday_name_array = new Array ( "'.join ( '","', $this->my_current_language->local_nouveau_weekday_short_array ).'" );'.(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
-                    $the_new_content .= 'var g_table_weekday_long_name_array = new Array ( "'.join ( '","', $this->my_current_language->local_nouveau_weekday_long_array ).'" );'.(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
+                    $the_new_content .= 'var g_table_weekday_name_array = new Array ( "'.join ( '","', $this->local_nouveau_weekday_short_array ).'" );'.(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
+                    $the_new_content .= 'var g_table_weekday_long_name_array = new Array ( "'.join ( '","', $this->local_nouveau_weekday_long_array ).'" );'.(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
                     $the_new_content .= "var g_table_throbber_img_src = '".htmlspecialchars ( $this->get_plugin_path().'themes/default/images/TableThrobber.gif' ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                    $the_new_content .= "var g_table_time_header_text = '".$this->process_text ( $this->my_current_language->local_table_header_time_label )."';".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
-                    $the_new_content .= "var g_table_name_header_text = '".$this->process_text ( $this->my_current_language->local_table_header_meeting_name_label )."';".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
-                    $the_new_content .= "var g_table_town_header_text = '".$this->process_text ( $this->my_current_language->local_table_header_town_label )."';".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
-                    $the_new_content .= "var g_table_address_header_text = '".$this->process_text ( $this->my_current_language->local_table_header_address_label )."';".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
-                    $the_new_content .= "var g_table_format_header_text = '".htmlspecialchars ( $this->my_current_language->local_table_header_format_label )."';".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
-                    $the_new_content .= "var g_table_header_tab_format = '".htmlspecialchars ( $this->my_current_language->local_table_header_tab_title_format )."';".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
-                    $the_new_content .= "var g_table_header_tab_loading_format = '".htmlspecialchars ( $this->my_current_language->local_table_tab_loading_title_format )."';".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
-                    $the_new_content .= 'var g_table_ampm_array = new Array ( '.$this->my_current_language->local_table_ante_meridian.' );'.(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
-                    $the_new_content .= "var g_table_map_link_uri_format = '".htmlspecialchars ( $this->my_current_language->local_nouveau_meeting_details_map_link_uri_format ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                    $the_new_content .= "var g_table_no_meetings_format = '".htmlspecialchars ( $this->my_current_language->local_table_no_meetings_format ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                    $the_new_content .= "var g_table_time_header_text = '".$this->process_text ( $this->local_table_header_time_label )."';".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
+                    $the_new_content .= "var g_table_name_header_text = '".$this->process_text ( $this->local_table_header_meeting_name_label )."';".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
+                    $the_new_content .= "var g_table_town_header_text = '".$this->process_text ( $this->local_table_header_town_label )."';".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
+                    $the_new_content .= "var g_table_address_header_text = '".$this->process_text ( $this->local_table_header_address_label )."';".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
+                    $the_new_content .= "var g_table_format_header_text = '".htmlspecialchars ( $this->local_table_header_format_label )."';".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
+                    $the_new_content .= "var g_table_header_tab_format = '".htmlspecialchars ( $this->local_table_header_tab_title_format )."';".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
+                    $the_new_content .= "var g_table_header_tab_loading_format = '".htmlspecialchars ( $this->local_table_tab_loading_title_format )."';".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
+                    $the_new_content .= 'var g_table_ampm_array = new Array ( '.$this->local_table_ante_meridian.' );'.(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
+                    $the_new_content .= "var g_table_map_link_uri_format = '".htmlspecialchars ( $this->local_nouveau_meeting_details_map_link_uri_format ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
+                    $the_new_content .= "var g_table_no_meetings_format = '".htmlspecialchars ( $this->local_table_no_meetings_format ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
                     $the_new_content .= "</script>";
                     }
                 
@@ -2194,7 +2476,7 @@ abstract class BMLTPlugin
             $this->adapt_to_lang ( $options['lang'] );
             $uid = htmlspecialchars ( 'BMLTuid_'.uniqid() );
             
-            $the_new_content = '<noscript>'.$this->process_text ( $this->my_current_language->local_noscript ).'</noscript>';    // We let non-JS browsers know that this won't work for them.
+            $the_new_content = '<noscript>'.$this->process_text ( $this->local_noscript ).'</noscript>';    // We let non-JS browsers know that this won't work for them.
             
             if ( $first )   // We only load this the first time.
                 {
@@ -2209,7 +2491,7 @@ abstract class BMLTPlugin
                     $the_new_content .= $this->BMLTPlugin_map_search_local_javascript_stuff ( $options_id, $uid );
                 $the_new_content .= '</div>';
                 $the_new_content .= '<div class="bmlt_search_map_div" id="'.$uid.'_bmlt_search_map_div"></div>';
-                $the_new_content .= '<script type="text/javascript">var g_military_time = '.($options['military_time'] ? 'true' : 'false' ).';g_no_meetings_found="'.htmlspecialchars ( $this->my_current_language->local_cant_find_meetings_display ).'";document.getElementById(\''.$uid.'\').style.display=\'block\';c_ms_'.$uid.' = new MapSearch ( \''.htmlspecialchars ( $uid ).'\',\''.htmlspecialchars ( $options_id ).'\', document.getElementById(\''.$uid.'_bmlt_search_map_div\'), {\'latitude\':'.$options['map_center_latitude'].',\'longitude\':'.$options['map_center_longitude'].',\'zoom\':'.$options['map_zoom'].'} );var g_Nouveau_start_week = '.((isset ( $options['startWeekday'] ) && $options['startWeekday']) ? $options['startWeekday'] : self::$default_startWeekday ).';</script>';
+                $the_new_content .= '<script type="text/javascript">var g_military_time = '.($options['military_time'] ? 'true' : 'false' ).';g_no_meetings_found="'.htmlspecialchars ( $this->local_cant_find_meetings_display ).'";document.getElementById(\''.$uid.'\').style.display=\'block\';c_ms_'.$uid.' = new MapSearch ( \''.htmlspecialchars ( $uid ).'\',\''.htmlspecialchars ( $options_id ).'\', document.getElementById(\''.$uid.'_bmlt_search_map_div\'), {\'latitude\':'.$options['map_center_latitude'].',\'longitude\':'.$options['map_center_longitude'].',\'zoom\':'.$options['map_zoom'].'} );var g_Nouveau_start_week = '.((isset ( $options['startWeekday'] ) && $options['startWeekday']) ? $options['startWeekday'] : self::$default_startWeekday ).';</script>';
             $the_new_content .= '</div>';
             
             $in_content = self::replace_shortcode ( $in_content, 'bmlt_map', $the_new_content );
@@ -2229,32 +2511,32 @@ abstract class BMLTPlugin
         {
         $ret = '<div class="bmlt_map_container_div_location_options_div" id="'.$in_uid.'_location">';
             $ret .= '<div class="bmlt_map_options_loc">';
-                $ret .= '<a class="bmlt_map_reveal_options" id="'.$in_uid.'_options_loc_a" href="javascript:var a=document.getElementById(\''.$in_uid.'_options_loc_a\');var b=document.getElementById(\''.$in_uid.'_options_loc\');if(b &amp;&amp; a){if(b.style.display==\'none\'){a.className=\'bmlt_map_hide_options\';b.style.display=\'block\';c_ms_'.$in_uid.'.openLocationSectionExt(document.getElementById(\''.$in_uid.'_location_text\'), document.getElementById(\''.$in_uid.'_location_submit\'));}else{a.className=\'bmlt_map_reveal_options\';b.style.display=\'none\';};};c_ms_'.$in_uid.'.recalculateMapExt()"><span>'.$this->process_text ( $this->my_current_language->local_new_map_option_loc_label ).'</span></a>';
+                $ret .= '<a class="bmlt_map_reveal_options" id="'.$in_uid.'_options_loc_a" href="javascript:var a=document.getElementById(\''.$in_uid.'_options_loc_a\');var b=document.getElementById(\''.$in_uid.'_options_loc\');if(b &amp;&amp; a){if(b.style.display==\'none\'){a.className=\'bmlt_map_hide_options\';b.style.display=\'block\';c_ms_'.$in_uid.'.openLocationSectionExt(document.getElementById(\''.$in_uid.'_location_text\'), document.getElementById(\''.$in_uid.'_location_submit\'));}else{a.className=\'bmlt_map_reveal_options\';b.style.display=\'none\';};};c_ms_'.$in_uid.'.recalculateMapExt()"><span>'.$this->process_text ( $this->local_new_map_option_loc_label ).'</span></a>';
                 $ret .= '<div class="bmlt_map_container_div_search_options_div" id="'.$in_uid.'_options_loc" style="display:none">';
                     $ret .= '<form action="#" method="get" onsubmit="c_ms_'.$in_uid.'.lookupLocationExt(document.getElementById(\''.$in_uid.'_location_text\'), document.getElementById(\''.$in_uid.'_location_submit\'));return false">';
                         $ret .= '<fieldset class="bmlt_map_container_div_search_options_div_location_fieldset">';
                             $ret .= '<div class="location_radius_popup_div">';
-                                $ret .= '<label for="">'.$this->process_text ( $this->my_current_language->local_new_map_option_loc_popup_label_1 ).'</label>';
+                                $ret .= '<label for="">'.$this->process_text ( $this->local_new_map_option_loc_popup_label_1 ).'</label>';
                                 $ret .= '<select class="bmlt_map_location_radius_popup" id="'.$in_uid.'_radius_select" onchange="c_ms_'.$in_uid.'.changeRadiusExt(true)">';
-                                    $ret .= '<option value="" selected="selected">'.$this->process_text ( $this->my_current_language->local_new_map_option_loc_popup_auto ).'</option>';
+                                    $ret .= '<option value="" selected="selected">'.$this->process_text ( $this->local_new_map_option_loc_popup_auto ).'</option>';
                                     $ret .= '<option value="" disabled="disabled"></option>';
                                     $options = $this->getBMLTOptions_by_id ( $in_options_id );
                                     $this->adapt_to_lang ( $options['lang'] );
-                                    foreach ( $this->my_current_language->local_new_map_js_diameter_choices as $radius )
+                                    foreach ( $this->local_new_map_js_diameter_choices as $radius )
                                         {
-                                        $ret .= '<option value="'.($radius / 2).'">'.($radius / 2).' '.$this->process_text ( (strtolower ($options['distance_units']) == 'km') ? $this->my_current_language->local_new_map_option_loc_popup_km : $this->my_current_language->local_new_map_option_loc_popup_mi ).'</option>';
+                                        $ret .= '<option value="'.($radius / 2).'">'.($radius / 2).' '.$this->process_text ( (strtolower ($options['distance_units']) == 'km') ? $this->local_new_map_option_loc_popup_km : $this->local_new_map_option_loc_popup_mi ).'</option>';
                                         }
                                 $ret .= '</select>';
-                                $ret .= '<label for="">'.$this->process_text ( $this->my_current_language->local_new_map_option_loc_popup_label_2 ).'</label>';
+                                $ret .= '<label for="">'.$this->process_text ( $this->local_new_map_option_loc_popup_label_2 ).'</label>';
                             $ret .= '</div>';
                             $ret .= '<fieldset class="location_text_entry_fieldset">';
-                                $ret .= '<legend>'.$this->process_text ( $this->my_current_language->local_new_map_text_entry_fieldset_label ).'</legend>';
-                                $def_text = $this->process_text ( $this->my_current_language->local_new_map_text_entry_default_text );
+                                $ret .= '<legend>'.$this->process_text ( $this->local_new_map_text_entry_fieldset_label ).'</legend>';
+                                $def_text = $this->process_text ( $this->local_new_map_text_entry_default_text );
                                 $ret .= '<div class="location_text_input_div">';
                                     $ret .= '<input type="text" class="location_text_input_item_blurred" value="'.$def_text.'" id="'.$in_uid.'_location_text" onfocus="c_ms_'.$in_uid.'.focusLocationTextExt(this, document.getElementById(\''.$in_uid.'_location_submit\'), false)" onblur="c_ms_'.$in_uid.'.focusLocationTextExt(this, document.getElementById(\''.$in_uid.'_location_submit\'), true)" onkeyup="c_ms_'.$in_uid.'.enterTextIntoLocationTextExt(this, document.getElementById(\''.$in_uid.'_location_submit\'))" />';
                                 $ret .= '</div>';
                                 $ret .= '<div class="location_text_submit_div">';
-                                    $ret .= '<input type="button" disabled="disabled" class="location_text_submit_button" value="'.$this->process_text ( $this->my_current_language->local_new_map_location_submit_button_text ).'" id="'.$in_uid.'_location_submit" onclick="c_ms_'.$in_uid.'.lookupLocationExt(document.getElementById(\''.$in_uid.'_location_text\'), this)" />';
+                                    $ret .= '<input type="button" disabled="disabled" class="location_text_submit_button" value="'.$this->process_text ( $this->local_new_map_location_submit_button_text ).'" id="'.$in_uid.'_location_submit" onclick="c_ms_'.$in_uid.'.lookupLocationExt(document.getElementById(\''.$in_uid.'_location_text\'), this)" />';
                                 $ret .= '</div>';
                             $ret .= '</fieldset>';
                         $ret .= '</fieldset>';
@@ -2278,14 +2560,14 @@ abstract class BMLTPlugin
         $this->adapt_to_lang ( $options['lang'] );
         $ret = '<div class="bmlt_map_container_div_search_options_div" id="'.$in_uid.'_options">';
             $ret .= '<div class="bmlt_map_options_1">';
-                $ret .= '<a class="bmlt_map_reveal_options" id="'.$in_uid.'_options_1_a" href="javascript:var a=document.getElementById(\''.$in_uid.'_options_1_a\');var b=document.getElementById(\''.$in_uid.'_options_1\');if(b &amp;&amp; a){if(b.style.display==\'none\'){a.className=\'bmlt_map_hide_options\';b.style.display=\'block\'}else{a.className=\'bmlt_map_reveal_options\';b.style.display=\'none\'}};c_ms_'.$in_uid.'.recalculateMapExt()"><span>'.$this->process_text ( $this->my_current_language->local_new_map_option_1_label ).'</span></a>';
+                $ret .= '<a class="bmlt_map_reveal_options" id="'.$in_uid.'_options_1_a" href="javascript:var a=document.getElementById(\''.$in_uid.'_options_1_a\');var b=document.getElementById(\''.$in_uid.'_options_1\');if(b &amp;&amp; a){if(b.style.display==\'none\'){a.className=\'bmlt_map_hide_options\';b.style.display=\'block\'}else{a.className=\'bmlt_map_reveal_options\';b.style.display=\'none\'}};c_ms_'.$in_uid.'.recalculateMapExt()"><span>'.$this->process_text ( $this->local_new_map_option_1_label ).'</span></a>';
                 $ret .= '<div class="bmlt_map_container_div_search_options_div" id="'.$in_uid.'_options_1" style="display:none">';
                     $ret .= '<form action="#" method="get" onsubmit="return false">';
                         $ret .= '<fieldset class="bmlt_map_container_div_search_options_div_weekdays_fieldset">';
-                            $ret .= '<legend>'.$this->process_text ( $this->my_current_language->local_new_map_weekdays ).'</legend>';
-                            $ret .= '<div class="bmlt_map_container_div_search_options_weekday_checkbox_div"><input title="'.$this->process_text ( $this->my_current_language->local_new_map_all_weekdays_title ).'" type="checkbox" id="weekday_'.$in_uid.'_0" checked="checked" onchange="c_ms_'.$in_uid.'.recalculateMapExt(this)" />';
-                            $ret .= '<label title="'.$this->process_text ( $this->my_current_language->local_new_map_all_weekdays_title ).'" for="weekday_'.$in_uid.'_0">'.$this->process_text ( $this->my_current_language->local_new_map_all_weekdays ).'</label></div>';
-                            for ( $index = 1;  $index < count ( $this->my_current_language->local_weekdays ); $index++ )
+                            $ret .= '<legend>'.$this->process_text ( $this->local_new_map_weekdays ).'</legend>';
+                            $ret .= '<div class="bmlt_map_container_div_search_options_weekday_checkbox_div"><input title="'.$this->process_text ( $this->local_new_map_all_weekdays_title ).'" type="checkbox" id="weekday_'.$in_uid.'_0" checked="checked" onchange="c_ms_'.$in_uid.'.recalculateMapExt(this)" />';
+                            $ret .= '<label title="'.$this->process_text ( $this->local_new_map_all_weekdays_title ).'" for="weekday_'.$in_uid.'_0">'.$this->process_text ( $this->local_new_map_all_weekdays ).'</label></div>';
+                            for ( $index = 1;  $index < count ( $this->local_weekdays ); $index++ )
                                 {
                                 $weekday_index = ($index - 1) + $options['startWeekday'];
             
@@ -2294,18 +2576,18 @@ abstract class BMLTPlugin
                                     $weekday_index -= 7;
                                     }
             
-                                $weekday = $this->my_current_language->local_weekdays[$weekday_index];
+                                $weekday = $this->local_weekdays[$weekday_index];
                                 $ret .= '<div class="bmlt_map_container_div_search_options_weekday_checkbox_div">';
-                                    $ret .= '<input title="'.$this->process_text ( $this->my_current_language->local_new_map_weekdays_title.$weekday ).'." type="checkbox" id="weekday_'.$in_uid.'_'.htmlspecialchars ( $weekday_index ).'" onchange="c_ms_'.$in_uid.'.recalculateMapExt(this)" />';
-                                    $ret .= '<label title="'.$this->process_text ( $this->my_current_language->local_new_map_weekdays_title.$weekday ).'." for="weekday_'.$in_uid.'_'.htmlspecialchars ( $weekday_index ).'">'.$this->process_text ( $weekday ).'</label>';
+                                    $ret .= '<input title="'.$this->process_text ( $this->local_new_map_weekdays_title.$weekday ).'." type="checkbox" id="weekday_'.$in_uid.'_'.htmlspecialchars ( $weekday_index ).'" onchange="c_ms_'.$in_uid.'.recalculateMapExt(this)" />';
+                                    $ret .= '<label title="'.$this->process_text ( $this->local_new_map_weekdays_title.$weekday ).'." for="weekday_'.$in_uid.'_'.htmlspecialchars ( $weekday_index ).'">'.$this->process_text ( $weekday ).'</label>';
                                 $ret .= '</div>';
                                 }
                         $ret .= '</fieldset>';
                         $ret .= '<fieldset class="bmlt_map_container_div_search_options_div_formats_fieldset">';
-                            $ret .= '<legend>'.$this->process_text ( $this->my_current_language->local_new_map_formats ).'</legend>';
+                            $ret .= '<legend>'.$this->process_text ( $this->local_new_map_formats ).'</legend>';
                             $ret .= '<div class="bmlt_map_container_div_search_options_formats_checkbox_div">';
-                                $ret .= '<input title="'.$this->process_text ( $this->my_current_language->local_new_map_all_formats_title ).'" type="checkbox" id="formats_'.$in_uid.'_0" checked="checked" onchange="c_ms_'.$in_uid.'.recalculateMapExt(this)" />';
-                                $ret .= '<label title="'.$this->process_text ( $this->my_current_language->local_new_map_all_formats_title ).'" for="formats_'.$in_uid.'_0">'.$this->process_text ( $this->my_current_language->local_new_map_all_formats ).'</label>';
+                                $ret .= '<input title="'.$this->process_text ( $this->local_new_map_all_formats_title ).'" type="checkbox" id="formats_'.$in_uid.'_0" checked="checked" onchange="c_ms_'.$in_uid.'.recalculateMapExt(this)" />';
+                                $ret .= '<label title="'.$this->process_text ( $this->local_new_map_all_formats_title ).'" for="formats_'.$in_uid.'_0">'.$this->process_text ( $this->local_new_map_all_formats ).'</label>';
                             $ret .= '</div>';
                             $this->my_driver->set_m_root_uri ( $options['root_server'] );
                             $error = $this->my_driver->get_m_error_message();
@@ -2356,31 +2638,31 @@ abstract class BMLTPlugin
         $ret = '</script><script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key='.$options['google_api_key'].'&region='.strtoupper ( $options['region_bias'] ).'"></script>';       
         // Declare the various globals and display strings. This is how we pass strings to the JavaScript, as opposed to the clunky way we do it in the root server.
         $ret .= '<script type="text/javascript">' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-        $ret .= 'var c_g_cannot_determine_location = \''.$this->process_text ( $this->my_current_language->local_cannot_determine_location ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-        $ret .= 'var c_g_no_meetings_found = \''.$this->process_text ( $this->my_current_language->local_mobile_fail_no_meetings ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-        $ret .= 'var c_g_server_error = \''.$this->process_text ( $this->my_current_language->local_server_fail ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-        $ret .= 'var c_g_address_lookup_fail = \''.$this->process_text ( $this->my_current_language->local_cant_find_address ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-        $ret .= 'var c_g_center_marker_curent_radius_1 = \''.$this->process_text ( $this->my_current_language->local_new_map_js_center_marker_current_radius_1 ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-        $ret .= 'var c_g_center_marker_curent_radius_2_km = \''.$this->process_text ( $this->my_current_language->local_new_map_js_center_marker_current_radius_2_km ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-        $ret .= 'var c_g_center_marker_curent_radius_2_mi = \''.$this->process_text ( $this->my_current_language->local_new_map_js_center_marker_current_radius_2_mi ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-        $ret .= 'var c_g_map_link_text = \''.$this->process_text ( $this->my_current_language->local_map_link ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_cannot_determine_location = \''.$this->process_text ( $this->local_cannot_determine_location ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_no_meetings_found = \''.$this->process_text ( $this->local_mobile_fail_no_meetings ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_server_error = \''.$this->process_text ( $this->local_server_fail ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_address_lookup_fail = \''.$this->process_text ( $this->local_cant_find_address ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_center_marker_curent_radius_1 = \''.$this->process_text ( $this->local_new_map_js_center_marker_current_radius_1 ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_center_marker_curent_radius_2_km = \''.$this->process_text ( $this->local_new_map_js_center_marker_current_radius_2_km ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_center_marker_curent_radius_2_mi = \''.$this->process_text ( $this->local_new_map_js_center_marker_current_radius_2_mi ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_map_link_text = \''.$this->process_text ( $this->local_map_link ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $ret .= 'var c_g_weekdays = [';
-        $ret .= "'".$this->process_text ( join ( "','", $this->my_current_language->local_weekdays ) )."'";
+        $ret .= "'".$this->process_text ( join ( "','", $this->local_weekdays ) )."'";
         $ret .= '];' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $ret .= 'var c_g_weekdays_short = [';
-        $ret .= "'".$this->process_text ( join ( "','", $this->my_current_language->local_weekdays_short ) )."'";
+        $ret .= "'".$this->process_text ( join ( "','", $this->local_weekdays_short ) )."'";
         $ret .= '];' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-        $ret .= 'var c_g_diameter_choices = ['.join ( ",", $this->my_current_language->local_new_map_js_diameter_choices ).'];' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-        $ret .= 'var c_g_formats = \''.$this->process_text ( $this->my_current_language->local_formats ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-        $ret .= 'var c_g_Noon = \''.$this->process_text ( $this->my_current_language->local_noon ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-        $ret .= 'var c_g_Midnight = \''.$this->process_text ( $this->my_current_language->local_midnight ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_diameter_choices = ['.join ( ",", $this->local_new_map_js_diameter_choices ).'];' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_formats = \''.$this->process_text ( $this->local_formats ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_Noon = \''.$this->process_text ( $this->local_noon ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_Midnight = \''.$this->process_text ( $this->local_midnight ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $ret .= 'var c_g_debug_mode = '.( defined ( 'DEBUG_MODE' ) ? 'true' : 'false' ).';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-        $ret .= 'var c_g_distance_prompt = \''.$this->process_text ( $this->my_current_language->local_mobile_distance ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-        $ret .= 'var c_g_distance_prompt_suffix = \''.$this->process_text ( $this->my_current_language->local_new_map_center_marker_distance_suffix ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-        $ret .= 'var c_g_distance_center_marker_desc = \''.$this->process_text ( $this->my_current_language->local_new_map_center_marker_description ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_distance_prompt = \''.$this->process_text ( $this->local_mobile_distance ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_distance_prompt_suffix = \''.$this->process_text ( $this->local_new_map_center_marker_distance_suffix ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_distance_center_marker_desc = \''.$this->process_text ( $this->local_new_map_center_marker_description ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $ret .= 'var c_BMLTPlugin_files_uri = \''.htmlspecialchars ( $this->get_ajax_mobile_base_uri() ).'?\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $ret .= "var c_g_BMLTPlugin_images = '".htmlspecialchars ( $this->get_plugin_path()."/google_map_images" )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-        $ret .= "var c_g_BMLTPlugin_default_location_text = '".$this->process_text ( $this->my_current_language->local_new_map_text_entry_default_text )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= "var c_g_BMLTPlugin_default_location_text = '".$this->process_text ( $this->local_new_map_text_entry_default_text )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $ret .= '</script>';
         $ret .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'javascript.js" type="text/javascript"></script>';
         $ret .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'map_search.js" type="text/javascript"></script>';
@@ -2424,7 +2706,7 @@ abstract class BMLTPlugin
         $ret = '<script type="text/javascript">';
         $ret .= 'var c_ms_'.$in_uid.' = null;';
         $ret .= 'var c_g_distance_units_are_km_'.$in_uid.' = '.((strtolower ($options['distance_units']) == 'km' ) ? 'true' : 'false').';';
-        $ret .= 'var c_g_distance_units_'.$in_uid.' = \''.((strtolower ($options['distance_units']) == 'km' ) ? $this->process_text ( $this->my_current_language->local_mobile_kilometers ) : $this->process_text ( $this->my_current_language->local_mobile_miles ) ).'\';';
+        $ret .= 'var c_g_distance_units_'.$in_uid.' = \''.((strtolower ($options['distance_units']) == 'km' ) ? $this->process_text ( $this->local_mobile_kilometers ) : $this->process_text ( $this->local_mobile_miles ) ).'\';';
         $ret .= 'var c_g_BMLTPlugin_throbber_img_src_'.$in_uid." = '".htmlspecialchars ( $this->get_plugin_path().'themes/'.$options['theme'].'/images/Throbber.gif' ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
         $ret .= 'var c_g_BMLTRoot_URI_JSON_SearchResults_'.$in_uid." = '".htmlspecialchars ( $this->get_ajax_base_uri() )."?redirect_ajax_json=".urlencode ( 'switcher=GetSearchResults' )."&bmlt_settings_id=$in_options_id';\n";
         $ret .= '</script>';
@@ -2553,12 +2835,12 @@ abstract class BMLTPlugin
                                         )
         {
         $ret = '<dl class="bmlt_change_record_dl" id="bmlt_change_dl_'.htmlspecialchars ( $in_change_array['change_type'] ).'_'.intval ( $in_change_array['date_int'] ).'_'.intval ( $in_change_array['meeting_id'] ).'">';
-            $ret .= '<dt class="bmlt_change_record_dt bmlt_change_record_dt_date">'.self::process_text ( $this->my_current_language->local_change_label_date ).'</dt>';
-                $ret .= '<dd class="bmlt_change_record_dd bmlt_change_record_dd_date">'.date ( $this->my_current_language->local_change_date_format, intval ( $in_change_array['date_int'] ) ).'</dd>';
+            $ret .= '<dt class="bmlt_change_record_dt bmlt_change_record_dt_date">'.self::process_text ( $this->local_change_label_date ).'</dt>';
+                $ret .= '<dd class="bmlt_change_record_dd bmlt_change_record_dd_date">'.date ( $this->local_change_date_format, intval ( $in_change_array['date_int'] ) ).'</dd>';
             
             if ( isset ( $in_change_array['meeting_name'] ) && $in_change_array['meeting_name'] )
                 {
-                $ret .= '<dt class="bmlt_change_record_dt bmlt_change_record_dt_name">'.self::process_text ( $this->my_current_language->local_change_label_meeting_name ).'</dt>';
+                $ret .= '<dt class="bmlt_change_record_dt bmlt_change_record_dt_name">'.self::process_text ( $this->local_change_label_meeting_name ).'</dt>';
                     $ret .= '<dd class="bmlt_change_record_dd bmlt_change_record_dd_name">';
                     
                     if ( isset ( $in_change_array['meeting_id'] ) && $in_change_array['meeting_id'] && isset ( $in_single_uri ) && $in_single_uri )
@@ -2576,17 +2858,17 @@ abstract class BMLTPlugin
                 }
             if ( isset ( $in_change_array['service_body_name'] ) && $in_change_array['service_body_name'] )
                 {
-                $ret .= '<dt class="bmlt_change_record_dt bmlt_change_record_dt_service_body_name">'.self::process_text ( $this->my_current_language->local_change_label_service_body_name ).'</dt>';
+                $ret .= '<dt class="bmlt_change_record_dt bmlt_change_record_dt_service_body_name">'.self::process_text ( $this->local_change_label_service_body_name ).'</dt>';
                     $ret .= '<dd class="bmlt_change_record_dd bmlt_change_record_dd_service_body_name">'.self::process_text ( html_entity_decode ( $in_change_array['service_body_name'] ) ).'</dd>';
                 }
             if ( isset ( $in_change_array['user_name'] ) && $in_change_array['user_name'] )
                 {
-                $ret .= '<dt class="bmlt_change_record_dt bmlt_change_record_dt_service_body_admin_name">'.self::process_text ( $this->my_current_language->local_change_label_admin_name ).'</dt>';
+                $ret .= '<dt class="bmlt_change_record_dt bmlt_change_record_dt_service_body_admin_name">'.self::process_text ( $this->local_change_label_admin_name ).'</dt>';
                     $ret .= '<dd class="bmlt_change_record_dd bmlt_change_record_dd_service_body_admin_name">'.self::process_text ( html_entity_decode ( $in_change_array['user_name'] ) ).'</dd>';
                 }
             if ( isset ( $in_change_array['details'] ) && $in_change_array['details'] )
                 {
-                $ret .= '<dt class="bmlt_change_record_dt bmlt_change_record_dt_description">'.self::process_text ( $this->my_current_language->local_change_label_description ).'</dt>';
+                $ret .= '<dt class="bmlt_change_record_dt bmlt_change_record_dt_description">'.self::process_text ( $this->local_change_label_description ).'</dt>';
                     $ret .= '<dd class="bmlt_change_record_dd bmlt_change_record_dd_description">'.self::process_text ( html_entity_decode ( $in_change_array['details'] ) ).'</dd>';
                 }
         $ret .= '</dl>';
@@ -2708,17 +2990,17 @@ abstract class BMLTPlugin
         
         // Declare the various globals and display strings. This is how we pass strings to the JavaScript, as opposed to the clunky way we do it in the root server.
         $ret .= '<script type="text/javascript">' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-        $ret .= 'var c_g_cannot_determine_location = \''.$this->process_text ( $this->my_current_language->local_cannot_determine_location ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-        $ret .= 'var c_g_no_meetings_found = \''.$this->process_text ( $this->my_current_language->local_mobile_fail_no_meetings ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-        $ret .= 'var c_g_server_error = \''.$this->process_text ( $this->my_current_language->local_server_fail ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-        $ret .= 'var c_g_address_lookup_fail = \''.$this->process_text ( $this->my_current_language->local_cant_find_address ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-        $ret .= 'var c_g_map_link_text = \''.$this->process_text ( $this->my_current_language->local_map_link ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_cannot_determine_location = \''.$this->process_text ( $this->local_cannot_determine_location ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_no_meetings_found = \''.$this->process_text ( $this->local_mobile_fail_no_meetings ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_server_error = \''.$this->process_text ( $this->local_server_fail ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_address_lookup_fail = \''.$this->process_text ( $this->local_cant_find_address ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_map_link_text = \''.$this->process_text ( $this->local_map_link ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $ret .= 'var c_g_weekdays = [';
-        $ret .= "'".$this->process_text ( join ( "','", $this->my_current_language->local_weekdays ) )."'";
+        $ret .= "'".$this->process_text ( join ( "','", $this->local_weekdays ) )."'";
         $ret .= '];' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-        $ret .= 'var c_g_formats = \''.$this->process_text ( $this->my_current_language->local_formats ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-        $ret .= 'var c_g_Noon = \''.$this->process_text ( $this->my_current_language->local_noon ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-        $ret .= 'var c_g_Midnight = \''.$this->process_text ( $this->my_current_language->local_midnight ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_formats = \''.$this->process_text ( $this->local_formats ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_Noon = \''.$this->process_text ( $this->local_noon ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_Midnight = \''.$this->process_text ( $this->local_midnight ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $ret .= 'var c_g_debug_mode = '.( defined ( 'DEBUG_MODE' ) ? 'true' : 'false' ).';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $h = null;
         $m = null;
@@ -2727,9 +3009,9 @@ abstract class BMLTPlugin
         $ret .= 'var c_g_min = '.intval ( $m ).';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $ret .= 'var c_g_military_time = '.($options['military_time'] ? 'true' : 'false' ).';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $ret .= 'var c_g_Nouveau_start_week = '.((isset ( $options['startWeekday'] ) && $options['startWeekday']) ? $options['startWeekday'] : self::$default_startWeekday ).';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-        $ret .= 'var c_g_distance_prompt = \''.$this->process_text ( $this->my_current_language->local_mobile_distance ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_distance_prompt = \''.$this->process_text ( $this->local_mobile_distance ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $ret .= 'var c_g_distance_units_are_km = '.((strtolower ($options['distance_units']) == 'km' ) ? 'true' : 'false').';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-        $ret .= 'var c_g_distance_units = \''.((strtolower ($options['distance_units']) == 'km' ) ? $this->process_text ( $this->my_current_language->local_mobile_kilometers ) : $this->process_text ( $this->my_current_language->local_mobile_miles ) ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_distance_units = \''.((strtolower ($options['distance_units']) == 'km' ) ? $this->process_text ( $this->local_mobile_kilometers ) : $this->process_text ( $this->local_mobile_miles ) ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $ret .= 'var c_BMLTPlugin_files_uri = \''.htmlspecialchars ( $this->get_ajax_mobile_base_uri() ).'?\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $ret .= 'var c_bmlt_settings_id='.intVal ( ((isset( $this->my_http_vars['bmlt_settings_id'] ) && $this->my_http_vars['bmlt_settings_id']) ? $this->my_http_vars['bmlt_settings_id'] : '')) .';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');       
 
@@ -2814,11 +3096,11 @@ abstract class BMLTPlugin
     function BMLTPlugin_draw_map_search_form ()
         {
         $ret = '<div class="search_intro" id="hidden_until_js" style="display:none">';
-            $ret .= '<h1 class="banner_h1">'.$this->process_text ( $this->my_current_language->local_GPS_banner ).'</h1>';
-            $ret .= '<h2 class="banner_h2">'.$this->process_text ( $this->my_current_language->local_GPS_banner_subtext ).'</h2>';
-            $ret .= '<div class="link_one_line"><a rel="nofollow" accesskey="1" href="'.htmlspecialchars ( $this->get_ajax_mobile_base_uri() ).'?BMLTPlugin_mobile&amp;do_search&amp;bmlt_settings_id='.$this->my_http_vars['bmlt_settings_id'].((isset ( $this->my_http_vars['base_url'] ) && $this->my_http_vars['base_url']) ? '&amp;base_url='.urlencode($this->my_http_vars['base_url']) : '').'">'.$this->process_text ( $this->my_current_language->local_search_all ).'</a></div>';
-            $ret .= '<div class="link_one_line"><a rel="nofollow" accesskey="2" href="'.htmlspecialchars ( $this->get_ajax_mobile_base_uri() ).'?BMLTPlugin_mobile&amp;do_search&amp;qualifier=today&amp;bmlt_settings_id='.$this->my_http_vars['bmlt_settings_id'].((isset ( $this->my_http_vars['base_url'] ) && $this->my_http_vars['base_url']) ? '&amp;base_url='.urlencode($this->my_http_vars['base_url']) : '').'">'.$this->process_text ( $this->my_current_language->local_search_today ).'</a></div>';
-            $ret .= '<div class="link_one_line"><a rel="nofollow" accesskey="3" href="'.htmlspecialchars ( $this->get_ajax_mobile_base_uri() ).'?BMLTPlugin_mobile&amp;do_search&amp;qualifier=tomorrow&amp;bmlt_settings_id='.$this->my_http_vars['bmlt_settings_id'].((isset ( $this->my_http_vars['base_url'] ) && $this->my_http_vars['base_url']) ? '&amp;base_url='.urlencode($this->my_http_vars['base_url']) : '').'">'.$this->process_text ( $this->my_current_language->local_search_tomorrow ).'</a></div>';
+            $ret .= '<h1 class="banner_h1">'.$this->process_text ( $this->local_GPS_banner ).'</h1>';
+            $ret .= '<h2 class="banner_h2">'.$this->process_text ( $this->local_GPS_banner_subtext ).'</h2>';
+            $ret .= '<div class="link_one_line"><a rel="nofollow" accesskey="1" href="'.htmlspecialchars ( $this->get_ajax_mobile_base_uri() ).'?BMLTPlugin_mobile&amp;do_search&amp;bmlt_settings_id='.$this->my_http_vars['bmlt_settings_id'].((isset ( $this->my_http_vars['base_url'] ) && $this->my_http_vars['base_url']) ? '&amp;base_url='.urlencode($this->my_http_vars['base_url']) : '').'">'.$this->process_text ( $this->local_search_all ).'</a></div>';
+            $ret .= '<div class="link_one_line"><a rel="nofollow" accesskey="2" href="'.htmlspecialchars ( $this->get_ajax_mobile_base_uri() ).'?BMLTPlugin_mobile&amp;do_search&amp;qualifier=today&amp;bmlt_settings_id='.$this->my_http_vars['bmlt_settings_id'].((isset ( $this->my_http_vars['base_url'] ) && $this->my_http_vars['base_url']) ? '&amp;base_url='.urlencode($this->my_http_vars['base_url']) : '').'">'.$this->process_text ( $this->local_search_today ).'</a></div>';
+            $ret .= '<div class="link_one_line"><a rel="nofollow" accesskey="3" href="'.htmlspecialchars ( $this->get_ajax_mobile_base_uri() ).'?BMLTPlugin_mobile&amp;do_search&amp;qualifier=tomorrow&amp;bmlt_settings_id='.$this->my_http_vars['bmlt_settings_id'].((isset ( $this->my_http_vars['base_url'] ) && $this->my_http_vars['base_url']) ? '&amp;base_url='.urlencode($this->my_http_vars['base_url']) : '').'">'.$this->process_text ( $this->local_search_tomorrow ).'</a></div>';
             $ret .= '<hr class="meeting_divider_hr" />';
         $ret .= '</div>';
         
@@ -2839,8 +3121,8 @@ abstract class BMLTPlugin
                 {
                 // This fills the form with a "seed" text (standard accessibility practice). We do it this way, so we don't clutter the form if no JavaScript is available.
                 $ret .= ' onsubmit="if((document.getElementById(\'address_input\').value==\'';
-                $ret .= $this->process_text ( $this->my_current_language->local_enter_an_address );
-                $ret .= '\')||!document.getElementById(\'address_input\').value){alert(\''.$this->process_text ( $this->my_current_language->local_enter_address_alert ).'\');document.getElementById(\'address_input\').focus();return false}else{if(document.getElementById(\'hidden_until_js\').style.display==\'block\'){document.getElementById(\'do_search\').value=\'1\'}}"';
+                $ret .= $this->process_text ( $this->local_enter_an_address );
+                $ret .= '\')||!document.getElementById(\'address_input\').value){alert(\''.$this->process_text ( $this->local_enter_address_alert ).'\');document.getElementById(\'address_input\').focus();return false}else{if(document.getElementById(\'hidden_until_js\').style.display==\'block\'){document.getElementById(\'do_search\').value=\'1\'}}"';
                 }
             $ret .= '>';
             $ret .= '<div class="search_address">';
@@ -2854,10 +3136,10 @@ abstract class BMLTPlugin
                 
             $ret .= '<input type="hidden" name="bmlt_settings_id" value="'.$this->my_http_vars['bmlt_settings_id'].'" />';
             $ret .= '<input type="hidden" name="do_search" id="do_search" value="the hard way" />';
-            $ret .= '<h1 class="banner_h2">'.$this->process_text ( $this->my_current_language->local_search_address_single ).'</h1>';
+            $ret .= '<h1 class="banner_h2">'.$this->process_text ( $this->local_search_address_single ).'</h1>';
             if ( !isset ( $this->my_http_vars['WML'] ) )  // This is here to prevent WAI warnings.
                 {
-                $ret .= '<label for="address_input" style="display:none">'.$this->process_text ( $this->my_current_language->local_enter_address_alert ).'</label>';
+                $ret .= '<label for="address_input" style="display:none">'.$this->process_text ( $this->local_enter_address_alert ).'</label>';
                 }
             if ( isset ( $this->my_http_vars['WML'] ) )
                 {
@@ -2878,7 +3160,7 @@ abstract class BMLTPlugin
                 $ret .= '<div class="link_one_line" id="hidden_until_js2" style="display:none">';
                 $ret .= '<input type="checkbox" id="force_list_checkbox"';
                 $ret .= ' onchange="if(this.checked){document.getElementById ( \'hidden_until_js\' ).style.display = \'none\';document.getElementById(\'address_input\').focus();}else{document.getElementById ( \'hidden_until_js\' ).style.display = \'block\'}" /><label for="force_list_checkbox"';
-                $ret .= '> '.$this->process_text ( $this->my_current_language->local_list_check ).'</label>';
+                $ret .= '> '.$this->process_text ( $this->local_list_check ).'</label>';
                 $ret .= '</div>';
                 }
             $ret .= '</div>';
@@ -2891,9 +3173,9 @@ abstract class BMLTPlugin
             $ret .= ' id="address_input" class="address_input" size="64" value=""';
             if ( !isset ( $this->my_http_vars['WML'] ) )
                 {
-                $ret .= ' onfocus="if(!this.value||(this.value==\''.$this->process_text ( $this->my_current_language->local_enter_an_address ).'\'))this.value=\'\'"';
-                $ret .= ' onkeydown="if(!this.value||(this.value==\''.$this->process_text ( $this->my_current_language->local_enter_an_address ).'\'))this.value=\'\'"';
-                $ret .= ' onblur="if(!this.value)this.value=\''.$this->process_text ( $this->my_current_language->local_enter_an_address ).'\'"';
+                $ret .= ' onfocus="if(!this.value||(this.value==\''.$this->process_text ( $this->local_enter_an_address ).'\'))this.value=\'\'"';
+                $ret .= ' onkeydown="if(!this.value||(this.value==\''.$this->process_text ( $this->local_enter_an_address ).'\'))this.value=\'\'"';
+                $ret .= ' onblur="if(!this.value)this.value=\''.$this->process_text ( $this->local_enter_an_address ).'\'"';
                 }
             }
         else
@@ -2917,15 +3199,15 @@ abstract class BMLTPlugin
             $ret .= '<div class="link_form_elements">';
             $ret .= '<div class="link_one_line">';
             $ret .= '<input checked="checked" id="search_all_days" type="radio" name="qualifier" value="" />';
-            $ret .= '<label for="search_all_days"> '.$this->process_text ( $this->my_current_language->local_search_all_address ).'</label>';
+            $ret .= '<label for="search_all_days"> '.$this->process_text ( $this->local_search_all_address ).'</label>';
             $ret .= '</div>';
             $ret .= '<div class="link_one_line">';
             $ret .= '<input id="search_today" type="radio" name="qualifier" value="today" />';
-            $ret .= '<label for="search_today"> '.$this->process_text ( $this->my_current_language->local_search_today ).'</label>';
+            $ret .= '<label for="search_today"> '.$this->process_text ( $this->local_search_today ).'</label>';
             $ret .= '</div>';
             $ret .= '<div class="link_one_line">';
             $ret .= '<input id="search_tomorrow" type="radio" name="qualifier" value="tomorrow" />';
-            $ret .= '<label for="search_tomorrow"> '.$this->process_text ( $this->my_current_language->local_search_tomorrow ).'</label>';
+            $ret .= '<label for="search_tomorrow"> '.$this->process_text ( $this->local_search_tomorrow ).'</label>';
             $ret .= '</div>';
             $ret .= '</div>';
             $ret .= '<div class="link_one_line_submit">';
@@ -2933,12 +3215,12 @@ abstract class BMLTPlugin
                 {
                 $ret .= '<label for="submit_button" style="display:none">'.$this->process_text ( _SEARCH_SUBMIT_ ).'</label>';
                 }
-            $ret .= '<input id="submit_button" type="submit" value="'.$this->process_text ( $this->my_current_language->local_search_submit_button ).'"';
+            $ret .= '<input id="submit_button" type="submit" value="'.$this->process_text ( $this->local_search_submit_button ).'"';
             if ( !isset ( $this->my_http_vars['WML'] ) )
                 {
                 $ret .= ' onclick="if((document.getElementById(\'address_input\').value==\'';
-                $ret .= $this->process_text ( $this->my_current_language->local_enter_an_address );
-                $ret .= '\')||!document.getElementById(\'address_input\').value){alert(\''.$this->process_text ( $this->my_current_language->local_enter_address_alert ).'\');document.getElementById(\'address_input\').focus();return false}else{if(document.getElementById(\'hidden_until_js\').style.display==\'block\'){document.getElementById(\'do_search\').value=\'1\'}}"';
+                $ret .= $this->process_text ( $this->local_enter_an_address );
+                $ret .= '\')||!document.getElementById(\'address_input\').value){alert(\''.$this->process_text ( $this->local_enter_address_alert ).'\');document.getElementById(\'address_input\').focus();return false}else{if(document.getElementById(\'hidden_until_js\').style.display==\'block\'){document.getElementById(\'do_search\').value=\'1\'}}"';
                 }
             $ret .= ' />';
             $ret .= '</div>';
@@ -2949,9 +3231,9 @@ abstract class BMLTPlugin
             {
             $ret .= '<p>';
             $ret .= '<select name="qualifier" value="">';
-            $ret .= '<option value="">'.$this->process_text ( $this->my_current_language->local_search_all_address ).'</option>';
-            $ret .= '<option value="today">'.$this->process_text ( $this->my_current_language->local_search_today ).'</option>';
-            $ret .= '<option value="tomorrow">'.$this->process_text ( $this->my_current_language->local_search_tomorrow ).'</option>';
+            $ret .= '<option value="">'.$this->process_text ( $this->local_search_all_address ).'</option>';
+            $ret .= '<option value="today">'.$this->process_text ( $this->local_search_today ).'</option>';
+            $ret .= '<option value="tomorrow">'.$this->process_text ( $this->local_search_tomorrow ).'</option>';
             $ret .= '</select>';
             $ret .= '<anchor>';
             $ret .= '<go href="'.htmlspecialchars ( $this->get_ajax_mobile_base_uri() ).'" method="get">';
@@ -3021,19 +3303,19 @@ abstract class BMLTPlugin
             $ret .= '<td>';
             if ( $prev_card )
                 {
-                $ret .= '<small><anchor>'.$this->process_text ($this->my_current_language->local_prev_card).'<go href="'.$prev_card.'"/></anchor></small>';
+                $ret .= '<small><anchor>'.$this->process_text ($this->local_prev_card).'<go href="'.$prev_card.'"/></anchor></small>';
                 }
             $ret .= '</td><td>&nbsp;</td><td>';
             if ( $next_card )
                 {
-                $ret .= '<small><anchor>'.$this->process_text ($this->my_current_language->local_next_card).'<go href="'.$next_card.'"/></anchor></small>';
+                $ret .= '<small><anchor>'.$this->process_text ($this->local_next_card).'<go href="'.$next_card.'"/></anchor></small>';
                 }
             
             $ret .= '</td></tr></table></p>';
             }
     
         $ret .= '<p><big><strong>'.htmlspecialchars($meeting['meeting_name']).'</strong></big></p>';
-        $ret .= '<p>'.$this->process_text ( $this->my_current_language->local_weekdays[$meeting['weekday_tinyint']] ).' '.htmlspecialchars ( date ( 'g:i A', strtotime ( $meeting['start_time'] ) ) ).'</p>';
+        $ret .= '<p>'.$this->process_text ( $this->local_weekdays[$meeting['weekday_tinyint']] ).' '.htmlspecialchars ( date ( 'g:i A', strtotime ( $meeting['start_time'] ) ) ).'</p>';
         if ( $meeting['location_text'] )
             {
             $ret .= '<p><b>'.htmlspecialchars ( $meeting['location_text'] ).'</b></p>';
@@ -3073,9 +3355,9 @@ abstract class BMLTPlugin
             {
             $distance = round ( ((strtolower ($options['distance_units']) == 'km') ? $meeting['distance_in_km'] : $meeting['distance_in_miles']), 1 );
             
-            $distance = strval ($distance).' '.((strtolower ($options['distance_units']) == 'km' ) ? $this->process_text ( $this->my_current_language->local_mobile_kilometers ) : $this->process_text ( $this->my_current_language->local_mobile_miles ) );
+            $distance = strval ($distance).' '.((strtolower ($options['distance_units']) == 'km' ) ? $this->process_text ( $this->local_mobile_kilometers ) : $this->process_text ( $this->local_mobile_miles ) );
 
-            $ret .= '<p><b>'.$this->process_text ( $this->my_current_language->local_mobile_distance ).':</b> '.htmlspecialchars ( $distance ).'</p>';
+            $ret .= '<p><b>'.$this->process_text ( $this->local_mobile_distance ).':</b> '.htmlspecialchars ( $distance ).'</p>';
             }
                                                         
         if ( $meeting['location_info'] )
@@ -3088,7 +3370,7 @@ abstract class BMLTPlugin
             $ret .= '<p>'.htmlspecialchars ( $meeting['comments'] ).'</p>';
             }
         
-        $ret .= '<p><b>'.$this->process_text ( $this->my_current_language->local_formats ).':</b> '.htmlspecialchars ( $meeting['formats'] ).'</p>';
+        $ret .= '<p><b>'.$this->process_text ( $this->local_formats ).':</b> '.htmlspecialchars ( $meeting['formats'] ).'</p>';
         
         $ret .= '</card>';
         
@@ -3173,7 +3455,7 @@ abstract class BMLTPlugin
                 $error_message = $this->my_driver->get_m_error_message();
                 if ( $error_message )
                     {
-                    $ret .= $this->process_text ( $this->my_current_language->local_server_fail ).' "'.htmlspecialchars ( $error_message ).'"';
+                    $ret .= $this->process_text ( $this->local_server_fail ).' "'.htmlspecialchars ( $error_message ).'"';
                     }
                 else
                     {
@@ -3181,7 +3463,7 @@ abstract class BMLTPlugin
                     $error_message = $this->my_driver->get_m_error_message();
                     if ( $error_message )
                         {
-                        $ret .= $this->process_text ( $this->my_current_language->local_server_fail ).' "'.htmlspecialchars ( $error_message ).'"';
+                        $ret .= $this->process_text ( $this->local_server_fail ).' "'.htmlspecialchars ( $error_message ).'"';
                         }
                     else
                         {
@@ -3206,7 +3488,7 @@ abstract class BMLTPlugin
                             $error_message = $this->my_driver->get_m_error_message();
                             if ( $error_message )
                                 {
-                                $ret .= $this->process_text ( $this->my_current_language->local_server_fail ).' "'.htmlspecialchars ( $error_message ).'"';
+                                $ret .= $this->process_text ( $this->local_server_fail ).' "'.htmlspecialchars ( $error_message ).'"';
                                 }
                             else
                                 {
@@ -3216,7 +3498,7 @@ abstract class BMLTPlugin
                                     $error_message = $this->my_driver->get_m_error_message();
                                     if ( $error_message )
                                         {
-                                        $ret .= $this->process_text ( $this->my_current_language->local_server_fail ).' "'.htmlspecialchars ( $error_message ).'"';
+                                        $ret .= $this->process_text ( $this->local_server_fail ).' "'.htmlspecialchars ( $error_message ).'"';
                                         }
                                     else
                                         {
@@ -3224,7 +3506,7 @@ abstract class BMLTPlugin
                                         $error_message = $this->my_driver->get_m_error_message();
                                         if ( $error_message )
                                             {
-                                            $ret .= $this->process_text ( $this->my_current_language->local_server_fail ).' "'.htmlspecialchars ( $error_message ).'"';
+                                            $ret .= $this->process_text ( $this->local_server_fail ).' "'.htmlspecialchars ( $error_message ).'"';
                                             }
                                         }
                                     }
@@ -3233,7 +3515,7 @@ abstract class BMLTPlugin
                         
                         if ( $error_message )
                             {
-                            $ret .= $this->process_text ( $this->my_current_language->local_server_fail ).' "'.htmlspecialchars ( $error_message ).'"';
+                            $ret .= $this->process_text ( $this->local_server_fail ).' "'.htmlspecialchars ( $error_message ).'"';
                             }
                         else
                             {
@@ -3241,7 +3523,7 @@ abstract class BMLTPlugin
                             $error_message = $this->my_driver->get_m_error_message();
                             if ( $error_message )
                                 {
-                                $ret .= $this->process_text ( $this->my_current_language->local_server_fail ).' "'.htmlspecialchars ( $error_message ).'"';
+                                $ret .= $this->process_text ( $this->local_server_fail ).' "'.htmlspecialchars ( $error_message ).'"';
                                 }
                             else    // The search is set up. Throw the switch, Igor! ...yeth...mawther....
                                 {
@@ -3250,7 +3532,7 @@ abstract class BMLTPlugin
                                 $error_message = $this->my_driver->get_m_error_message();
                                 if ( $error_message )
                                     {
-                                    $ret .= $this->process_text ( $this->my_current_language->local_server_fail ).' "'.htmlspecialchars ( $error_message ).'"';
+                                    $ret .= $this->process_text ( $this->local_server_fail ).' "'.htmlspecialchars ( $error_message ).'"';
                                     }
                                 elseif ( isset ( $search_result ) && is_array ( $search_result ) && isset ( $search_result['meetings'] ) )
                                     {
@@ -3275,7 +3557,7 @@ abstract class BMLTPlugin
                                             {
                                             $ret .= '<div class="single_meeting_div">';
                                             $ret .= '<h1 class="meeting_name_h2">'.htmlspecialchars($meeting['meeting_name']).'</h1>';
-                                            $ret .= '<p class="time_day_p">'.$this->process_text ( $this->my_current_language->local_weekdays[$meeting['weekday_tinyint']] ).' ';
+                                            $ret .= '<p class="time_day_p">'.$this->process_text ( $this->local_weekdays[$meeting['weekday_tinyint']] ).' ';
                                             $time = explode ( ':', $meeting['start_time'] );
                                             $am_pm = ' AM';
                                             $distance = null;
@@ -3284,7 +3566,7 @@ abstract class BMLTPlugin
                                                 {
                                                 $distance = round ( ((strtolower ($options['distance_units']) == 'km') ? $meeting['distance_in_km'] : $meeting['distance_in_miles']), 1 );
                                                 
-                                                $distance = strval ($distance).' '.((strtolower ($options['distance_units']) == 'km' ) ? $this->process_text ( $this->my_current_language->local_mobile_kilometers ) : $this->process_text ( $this->my_current_language->local_mobile_miles ) );
+                                                $distance = strval ($distance).' '.((strtolower ($options['distance_units']) == 'km' ) ? $this->process_text ( $this->local_mobile_kilometers ) : $this->process_text ( $this->local_mobile_miles ) );
                                                 }
 
                                             $time[0] = intval ( $time[0] );
@@ -3292,11 +3574,11 @@ abstract class BMLTPlugin
                                             
                                             if ( ($time[0] == 23) && ($time[1] > 50) )
                                                 {
-                                                $ret .= $this->process_text ( $this->my_current_language->local_midnight );
+                                                $ret .= $this->process_text ( $this->local_midnight );
                                                 }
                                             elseif ( ($time[0] == 12) && ($time[1] == 0) )
                                                 {
-                                                $ret .= $this->process_text ( $this->my_current_language->local_noon );
+                                                $ret .= $this->process_text ( $this->local_noon );
                                                 }
                                             else
                                                 {
@@ -3387,7 +3669,7 @@ abstract class BMLTPlugin
                                                     
                                                     $url = 'https://maps.google.com/maps?key='.$options['google_api_key'].'&region='.strtoupper ( $options['region_bias'] ).'&q='.urlencode($meeting['latitude']).','.urlencode($meeting['longitude']) . '+(%22'.str_replace ( "%28", '-', str_replace ( "%29", '-', $url )).'%22)';
                                                     $url .= '&ll='.urlencode($meeting['latitude']).','.urlencode($meeting['longitude']);
-                                                    $ret .= '<a rel="external nofollow" accesskey="'.$index.'" href="'.htmlspecialchars ( $url ).'" title="'.htmlspecialchars($meeting['meeting_name']).'">'.$this->process_text ( $this->my_current_language->local_map_link ).'</a>';
+                                                    $ret .= '<a rel="external nofollow" accesskey="'.$index.'" href="'.htmlspecialchars ( $url ).'" title="'.htmlspecialchars($meeting['meeting_name']).'">'.$this->process_text ( $this->local_map_link ).'</a>';
                                                     $ret .= '<script type="text/javascript">document.getElementById(\'maplink_'.intval($meeting['id_bigint']).'\').style.display=\'block\';var c_BMLTPlugin_settings_id = '.htmlspecialchars ( $this->my_http_vars['bmlt_settings_id'] ).';</script>';
 
                                                     $ret .= '</p>';
@@ -3406,10 +3688,10 @@ abstract class BMLTPlugin
                                             
                                             if ( $distance )
                                                 {
-                                                $ret .= '<p class="distance_p"><strong>'.$this->process_text ( $this->my_current_language->local_mobile_distance ).':</strong> '.htmlspecialchars ( $distance ).'</p>';
+                                                $ret .= '<p class="distance_p"><strong>'.$this->process_text ( $this->local_mobile_distance ).':</strong> '.htmlspecialchars ( $distance ).'</p>';
                                                 }
                                                 
-                                            $ret .= '<p class="formats_p"><strong>'.$this->process_text ( $this->my_current_language->local_formats ).':</strong> '.htmlspecialchars ( $meeting['formats'] ).'</p>';
+                                            $ret .= '<p class="formats_p"><strong>'.$this->process_text ( $this->local_formats ).':</strong> '.htmlspecialchars ( $meeting['formats'] ).'</p>';
                                             $ret .= '</div>';
                                             if ( $index++ < $count )
                                                 {
@@ -3443,7 +3725,7 @@ abstract class BMLTPlugin
                                         {
                                         $ret .= '_wml';
                                         }
-                                    $ret .= '">'.$this->process_text ($this->my_current_language->local_mobile_fail_no_meetings).'</h1>';
+                                    $ret .= '">'.$this->process_text ($this->local_mobile_fail_no_meetings).'</h1>';
                                     }
                                 }
                             }
@@ -3452,7 +3734,7 @@ abstract class BMLTPlugin
                 }
             else
                 {
-                $ret .= '<h1 class="failed_search_h1">'.$this->process_text ($this->my_current_language->local_enter_address_alert).'</h1>';
+                $ret .= '<h1 class="failed_search_h1">'.$this->process_text ($this->local_enter_address_alert).'</h1>';
                 }
             }
         elseif ( isset ( $this->my_http_vars['do_search'] ) && !((($this->my_http_vars['do_search'] == 'the hard way') || (isset ( $this->my_http_vars['WML'] ) && ($this->my_http_vars['WML'] == 1)))) )
@@ -3482,7 +3764,7 @@ abstract class BMLTPlugin
                 $ret .= '<body id="search_form_body"';
                 if ( !isset ( $this->my_http_vars['WML'] ) )
                     {
-                    $ret .= ' onload="if( (typeof ( navigator ) == \'object\' &amp;&amp; typeof ( navigator.geolocation ) == \'object\') || (window.blackberry &amp;&amp; blackberry.location.GPSSupported) || (typeof ( google ) == \'object\' &amp;&amp; typeof ( google.gears ) == \'object\') ){document.getElementById ( \'hidden_until_js\' ).style.display = \'block\';document.getElementById ( \'hidden_until_js2\' ).style.display = \'block\';};document.getElementById(\'address_input\').value=\''.$this->process_text ( $this->my_current_language->local_enter_an_address ).'\'"';
+                    $ret .= ' onload="if( (typeof ( navigator ) == \'object\' &amp;&amp; typeof ( navigator.geolocation ) == \'object\') || (window.blackberry &amp;&amp; blackberry.location.GPSSupported) || (typeof ( google ) == \'object\' &amp;&amp; typeof ( google.gears ) == \'object\') ){document.getElementById ( \'hidden_until_js\' ).style.display = \'block\';document.getElementById ( \'hidden_until_js2\' ).style.display = \'block\';};document.getElementById(\'address_input\').value=\''.$this->process_text ( $this->local_enter_an_address ).'\'"';
                     }
                 $ret .= '>';
                 $ret .= '<div class="search_div"';
@@ -3543,6 +3825,18 @@ abstract class BMLTPlugin
             
             $options = $this->getBMLTOptions_by_id ( $this->my_http_vars['bmlt_settings_id'] );
             
+            $this->my_languages = array();
+            
+            global $g_lang_keys;
+                
+            foreach ( $g_lang_keys as $lang_key )
+                {
+                $eval_string = '$this->my_languages[' . $lang_key . '] = new BMLT_Localized_BaseClass_' . $lang_key . '();';
+                eval ( $eval_string );
+                }
+            
+            $this->adapt_to_lang ( $options['lang'] );
+            
             $this->my_http_vars = array_merge_recursive ( $_GET, $_POST );
                 
             if ( !(isset ( $this->my_http_vars['search_form'] ) && $this->my_http_vars['search_form'] )
@@ -3560,8 +3854,6 @@ abstract class BMLTPlugin
 
             // We need to start off by setting up our driver.
             $this->my_driver = new bmlt_satellite_controller;
-
-            $this->adapt_to_lang ( $bmlt_localization );
             
             if ( $this->my_driver instanceof bmlt_satellite_controller )
                 {
