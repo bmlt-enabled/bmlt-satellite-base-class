@@ -200,71 +200,6 @@ abstract class BMLTPlugin
         {
         return self::$g_s_there_can_only_be_one;
         }
-    
-    /****************************************************************************************//**
-    *   \brief Checks the UA of the caller, to see if it should return XHTML Strict or WML.     *
-    *                                                                                           *
-    *   NOTE: This is very, very basic. It is not meant to be a studly check, like WURFL.       *
-    *                                                                                           *
-    *   \returns A string. The supported type ('xhtml', 'xhtml_mp' or 'wml')                    *
-    ********************************************************************************************/
-    static function mobile_sniff_ua (   $in_http_vars   ///< The query variables.
-                                    )
-    {
-        if ( isset ( $in_http_vars['WML'] ) && (intval ( $in_http_vars['WML'] ) == 1) )
-            {
-            $language = 'wml';
-            }
-        elseif ( isset ( $in_http_vars['WML'] ) && (intval ( $in_http_vars['WML'] ) == 2) )
-            {
-            $language = 'xhtml_mp';
-            }
-        else
-            {
-            if (!isset($_SERVER['HTTP_ACCEPT']))
-                {
-                return false;
-                }
-        
-            $http_accept = explode (',', $_SERVER['HTTP_ACCEPT']);
-        
-            $accept = array();
-        
-            foreach ($http_accept as $type)
-                {
-                $type = strtolower(trim(preg_replace('/\;.*$/', '', preg_replace ('/\s+/', '', $type))));
-        
-                $accept[$type] = true;
-                }
-        
-            $language = 'xhtml';
-        
-            if (isset($accept['text/vnd.wap.wml']))
-                {
-                $language = 'wml';
-        
-                if (isset($accept['application/xhtml+xml']) || isset($accept['application/vnd.wap.xhtml+xml']))
-                    {
-                    $language = 'xhtml_mp';
-                    }
-                }
-            else
-                {
-                if (    preg_match ( '/ipod/i', $_SERVER['HTTP_USER_AGENT'] )
-                    ||  preg_match ( '/ipad/i', $_SERVER['HTTP_USER_AGENT'] )
-                    ||  preg_match ( '/iphone/i', $_SERVER['HTTP_USER_AGENT'] )
-                    ||  preg_match ( '/android/i', $_SERVER['HTTP_USER_AGENT'] )
-                    ||  preg_match ( '/blackberry/i', $_SERVER['HTTP_USER_AGENT'] )
-                    ||  preg_match ( "/opera\s+mini/i", $_SERVER['HTTP_USER_AGENT'] )
-                    ||  isset ( $in_http_vars['simulate_smartphone'] )
-                    )
-                    {
-                    $language = 'smartphone';
-                    }
-                }
-            }
-        return $language;
-    }
         
     /************************************************************************************//**
     *                           ACCESSORS AND INTERNAL FUNCTIONS                            *
@@ -289,6 +224,14 @@ abstract class BMLTPlugin
     function &get_my_driver ()
         {
         return $this->my_driver;
+        }
+
+    /************************************************************************************//**
+    *   \brief Loads the parameter list.                                                    *
+    ****************************************************************************************/
+    function load_params ( )
+        {
+        $this->my_params = self::get_params ( $this->my_http_vars );
         }
     
     /************************************************************************************//**
@@ -353,14 +296,91 @@ abstract class BMLTPlugin
             }
         return $my_params;
         }
-    
+        
     /************************************************************************************//**
-    *   \brief Loads the parameter list.                                                    *
+    *   This will strip the cruft out of CSS and JS files.                                  *
+    *   \returns a string, with the stripped CSS.                                           *
     ****************************************************************************************/
-    function load_params ( )
+    static function stripFile ( $in_filename,               ///< The filename to open and optimize. If in a subdirectory (other than themes), then that should be part of the string.
+                                $in_theme_dirname = NULL    ///< The dirname of the theme to use. Default is NULL (Looks in the same directory as this file).
+                                )
         {
-        $this->my_params = self::get_params ( $this->my_http_vars );
+        $pathname = dirname ( __FILE__ ) . ($in_theme_dirname ? '/themes/' . $in_theme_dirname : '') . '/' . $in_filename;
+        if ( file_exists ( $pathname ) )
+            {
+            $opt = file_get_contents ( $pathname );
+            $opt = preg_replace( "|\/\*.*?\*\/|s", "", $opt );
+            $opt = preg_replace( "|\s+|s", " ", $opt );
+            return $opt;
+            }
+            
+        return "";
         }
+    
+    /****************************************************************************************//**
+    *   \brief Checks the UA of the caller, to see if it should return XHTML Strict or WML.     *
+    *                                                                                           *
+    *   NOTE: This is very, very basic. It is not meant to be a studly check, like WURFL.       *
+    *                                                                                           *
+    *   \returns A string. The supported type ('xhtml', 'xhtml_mp' or 'wml')                    *
+    ********************************************************************************************/
+    static function mobile_sniff_ua (   $in_http_vars   ///< The query variables.
+                                    )
+    {
+        if ( isset ( $in_http_vars['WML'] ) && (intval ( $in_http_vars['WML'] ) == 1) )
+            {
+            $language = 'wml';
+            }
+        elseif ( isset ( $in_http_vars['WML'] ) && (intval ( $in_http_vars['WML'] ) == 2) )
+            {
+            $language = 'xhtml_mp';
+            }
+        else
+            {
+            if (!isset($_SERVER['HTTP_ACCEPT']))
+                {
+                return false;
+                }
+        
+            $http_accept = explode (',', $_SERVER['HTTP_ACCEPT']);
+        
+            $accept = array();
+        
+            foreach ($http_accept as $type)
+                {
+                $type = strtolower(trim(preg_replace('/\;.*$/', '', preg_replace ('/\s+/', '', $type))));
+        
+                $accept[$type] = true;
+                }
+        
+            $language = 'xhtml';
+        
+            if (isset($accept['text/vnd.wap.wml']))
+                {
+                $language = 'wml';
+        
+                if (isset($accept['application/xhtml+xml']) || isset($accept['application/vnd.wap.xhtml+xml']))
+                    {
+                    $language = 'xhtml_mp';
+                    }
+                }
+            else
+                {
+                if (    preg_match ( '/ipod/i', $_SERVER['HTTP_USER_AGENT'] )
+                    ||  preg_match ( '/ipad/i', $_SERVER['HTTP_USER_AGENT'] )
+                    ||  preg_match ( '/iphone/i', $_SERVER['HTTP_USER_AGENT'] )
+                    ||  preg_match ( '/android/i', $_SERVER['HTTP_USER_AGENT'] )
+                    ||  preg_match ( '/blackberry/i', $_SERVER['HTTP_USER_AGENT'] )
+                    ||  preg_match ( "/opera\s+mini/i", $_SERVER['HTTP_USER_AGENT'] )
+                    ||  isset ( $in_http_vars['simulate_smartphone'] )
+                    )
+                    {
+                    $language = 'smartphone';
+                    }
+                }
+            }
+        return $language;
+    }    
 
     /************************************************************************************//**
     *   \brief This will parse the given text, to see if it contains the submitted code.    *
@@ -1767,6 +1787,60 @@ abstract class BMLTPlugin
         
     /************************************************************************************//**
     *   \brief This is a function that filters the content, and replaces a portion with the *
+    *   "quick" search.                                                                     *
+    *                                                                                       *
+    *   \returns a string, containing the content.                                          *
+    ****************************************************************************************/
+
+    function display_quicksearch ( $in_content     ///< This is the content to be filtered.
+                                    )
+        {
+        $my_table_next_id = 0;
+        
+        while ( $params = self::get_shortcode ( $in_content, 'bmlt_quicksearch' ) )
+            {
+            $options_id = $this->cms_get_page_settings_id( $in_content );
+            
+            if ( $params !== true )
+                {
+                $param_array = explode ( '##-##', $params );    // You can specify a settings ID, by separating it from the URI parameters with a ##-##.
+                $params = null;
+                }
+            
+            if ( ($params === true) || is_array ( $param_array ) )
+                {
+                if ( $params === true )
+                    {
+                    $params = null;
+                    }
+                else
+                    {
+                    $params = str_replace ( array ( '&#038;', '&#038;#038;', '&#038;amp;', '&#038;amp;', '&amp;#038;', '&amp;', '&amp;amp;' ), '&', $param_array[count ( $param_array )-1] );
+                    }
+                
+                // See if there is an options ID in the parameter list.
+                if ( (is_array ( count ( $param_array ) ) && (count ( $param_array ) > 1)) || (intval ( $param_array[0] ) && preg_match ( '/^\d+$/', $param_array[0] )) )
+                    {
+                    $options_id = intval ( $param_array[0] );
+                    if ( count ( $param_array ) == 1 )
+                        {
+                        $params = null;
+                        }
+                    }
+                
+                $options = $this->getBMLTOptions_by_id ( $options_id );
+                $this->adapt_to_lang ( $options['lang'] );
+                $display = '<noscript class="no_js">'.$this->process_text ( $this->my_current_language->local_noscript ).'</noscript>';
+                $display .= '<div id="quicksearch_form_div" class="quicksearch_form_div" style="display:none"><form action="#" onsubmit="return false"><div><div id="quicksearch_container"></div></div>';
+                $display .= '<script type="text/javascript">' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+                $display .= self::stripFile ( 'quicksearch.js' ) . "\n";
+                $display .= '</script>' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+                }
+            }
+        }
+        
+    /************************************************************************************//**
+    *   \brief This is a function that filters the content, and replaces a portion with the *
     *   "popup" search, if provided by the 'bmlt_simple_searches' custom field.             *
     *                                                                                       *
     *   \returns a string, containing the content.                                          *
@@ -2132,7 +2206,6 @@ abstract class BMLTPlugin
                 // See if there is an options ID in the parameter list.
                 if ( (is_array ( count ( $param_array ) ) && (count ( $param_array ) > 1)) || (intval ( $param_array[0] ) && preg_match ( '/^\d+$/', $param_array[0] )) )
                     {
-                
                     $options_id = intval ( $param_array[0] );
                     if ( count ( $param_array ) == 1 )
                         {

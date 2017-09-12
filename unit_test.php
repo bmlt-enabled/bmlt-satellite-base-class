@@ -2,7 +2,7 @@
 /****************************************************************************************//**
 * \file unit_test.php																		*
 * \brief A unit test harness for the BMLTPlugin class.						                *
-*   \version 3.5.1                                                                          *
+*   \version 3.6.0                                                                          *
     
     This file is part of the BMLT Common Satellite Base Class Project. The project GitHub
     page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class
@@ -267,6 +267,8 @@ function u_test_form()
                         $ret .= '<option value="&lt;!--BMLT_CHANGES(switcher=GetChanges&start_date='.date('Y-m-d',time()-(60 * 60 * 24 * 90)).'&service_body_id=1)--&gt;">BMLT Changes (Comments -Last 90 days in Greater New York Regional Service)</option>';
                         $ret .= '<option value="[[bmlt_map]]">BMLT Map -New Implementation (Brackets)</option>';
                         $ret .= '<option value="&lt;!--bmlt_map--&gt;">BMLT Map -New Implementation (Comments)</option>';
+                        $ret .= '<option value="[[bmlt_quicksearch]]">BMLT Quicksearch (Brackets)</option>';
+                        $ret .= '<option value="&lt;!--bmlt_quicksearch--&gt;">BMLT Quicksearch (Comments)</option>';
                         $ret .= '</select>';
                     $ret .= '</div>';
                 $ret .= '</div>';

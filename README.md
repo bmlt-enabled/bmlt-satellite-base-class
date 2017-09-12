@@ -21,6 +21,11 @@ The instructions for employment of this class are on [this page](http://bmlt.mag
 
 CHANGELIST
 ----------
+***Version 3.6.0* ** *- TBD*
+
+- Added the [[BMLT_QUICKSEARCH]] shortcode.
+- Optimized the CSS and JavaScript.
+
 ***Version 3.5.1* ** *- September 11, 2017*
 
 - There were still outstanding issues that needed to be addressed.
