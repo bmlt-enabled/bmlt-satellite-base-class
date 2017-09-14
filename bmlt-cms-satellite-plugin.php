@@ -310,7 +310,10 @@ abstract class BMLTPlugin
             {
             $opt = file_get_contents ( $pathname );
             $opt = preg_replace( "|\/\*.*?\*\/|s", "", $opt );
-            $opt = preg_replace( "|\s+|s", " ", $opt );
+            if ( !defined ( '_DEBUG_MODE_' ) )
+                {
+                $opt = preg_replace( "|\s+|s", " ", $opt );
+                }
             return $opt;
             }
             
@@ -1649,6 +1652,7 @@ abstract class BMLTPlugin
                 $options = $this->getBMLTOptions_by_id ( $this->my_http_vars['bmlt_settings_id'] );
                 
                 $this->load_params ( );
+                
                 if ( isset ( $this->my_http_vars['redirect_ajax'] ) && $this->my_http_vars['redirect_ajax'] )
                     {
                     $url = $options['root_server']."/client_interface/xhtml/index.php?switcher=RedirectAJAX$this->my_params";
@@ -1772,6 +1776,8 @@ abstract class BMLTPlugin
             $in_the_content = $this->display_new_map_search ( $in_the_content );
         
             $in_the_content = $this->display_bmlt_nouveau ( $in_the_content );
+        
+            $in_the_content = $this->display_quicksearch ( $in_the_content );
             }
         
         // This simply ensures that we remove any unused mobile shortcodes.
@@ -1795,11 +1801,12 @@ abstract class BMLTPlugin
     function display_quicksearch ( $in_content     ///< This is the content to be filtered.
                                     )
         {
-        $my_table_next_id = 0;
+        $my_form_next_id = 0;
         
         while ( $params = self::get_shortcode ( $in_content, 'bmlt_quicksearch' ) )
             {
             $options_id = $this->cms_get_page_settings_id( $in_content );
+            $display = '';
             
             if ( $params !== true )
                 {
@@ -1830,15 +1837,87 @@ abstract class BMLTPlugin
                 
                 $options = $this->getBMLTOptions_by_id ( $options_id );
                 $this->adapt_to_lang ( $options['lang'] );
-                $display = '<noscript class="no_js">'.$this->process_text ( $this->my_current_language->local_noscript ).'</noscript>';
-                $display .= '<div id="quicksearch_form_div" class="quicksearch_form_div" style="display:none"><form action="#" onsubmit="return false"><div><div id="quicksearch_container"></div></div>';
-                $display .= '<script type="text/javascript">' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-                $display .= self::stripFile ( 'quicksearch.js' ) . "\n";
-                $display .= '</script>' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+                $theme = $options['theme'];
+                $display .= '<noscript class="no_js">'.$this->process_text ( $this->my_current_language->local_noscript ).'</noscript>';
+                
+                $url = $this->get_plugin_path();
+                $ajax_url = $this->get_ajax_base_uri();
+                $throbber_loc .= htmlspecialchars ( $url.'themes/'.$theme.'/images/Throbber.gif' );
+                
+                if ( 0 == $my_form_next_id )
+                    {
+                    $display .= '<script type="text/javascript">' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+                    $display .= self::stripFile ( 'quicksearch.js' ) . "\n";
+                    $display .= '</script>' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+                    }
+                
+                $display .= '<div id="quicksearch_div_'.$my_form_next_id.'" class="quicksearch_div quicksearch_theme_'.$theme.'" style="display:none">' . "\n";
+                    $display .= '<div class="quicksearch_throbber_div" id="quicksearch_throbber_div_'.$my_form_next_id.'"><img src="'.htmlspecialchars ( $throbber_loc ).'" alt="AJAX Throbber" /></div>';
+                    $display .= '<div class="quicksearch_form_container" id="quicksearch_form_container_'.$my_form_next_id.'" style="display:none">' . "\n";
+                        $display .= '<div class="quicksearch_form_select_container" id="quicksearch_form_select_container_'.$my_form_next_id.'" style="display:none">' . "\n";
+                            $display .= '<label for="quicksearch_form_town_select_'.$my_form_next_id.'" class="quicksearch_form_town_select_label">'.$this->my_current_language->local_quicksearch_select_label.'</label>';
+                            $display .= '<select id="quicksearch_form_town_select_'.$my_form_next_id.'" class="quicksearch_form_town_select">' . "\n";
+                                $display .= '<option value="" selected="selected">'.$this->my_current_language->local_quicksearch_select_option_0.'</select>' . "\n";
+                            $display .= "</select>\n";
+                        $display .= "</div>\n";
+                        $display .= '<div class="quicksearch_form_weekdays_container" id="quicksearch_form_weekdays_container_'.$my_form_next_id.'">';
+                            $weekdayName = 0 < $weekday_index ? $this->my_current_language->local_weekdays_short[$weekday_index] : $this->my_current_language->local_new_map_all_weekdays;
+                            $display .= '<div class="quicksearch_form_weekday_container quicksearch_form_weekday_container_0">'."\n";
+                                $display .= '<input type="checkbox" checked="checked" id="quicksearch_form_weekday_checkbox_0" value="0" onchange="bmlt_quicksearch_form_'.$my_form_next_id.'.reactToWeekdayCheckboxChange(this)" />'."\n";
+                                $display .= '<label for="quicksearch_form_weekday_checkbox_'.$weekday_index.'">'.$weekdayName."</label>\n";
+                            $display .= '</div>'."\n";
+                            
+                            for ( $index = 0; $index < 7; $index++ )
+                                {
+                                $weekday_index = $index + intval ( $options['startWeekday'] );
+
+                                if ( $weekday_index > 7 )
+                                    {
+                                    $weekday_index = 1;
+                                    }
+                                
+                                $weekdayName = $this->my_current_language->local_weekdays_short[$weekday_index];
+                                
+                                $display .= '<div class="quicksearch_form_weekday_container quicksearch_form_weekday_container_'.$weekday_index.'">'."\n";
+                                    $display .= '<input type="checkbox" checked="checked" id="quicksearch_form_weekday_checkbox_'.$weekday_index.'" value="'.$weekday_index.'" />'."\n";
+                                    $display .= '<label for="quicksearch_form_weekday_checkbox_'.$weekday_index.'">'.$weekdayName."</label>\n";
+                                $display .= '</div>'."\n";
+                                }
+                        
+                        $display .= '<div style="clear:both"></div></div>'."\n";
+                        $display .= '<div class="quicksearch_form_text_container quicksearch_form_text_container_0">'."\n";
+                            $display .= '<input type="text" class="quicksearch_form_search_text" id="quicksearch_form_search_text_'.$my_form_next_id.'" placeholder="'.$this->my_current_language->local_nouveau_text_item_default_text.'" />'."\n";
+                        $display .= '</div>'."\n";
+                        $display .= '<input type="button" class="quicksearch_form_submit_button" id="quicksearch_form_submit_button_'.$my_form_next_id.'" value="'.$this->my_current_language->local_nouveau_text_go_button.'" />'."\n";
+                    $display .= '</div>' . "\n";
+                    $display .= '<div class="quicksearch_results_container" id="quicksearch_results_container_'.$my_form_next_id.'" style="display:none">';
+                        $display .= '<div class="quicksearch_no_results_div" id="quicksearch_no_results_div_'.$my_form_next_id.'" style="display:none">'.$this->my_current_language->local_cant_find_meetings_display.'</div>';
+                        $display .= '<div class="quicksearch_search_results_div" id="quicksearch_search_results_div_'.$my_form_next_id.'" style="display:none"></div>';
+                    $display .= "</div>\n";
+                    $display .= "<script type=\"text/javascript\">\n";
+                        $display .= "var bmlt_quicksearch_form_$my_form_next_id = new BMLTQuickSearch ( $my_form_next_id, '$ajax_url', '$options_id'";
+                            if ( $params )
+                                {
+                                $pArray = explode ( ',', $params );
+                                $func = function ( $value ) { return strtolower ( trim ( $value ) ); };
+                                $pString = implode ( '","', array_map ( $func, $pArray ) );
+                                $display .= ', ["'.$pString.'"]';
+                                }
+                        $display .= " );\n";
+                    $display .= 'var g_table_ampm_array = new Array ( '.$this->my_current_language->local_table_ante_meridian.' );'."\n";
+                    $display .= "var g_table_map_link_uri_format = '".htmlspecialchars ( $this->my_current_language->local_nouveau_meeting_details_map_link_uri_format )."';\n";
+                    $display .= "</script>\n";
+                $display .= "</div>\n";
+                
+                $my_form_next_id++;
                 }
+
+            // This simply ensures that we remove any unused mobile shortcodes.
+            $in_content = self::replace_shortcode ( $in_content, 'bmlt_quicksearch', $display );
             }
+        return $in_content;
         }
-        
+    
     /************************************************************************************//**
     *   \brief This is a function that filters the content, and replaces a portion with the *
     *   "popup" search, if provided by the 'bmlt_simple_searches' custom field.             *

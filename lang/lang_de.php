@@ -363,6 +363,12 @@ class BMLT_Localized_BaseClass_de extends BMLT_Localized_BaseClass
         /// This array has the weekdays, spelled out. Since weekdays start at 1 (Sunday), we consider 0 to be an error.
         $this->local_weekdays = array ( 'ERROR', 'Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag' );
         $this->local_weekdays_short = array ( 'ERR', 'So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa' );
+    
+        /************************************************************************************//**
+        *                          STATIC DATA MEMBERS (QUICKSEARCH)                            *
+        ****************************************************************************************/
+        $this->local_quicksearch_select_label = 'Town:';
+        $this->local_quicksearch_select_option_0 = 'All Towns';
         }
     };
 ?>

@@ -1,0 +1,88 @@
+/*    
+
+    This file is part of the BMLT Common Satellite Base Class Project. The project GitHub
+    page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class
+
+    \version 3.6.0
+    
+    This file is part of the BMLT Common Satellite Base Class Project. The project GitHub
+    page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class
+    
+    This file is part of the Basic Meeting List Toolbox (BMLT).
+    
+    Find out more at: http://bmlt.magshare.org
+    
+    BMLT is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+    
+    BMLT is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    
+    You should have received a copy of the GNU General Public License
+    along with this code.  If not, see <http://www.gnu.org/licenses/>.
+*/
+div.quicksearch_form_container
+{
+    text-align:center;
+}
+
+div.quicksearch_form_weekdays_container,
+div.quicksearch_form_select_container,
+div.quicksearch_form_text_container
+{
+    margin: auto;
+    margin-top:0.25em;
+    margin-bottom: 0.25em;
+    text-align: left;
+}
+
+div.quicksearch_form_weekdays_container,
+div.quicksearch_form_text_container
+{
+    display:table;
+}
+
+div.quicksearch_form_text_container input
+{
+    width: 32em;
+}
+
+input.quicksearch_form_submit_button
+{
+    margin-top:0.25em;
+}
+
+div.quicksearch_form_weekday_container
+{
+    float:left;
+    width: 4em;
+}
+
+div.quicksearch_throbber_div
+{
+    width: 100%;
+    height:400px;
+}
+
+div.quicksearch_throbber_div img
+{
+    width:60px;
+    height:60px;
+    margin:0;
+    display:block;
+    position:absolute;
+    top: 50%;
+    left: 50%;
+    margin-top:-30px;
+    margin-left:-30px;
+}
+
+label.quicksearch_form_town_select_label
+{
+    margin: 0;
+    margin-right: 0.25em;
+}
