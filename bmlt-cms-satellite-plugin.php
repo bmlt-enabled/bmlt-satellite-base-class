@@ -469,7 +469,7 @@ abstract class BMLTPlugin
         {
         global $bmlt_localization;
         // These are the defaults. If the saved option has a different value, it replaces the ones in here.
-        return array (  'root_server' => self::$default_rootserver,
+        $ret = array (  'root_server' => self::$default_rootserver,
                         'map_center_latitude' => self::$default_map_center_latitude,
                         'map_center_longitude' => self::$default_map_center_longitude,
                         'map_zoom' => self::$default_map_zoom,
@@ -489,6 +489,8 @@ abstract class BMLTPlugin
                         'region_bias' => 'us',
                         'lang' => $bmlt_localization
                         );
+            
+            return $ret;
         }
     
     /************************************************************************************//**
@@ -1866,9 +1868,9 @@ abstract class BMLTPlugin
                                 $display .= '<label for="quicksearch_form_weekday_checkbox_'.$weekday_index.'">'.$weekdayName."</label>\n";
                             $display .= '</div>'."\n";
                             
-                            for ( $index = 0; $index < 7; $index++ )
+                            for ( $index = 1; $index < 8; $index++ )
                                 {
-                                $weekday_index = $index + intval ( $options['startWeekday'] );
+                                $weekday_index = $index + intval ( $options['startWeekday'] ) - 1;
 
                                 if ( $weekday_index > 7 )
                                     {
@@ -1894,22 +1896,42 @@ abstract class BMLTPlugin
                         $display .= '<div class="quicksearch_search_results_div" id="quicksearch_search_results_div_'.$my_form_next_id.'" style="display:none"></div>';
                     $display .= "</div>\n";
                     $display .= "<script type=\"text/javascript\">\n";
-                        $display .= "var bmlt_quicksearch_form_$my_form_next_id = new BMLTQuickSearch ( $my_form_next_id, '$ajax_url', '$options_id'";
-                            if ( $params )
+                        $field_key = '';
+                        if ( $params )
+                            {
+                            if ( ('location_province' == $params) || ('location_sub_province' == $params) || ('location_municipality' == $params) || ('location_city_subsection' == $params) || ('location_neighborhood' == $params) )
                                 {
-                                $pArray = explode ( ',', $params );
-                                $func = function ( $value ) { return strtolower ( trim ( $value ) ); };
-                                $pString = implode ( '","', array_map ( $func, $pArray ) );
-                                $display .= ', ["'.$pString.'"]';
+                                $field_key = $params;
+                                $params = '';
                                 }
                             else
                                 {
-                                $display .= ', []';
+                                $pArray = explode ( '=', $params );
+                                if ( 1 < count ( $pArray ) )
+                                    {
+                                    $field_key = $pArray[0];
+                                    $params = $pArray[1];
+                                    }
                                 }
+                            }
+                        
+                        $display .= "var bmlt_quicksearch_form_$my_form_next_id = new BMLTQuickSearch ( $my_form_next_id, '$ajax_url', '$options_id'";
+                        $display .= ", '$field_key'";
+                        if ( $params )
+                            {
+                            $pArray = explode ( ',', $params );
+                            $func = function ( $value ) { return strtolower ( trim ( $value ) ); };
+                            $pString = implode ( '","', array_map ( $func, $pArray ) );
+                            $display .= ', ["'.$pString.'"]';
+                            }
+                        else
+                            {
+                            $display .= ', []';
+                            }
                         $display .= ', ['.$this->my_current_language->local_table_ante_meridian.']';
                         $display .= ", '".htmlspecialchars ( $this->my_current_language->local_nouveau_meeting_details_map_link_uri_format )."'";
-                        $display .= ', ["'.join ( '","', $this->my_current_language->local_nouveau_weekday_long_array ).'"]';
-                        $display .= ','.strval ( intval ( $options['startWeekday'] ) );
+                        $display .= ", ['".join ( "','", $this->my_current_language->local_nouveau_weekday_long_array )."']";
+                        $display .= ', '.strval ( intval ( $options['startWeekday'] ) );
                         $display .= ', '.($options['military_time'] ? 'true' : 'false');
                         $display .= " );\n";
                     $display .= "</script>\n";

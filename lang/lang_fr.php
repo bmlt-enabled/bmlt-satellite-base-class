@@ -367,7 +367,7 @@ class BMLT_Localized_BaseClass_fr extends BMLT_Localized_BaseClass
         /************************************************************************************//**
         *                          STATIC DATA MEMBERS (QUICKSEARCH)                            *
         ****************************************************************************************/
-        $this->local_quicksearch_select_option_0 = 'All Towns';
+        $this->local_quicksearch_select_option_0 = 'Rechercher Partout';
         }
     };
 ?>

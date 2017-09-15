@@ -23,7 +23,7 @@
     You should have received a copy of the GNU General Public License
     along with this code.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************************************/
-function BMLTQuickSearch ( inID, inAjaxURI, inOptionsID, inTownFilter, am_pm_array, map_link_format, weekday_long_name_array, week_start, military_time )
+function BMLTQuickSearch ( inID, inAjaxURI, inOptionsID, inValueFieldName, inValueFilter, am_pm_array, map_link_format, weekday_long_name_array, week_start, military_time )
 {
     this.m_am_pm_array = am_pm_array;
     this.m_map_link_format = map_link_format;
@@ -48,7 +48,8 @@ function BMLTQuickSearch ( inID, inAjaxURI, inOptionsID, inTownFilter, am_pm_arr
     this.m_no_results_div = document.getElementById ( 'quicksearch_no_results_div_' + inID );
     this.m_search_results_div = document.getElementById ( 'quicksearch_search_results_div_' + inID );
     this.m_search_results_container_div = document.getElementById ( 'quicksearch_results_container_' + inID );
-    this.m_town_filter = inTownFilter;
+    this.m_value_filter = inValueFilter;
+    this.m_value_field_name = inValueFieldName;
     var id = this.m_differentiatorID;
     this.m_main_container.onkeypress = function () { BMLTQuickSearch.prototype.reactToKeyDown ( id ); };
     this.m_search_text_field.onfocus = function () { BMLTQuickSearch.prototype.reactToKeyDown ( id ); };
@@ -65,12 +66,21 @@ function BMLTQuickSearch ( inID, inAjaxURI, inOptionsID, inTownFilter, am_pm_arr
 
     this.m_main_container.style.display="block";
     var baseURI = this.m_ajaxURI + "?bmlt_settings_id=" + this.m_optionsID + "&redirect_ajax_json=";
-    var townURI =  baseURI + encodeURI ( 'switcher=GetFieldValues&meeting_key=location_municipality' );
-    var boroughURI =  baseURI + encodeURI ( 'switcher=GetFieldValues&meeting_key=location_city_subsection' );
     var weekdayURI = baseURI + encodeURI ( 'switcher=GetFieldValues&meeting_key=weekday_tinyint' );
-    var ajax_request1 = BMLTPlugin_AjaxRequest ( townURI, BMLTQuickSearch.prototype.ajaxCallbackTowns, 'get', this.m_differentiatorID );
-    var ajax_request2 = BMLTPlugin_AjaxRequest ( boroughURI, BMLTQuickSearch.prototype.ajaxCallbackBoroughs, 'get', this.m_differentiatorID );
-    var ajax_request3 = BMLTPlugin_AjaxRequest ( weekdayURI, BMLTQuickSearch.prototype.ajaxCallbackWeekdays, 'get', this.m_differentiatorID );
+    var ajax_request1 = BMLTPlugin_AjaxRequest ( weekdayURI, BMLTQuickSearch.prototype.ajaxCallbackWeekdays, 'get', this.m_differentiatorID );
+
+    if ( !inValueFieldName )
+        {
+        var townURI =  baseURI + encodeURI ( 'switcher=GetFieldValues&meeting_key=location_municipality' );
+        var boroughURI =  baseURI + encodeURI ( 'switcher=GetFieldValues&meeting_key=location_city_subsection' );
+        var ajax_request2 = BMLTPlugin_AjaxRequest ( townURI, BMLTQuickSearch.prototype.ajaxCallbackTowns, 'get', this.m_differentiatorID );
+        var ajax_request3 = BMLTPlugin_AjaxRequest ( boroughURI, BMLTQuickSearch.prototype.ajaxCallbackBoroughs, 'get', this.m_differentiatorID );
+        }
+    else
+        {
+        var uri = baseURI + encodeURI ( 'switcher=GetFieldValues&meeting_key=' + inValueFieldName );
+        var ajax_request4 = BMLTPlugin_AjaxRequest ( uri, BMLTQuickSearch.prototype.ajaxCallbackField, 'get', this.m_differentiatorID );
+        };
 };
 
 /****************************************************************************************//**
@@ -89,7 +99,7 @@ BMLTQuickSearch.prototype.m_last_search_results_formats = null;
 BMLTQuickSearch.prototype.m_main_container = null;
 BMLTQuickSearch.prototype.m_town_select = null;
 BMLTQuickSearch.prototype.m_towns_temp = null;
-BMLTQuickSearch.prototype.m_towns = null;
+BMLTQuickSearch.prototype.m_values = null;
 BMLTQuickSearch.prototype.m_boroughs = null;
 BMLTQuickSearch.prototype.m_weekdays = null;
 BMLTQuickSearch.prototype.m_weekday_objects = null;
@@ -100,7 +110,8 @@ BMLTQuickSearch.prototype.m_submit_button = null;
 BMLTQuickSearch.prototype.m_search_results_container_div = null;
 BMLTQuickSearch.prototype.m_search_results_div = null;
 BMLTQuickSearch.prototype.m_no_results_div = null;
-BMLTQuickSearch.prototype.m_town_filter = null;
+BMLTQuickSearch.prototype.m_value_field_name = null;
+BMLTQuickSearch.prototype.m_value_filter = null;
 BMLTQuickSearch.prototype.m_select_container = null;
 	
 /****************************************************************************************//**
@@ -583,41 +594,41 @@ BMLTQuickSearch.prototype.startASearch = function (  )
     this.m_last_search_results_meetings = null;
     this.m_last_search_results_formats = null;
     
-    var town = null;
+    var value = null;
     
-    // 1 town, the select is hidden.
-    if ( 1 == this.m_towns.length )
+    // 1 value, the select is hidden.
+    if ( 1 == this.m_values.length )
         {
-        town = this.m_towns[0].location_municipality;
+        value = this.m_values[0].value_name;
         }
     else
         {
-        town = this.m_town_select.value;
+        value = this.m_town_select.value;
         };
 
-    var townIDs = [];
+    var valueIDs = [];
 
-    for ( var townIndex = 0; townIndex < this.m_towns.length; townIndex++ )
+    for ( var index = 0; index < this.m_values.length; index++ )
         {
-        var townObject = this.m_towns[townIndex];
+        var valueObject = this.m_values[index];
 
-        var idArray = townObject.ids.split(",");
+        var idArray = valueObject.ids.split(",");
         
-        if ( townObject.location_municipality == town )
+        if ( valueObject.value_name == value )
             {
-            townIDs = idArray;
+            valueIDs = idArray;
             break;
             }
         else
             {
-            if ( !town )
+            if ( !value )
                 {
-                townIDs.push.apply ( townIDs, idArray );
+                valueIDs.push.apply ( valueIDs, idArray );
                 };
             };
         };
     
-    if ( townIDs.length )
+    if ( valueIDs.length )
         {
         var resultArray = [];
     
@@ -650,7 +661,7 @@ BMLTQuickSearch.prototype.startASearch = function (  )
                 };
             };
         
-        resultArray = this.intersectingArrays ( resultArray, townIDs );
+        resultArray = this.intersectingArrays ( resultArray, valueIDs );
     
         if ( resultArray && resultArray.length )
             {
@@ -929,33 +940,45 @@ BMLTQuickSearch.prototype.populateTownsSelect = function ( inTownsAJAXObject, in
             towns.push ( newTown );
             };
         };
+        
+    for ( var index = 0; index < towns.length; index++ )
+        {
+        towns[index].value_name = towns[index].location_municipality;
+        };
+        
+    this.populateFieldSelect_generic ( towns );
+};
+
+/****************************************************************************************//**
+********************************************************************************************/
+BMLTQuickSearch.prototype.populateFieldSelect_generic = function ( inValueAJAXObject )
+{
+    this.m_values = [];
     
-    this.m_towns = [];
-    
-    var towns = towns.sort(function ( a, b ) { return (a.location_municipality.toString() < b.location_municipality.toString()) ? -1 : ((a.location_municipality.toString() > b.location_municipality.toString()) ? 1 : 0)});
+    var values = inValueAJAXObject.sort(function ( a, b ) { return (a.value_name.toString() < b.value_name.toString()) ? -1 : ((a.value_name.toString() > b.value_name.toString()) ? 1 : 0)});
     
     this.m_town_select.options.length = 1;
     
     var count = 0;
     
-    for ( var index = 0; index < towns.length; index++ )
+    for ( var index = 0; index < values.length; index++ )
         {
-        var townObject = towns[index];
+        var valueObject = values[index];
 
-        if ( this.m_town_filter && this.m_town_filter.length )
+        if ( this.m_value_filter && this.m_value_filter.length )
             {
-            var townName = townObject.location_municipality.toString().toLowerCase();
+            var valueString = valueObject.value_name.toString().toLowerCase();
         
-            if ( -1 == this.m_town_filter.indexOf ( townName ) )
+            if ( -1 == this.m_value_filter.indexOf ( valueString ) )
                 {
                 continue;
                 };
             };
     
         count++;
-        this.m_towns.push ( townObject );
+        this.m_values.push ( valueObject );
         var option = document.createElement ( 'option' );
-        option.value = townObject.location_municipality.toString();
+        option.value = valueObject.value_name.toString();
         option.appendChild ( document.createTextNode(option.value) );
         this.m_town_select.appendChild ( option );
         };
@@ -982,7 +1005,7 @@ BMLTQuickSearch.prototype.populateWeekdays = function ( inWeekdaysAJAXObject )
 {
     this.m_weekdays = inWeekdaysAJAXObject.sort(function ( a, b ) { return (a.weekday_tinyint - b.weekday_tinyint)});
     
-    if ( this.m_towns )
+    if ( this.m_values )
         {
         this.hideThrobber();
         this.hideResults();
@@ -1070,7 +1093,38 @@ BMLTQuickSearch.prototype.ajaxCallbackWeekdays = function ( in_response_object, 
             };
         };
 };
-	
+
+/****************************************************************************************//**
+********************************************************************************************/
+BMLTQuickSearch.prototype.ajaxCallbackField = function (    in_response_object, ///< The HTTPRequest response object.
+                                                            in_id               ///< The unique ID of the object (establishes context).
+                                                            )
+{
+    eval ( 'var context = bmlt_quicksearch_form_' + in_id + ';' );
+
+    if ( context )
+        {
+        if ( in_response_object.responseText )
+            {
+            var new_object = null;
+            var json_builder = "var new_object = " + in_response_object.responseText + ";";
+    
+            // This is how you create JSON objects.
+            eval ( json_builder );
+            
+            var properties = Object.getOwnPropertyNames(new_object[0]);
+            
+            for ( var index = 0; index < new_object.length; index++ )
+                {
+                eval ( 'var objectProp = new_object[index].' + properties[0] + ';' );
+                new_object[index].value_name = objectProp;
+                };
+            
+            context.populateFieldSelect_generic ( new_object );
+            };
+        };
+};
+
 /****************************************************************************************//**
 ********************************************************************************************/
 BMLTQuickSearch.prototype.ajaxCallbackSearch = function (   in_response_object, ///< The HTTPRequest response object.
