@@ -170,7 +170,7 @@ BMLTQuickSearch.prototype.populateResults = function (  )
 BMLTQuickSearch.prototype.addMeeting = function ( inMeetingObject, inContainerObject, inCount )
 {
     var meetingDiv = document.createElement ( 'div' );
-    meetingDiv.className = 'bmlt_quicksearch_sinlge_meeting_container' + ' bmlt_quicksearch_sinlge_meeting_container_' + this.m_differentiatorID.toString();
+    meetingDiv.className = 'bmlt_quicksearch_sinlge_meeting_container' + ' bmlt_quicksearch_sinlge_meeting_container_' + this.m_differentiatorID.toString() + ' bmlt_quicksearch_' + ((inCount % 2) == 0 ? 'even' : 'odd');
     meetingDiv.id = 'bmlt_quicksearch_sinlge_meeting_container_' + this.m_differentiatorID.toString() + '_' + inMeetingObject.id_bigint.toString();
 
     meetingDiv.appendChild ( this.domBuilder_PopulateWeekdayBody_one_meeting ( inMeetingObject ) );

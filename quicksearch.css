@@ -172,3 +172,12 @@ ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_town span.bmlt_quicks
 {
     display: none;
 }
+
+input.quicksearch_form_submit_button
+{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0.5em;
+    display: table;
+    width: 10em;
+}

@@ -1855,7 +1855,6 @@ abstract class BMLTPlugin
                     $display .= '<div class="quicksearch_throbber_div" id="quicksearch_throbber_div_'.$my_form_next_id.'"><img src="'.htmlspecialchars ( $throbber_loc ).'" alt="AJAX Throbber" /></div>';
                     $display .= '<div class="quicksearch_form_container" id="quicksearch_form_container_'.$my_form_next_id.'" style="display:none">' . "\n";
                         $display .= '<div class="quicksearch_form_select_container" id="quicksearch_form_select_container_'.$my_form_next_id.'" style="display:none">' . "\n";
-                            $display .= '<label for="quicksearch_form_town_select_'.$my_form_next_id.'" class="quicksearch_form_town_select_label">'.$this->my_current_language->local_quicksearch_select_label.'</label>';
                             $display .= '<select id="quicksearch_form_town_select_'.$my_form_next_id.'" class="quicksearch_form_town_select">' . "\n";
                                 $display .= '<option value="" selected="selected">'.$this->my_current_language->local_quicksearch_select_option_0.'</select>' . "\n";
                             $display .= "</select>\n";
@@ -1903,11 +1902,15 @@ abstract class BMLTPlugin
                                 $pString = implode ( '","', array_map ( $func, $pArray ) );
                                 $display .= ', ["'.$pString.'"]';
                                 }
-                        $display .= ',['.$this->my_current_language->local_table_ante_meridian.']';
-                        $display .= ",'".htmlspecialchars ( $this->my_current_language->local_nouveau_meeting_details_map_link_uri_format )."'";
-                        $display .= ',["'.join ( '","', $this->my_current_language->local_nouveau_weekday_long_array ).'"]';
+                            else
+                                {
+                                $display .= ', []';
+                                }
+                        $display .= ', ['.$this->my_current_language->local_table_ante_meridian.']';
+                        $display .= ", '".htmlspecialchars ( $this->my_current_language->local_nouveau_meeting_details_map_link_uri_format )."'";
+                        $display .= ', ["'.join ( '","', $this->my_current_language->local_nouveau_weekday_long_array ).'"]';
                         $display .= ','.strval ( intval ( $options['startWeekday'] ) );
-                        $display .= ','.($options['military_time'] ? 'true' : 'false');
+                        $display .= ', '.($options['military_time'] ? 'true' : 'false');
                         $display .= " );\n";
                     $display .= "</script>\n";
                 $display .= "</div>\n";
