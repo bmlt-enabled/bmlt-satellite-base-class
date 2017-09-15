@@ -1903,9 +1903,12 @@ abstract class BMLTPlugin
                                 $pString = implode ( '","', array_map ( $func, $pArray ) );
                                 $display .= ', ["'.$pString.'"]';
                                 }
+                        $display .= ',['.$this->my_current_language->local_table_ante_meridian.']';
+                        $display .= ",'".htmlspecialchars ( $this->my_current_language->local_nouveau_meeting_details_map_link_uri_format )."'";
+                        $display .= ',["'.join ( '","', $this->my_current_language->local_nouveau_weekday_long_array ).'"]';
+                        $display .= ','.strval ( intval ( $options['startWeekday'] ) );
+                        $display .= ','.($options['military_time'] ? 'true' : 'false');
                         $display .= " );\n";
-                    $display .= 'var g_table_ampm_array = new Array ( '.$this->my_current_language->local_table_ante_meridian.' );'."\n";
-                    $display .= "var g_table_map_link_uri_format = '".htmlspecialchars ( $this->my_current_language->local_nouveau_meeting_details_map_link_uri_format )."';\n";
                     $display .= "</script>\n";
                 $display .= "</div>\n";
                 

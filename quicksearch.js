@@ -23,8 +23,13 @@
     You should have received a copy of the GNU General Public License
     along with this code.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************************************/
-function BMLTQuickSearch ( inID, inAjaxURI, inOptionsID, inTownFilter )
+function BMLTQuickSearch ( inID, inAjaxURI, inOptionsID, inTownFilter, am_pm_array, map_link_format, weekday_long_name_array, week_start, military_time )
 {
+    this.m_am_pm_array = am_pm_array;
+    this.m_map_link_format = map_link_format;
+    this.m_weekday_long_name_array = weekday_long_name_array;
+    this.m_week_start = week_start;
+    this.m_military_time = military_time;
     this.m_differentiatorID = inID.toString();
     this.m_ajaxURI = inAjaxURI.toString();
     this.m_optionsID = inOptionsID.toString();
@@ -71,6 +76,11 @@ function BMLTQuickSearch ( inID, inAjaxURI, inOptionsID, inTownFilter )
 /****************************************************************************************//**
 ********************************************************************************************/
 
+BMLTQuickSearch.prototype.m_am_pm_array = [];
+BMLTQuickSearch.prototype.m_map_link_format = '';
+BMLTQuickSearch.prototype.m_weekday_long_name_array = [];
+BMLTQuickSearch.prototype.m_week_start = 0;
+BMLTQuickSearch.prototype.m_military_time = false;
 BMLTQuickSearch.prototype.m_differentiatorID = "";
 BMLTQuickSearch.prototype.m_ajaxURI = "";
 BMLTQuickSearch.prototype.m_optionsID = "";
@@ -186,13 +196,15 @@ BMLTQuickSearch.prototype.domBuilder_PopulateWeekdayBody_one_meeting = function 
     
     var latitude = in_json_data.latitude;
     var longitude = in_json_data.longitude;
-
+    var weekday_string = this.m_weekday_long_name_array[parseInt(in_json_data.weekday_tinyint) - 1];
+    var weekday_column = this.domBuilder_PopulateWeekdayBody_one_column ( 'weekday', weekday_string, 0, 0 );
     var time_column = this.domBuilder_PopulateWeekdayBody_one_column ( 'time', this.utility_convertTime ( in_json_data.start_time.toString() ), 0, 0 );
     var town_column = this.domBuilder_PopulateWeekdayBody_one_column ( 'town', this.utility_createAddressTown ( in_json_data ), 0, 0 );
     var name_column = this.domBuilder_PopulateWeekdayBody_one_column ( 'name', in_json_data.meeting_name.toString(), 0, 0 );
     var address_column = this.domBuilder_PopulateWeekdayBody_one_column ( 'address', this.utility_createStreetAddress ( in_json_data ), latitude, longitude );
     var format_column = this.domBuilder_PopulateWeekdayBody_one_column ( 'formats', in_json_data.formats.toString(), 0, 0 );
     
+    rowElement.appendChild ( weekday_column );
     rowElement.appendChild ( time_column );
     rowElement.appendChild ( town_column );
     rowElement.appendChild ( name_column );
@@ -224,7 +236,7 @@ BMLTQuickSearch.prototype.domBuilder_PopulateWeekdayBody_one_column = function (
 {
     var columnElement = document.createElement ( 'li' );
     columnElement.className = 'bmlt_quicksearch_data_ul_li bmlt_quicksearch_data_ul_li_' + in_tag;
-
+    
     if ( in_tag == 'formats' )
         {
         var formats_div = this.domBuilder_createFormats ( in_string );
@@ -236,10 +248,10 @@ BMLTQuickSearch.prototype.domBuilder_PopulateWeekdayBody_one_column = function (
     else if ( in_latitude && in_longitude )
         {
         var textNode = document.createElement ( 'span' );
-        textNode.className = 'bmlt_quicksearch_data_ul_li_span bmlt_quicksearch_data_ul_li_span_' + in_tag;
+        textNode.className = 'bmlt_quicksearch_data_ul_li_span first_span bmlt_quicksearch_data_ul_li_span_' + in_tag;
         var anchorNode = document.createElement ( 'a' );
         textNode.className = 'bmlt_quicksearch_data_ul_li_span_a bmlt_quicksearch_data_ul_li_span_a_' + in_tag;
-        anchorNode.href= this.utility_sprintf ( g_table_map_link_uri_format, parseFloat ( in_latitude ), parseFloat ( in_longitude ) );
+        anchorNode.href= this.utility_sprintf ( this.m_map_link_format, parseFloat ( in_latitude ), parseFloat ( in_longitude ) );
         anchorNode.innerHTML = in_string;
         textNode.appendChild ( anchorNode );
         columnElement.appendChild ( textNode );
@@ -247,7 +259,7 @@ BMLTQuickSearch.prototype.domBuilder_PopulateWeekdayBody_one_column = function (
     else
         {
         var textNode = document.createElement ( 'span' );
-        textNode.className = 'bmlt_quicksearch_data_ul_li_span bmlt_quicksearch_data_ul_li_span_' + in_tag;
+        textNode.className = 'bmlt_quicksearch_data_ul_li_span first_span bmlt_quicksearch_data_ul_li_span_' + in_tag;
         textNode.innerHTML = in_string ? in_string : '&nbsp;';
         columnElement.appendChild ( textNode );
         };
@@ -273,15 +285,15 @@ BMLTQuickSearch.prototype.utility_convertTime = function ( in_time_string )
     // Anything over 23:54:59 is "Midnight."
     if ( ((0 == hours) && (0 == minutes)) || ((hours == 23) && (minutes >= 55)) )
         {
-        ret = g_table_ampm_array[3];    // Midnight
+        ret = this.m_am_pm_array[3];    // Midnight
         }
     else if ( (12 == hours) && (0 == minutes) )
         {
-        ret = g_table_ampm_array[2];    // Noon
+        ret = this.m_am_pm_array[2];    // Noon
         }
     else if ( !this.my_military_time )
         {
-        var ampm = ( hours >= 12 ) ? g_table_ampm_array[1] : g_table_ampm_array[0];
+        var ampm = ( hours >= 12 ) ? this.m_am_pm_array[1] : this.m_am_pm_array[0];
         
         // Subtract 12 from afternoon.
         if ( hours > 12 )
@@ -382,16 +394,16 @@ BMLTQuickSearch.prototype.utility_createAddressTown = function ( in_json_data )
         ret += in_json_data.location_province.toString();
         ret += '</span>';
         };
+
+    if ( hasTown || (in_json_data.location_province && in_json_data.location_province.toString()) && (in_json_data.location_postal_code_1 && in_json_data.location_postal_code_1.toString()) )
+        {
+        ret += '<span class="bmlt_quicksearch_zip_space_span"> </span>';
+        };
     
     // Add the zip.
     if ( in_json_data.location_postal_code_1 && in_json_data.location_postal_code_1.toString() )
         {
         ret += '<span class="bmlt_quicksearch_zip_span">';  // This allows folks to style the zip.            
-    
-        if ( hasTown && in_json_data.location_province && in_json_data.location_province.toString() )
-            {
-            ret += '<span class="bmlt_quicksearch_zip_space_span"> </span>';
-            };
         
         ret += in_json_data.location_postal_code_1.toString();
         ret += '</span>';
@@ -679,6 +691,71 @@ BMLTQuickSearch.prototype.displaySearchResults = function ( inSearchResults )
             meetings = inSearchResults.meetings;
             };
         
+        var weekStart = this.m_week_start - 1;
+        
+        meetings = meetings.sort ( function ( a, b ) {
+            var week_starts_on = parseInt ( weekStart );
+            var a_weekday = parseInt ( a.weekday_tinyint ) - week_starts_on;
+            if ( a_weekday < 1 )
+                {
+                a_weekday += 7;
+                };
+                
+            var b_weekday = parseInt ( b.weekday_tinyint ) - week_starts_on;
+            if ( b_weekday < 1 )
+                {
+                b_weekday += 7;
+                };
+                
+            var a_time = parseInt ( a.start_time.split ( ':' ).join('') );
+            var b_time = parseInt ( b.start_time.split ( ':' ).join('') );
+            
+            var a_town = a.location_municipality.trim().toLowerCase();
+            var b_town = b.location_municipality.trim().toLowerCase();
+            
+            if ( a_weekday < b_weekday )
+                {
+                return -1;
+                }
+            else
+                {
+                if ( b_weekday < a_weekday )
+                    {
+                    return 1;
+                    }
+                else
+                    {
+                    if ( a_time < b_time )
+                        {
+                        return -1;
+                        }
+                    else
+                        {
+                        if ( b_time < a_time )
+                            {
+                            return 1;
+                            }
+                        else
+                            {
+                            if ( a_town < b_town )
+                                {
+                                return -1;
+                                }
+                            else
+                                {
+                                if ( b_town < a_town )
+                                    {
+                                    return 1;
+                                    };
+                                };
+                            };
+                        };
+                    };
+                };
+                
+            return 0;
+            });
+
         this.m_last_search_results_meetings = meetings;
         this.m_last_search_results_formats = inSearchResults.formats;
         };

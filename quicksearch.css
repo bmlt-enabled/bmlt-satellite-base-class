@@ -1,5 +1,6 @@
 /*    
-
+    This is the "global" [[bmlt_quicksearch]] CSS file.
+    
     This file is part of the BMLT Common Satellite Base Class Project. The project GitHub
     page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class
 
@@ -85,4 +86,89 @@ label.quicksearch_form_town_select_label
 {
     margin: 0;
     margin-right: 0.25em;
+}
+
+ul.bmlt_quicksearch_data_ul,
+ul.bmlt_quicksearch_data_ul li
+{
+    list-style-type: none;
+}
+
+ul.bmlt_quicksearch_data_ul
+{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+ul.bmlt_quicksearch_data_ul li
+{
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+
+ul.bmlt_quicksearch_data_ul li span.first_span
+{
+    display:block;
+    padding-left: 0.25em;
+}
+
+ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_weekday span.first_span,
+ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_comments span.first_span,
+ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_formats span.first_span
+{
+    padding-left: 0;
+}
+
+ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_weekday
+{
+    width: 10%;
+}
+
+ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_time
+{
+    width: 7%;
+}
+
+ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_town
+{
+    width: 10%;
+}
+
+ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_name
+{
+    width: 17%;
+}
+
+ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_address
+{
+    width: 46%;
+}
+
+ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_formats
+{
+    width: 10%;
+}
+
+ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_comments
+{
+    clear:both;
+    width: 90%;
+}
+
+ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_formats span.bmlt_quicksearch_format_span
+{
+    float:right;
+    width:1.8em;
+    text-align: right;
+    display:block;
+}
+
+ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_town span.bmlt_quicksearch_town_comma_span,
+ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_town span.bmlt_quicksearch_state_span,
+ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_town span.bmlt_quicksearch_zip_span,
+ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_town span.bmlt_quicksearch_zip_space_span
+{
+    display: none;
 }
