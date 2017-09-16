@@ -26,14 +26,37 @@
     You should have received a copy of the GNU General Public License
     along with this code.  If not, see <http://www.gnu.org/licenses/>.
 */
-div.quicksearch_form_container
+div.quicksearch_div
 {
+    text-align:center;
+    display:table;
+    padding: 0.5em;
+    border-radius:0.5em;
+    border:none;
+}
+
+div.quicksearch_div div.quicksearch_throbber_div
+{
+    width: 100%;
+    height:100%;
+    vertical-align:middle;
     text-align:center;
 }
 
-div.quicksearch_form_weekdays_container,
-div.quicksearch_form_select_container,
-div.quicksearch_form_text_container
+/* This style needs to be stronger because the native BMLT style is unfortunately strong. */
+div#bmlt_page_items.bmlt_page_items div.quicksearch_div div.quicksearch_throbber_div img
+{
+    display:block;
+    width:60px;
+    height:60px;
+    border:none;
+    border-radius: 50%;
+    margin:auto;
+}
+
+div.quicksearch_div div.quicksearch_form_weekdays_container,
+div.quicksearch_div div.quicksearch_form_select_container,
+div.quicksearch_div div.quicksearch_form_text_container
 {
     margin: auto;
     margin-top:0.25em;
@@ -41,139 +64,151 @@ div.quicksearch_form_text_container
     text-align: left;
 }
 
-div.quicksearch_form_weekdays_container,
-div.quicksearch_form_text_container
+div.quicksearch_div div.quicksearch_form_weekdays_container
 {
     display:table;
 }
 
-div.quicksearch_form_text_container input
+div.quicksearch_div input.quicksearch_form_submit_button,
+div.quicksearch_div select.quicksearch_form_town_select,
+div.quicksearch_div div.quicksearch_form_text_container input,
+div.quicksearch_div div.quicksearch_form_text_container input:focus
+{
+    border:none;
+    box-shadow:none;
+    outline:none;
+    border-radius:0.25em;
+}
+
+div.quicksearch_div div.quicksearch_form_text_container input
 {
     width: 32em;
+    max-width: 100%;
+    margin-left:auto;
+    margin-right:auto;
+    text-align:left;
+    display:block;
 }
 
-input.quicksearch_form_submit_button
+div.quicksearch_div input.quicksearch_form_submit_button
 {
     margin-top:0.25em;
+    border:none;
+    border-radius:0.5em;
 }
 
-div.quicksearch_form_weekday_container
+div.quicksearch_div div.quicksearch_form_weekday_container
 {
     float:left;
     width: 4em;
 }
 
-div.quicksearch_throbber_div
+div.quicksearch_div div.quicksearch_search_results_div
 {
-    width: 100%;
-    height:400px;
+    border-radius:0.36em;
+    border: none;
+    margin-top: 0.5em;
+    padding: 0.5em;
 }
 
-div.quicksearch_throbber_div img
+div.quicksearch_div div.bmlt_quicksearch_sinlge_meeting_container
 {
-    width:60px;
-    height:60px;
-    margin:0;
-    display:block;
-    position:absolute;
-    top: 50%;
-    left: 50%;
-    margin-top:-30px;
-    margin-left:-30px;
+    padding: 0.25em;
 }
 
-label.quicksearch_form_town_select_label
-{
-    margin: 0;
-    margin-right: 0.25em;
-}
-
-ul.bmlt_quicksearch_data_ul,
-ul.bmlt_quicksearch_data_ul li
+div.quicksearch_div ul.bmlt_quicksearch_data_ul,
+div.quicksearch_div ul.bmlt_quicksearch_data_ul li
 {
     list-style-type: none;
 }
 
-ul.bmlt_quicksearch_data_ul
+div.quicksearch_div ul.bmlt_quicksearch_data_ul
 {
     margin: 0;
     padding: 0;
     width: 100%;
+    text-align: left;
 }
 
-ul.bmlt_quicksearch_data_ul li
+div.quicksearch_div ul.bmlt_quicksearch_data_ul li
 {
     float: left;
     margin: 0;
     padding: 0;
 }
 
-ul.bmlt_quicksearch_data_ul li span.first_span
+div.quicksearch_div ul.bmlt_quicksearch_data_ul li .first_span
 {
     display:block;
     padding-left: 0.25em;
 }
 
-ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_weekday span.first_span,
-ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_comments span.first_span,
-ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_formats span.first_span
+div.quicksearch_div ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_weekday span.first_span,
+div.quicksearch_div ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_comments span.first_span,
+div.quicksearch_div ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_formats span.first_span
 {
     padding-left: 0;
 }
 
-ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_weekday
+div.quicksearch_div ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_weekday
 {
     width: 10%;
 }
 
-ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_time
+div.quicksearch_div ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_time
 {
-    width: 7%;
+    width: 8%;
 }
 
-ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_town
-{
-    width: 10%;
-}
-
-ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_name
-{
-    width: 17%;
-}
-
-ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_address
-{
-    width: 46%;
-}
-
-ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_formats
+div.quicksearch_div ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_town
 {
     width: 10%;
 }
 
-ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_comments
+div.quicksearch_div ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_name
 {
-    clear:both;
-    width: 90%;
+    width: 20%;
 }
 
-ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_formats span.bmlt_quicksearch_format_span
+div.quicksearch_div ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_address
+{
+    width: 42%;
+}
+
+div.quicksearch_div ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_formats
+{
+    width: 10%;
+}
+
+div.quicksearch_div ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_comments
+{
+    clear:left;
+    width: 100%;
+}
+
+div.quicksearch_div ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_formats span.bmlt_quicksearch_format_span
 {
     float:right;
-    width:1.8em;
-    text-align: right;
-    display:block;
+    font-size:smaller;
+    width:2em;
+    height:2em;
+    line-height:2em;
+    padding: 0.125em;
+    border-radius: 50%;
+    text-align: center;
+    vertical-align:middle;
+    display:table;
 }
 
-ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_town span.bmlt_quicksearch_town_comma_span,
-ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_town span.bmlt_quicksearch_state_span,
-ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_town span.bmlt_quicksearch_zip_span,
-ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_town span.bmlt_quicksearch_zip_space_span
+div.quicksearch_div ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_town span.bmlt_quicksearch_town_comma_span,
+div.quicksearch_div ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_town span.bmlt_quicksearch_state_span,
+div.quicksearch_div ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_town span.bmlt_quicksearch_zip_span,
+div.quicksearch_div ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_town span.bmlt_quicksearch_zip_space_span
 {
     display: none;
 }
 
-input.quicksearch_form_submit_button
+div.quicksearch_div input.quicksearch_form_submit_button
 {
     margin-left: auto;
     margin-right: auto;

@@ -35,6 +35,7 @@ function BMLTQuickSearch ( inID, inAjaxURI, inOptionsID, inValueFieldName, inVal
     this.m_optionsID = inOptionsID.toString();
     this.m_main_container = document.getElementById ( 'quicksearch_div_' + inID );
     this.m_main_form_container = document.getElementById ( 'quicksearch_form_container_' + inID );
+    this.m_too_large_div = document.getElementById ( 'quicksearch_too_large_div_' + inID );
     this.m_town_select = document.getElementById ( 'quicksearch_form_town_select_' + inID );
     this.m_town_select.handler = this;
     this.m_town_select.onchange = BMLTQuickSearch.prototype.reactToTownPopup;
@@ -58,7 +59,8 @@ function BMLTQuickSearch ( inID, inAjaxURI, inOptionsID, inValueFieldName, inVal
     
     for ( var index = 0; index < 8; index++ )
         {
-        var weekdayCheckboxObject = document.getElementById ( 'quicksearch_form_weekday_checkbox_' + index.toString() );
+        var checkboxID = 'quicksearch_form_weekday_checkbox_' + inID.toString() + '_' + index.toString();
+        var weekdayCheckboxObject = document.getElementById ( checkboxID );
         weekdayCheckboxObject.handler = this;
         weekdayCheckboxObject.onchange = BMLTQuickSearch.prototype.reactToWeekdayCheckboxChange;
         this.m_weekday_objects.push ( weekdayCheckboxObject );
@@ -113,6 +115,7 @@ BMLTQuickSearch.prototype.m_no_results_div = null;
 BMLTQuickSearch.prototype.m_value_field_name = null;
 BMLTQuickSearch.prototype.m_value_filter = null;
 BMLTQuickSearch.prototype.m_select_container = null;
+BMLTQuickSearch.prototype.m_too_large_div = null;
 	
 /****************************************************************************************//**
 *                                     INTERNAL METHODS                                      *
@@ -144,6 +147,7 @@ BMLTQuickSearch.prototype.showResults = function (  )
     else
         {
         this.m_no_results_div.style.display = 'block';
+        this.m_too_large_div.style.display = 'none';
         this.m_search_results_div.style.display = 'none';
         this.m_search_results_div.innerHTML = '';
         };
@@ -158,6 +162,7 @@ BMLTQuickSearch.prototype.populateResults = function (  )
     if ( this.m_last_search_results_meetings.length )
         {
         this.m_no_results_div.style.display = 'none';
+        this.m_too_large_div.style.display = 'none';
         
         for ( var index = 0; index < this.m_last_search_results_meetings.length; index++ )
             {
@@ -171,6 +176,7 @@ BMLTQuickSearch.prototype.populateResults = function (  )
     else
         {
         this.m_no_results_div.style.display = 'block';
+        this.m_too_large_div.style.display = 'none';
         this.m_search_results_div.style.display = 'none';
         this.m_search_results_div.innerHTML = '';
         };
@@ -245,6 +251,11 @@ BMLTQuickSearch.prototype.domBuilder_PopulateWeekdayBody_one_meeting = function 
 ****************************************************************************************/
 BMLTQuickSearch.prototype.domBuilder_PopulateWeekdayBody_one_column = function ( in_tag, in_string, in_latitude, in_longitude )
 {
+    if ( !in_string.trim() )
+        {
+        in_string = '&nbsp;';
+        }
+    
     var columnElement = document.createElement ( 'li' );
     columnElement.className = 'bmlt_quicksearch_data_ul_li bmlt_quicksearch_data_ul_li_' + in_tag;
     
@@ -260,11 +271,19 @@ BMLTQuickSearch.prototype.domBuilder_PopulateWeekdayBody_one_column = function (
         {
         var textNode = document.createElement ( 'span' );
         textNode.className = 'bmlt_quicksearch_data_ul_li_span first_span bmlt_quicksearch_data_ul_li_span_' + in_tag;
-        var anchorNode = document.createElement ( 'a' );
-        textNode.className = 'bmlt_quicksearch_data_ul_li_span_a bmlt_quicksearch_data_ul_li_span_a_' + in_tag;
-        anchorNode.href= this.utility_sprintf ( this.m_map_link_format, parseFloat ( in_latitude ), parseFloat ( in_longitude ) );
-        anchorNode.innerHTML = in_string;
-        textNode.appendChild ( anchorNode );
+        if ( in_string != '&nbsp;' )
+            {
+            var anchorNode = document.createElement ( 'a' );
+            anchorNode.className = 'bmlt_quicksearch_data_ul_li_span_a bmlt_quicksearch_data_ul_li_span_a_' + in_tag;
+            anchorNode.href= this.utility_sprintf ( this.m_map_link_format, parseFloat ( in_latitude ), parseFloat ( in_longitude ) );
+            anchorNode.innerHTML = in_string;
+            textNode.appendChild ( anchorNode );
+            }
+        else
+            {
+            textNode.innerHTML = in_string;
+            };
+        
         columnElement.appendChild ( textNode );
         }
     else
@@ -302,7 +321,7 @@ BMLTQuickSearch.prototype.utility_convertTime = function ( in_time_string )
         {
         ret = this.m_am_pm_array[2];    // Noon
         }
-    else if ( !this.my_military_time )
+    else if ( !this.m_military_time )
         {
         var ampm = ( hours >= 12 ) ? this.m_am_pm_array[1] : this.m_am_pm_array[0];
         
@@ -465,7 +484,7 @@ BMLTQuickSearch.prototype.domBuilder_createFormats = function ( in_formats_strin
 ****************************************************************************************/
 BMLTQuickSearch.prototype.domBuilder_createOneFormatSpan = function ( in_format_string )
 {
-    if ( in_format_string )
+    if ( in_format_string && (in_format_string != '&nbsp;') )
         {
         var ret = document.createElement ( 'span' );
         ret.rest_className = 'bmlt_quicksearch_format_span bmlt_quicksearch_format_span_' + in_format_string;
@@ -534,15 +553,28 @@ BMLTQuickSearch.prototype.searchList = function ( inIDList )
     
     if ( uri )
         {
-        var ajax_request = BMLTPlugin_AjaxRequest ( uri, BMLTQuickSearch.prototype.ajaxCallbackSearch, 'get', this.m_differentiatorID );
+        if ( uri.length <= 2048 )
+            {
+            var ajax_request = BMLTPlugin_AjaxRequest ( uri, BMLTQuickSearch.prototype.ajaxCallbackSearch, 'get', this.m_differentiatorID );
+            }
+        else
+            {
+            this.hideThrobber();
+            this.m_too_large_div.style.display = 'block';
+            this.m_no_results_div.style.display = 'none';
+            this.m_search_results_div.style.display = 'none';
+            this.m_search_results_div.innerHTML = '';
+            this.m_search_results_container_div.style.display = 'block';
+            };
         }
     else
         {
         this.hideThrobber();
+        this.m_too_large_div.style.display = 'none';
         this.m_no_results_div.style.display = 'block';
         this.m_search_results_div.style.display = 'none';
         this.m_search_results_div.innerHTML = '';
-        this.showResults();
+        this.m_search_results_container_div.style.display = 'block';
         };
 };
 

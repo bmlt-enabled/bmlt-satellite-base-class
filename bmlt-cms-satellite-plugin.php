@@ -1844,7 +1844,7 @@ abstract class BMLTPlugin
                 
                 $url = $this->get_plugin_path();
                 $ajax_url = $this->get_ajax_base_uri();
-                $throbber_loc .= htmlspecialchars ( $url.'themes/'.$theme.'/images/Throbber.gif' );
+                $throbber_loc = htmlspecialchars ( $url.'themes/'.$theme.'/images/Throbber.gif' );
                 
                 if ( 0 == $my_form_next_id )
                     {
@@ -1862,9 +1862,9 @@ abstract class BMLTPlugin
                             $display .= "</select>\n";
                         $display .= "</div>\n";
                         $display .= '<div class="quicksearch_form_weekdays_container" id="quicksearch_form_weekdays_container_'.$my_form_next_id.'">';
-                            $weekdayName = 0 < $weekday_index ? $this->my_current_language->local_weekdays_short[$weekday_index] : $this->my_current_language->local_new_map_all_weekdays;
+                            $weekdayName = $this->process_text ( $this->my_current_language->local_new_map_all_weekdays );
                             $display .= '<div class="quicksearch_form_weekday_container quicksearch_form_weekday_container_0">'."\n";
-                                $display .= '<input type="checkbox" checked="checked" id="quicksearch_form_weekday_checkbox_0" value="0" onchange="bmlt_quicksearch_form_'.$my_form_next_id.'.reactToWeekdayCheckboxChange(this)" />'."\n";
+                                $display .= '<input type="checkbox" checked="checked" id="quicksearch_form_weekday_checkbox_'.$my_form_next_id.'_0" value="0" onchange="bmlt_quicksearch_form_'.$my_form_next_id.'.reactToWeekdayCheckboxChange(this)" />'."\n";
                                 $display .= '<label for="quicksearch_form_weekday_checkbox_'.$weekday_index.'">'.$weekdayName."</label>\n";
                             $display .= '</div>'."\n";
                             
@@ -1880,26 +1880,33 @@ abstract class BMLTPlugin
                                 $weekdayName = $this->my_current_language->local_weekdays_short[$weekday_index];
                                 
                                 $display .= '<div class="quicksearch_form_weekday_container quicksearch_form_weekday_container_'.$weekday_index.'">'."\n";
-                                    $display .= '<input type="checkbox" checked="checked" id="quicksearch_form_weekday_checkbox_'.$weekday_index.'" value="'.$weekday_index.'" />'."\n";
-                                    $display .= '<label for="quicksearch_form_weekday_checkbox_'.$weekday_index.'">'.$weekdayName."</label>\n";
+                                    $display .= '<input type="checkbox" checked="checked" id="quicksearch_form_weekday_checkbox_'.$my_form_next_id.'_'.$weekday_index.'" value="'.$weekday_index.'" />'."\n";
+                                    $display .= '<label for="quicksearch_form_weekday_checkbox_'.$weekday_index.'">'.$this->process_text ( $weekdayName )."</label>\n";
                                 $display .= '</div>'."\n";
                                 }
                         
                         $display .= '<div style="clear:both"></div></div>'."\n";
                         $display .= '<div class="quicksearch_form_text_container quicksearch_form_text_container_0">'."\n";
-                            $display .= '<input type="text" class="quicksearch_form_search_text" id="quicksearch_form_search_text_'.$my_form_next_id.'" placeholder="'.$this->my_current_language->local_nouveau_text_item_default_text.'" />'."\n";
+                            $display .= '<input type="text" class="quicksearch_form_search_text" id="quicksearch_form_search_text_'.$my_form_next_id.'" placeholder="'.$this->process_text ( $this->my_current_language->local_nouveau_text_item_default_text ).'" />'."\n";
                         $display .= '</div>'."\n";
-                        $display .= '<input type="button" class="quicksearch_form_submit_button" id="quicksearch_form_submit_button_'.$my_form_next_id.'" value="'.$this->my_current_language->local_nouveau_text_go_button.'" />'."\n";
+                        $display .= '<input type="button" class="quicksearch_form_submit_button" id="quicksearch_form_submit_button_'.$my_form_next_id.'" value="'.$this->process_text ( $this->my_current_language->local_nouveau_text_go_button ).'" />'."\n";
                     $display .= '</div>' . "\n";
                     $display .= '<div class="quicksearch_results_container" id="quicksearch_results_container_'.$my_form_next_id.'" style="display:none">';
-                        $display .= '<div class="quicksearch_no_results_div" id="quicksearch_no_results_div_'.$my_form_next_id.'" style="display:none">'.$this->my_current_language->local_cant_find_meetings_display.'</div>';
+                        $display .= '<div class="quicksearch_too_large_div" id="quicksearch_too_large_div_'.$my_form_next_id.'" style="display:none">'.$this->process_text ( $this->my_current_language->local_quicksearch_display_too_large ).'</div>';
+                        $display .= '<div class="quicksearch_no_results_div" id="quicksearch_no_results_div_'.$my_form_next_id.'" style="display:none">'.$this->process_text ( $this->my_current_language->local_cant_find_meetings_display ).'</div>';
                         $display .= '<div class="quicksearch_search_results_div" id="quicksearch_search_results_div_'.$my_form_next_id.'" style="display:none"></div>';
                     $display .= "</div>\n";
                     $display .= "<script type=\"text/javascript\">\n";
                         $field_key = '';
                         if ( $params )
                             {
-                            if ( ('location_province' == $params) || ('location_sub_province' == $params) || ('location_municipality' == $params) || ('location_city_subsection' == $params) || ('location_neighborhood' == $params) )
+                            if (    ('location_province' == $params)
+                                ||  ('location_postal_code_1' == $params)
+                                ||  ('location_sub_province' == $params)
+                                ||  ('location_municipality' == $params)
+                                ||  ('location_city_subsection' == $params)
+                                ||  ('location_nation' == $params)
+                                ||  ('location_neighborhood' == $params) )
                                 {
                                 $field_key = $params;
                                 $params = '';
@@ -1910,11 +1917,21 @@ abstract class BMLTPlugin
                                 if ( 1 < count ( $pArray ) )
                                     {
                                     $field_key = $pArray[0];
+                                    if (  !(('location_province' == $field_key)
+                                        ||  ('location_postal_code_1' == $field_key)
+                                        ||  ('location_sub_province' == $field_key)
+                                        ||  ('location_municipality' == $field_key)
+                                        ||  ('location_city_subsection' == $field_key)
+                                        ||  ('location_nation' == $field_key)
+                                        ||  ('location_neighborhood' == $field_key)) )
+                                        {
+                                        $field_key = '';
+                                        }
                                     $params = $pArray[1];
                                     }
                                 }
                             }
-                        
+                            
                         $display .= "var bmlt_quicksearch_form_$my_form_next_id = new BMLTQuickSearch ( $my_form_next_id, '$ajax_url', '$options_id'";
                         $display .= ", '$field_key'";
                         if ( $params )
