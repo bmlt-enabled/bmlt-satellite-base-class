@@ -27,8 +27,8 @@
 */
 div.quicksearch_div.quicksearch_theme_GreyAndMaroon
 {
-    background-color:#600;
-    color: #ccc;
+    background-color:#ccc;
+    color: #600;
     border: 1px solid #600;
 }
 
@@ -43,7 +43,7 @@ div.quicksearch_div.quicksearch_theme_GreyAndMaroon div.quicksearch_search_resul
 div.quicksearch_div.quicksearch_theme_GreyAndMaroon div.quicksearch_search_results_div a:visited,
 div.quicksearch_div.quicksearch_theme_GreyAndMaroon input.quicksearch_form_submit_button
 {
-    color:#03f;
+    color:#09f;
     text-decoration:underline;
 }
 
@@ -59,8 +59,14 @@ div.quicksearch_div.quicksearch_theme_GreyAndMaroon div.quicksearch_search_resul
 div.quicksearch_div.quicksearch_theme_GreyAndMaroon div.quicksearch_search_results_div a:active,
 div.quicksearch_div.quicksearch_theme_GreyAndMaroon input.quicksearch_form_submit_button:hover
 {
-    color:#600;
+    color:#f90;
     text-decoration:none;
+}
+
+div.quicksearch_div.quicksearch_theme_GreyAndMaroon div.quicksearch_search_results_div div.bmlt_quicksearch_odd
+{
+    background-color: #600;
+    color: #efefef;
 }
 
 div.quicksearch_div.quicksearch_theme_GreyAndMaroon div.quicksearch_search_results_div div.bmlt_quicksearch_even
@@ -72,6 +78,12 @@ div.quicksearch_div.quicksearch_theme_GreyAndMaroon ul.bmlt_quicksearch_data_ul 
 {
     background-color: #600;
     color: #ccc;
+}
+
+div.quicksearch_div.quicksearch_theme_GreyAndMaroon div.bmlt_quicksearch_odd ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_formats span.bmlt_quicksearch_format_span
+{
+    background-color: #efefef;
+    color: #600;
 }
 
 div.quicksearch_div.quicksearch_theme_GreyAndMaroon ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_comments
