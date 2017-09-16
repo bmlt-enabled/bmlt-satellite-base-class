@@ -232,8 +232,8 @@ class BMLT_Localized_BaseClass_sv extends BMLT_Localized_BaseClass
         $this->local_nouveau_am = 'AM';
         $this->local_nouveau_pm = 'PM';
         $this->local_nouveau_default_duration = '1:30';
-        $this->local_nouveau_noon = 'Lunch';
-        $this->local_nouveau_midnight = 'Midnatt';
+        $this->local_nouveau_noon = '12:00';
+        $this->local_nouveau_midnight = '24:00';
         $this->local_nouveau_advanced_map_radius_value_array = "0.25, 0.5, 1.0, 2.0, 5.0, 10.0, 15.0, 20.0, 50.0, 100.0, 200.0";
         $this->local_nouveau_meeting_details_link_title = 'Mer info.';
         $this->local_nouveau_meeting_details_map_link_uri_format = 'https://maps.google.com/maps?q=%f,%f';
@@ -272,7 +272,7 @@ class BMLT_Localized_BaseClass_sv extends BMLT_Localized_BaseClass
         $this->local_table_header_address_label           = 'Address';
         $this->local_table_header_format_label            = 'Format';
         $this->local_table_header_tab_title_format        = 'Display meetings for %s';
-        $this->local_table_ante_meridian                  = '"AM","PM","Noon","Midnight"';
+        $this->local_table_ante_meridian                  = '"AM","PM","12:00","24:00"';
         $this->local_table_no_meetings_format             = 'No meetings on %s';
                                                 
         /************************************************************************************//**
@@ -358,8 +358,8 @@ class BMLT_Localized_BaseClass_sv extends BMLT_Localized_BaseClass
     
         /// Used for the info and list windows.
         $this->local_formats = 'Format';
-        $this->local_noon = 'Lunch';
-        $this->local_midnight = 'Midnatt';
+        $this->local_noon = '12:00';
+        $this->local_midnight = '24:00';
     
         /// This array has the weekdays, spelled out. Since weekdays start at 1 (Sunday), we consider 0 to be an error.
         $this->local_weekdays = array ( 'ERROR', 'Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag' );
