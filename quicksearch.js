@@ -451,6 +451,9 @@ BMLTQuickSearch.prototype.domBuilder_createFormats = function ( in_formats_strin
 {
     var ret = document.createElement ( 'div' );
     ret.className = 'bmlt_quicksearch_formats_div';
+    var internal = document.createElement ( 'div' );
+    internal.className = 'bmlt_quicksearch_formats_internal_div';
+    ret.appendChild ( internal );
     var formatsArray = in_formats_string.split ( ',' );
     
     for ( var i = 0; i < formatsArray.length; i++ )
@@ -459,11 +462,11 @@ BMLTQuickSearch.prototype.domBuilder_createFormats = function ( in_formats_strin
         var span = this.domBuilder_createOneFormatSpan ( format_string );
         if ( span )
             {
-            ret.appendChild ( span );
+            internal.appendChild ( span );
             };
         };
     
-    if ( ret.childNodes.length == 0 )
+    if ( internal.childNodes.length == 0 )
         {
         ret = null;
         }
