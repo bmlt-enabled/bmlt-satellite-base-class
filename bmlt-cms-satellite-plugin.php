@@ -1828,7 +1828,7 @@ abstract class BMLTPlugin
                     }
                 
                 // See if there is an options ID in the parameter list.
-                if ( (is_array ( count ( $param_array ) ) && (count ( $param_array ) > 1)) || (intval ( $param_array[0] ) && preg_match ( '/^\d+$/', $param_array[0] )) )
+                if ( isset ( $param_array ) && ((is_array ( $param_array ) && (count ( $param_array ) > 1)) || (intval ( $param_array[0] ) && preg_match ( '/^\d+$/', $param_array[0] ))) )
                     {
                     $options_id = intval ( $param_array[0] );
                     if ( count ( $param_array ) == 1 )
@@ -1863,10 +1863,9 @@ abstract class BMLTPlugin
                             $display .= "</select>\n";
                         $display .= "</div>\n";
                         $display .= '<div class="quicksearch_form_weekdays_container" id="quicksearch_form_weekdays_container_'.$my_form_next_id.'">';
-                            $weekdayName = $this->process_text ( $this->my_current_language->local_new_map_all_weekdays );
                             $display .= '<div class="quicksearch_form_weekday_container quicksearch_form_weekday_container_0">'."\n";
                                 $display .= '<input type="checkbox" checked="checked" id="quicksearch_form_weekday_checkbox_'.$my_form_next_id.'_0" value="0" onchange="bmlt_quicksearch_form_'.$my_form_next_id.'.reactToWeekdayCheckboxChange(this)" />'."\n";
-                                $display .= '<label for="quicksearch_form_weekday_checkbox_'.$weekday_index.'">'.$weekdayName."</label>\n";
+                                $display .= '<label for="quicksearch_form_weekday_checkbox_'.$my_form_next_id.'_0">'.$this->process_text ( $this->my_current_language->local_new_map_all_weekdays )."</label>\n";
                             $display .= '</div>'."\n";
                             
                             for ( $index = 1; $index < 8; $index++ )
