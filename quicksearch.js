@@ -140,6 +140,8 @@ BMLTQuickSearch.prototype.hideThrobber = function (  )
 ********************************************************************************************/
 BMLTQuickSearch.prototype.showResults = function (  )
 {
+    this.hideThrobber();
+    
     this.m_search_results_container_div.style.display = 'block';
     
     if ( this.m_last_search_results_meetings && this.m_last_search_results_meetings.length )
@@ -513,18 +515,19 @@ BMLTQuickSearch.prototype.domBuilder_createOneFormatSpan = function ( in_format_
 
 /****************************************************************************************//**
 ********************************************************************************************/
-BMLTQuickSearch.prototype.hideResults = function (  )
-{
-    this.m_search_results_container_div.style.display = 'none';
-};
-
-/****************************************************************************************//**
-********************************************************************************************/
 BMLTQuickSearch.prototype.showHideGoButton = function (  )
 {
     var ret = this.getSearchURI().length < 2049;
     
     this.m_submit_button.style.display = ret ? 'block' : 'none';
+    this.m_too_large_div.style.display = ret ? 'none' : 'block';
+    this.m_search_results_container_div.style.display = this.m_too_large_div.style.display;
+    
+    if ( !ret )
+        {
+        this.m_search_results_div.innerHTML = '';
+        this.m_search_results_div.style.display = 'none';
+        };
     
     return ret;
 };
@@ -572,6 +575,7 @@ BMLTQuickSearch.prototype.intersectingArrays = function (/* pass all arrays here
 ********************************************************************************************/
 BMLTQuickSearch.prototype.startSearch = function ( )
 {
+    this.showThrobber();
     this.m_last_search_results_meetings = null;
     this.m_last_search_results_formats = null;
     
@@ -611,102 +615,105 @@ BMLTQuickSearch.prototype.getSearchURI = function (  )
     var value = null;
     var ret = '';
     
-    // 1 value, the select is hidden.
-    if ( 1 == this.m_values.length )
+    if ( this.m_values )
         {
-        value = this.m_values[0].value_name;
-        }
-    else
-        {
-        value = this.m_town_select.value;
-        };
-
-    var valueIDs = [];
-
-    for ( var index = 0; index < this.m_values.length; index++ )
-        {
-        var valueObject = this.m_values[index];
-
-        var idArray = valueObject.ids.split(",");
-        
-        if ( valueObject.value_name == value )
+        // 1 value, the select is hidden.
+        if ( 1 == this.m_values.length )
             {
-            valueIDs = idArray;
-            break;
+            value = this.m_values[0].value_name;
             }
         else
             {
-            if ( !value )
-                {
-                valueIDs.push.apply ( valueIDs, idArray );
-                };
+            value = this.m_town_select.value;
             };
-        };
-    
-    if ( valueIDs.length )
-        {
-        var resultArray = [];
-    
-        for ( var weekday = 1; weekday < 8; weekday++ )
+
+        var valueIDs = [];
+
+        for ( var index = 0; index < this.m_values.length; index++ )
             {
-            var weekdayCheckbox = this.m_weekday_objects[weekday];
-            if ( weekdayCheckbox.checked )
-                {
-                var wValue = weekdayCheckbox.value;
-                for ( var index = 0; index < 7; index++ )
-                    {
-                    if ( this.m_weekdays[index].weekday_tinyint == wValue )
-                        {
-                        var idArray = this.m_weekdays[index].ids.split(",");
-                    
-                        if ( idArray && idArray.length )
-                            {
-                            if ( !resultArray || !resultArray.length )
-                                {
-                                resultArray = idArray;
-                                }
-                            else
-                                {
-                                resultArray.push.apply ( resultArray, idArray );
-                                };
-                            };
-                        break;
-                        };
-                    };
-                };
-            };
+            var valueObject = this.m_values[index];
+
+            var idArray = valueObject.ids.split(",");
         
-        resultArray = this.intersectingArrays ( resultArray, valueIDs );
-    
-        if ( resultArray && resultArray.length )
-            {
-            ret = this.m_ajaxURI + "?bmlt_settings_id=" + this.m_optionsID + "&redirect_ajax_json=" + encodeURI ( 'switcher=GetSearchResults&get_used_formats=1' );
-    
-            if ( resultArray )
+            if ( valueObject.value_name == value )
                 {
-                ret += encodeURI ( '&SearchString=' + resultArray.join(',') );
+                valueIDs = idArray;
+                break;
                 }
             else
                 {
-                if ( !this.m_weekday_objects[0].checked )
+                if ( !value )
                     {
-                    var temp = [];
-                    for ( var weekday = 1; weekday < 8; weekday++ )
+                    valueIDs.push.apply ( valueIDs, idArray );
+                    };
+                };
+            };
+    
+        if ( valueIDs.length )
+            {
+            var resultArray = [];
+    
+            for ( var weekday = 1; weekday < 8; weekday++ )
+                {
+                var weekdayCheckbox = this.m_weekday_objects[weekday];
+                if ( weekdayCheckbox.checked )
+                    {
+                    var wValue = weekdayCheckbox.value;
+                    for ( var index = 0; index < 7; index++ )
                         {
-                        var weekdayCheckbox = this.m_weekday_objects[weekday];
-                        if ( weekdayCheckbox.checked )
+                        if ( this.m_weekdays[index].weekday_tinyint == wValue )
                             {
-                            temp.push ( 'weekdays[]=' + weekday.toString() );
+                            var idArray = this.m_weekdays[index].ids.split(",");
+                    
+                            if ( idArray && idArray.length )
+                                {
+                                if ( !resultArray || !resultArray.length )
+                                    {
+                                    resultArray = idArray;
+                                    }
+                                else
+                                    {
+                                    resultArray.push.apply ( resultArray, idArray );
+                                    };
+                                };
+                            break;
                             };
                         };
+                    };
+                };
+        
+            resultArray = this.intersectingArrays ( resultArray, valueIDs );
+    
+            if ( resultArray && resultArray.length )
+                {
+                ret = this.m_ajaxURI + "?bmlt_settings_id=" + this.m_optionsID + "&redirect_ajax_json=" + encodeURI ( 'switcher=GetSearchResults&get_used_formats=1' );
+    
+                if ( resultArray )
+                    {
+                    ret += encodeURI ( '&SearchString=' + resultArray.join(',') );
+                    }
+                else
+                    {
+                    if ( !this.m_weekday_objects[0].checked )
+                        {
+                        var temp = [];
+                        for ( var weekday = 1; weekday < 8; weekday++ )
+                            {
+                            var weekdayCheckbox = this.m_weekday_objects[weekday];
+                            if ( weekdayCheckbox.checked )
+                                {
+                                temp.push ( 'weekdays[]=' + weekday.toString() );
+                                };
+                            };
             
-                    if ( temp.length )
-                        {
-                        ret += '&' + temp.join ( '&' );
-                        }
-                    else
-                        {
-                        ret = null;
+                        if ( temp.length )
+                            {
+                            ret += '&' + temp.join ( '&' );
+                            }
+                        else
+                            {
+                            ret = null;
+                            };
                         };
                     };
                 };
@@ -892,7 +899,7 @@ BMLTQuickSearch.prototype.reactToWeekdayCheckboxChange = function ( inEvent )
     
     context.m_last_search_results_meetings = null;
     context.m_last_search_results_formats = null;
-    context.hideResults();
+    context.showHideGoButton();
 
     var allchecked = true;
     var allunchecked = true;
@@ -936,7 +943,6 @@ BMLTQuickSearch.prototype.reactToTownPopup = function ( inEvent )
     context.m_print_header_div.innerHTML = select.value.toString();
     context.m_print_header_div.style.padding = select.value ? '0.5em' : '0';
     context.showHideGoButton();
-    context.hideResults();
 };
 
 /****************************************************************************************//**
@@ -958,7 +964,7 @@ BMLTQuickSearch.prototype.reactToSearchButton = function ( inEvent )
 BMLTQuickSearch.prototype.reactToKeyDown = function ( in_id )
     {
     eval ( 'var context = bmlt_quicksearch_form_' + in_id + ';' );
-    context.hideResults();
+    context.showHideGoButton();
     if ( event.keyCode == 13 )
         {
         if ( context.showHideGoButton() )
@@ -992,7 +998,7 @@ BMLTQuickSearch.prototype.populateTownsSelect = function ( inTownsAJAXObject, in
         towns[index].value_name = towns[index].location_municipality;
         };
         
-    context.showHideGoButton();
+    this.showHideGoButton();
     this.populateFieldSelect_generic ( towns );
 };
 
@@ -1042,7 +1048,6 @@ BMLTQuickSearch.prototype.populateFieldSelect_generic = function ( inValueAJAXOb
     if ( this.m_weekdays )
         {
         this.hideThrobber();
-        this.hideResults();
         };
     
     this.showHideGoButton();
@@ -1057,7 +1062,6 @@ BMLTQuickSearch.prototype.populateWeekdays = function ( inWeekdaysAJAXObject )
     if ( this.m_values )
         {
         this.hideThrobber();
-        this.hideResults();
         };
     
     this.showHideGoButton();
