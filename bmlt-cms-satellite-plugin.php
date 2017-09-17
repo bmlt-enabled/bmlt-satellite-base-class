@@ -1854,6 +1854,7 @@ abstract class BMLTPlugin
                     }
                 
                 $display .= '<div id="quicksearch_div_'.$my_form_next_id.'" class="quicksearch_div quicksearch_theme_'.$theme.'" style="display:none">' . "\n";
+                    $display .= '<div class="quicksearch_print_header" id="quicksearch_print_header_'.$my_form_next_id.'" style="display:none"></div>';
                     $display .= '<div class="quicksearch_throbber_div" id="quicksearch_throbber_div_'.$my_form_next_id.'"><img src="'.htmlspecialchars ( $throbber_loc ).'" alt="AJAX Throbber" /></div>';
                     $display .= '<div class="quicksearch_form_container" id="quicksearch_form_container_'.$my_form_next_id.'" style="display:none">' . "\n";
                         $display .= '<div class="quicksearch_form_select_container" id="quicksearch_form_select_container_'.$my_form_next_id.'" style="display:none">' . "\n";

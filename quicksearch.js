@@ -49,6 +49,7 @@ function BMLTQuickSearch ( inID, inAjaxURI, inOptionsID, inValueFieldName, inVal
     this.m_no_results_div = document.getElementById ( 'quicksearch_no_results_div_' + inID );
     this.m_search_results_div = document.getElementById ( 'quicksearch_search_results_div_' + inID );
     this.m_search_results_container_div = document.getElementById ( 'quicksearch_results_container_' + inID );
+    this.m_print_header_div = document.getElementById ( 'quicksearch_print_header_' + inID );
     this.m_value_filter = inValueFilter;
     this.m_value_field_name = inValueFieldName;
     var id = this.m_differentiatorID;
@@ -116,6 +117,7 @@ BMLTQuickSearch.prototype.m_value_field_name = null;
 BMLTQuickSearch.prototype.m_value_filter = null;
 BMLTQuickSearch.prototype.m_select_container = null;
 BMLTQuickSearch.prototype.m_too_large_div = null;
+BMLTQuickSearch.prototype.m_print_header_div = null;
 	
 /****************************************************************************************//**
 *                                     INTERNAL METHODS                                      *
@@ -928,6 +930,8 @@ BMLTQuickSearch.prototype.reactToTownPopup = function ( inEvent )
     
     context.m_last_search_results_meetings = null;
     context.m_last_search_results_formats = null;
+    context.m_print_header_div.innerHTML = select.value.toString();
+    context.m_print_header_div.style.padding = select.value ? '0.5em' : '0';
     context.hideResults();
 };
 

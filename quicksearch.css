@@ -280,3 +280,118 @@ div.quicksearch_div input.quicksearch_form_submit_button
         font-size: x-small;
     }
 }
+
+@media only print
+{
+    div.quicksearch_throbber_div,
+    div.quicksearch_form_container
+    {
+        display:none !important;
+    }
+    
+    div#bmlt_page_items.bmlt_page_items div.quicksearch_div div.quicksearch_print_header
+    {
+        display: block !important;
+        background-color: black;
+        color: white;
+        text-align:center;
+        font-size: xx-large;
+        font-weight: bold;
+    }
+    
+    div#bmlt_page_items.bmlt_page_items div.quicksearch_div,
+    div#bmlt_page_items.bmlt_page_items div.quicksearch_div div.quicksearch_search_results_div,
+    div#bmlt_page_items.bmlt_page_items div.quicksearch_div div.quicksearch_search_results_div ul,
+    div#bmlt_page_items.bmlt_page_items div.quicksearch_div div.quicksearch_search_results_div div.bmlt_quicksearch_sinlge_meeting_container
+    {
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        border:none;
+        border-radius: 0;
+        background-color: transparent;
+    }
+    
+    div#bmlt_page_items.bmlt_page_items div.quicksearch_form_container
+    {
+        background-color: black;
+        padding: 1em;
+    }
+    
+    div#bmlt_page_items.bmlt_page_items div.quicksearch_div div.quicksearch_search_results_div div.bmlt_quicksearch_sinlge_meeting_container
+    {
+        margin-top: 0.25em;
+        padding-bottom: 0.25em;
+    }
+    
+    div#bmlt_page_items.bmlt_page_items div.quicksearch_div div.quicksearch_search_results_div ul,
+    div#bmlt_page_items.bmlt_page_items div.quicksearch_div div.quicksearch_search_results_div ul li
+    {
+        page-break-inside: avoid;
+    }
+    
+    div#bmlt_page_items.bmlt_page_items div.quicksearch_div div.quicksearch_search_results_div ul li,
+    div#bmlt_page_items.bmlt_page_items div.quicksearch_div div.quicksearch_search_results_div ul li a,
+    div#bmlt_page_items.bmlt_page_items div.quicksearch_div div.quicksearch_search_results_div ul li a:visited
+    {
+        color: black;
+        text-decoration: none;
+    }
+    
+    div#bmlt_page_items.bmlt_page_items div.quicksearch_div div.quicksearch_search_results_div div.bmlt_quicksearch_even
+    {
+        background-color: #efefef;
+    }
+
+    div.quicksearch_div ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_weekday
+    {
+        width: 35%;
+    }
+
+    div#bmlt_page_items.bmlt_page_items div.quicksearch_div ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_time
+    {
+        width: 10%;
+        text-align:center;
+    }
+
+    div#bmlt_page_items.bmlt_page_items div.quicksearch_div ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_town
+    {
+        text-align: right;
+        width: 55%;
+    }
+
+    div#bmlt_page_items.bmlt_page_items div.quicksearch_div ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_name
+    {
+        clear:left;
+        width: 100%;
+    }
+
+    div#bmlt_page_items.bmlt_page_items div.quicksearch_div ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_address
+    {
+        clear:left;
+        width: 100%;
+    }
+
+    div#bmlt_page_items.bmlt_page_items div.quicksearch_div ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_formats
+    {
+        clear:left;
+        width: 100%;
+        text-align: center;
+    }
+    
+    div#bmlt_page_items.bmlt_page_items div.quicksearch_div ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_formats div.bmlt_quicksearch_formats_internal_div
+    {
+        display: table;
+        margin: auto;
+    }
+    
+    div#bmlt_page_items.bmlt_page_items div.quicksearch_div ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_formats div.bmlt_quicksearch_formats_internal_div span.bmlt_quicksearch_format_span
+    {
+        float:none;
+        display:table-cell;
+        color: white;
+        line-height: 100%;
+        vertical-align: middle;
+        background-color: black;
+    }
+}
