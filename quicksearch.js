@@ -517,70 +517,16 @@ BMLTQuickSearch.prototype.hideResults = function (  )
 {
     this.m_search_results_container_div.style.display = 'none';
 };
-	
+
 /****************************************************************************************//**
 ********************************************************************************************/
-BMLTQuickSearch.prototype.searchList = function ( inIDList )
+BMLTQuickSearch.prototype.showHideGoButton = function (  )
 {
-    this.m_last_search_results_meetings = null;
-    this.m_last_search_results_formats = null;
+    var ret = this.getSearchURI().length < 2049;
     
-    var uri = this.m_ajaxURI + "?bmlt_settings_id=" + this.m_optionsID + "&redirect_ajax_json=" + encodeURI ( 'switcher=GetSearchResults&get_used_formats=1' );
+    this.m_submit_button.style.display = ret ? 'block' : 'none';
     
-    if ( inIDList )
-        {
-        uri += encodeURI ( '&SearchString=' + inIDList.join(',') );
-        }
-    else
-        {
-        if ( !this.m_weekday_objects[0].checked )
-            {
-            var temp = [];
-            for ( var weekday = 1; weekday < 8; weekday++ )
-                {
-                var weekdayCheckbox = this.m_weekday_objects[weekday];
-                if ( weekdayCheckbox.checked )
-                    {
-                    temp.push ( 'weekdays[]=' + weekday.toString() );
-                    };
-                };
-            
-            if ( temp.length )
-                {
-                uri += '&' + temp.join ( '&' );
-                }
-            else
-                {
-                uri = null;
-                };
-            };
-        };
-    
-    if ( uri )
-        {
-        if ( uri.length <= 2048 )
-            {
-            var ajax_request = BMLTPlugin_AjaxRequest ( uri, BMLTQuickSearch.prototype.ajaxCallbackSearch, 'get', this.m_differentiatorID );
-            }
-        else
-            {
-            this.hideThrobber();
-            this.m_too_large_div.style.display = 'block';
-            this.m_no_results_div.style.display = 'none';
-            this.m_search_results_div.style.display = 'none';
-            this.m_search_results_div.innerHTML = '';
-            this.m_search_results_container_div.style.display = 'block';
-            };
-        }
-    else
-        {
-        this.hideThrobber();
-        this.m_too_large_div.style.display = 'none';
-        this.m_no_results_div.style.display = 'block';
-        this.m_search_results_div.style.display = 'none';
-        this.m_search_results_div.innerHTML = '';
-        this.m_search_results_container_div.style.display = 'block';
-        };
+    return ret;
 };
 
 /****************************************************************************************//**
@@ -624,14 +570,46 @@ BMLTQuickSearch.prototype.intersectingArrays = function (/* pass all arrays here
 /****************************************************************************************//**
 *                                        HANDLERS                                           *
 ********************************************************************************************/
-BMLTQuickSearch.prototype.startASearch = function (  )
+BMLTQuickSearch.prototype.startSearch = function ( )
 {
-    this.hideResults();
-    this.showThrobber();
     this.m_last_search_results_meetings = null;
     this.m_last_search_results_formats = null;
     
+    var uri = this.getSearchURI();
+    
+    if ( uri )
+        {
+        if ( uri.length <= 2048 )
+            {
+            var ajax_request = BMLTPlugin_AjaxRequest ( uri, BMLTQuickSearch.prototype.ajaxCallbackSearch, 'get', this.m_differentiatorID );
+            }
+        else
+            {
+            this.hideThrobber();
+            this.m_too_large_div.style.display = 'block';
+            this.m_no_results_div.style.display = 'none';
+            this.m_search_results_div.style.display = 'none';
+            this.m_search_results_div.innerHTML = '';
+            this.m_search_results_container_div.style.display = 'block';
+            };
+        }
+    else
+        {
+        this.hideThrobber();
+        this.m_too_large_div.style.display = 'none';
+        this.m_no_results_div.style.display = 'block';
+        this.m_search_results_div.style.display = 'none';
+        this.m_search_results_div.innerHTML = '';
+        this.m_search_results_container_div.style.display = 'block';
+        };
+};
+	
+/****************************************************************************************//**
+********************************************************************************************/
+BMLTQuickSearch.prototype.getSearchURI = function (  )
+{
     var value = null;
+    var ret = '';
     
     // 1 value, the select is hidden.
     if ( 1 == this.m_values.length )
@@ -702,17 +680,40 @@ BMLTQuickSearch.prototype.startASearch = function (  )
     
         if ( resultArray && resultArray.length )
             {
-            this.searchList ( resultArray );
-            }
-        else
-            {
-            this.displaySearchResults ( null );
+            ret = this.m_ajaxURI + "?bmlt_settings_id=" + this.m_optionsID + "&redirect_ajax_json=" + encodeURI ( 'switcher=GetSearchResults&get_used_formats=1' );
+    
+            if ( resultArray )
+                {
+                ret += encodeURI ( '&SearchString=' + resultArray.join(',') );
+                }
+            else
+                {
+                if ( !this.m_weekday_objects[0].checked )
+                    {
+                    var temp = [];
+                    for ( var weekday = 1; weekday < 8; weekday++ )
+                        {
+                        var weekdayCheckbox = this.m_weekday_objects[weekday];
+                        if ( weekdayCheckbox.checked )
+                            {
+                            temp.push ( 'weekdays[]=' + weekday.toString() );
+                            };
+                        };
+            
+                    if ( temp.length )
+                        {
+                        ret += '&' + temp.join ( '&' );
+                        }
+                    else
+                        {
+                        ret = null;
+                        };
+                    };
+                };
             };
-        }
-    else
-        {
-        this.displaySearchResults ( null );
         };
+        
+    return ret;
 };
 
 /****************************************************************************************//**
@@ -919,6 +920,8 @@ BMLTQuickSearch.prototype.reactToWeekdayCheckboxChange = function ( inEvent )
         {
         context.m_weekday_objects[0].checked = allchecked;
         };
+    
+    context.showHideGoButton();
 };
 
 /****************************************************************************************//**
@@ -932,6 +935,7 @@ BMLTQuickSearch.prototype.reactToTownPopup = function ( inEvent )
     context.m_last_search_results_formats = null;
     context.m_print_header_div.innerHTML = select.value.toString();
     context.m_print_header_div.style.padding = select.value ? '0.5em' : '0';
+    context.showHideGoButton();
     context.hideResults();
 };
 
@@ -942,7 +946,10 @@ BMLTQuickSearch.prototype.reactToSearchButton = function ( inEvent )
     var button = inEvent.currentTarget;
     var context = button.handler;
     
-    context.startASearch();
+    if ( context.showHideGoButton() )
+        {
+        context.startSearch();
+        };
 };
   
 /****************************************************************************************//**
@@ -951,13 +958,13 @@ BMLTQuickSearch.prototype.reactToSearchButton = function ( inEvent )
 BMLTQuickSearch.prototype.reactToKeyDown = function ( in_id )
     {
     eval ( 'var context = bmlt_quicksearch_form_' + in_id + ';' );
+    context.hideResults();
     if ( event.keyCode == 13 )
         {
-        context.startASearch();
-        }
-    else
-        {
-        context.hideResults();
+        if ( context.showHideGoButton() )
+            {
+            context.startSearch();
+            };
         };
     };
 
@@ -985,6 +992,7 @@ BMLTQuickSearch.prototype.populateTownsSelect = function ( inTownsAJAXObject, in
         towns[index].value_name = towns[index].location_municipality;
         };
         
+    context.showHideGoButton();
     this.populateFieldSelect_generic ( towns );
 };
 
@@ -1036,6 +1044,8 @@ BMLTQuickSearch.prototype.populateFieldSelect_generic = function ( inValueAJAXOb
         this.hideThrobber();
         this.hideResults();
         };
+    
+    this.showHideGoButton();
 };
 
 /****************************************************************************************//**
@@ -1049,6 +1059,8 @@ BMLTQuickSearch.prototype.populateWeekdays = function ( inWeekdaysAJAXObject )
         this.hideThrobber();
         this.hideResults();
         };
+    
+    this.showHideGoButton();
 };
 
 /****************************************************************************************//**
