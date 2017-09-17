@@ -309,9 +309,10 @@ abstract class BMLTPlugin
         if ( file_exists ( $pathname ) )
             {
             $opt = file_get_contents ( $pathname );
-            $opt = preg_replace( "|\/\*.*?\*\/|s", "", $opt );
             if ( !defined ( '_DEBUG_MODE_' ) )
                 {
+                $opt = preg_replace( "|\/\*.*?\*\/|s", "", $opt );
+                $opt = preg_replace( "|[^:]\/\/.*?\n|s", "", $opt );
                 $opt = preg_replace( "|\s+|s", " ", $opt );
                 }
             return $opt;

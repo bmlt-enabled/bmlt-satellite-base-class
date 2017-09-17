@@ -256,7 +256,7 @@ BMLTQuickSearch.prototype.domBuilder_PopulateWeekdayBody_one_column = function (
     if ( !in_string.trim() )
         {
         in_string = '&nbsp;';
-        }
+        };
     
     var columnElement = document.createElement ( 'li' );
     columnElement.className = 'bmlt_quicksearch_data_ul_li bmlt_quicksearch_data_ul_li_' + in_tag;
