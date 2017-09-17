@@ -309,10 +309,10 @@ abstract class BMLTPlugin
         if ( file_exists ( $pathname ) )
             {
             $opt = file_get_contents ( $pathname );
+            $opt = preg_replace( "|\/\*.*?\*\/|s", "", $opt );
+            $opt = preg_replace( "|[^:]\/\/.*?\n|s", "", $opt );
             if ( !defined ( '_DEBUG_MODE_' ) )
                 {
-                $opt = preg_replace( "|\/\*.*?\*\/|s", "", $opt );
-                $opt = preg_replace( "|[^:]\/\/.*?\n|s", "", $opt );
                 $opt = preg_replace( "|\s+|s", " ", $opt );
                 }
             return $opt;
@@ -1126,7 +1126,6 @@ abstract class BMLTPlugin
         
         if ( is_array ( $options ) && count ( $options ) && isset ( $options['id'] ) )
             {
-            $ret .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'javascript.js" type="text/javascript"></script>';
             $ret .= '<div class="BMLTPlugin_option_sheet" id="BMLTPlugin_option_sheet_'.$in_options_index.'_div" style="display:'.htmlspecialchars ( $display_mode ).'">';
                 $ret .= '<h2 class="BMLTPlugin_option_id_h2">'.$this->process_text ( $this->my_current_language->local_options_settings_id_prompt ).htmlspecialchars ( $options['id'] ).'</h2>';
                 $ret .= '<input type="hidden" name="actual_options_id" id="BMLTPlugin_option_sheet_'.$in_options_index.'_actual_options_id" value="'.htmlspecialchars ( $options['id'] ).'" />';
@@ -2354,8 +2353,8 @@ abstract class BMLTPlugin
                 // The first time through, we import our JS file. After that, we no longer need it.
                 if ( !$my_table_next_id )
                     {
-                    $the_new_content .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'table_display.js" type="text/javascript"></script>'.(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
                     $the_new_content .= "<script type=\"text/javascript\">".(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
+                    $the_new_content .= self::stripFile('table_display.js');
                     $the_new_content .= 'var g_table_weekday_name_array = new Array ( "'.join ( '","', $this->my_current_language->local_nouveau_weekday_short_array ).'" );'.(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
                     $the_new_content .= 'var g_table_weekday_long_name_array = new Array ( "'.join ( '","', $this->my_current_language->local_nouveau_weekday_long_array ).'" );'.(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
                     $the_new_content .= "var g_table_throbber_img_src = '".htmlspecialchars ( $this->get_plugin_path().'themes/default/images/TableThrobber.gif' ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
@@ -2599,8 +2598,7 @@ abstract class BMLTPlugin
         $ret .= "var c_g_BMLTPlugin_images = '".htmlspecialchars ( $this->get_plugin_path()."/google_map_images" )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $ret .= "var c_g_BMLTPlugin_default_location_text = '".$this->process_text ( $this->my_current_language->local_new_map_text_entry_default_text )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $ret .= '</script>';
-        $ret .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'javascript.js" type="text/javascript"></script>';
-        $ret .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'map_search.js" type="text/javascript"></script>';
+        $ret .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).'map_search.js" type="text/javascript"></script>';
 
         return $ret;
         }
@@ -2618,8 +2616,7 @@ abstract class BMLTPlugin
         $this->adapt_to_lang ( $options['lang'] );
         // Include the Google Maps API V3 files.
         $ret = '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key='.$options['google_api_key'].'&region='.strtoupper ( $options['region_bias'] ).'"></script>';       
-        $ret .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'javascript.js" type="text/javascript"></script>';
-        $ret .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'nouveau_map_search.js" type="text/javascript"></script>';
+        $ret .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).'nouveau_map_search.js" type="text/javascript"></script>';
 
         return $ret;
         }
@@ -2956,8 +2953,7 @@ abstract class BMLTPlugin
         $ret .= 'var c_g_googleURI = \'https://maps.google.com/maps/api/js?key='.$options['google_api_key'].'&region='.strtoupper ( $options['region_bias'] ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $ret .= '</script>';
        
-        $ret .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'javascript.js" type="text/javascript"></script>';
-        $ret .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).(!defined ( '_DEBUG_MODE_' ) ? 'js_stripper.php?filename=' : '').'fast_mobile_lookup.js" type="text/javascript"></script>';
+        $ret .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).'fast_mobile_lookup.js" type="text/javascript"></script>';
 
         return $ret;
         }
