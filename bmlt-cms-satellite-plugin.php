@@ -3774,6 +3774,8 @@ abstract class BMLTPlugin
             // We need to start off by setting up our driver.
             $this->my_driver = new bmlt_satellite_controller;
 
+            global $bmlt_localization;
+            
             $this->adapt_to_lang ( $bmlt_localization );
             
             if ( $this->my_driver instanceof bmlt_satellite_controller )
