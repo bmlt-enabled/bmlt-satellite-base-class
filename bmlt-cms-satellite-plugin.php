@@ -612,14 +612,14 @@ abstract class BMLTPlugin
                 }
             }
             
-        if ( !$BMLTOptions['lang'] )
+        if ( !isset ( $BMLTOptions['lang'] ) || !$BMLTOptions['lang'] )
             {
             global $bmlt_localization;
         
             $BMLTOptions['lang'] = $bmlt_localization;
             }
         
-        if ( !$BMLTOptions['lang'] )
+        if ( !isset ( $BMLTOptions['lang'] ) || !$BMLTOptions['lang'] )
             {
             $BMLTOptions['lang'] = self::$default_language;
             }
@@ -2568,7 +2568,12 @@ abstract class BMLTPlugin
             }
 
         // Include the Google Maps API files.
-        $ret = '</script><script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key='.$options['google_api_key'].'&region='.strtoupper ( $options['region_bias'] ).'"></script>';       
+        $ret = '</script><script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key='.$options['google_api_key'];
+        if ( isset ( $options['region_bias'] ) && $options['region_bias'] )
+            {     
+            $ret .= '&region='.strtoupper ( $options['region_bias'] );
+            }
+        $ret .= '"></script>';       
         // Declare the various globals and display strings. This is how we pass strings to the JavaScript, as opposed to the clunky way we do it in the root server.
         $ret .= '<script type="text/javascript">' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $ret .= 'var c_g_cannot_determine_location = \''.$this->process_text ( $this->my_current_language->local_cannot_determine_location ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
@@ -2614,7 +2619,12 @@ abstract class BMLTPlugin
         $options = $this->getBMLTOptions_by_id ( $in_options_id );
         $this->adapt_to_lang ( $options['lang'] );
         // Include the Google Maps API V3 files.
-        $ret = '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key='.$options['google_api_key'].'&region='.strtoupper ( $options['region_bias'] ).'"></script>';       
+        $ret = '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key='.$options['google_api_key'];
+        if ( isset ( $options['region_bias'] ) && $options['region_bias'] )
+            {  
+            $ret .= '&region='.strtoupper ( $options['region_bias'] );
+            }  
+        $ret .= '"></script>';       
         $ret .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).'nouveau_map_search.js" type="text/javascript"></script>';
 
         return $ret;
