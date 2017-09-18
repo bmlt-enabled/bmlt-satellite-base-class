@@ -590,11 +590,11 @@ TableSearchDisplay.prototype.utility_sprintf = function ()
 
 /****************************************************************************************
 *################################## DOM BUILDER ROUTINES ###############################*
-****************************************************************************************/
-// These routines all construct the DOM tree for the shortcode. The weekday header is
-// displayed all the time (with the selected tab changing), but the table data (and the
-// header) is reconstructed from scratch each time.
-/************************************************************************************//**
+*****************************************************************************************
+    These routines all construct the DOM tree for the shortcode. The weekday header is
+    displayed all the time (with the selected tab changing), but the table data (and the
+    header) is reconstructed from scratch each time.
+*************************************************************************************//**
     \brief Creates the weekday selection header.
     \returns the instantiated DOM object.
 ****************************************************************************************/
@@ -754,7 +754,7 @@ TableSearchDisplay.prototype.domBuilder_CreateOneWeekday = function ( in_weekday
             if ( this.parentNode.handler.my_selected_tab == this.parentNode )
                 {
                 this.parentNode.className += ' is_selected';
-                }
+                };
             };
         };
     

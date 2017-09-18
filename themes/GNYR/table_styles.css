@@ -87,22 +87,22 @@ div.bmlt_table_display_div_theme_GNYR ul.bmlt_table_header_ul li.bmlt_table_head
 /************************************************************/
 div.bmlt_table_display_div_theme_GNYR ul.bmlt_table_header_ul li.bmlt_table_header_li span.bmlt_table_header_selected.bmlt_table_header_selected_sort_direction_asc
 {
-    background-image:url("themes/GNYR/images/TableSortAsc.gif");
+    background-image:url("##-IMAGEDIR-##TableSortAsc.gif");
 }
 
 div.bmlt_table_display_div_theme_GNYR ul.bmlt_table_header_ul li.bmlt_table_header_li span.bmlt_table_header_selected.bmlt_table_header_selected_sort_direction_asc.bmlt_table_mouseover
 {
-    background-image:url("themes/GNYR/images/TableSortAsc_mouseover.gif");
+    background-image:url("##-IMAGEDIR-##TableSortAsc_mouseover.gif");
 }
 
 div.bmlt_table_display_div_theme_GNYR ul.bmlt_table_header_ul li.bmlt_table_header_li span.bmlt_table_header_selected.bmlt_table_header_selected_sort_direction_desc
 {
-    background-image:url("themes/GNYR/images/TableSortDesc.gif");
+    background-image:url("##-IMAGEDIR-##TableSortDesc.gif");
 }
 
 div.bmlt_table_display_div_theme_GNYR ul.bmlt_table_header_ul li.bmlt_table_header_li span.bmlt_table_header_selected.bmlt_table_header_selected_sort_direction_desc.bmlt_table_mouseover
 {
-    background-image:url("themes/GNYR/images/TableSortDesc_mouseover.gif");
+    background-image:url("##-IMAGEDIR-##TableSortDesc_mouseover.gif");
 }
 
 /************************************************************/
