@@ -615,7 +615,7 @@ BMLTQuickSearch.prototype.getSearchURI = function (  )
     var value = null;
     var ret = '';
     
-    if ( this.m_values )
+    if ( this.m_values && this.m_weekday_objects )
         {
         // 1 value, the select is hidden.
         if ( 1 == this.m_values.length )
