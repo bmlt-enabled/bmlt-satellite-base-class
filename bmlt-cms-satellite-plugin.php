@@ -892,7 +892,7 @@ abstract class BMLTPlugin
         $out_option_number = 1;
         global $bmlt_localization;
         $this->adapt_to_lang($bmlt_localization);
-        $timing = $this->my_current_language->local_options_success_time;    // Success is a shorter fade, but failure is longer.
+        $timing = self::$local_options_success_time;    // Success is a shorter fade, but failure is longer.
         $ret = '<div id="BMLTPlugin_Message_bar_div" class="BMLTPlugin_Message_bar_div">';
             if ( isset ( $this->my_http_vars['BMLTPlugin_create_option'] ) )
                 {
@@ -914,7 +914,7 @@ abstract class BMLTPlugin
                     }
                 else
                     {
-                    $timing = $this->my_current_language->local_options_failure_time;
+                    $timing = self::$local_options_failure_time;
                     $ret .= '<h2 id="BMLTPlugin_Fader" class="BMLTPlugin_Message_bar_fail">';
                         $ret .= $this->process_text ( $this->my_current_language->local_options_create_failure );
                     $ret .= '</h2>';
@@ -932,7 +932,7 @@ abstract class BMLTPlugin
                     }
                 else
                     {
-                    $timing = $this->my_current_language->local_options_failure_time;
+                    $timing = self::$local_options_failure_time;
                     $ret .= '<h2 id="BMLTPlugin_Fader" class="BMLTPlugin_Message_bar_fail">';
                         $ret .= $this->process_text ( $this->my_current_language->local_options_delete_failure );
                     $ret .= '</h2>';
@@ -1061,13 +1061,13 @@ abstract class BMLTPlugin
                         $html .= "var c_g_BMLTPlugin_root_canal = '".$this->my_current_language->local_options_url_bad.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
                         $html .= "var c_g_BMLTPlugin_success_message = '".$this->process_text ( $this->my_current_language->local_options_save_success )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
                         $html .= "var c_g_BMLTPlugin_failure_message = '".$this->process_text ( $this->my_current_language->local_options_save_failure )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-                        $html .= "var c_g_BMLTPlugin_success_time = ".intval ( $this->my_current_language->local_options_success_time ).";" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-                        $html .= "var c_g_BMLTPlugin_failure_time = ".intval ( $this->my_current_language->local_options_failure_time ).";" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+                        $html .= "var c_g_BMLTPlugin_success_time = ".intval ( self::$local_options_success_time ).";" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+                        $html .= "var c_g_BMLTPlugin_failure_time = ".intval ( self::$local_options_failure_time ).";" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
                         $html .= "var c_g_BMLTPlugin_unsaved_prompt = '".$this->process_text ( $this->my_current_language->local_options_unsaved_message )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
                         $html .= "var c_g_BMLTPlugin_test_server_success = '".$this->process_text ( $this->my_current_language->local_options_test_server_success )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
                         $html .= "var c_g_BMLTPlugin_test_server_failure = '".$this->process_text ( $this->my_current_language->local_options_test_server_failure )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
                         $html .= "var c_g_BMLTPlugin_coords = new Array();" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-                        $html .= "var g_BMLTPlugin_TimeToFade = ".intval ( $this->my_current_language->local_options_success_time ).";" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+                        $html .= "var g_BMLTPlugin_TimeToFade = ".intval ( self::$local_options_success_time ).";" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
                         $html .= "var g_BMLTPlugin_no_gkey_string = '".$this->process_text ( $this->my_current_language->local_options_no_gkey_string)."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
                         if ( is_array ( $options_coords ) && count ( $options_coords ) )
                             {
