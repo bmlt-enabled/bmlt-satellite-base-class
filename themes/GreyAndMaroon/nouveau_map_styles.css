@@ -3,7 +3,7 @@
     This file is part of the BMLT Common Satellite Base Class Project. The project GitHub
     page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class
 
-    \version 3.6.0
+    \version 3.6.1
     
     This file is part of the BMLT Common Satellite Base Class Project. The project GitHub
     page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class
@@ -848,7 +848,7 @@ div#bmlt_page_items.bmlt_page_items
     div.bmlt_nouveau_div
         a.bmlt_nouveau_search_results_list_disclosure_a:visited
 {
-    background-image:url(images/invisible_disclosure.gif);
+    background-image:url(##-IMAGEDIR-##/invisible_disclosure.gif);
 }
 
 div#bmlt_page_items.bmlt_page_items
@@ -888,7 +888,7 @@ div#bmlt_page_items.bmlt_page_items
     div.bmlt_nouveau_div
         a.bmlt_nouveau_search_results_list_disclosure_a:active
 {
-    background-image:url(images/invisible_disclosure_mouseover.gif);
+    background-image:url(##-IMAGEDIR-##/invisible_disclosure_mouseover.gif);
 }
 
 div#bmlt_page_items.bmlt_page_items
@@ -928,7 +928,7 @@ div#bmlt_page_items.bmlt_page_items
     div.bmlt_nouveau_div
         a.bmlt_nouveau_search_results_map_disclosure_open_a:visited
 {
-    background-image:url(images/visible_disclosure.gif);
+    background-image:url(##-IMAGEDIR-##/visible_disclosure.gif);
 }
 
 div#bmlt_page_items.bmlt_page_items
@@ -968,7 +968,7 @@ div#bmlt_page_items.bmlt_page_items
     div.bmlt_nouveau_div
         a.bmlt_nouveau_search_results_map_disclosure_open_a:active
 {
-    background-image:url(images/visible_disclosure_mouseover.gif);
+    background-image:url(##-IMAGEDIR-##/visible_disclosure_mouseover.gif);
 }
 
 div#bmlt_page_items.bmlt_page_items
@@ -1200,7 +1200,7 @@ div#bmlt_page_items.bmlt_page_items
 {
     background-repeat:no-repeat;
     background-position:center center;
-    background-image:url(images/Closer.png);
+    background-image:url(##-IMAGEDIR-##/Closer.png);
     display:block;
     position:absolute;
     margin:0;
@@ -1287,7 +1287,7 @@ div#bmlt_page_items.bmlt_page_items
 {
     background-repeat:no-repeat;
     background-position:center center;
-    background-image:url(images/MoreDetails.png);
+    background-image:url(##-IMAGEDIR-##/MoreDetails.png);
     display:block;
     height:24px;
     width:24px;
@@ -1371,7 +1371,7 @@ div#bmlt_page_items.bmlt_page_items
     div.bmlt_nouveau_div
         a.bmlt_nouveau_search_results_list_body_td_more_a:active
 {
-    background-image:url(images/MoreDetails_mouseover.png);
+    background-image:url(##-IMAGEDIR-##/MoreDetails_mouseover.png);
 }
 
 div#bmlt_page_items.bmlt_page_items
@@ -1381,7 +1381,7 @@ div#bmlt_page_items.bmlt_page_items
     div.bmlt_nouveau_div
         a.bmlt_nouveau_details_closer_a:active
 {
-    background-image:url(images/Closer_mouseover.png);
+    background-image:url(##-IMAGEDIR-##/Closer_mouseover.png);
 }
 
 div#bmlt_page_items.bmlt_page_items

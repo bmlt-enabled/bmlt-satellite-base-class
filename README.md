@@ -21,6 +21,10 @@ The instructions for employment of this class are on [this page](http://bmlt.mag
 
 CHANGELIST
 ----------
+***Version 3.6.1* ** *- September 19, 2017*
+
+- There was a bug introduced by the previous release. The standard [[BMLT]] shortcode's images were not displayed.
+
 ***Version 3.6.0* ** *- September 18, 2017*
 
 - Added the [[BMLT_QUICKSEARCH]] shortcode.
