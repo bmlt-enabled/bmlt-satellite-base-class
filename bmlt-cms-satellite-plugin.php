@@ -2995,14 +2995,7 @@ abstract class BMLTPlugin
             $this->adapt_to_lang ( $options['lang'] );
             $url = htmlspecialchars ( $url.'themes/'.$options['theme'].'/' );
             
-            if ( defined ( '_DEBUG_MODE_' ) ) // In debug mode, we use unoptimized versions of these files for easier tracking.
-                {
-                $ret .= '<link rel="stylesheet" media="all" href="'.$url.'fast_mobile_lookup.css" type="text/css" />'.(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
-                }
-            else
-                {
-                $ret .= '<link rel="stylesheet" media="all" href="'.htmlspecialchars($url).'style_stripper.php?filename=fast_mobile_lookup.css" type="text/css" />'.(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
-                }
+            $ret .= '<link rel="stylesheet" media="all" href="'.$url.'fast_mobile_lookup.css" type="text/css" />'.(defined ( '_DEBUG_MODE_' ) ? "\n" : "");
             
             // If we have a shortcut icon, set it here.
             if ( defined ('_SHORTCUT_LOC_' ) )
