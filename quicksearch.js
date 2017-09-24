@@ -727,6 +727,13 @@ BMLTQuickSearch.prototype.getSearchURI = function (  )
 ********************************************************************************************/
 BMLTQuickSearch.prototype.displaySearchResults = function ( inSearchResults )
 {
+    if ( (inSearchResults && !inSearchResults.meetings) && (0 < inSearchResults.length) )
+        {
+        var meetings = inSearchResults;
+        
+        inSearchResults.meetings = meetings;
+        };
+    
     if ( inSearchResults && inSearchResults.meetings && inSearchResults.meetings.length )
         {
         var meetings = [];
@@ -1187,7 +1194,6 @@ BMLTQuickSearch.prototype.ajaxCallbackSearch = function (   in_response_object, 
                                                             )
 {
     eval ( 'var context = bmlt_quicksearch_form_' + in_id + ';' );
-
     if ( context )
         {
         if ( in_response_object.responseText && ("<" != in_response_object.responseText[0]) )
