@@ -21,9 +21,10 @@ The instructions for employment of this class are on [this page](http://bmlt.mag
 
 CHANGELIST
 ----------
-***Version 3.7.1* ** *- TBD*
+***Version 3.7.1* ** *- September 24, 2017*
 
 - Addressed an issue where string searches were not being done properly with certain non-Roman character sets.
+- Fixed an issue with the [[bmlt_quicksearch]] shortcode, where you could get an empty search result if none of the meetings in the result set had formats.
 
 ***Version 3.7.0* ** *- September 24, 2017*
 
