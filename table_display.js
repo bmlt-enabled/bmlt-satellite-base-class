@@ -2,7 +2,7 @@
   \file table_display.js                                                                    *
   \brief Javascript functions for the basic table display.                                  *
                                                                                             *
-    \version 3.7.0                                                                          *
+    \version 3.7.1                                                                          *
                                                                                             *
     This file contains a function/object that implements the Fast Table Shortcode. Upon     *
     instantiation, it uses the page DOM to create a tabular display of meetings that are    *

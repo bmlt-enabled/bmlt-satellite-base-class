@@ -21,6 +21,10 @@ The instructions for employment of this class are on [this page](http://bmlt.mag
 
 CHANGELIST
 ----------
+***Version 3.7.1* ** *- TBD*
+
+- Addressed an issue where string searches were not being done properly with certain non-Roman character sets.
+
 ***Version 3.7.0* ** *- September 24, 2017*
 
 - Added Spanish localization -FINALLY! Thanks, Costa Rica!
