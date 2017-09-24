@@ -3,7 +3,7 @@
 *   \file   bmlt-unit-test-satellite-plugin.php                                             *
 *                                                                                           *
 *   \brief  This is a standalone unit test plugin of a BMLT satellite client.               *
-*   \version 3.6.2                                                                          *
+*   \version 3.7.0                                                                          *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -357,38 +357,49 @@ class BMLTUTestPlugin extends BMLTPlugin
         $root_server_root = $options['root_server'];
         
         $url = $this->get_plugin_path();
-    
-        if ( file_exists ( dirname ( __FILE__ ).'/themes/'.$options['theme'].'/styles.css' ) )
+        
+        $head_content .= "\n".'<style type="text/css">'."\n";
+        $temp = self::stripFile ( 'styles.css', $options['theme'] );
+        if ( $temp )
             {
-            $head_content .= '<link rel="stylesheet" type="text/css" href="';
-    
-            $head_content .= htmlspecialchars ( $url.'themes/'.$options['theme'].'/' );
-    
-            if ( !defined ('_DEBUG_MODE_' ) )
-                {
-                $head_content .= 'style_stripper.php?filename=';
-                }
-    
-            $head_content .= 'styles.css" />';
+            $image_dir_path = $this->get_plugin_path() . '/themes/' . $options['theme'] . '/images/';
+            $temp = str_replace ( '##-IMAGEDIR-##', $image_dir_path, $temp );
+            $head_content .= "\t$temp\n";
             }
-    
-        if ( file_exists ( dirname ( __FILE__ ).'/themes/'.$options['theme'].'/nouveau_map_styles.css' ) )
+        $temp = self::stripFile ( 'nouveau_map_styles.css', $options['theme'] );
+        if ( $temp )
             {
-            $head_content .= '<link rel="stylesheet" type="text/css" href="';
-    
-            $head_content .= htmlspecialchars ( $url.'themes/'.$options['theme'].'/' );
-    
-            if ( !defined ('_DEBUG_MODE_' ) )
-                {
-                $head_content .= 'style_stripper.php?filename=';
-                }
-    
-            $head_content .= 'nouveau_map_styles.css" />';
+            $image_dir_path = $this->get_plugin_path() . '/themes/' . $options['theme'] . '/images/';
+            $temp = str_replace ( '##-IMAGEDIR-##', $image_dir_path, $temp );
+            $head_content .= "\t$temp\n";
             }
         
-        if ( file_exists ( dirname ( __FILE__ ).'/table_styles.php' ) )
+        $head_content .= self::stripFile ( 'table_styles.css' ) . "\n";
+        $head_content .= self::stripFile ( 'quicksearch.css' ) . "\n";
+    
+        $dirname = dirname ( __FILE__ ) . '/themes';
+        $dir = new DirectoryIterator ( $dirname );
+
+        foreach ( $dir as $fileinfo )
             {
-            $head_content .= '<link rel="stylesheet" type="text/css" href="'.$url.'table_styles.php" />';
+            if ( !$fileinfo->isDot () )
+                {
+                $fName = $fileinfo->getFilename ();
+
+                $temp = self::stripFile ( "table_styles.css", $fName );
+                if ( $temp )
+                    {
+                    $image_dir_path = $this->get_plugin_path() . '/themes/' . $fName . '/images/';
+                    $temp = str_replace ( '##-IMAGEDIR-##', $image_dir_path, $temp );
+                    $head_content .= "\t$temp\n";
+                    }
+                
+                $temp = self::stripFile ( "quicksearch.css", $fName );
+                if ( $temp )
+                    {
+                    $head_content .= "\t$temp\n";
+                    }
+                }
             }
 
         if ( $root_server_root )
@@ -407,6 +418,14 @@ class BMLTUTestPlugin extends BMLTPlugin
                 $head_content .= '<style type="text/css">'.preg_replace ( "|\s+|", " ", $additional_css ).'</style>';
                 }
             }
+            
+        $head_content .= '<script type="text/javascript">';
+    
+        $head_content .= self::stripFile ( 'javascript.js' );
+        $head_content .= self::stripFile ( 'map_search.js' );
+        $head_content .= self::stripFile ( 'fast_mobile_lookup.js' );
+    
+        $head_content .= '</script>';
         
         return $head_content;
         }
@@ -427,11 +446,6 @@ class BMLTUTestPlugin extends BMLTPlugin
         $url = $this->get_plugin_path();
         
         $head_content .= htmlspecialchars ( $url );
-        
-        if ( !defined ('_DEBUG_MODE_' ) )
-            {
-            $head_content .= 'style_stripper.php?filename=';
-            }
         
         $head_content .= 'admin_styles.css" />';
         

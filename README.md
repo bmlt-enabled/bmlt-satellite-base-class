@@ -21,6 +21,10 @@ The instructions for employment of this class are on [this page](http://bmlt.mag
 
 CHANGELIST
 ----------
+***Version 3.7.0* ** *- September 24, 2017*
+
+- Added Spanish localization -FINALLY! Thanks, Costa Rica!
+
 ***Version 3.6.2* ** *- September 21, 2017*
 
 - The mobile client was not displaying correctly.
