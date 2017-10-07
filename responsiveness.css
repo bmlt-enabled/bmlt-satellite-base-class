@@ -1,0 +1,71 @@
+/*    
+    This file is part of the BMLT Common Satellite Base Class Project. The project GitHub
+    page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class
+
+    \version 3.8.0
+    
+    This file is part of the BMLT Common Satellite Base Class Project. The project GitHub
+    page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class
+    
+    This file is part of the Basic Meeting List Toolbox (BMLT).
+    
+    Find out more at: http://bmlt.magshare.org
+    
+    BMLT is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+    
+    BMLT is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    
+    You should have received a copy of the GNU General Public License
+    along with this code.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+@media only screen and (max-width: 244px)
+{
+    div#bmlt_page_items.bmlt_page_items div.bmlt_nouveau_div a.bmlt_nouveau_location_button_a,
+    div#bmlt_page_items.bmlt_page_items div.bmlt_nouveau_div a.bmlt_nouveau_find_nearby_meetings_today_button_a,
+    div#bmlt_page_items.bmlt_page_items div.bmlt_nouveau_div a.bmlt_nouveau_find_nearby_meetings_tomorrow_button_a,
+    div#bmlt_page_items.bmlt_page_items div.bmlt_nouveau_div div.bmlt_nouveau_search_results_div a.bmlt_nouveau_search_results_map_disclosure_a,
+    div#bmlt_page_items.bmlt_page_items div.bmlt_nouveau_div div.bmlt_nouveau_search_results_div a.bmlt_nouveau_search_results_list_disclosure_a,
+    div#bmlt_page_items.bmlt_page_items div.bmlt_nouveau_div a.bmlt_nouveau_switch_a
+    {
+        font-size: x-small;
+    }
+    
+    div#bmlt_page_items.bmlt_page_items div.bmlt_nouveau_div a.bmlt_nouveau_location_button_a,
+    div#bmlt_page_items.bmlt_page_items div.bmlt_nouveau_div a.bmlt_nouveau_find_nearby_meetings_today_button_a,
+    div#bmlt_page_items.bmlt_page_items div.bmlt_nouveau_div a.bmlt_nouveau_find_nearby_meetings_tomorrow_button_a
+    {
+        width: 90%;
+    }
+    
+    div#bmlt_page_items.bmlt_page_items div.bmlt_nouveau_div div.bmlt_nouveau_search_spec_div,
+    div#bmlt_page_items.bmlt_page_items div.bmlt_nouveau_search_results_div table.bmlt_nouveau_search_results_list_table,
+    div#bmlt_page_items.bmlt_page_items div.bmlt_nouveau_search_results_div tbody.bmlt_nouveau_search_results_list_tbody,
+    div#bmlt_page_items.bmlt_page_items div.bmlt_nouveau_search_results_div tr.bmlt_nouveau_search_results_list_body_tr,
+    div#bmlt_page_items.bmlt_page_items div.bmlt_nouveau_search_results_div tr.bmlt_nouveau_search_results_list_body_tr td
+    {
+        display: block;
+    }
+    
+    div#bmlt_page_items.bmlt_page_items div.bmlt_nouveau_search_results_div tr.bmlt_nouveau_search_results_list_body_tr
+    {
+        clear:both;
+    }
+    
+    div#bmlt_page_items.bmlt_page_items div.bmlt_nouveau_search_results_div tr.bmlt_nouveau_search_results_list_body_tr td.bmlt_nouveau_search_results_list_body_td_more a
+    {
+        float:right;
+    }
+    
+    div#bmlt_page_items.bmlt_page_items div.bmlt_nouveau_div div.bmlt_nouveau_search_spec_div.bmlt_nouveau_spec_hidden,
+    div#bmlt_page_items.bmlt_page_items div.bmlt_nouveau_search_results_div tr.bmlt_nouveau_search_results_list_header_tr
+    {
+        display: none;
+    }
+}

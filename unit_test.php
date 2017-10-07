@@ -2,7 +2,7 @@
 /****************************************************************************************//**
 * \file unit_test.php																		*
 * \brief A unit test harness for the BMLTPlugin class.						                *
-*   \version 3.7.1                                                                          *
+*   \version 3.8.0                                                                          *
     
     This file is part of the BMLT Common Satellite Base Class Project. The project GitHub
     page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class
@@ -80,23 +80,23 @@ function u_test()
         $ret .= $header;
         $ret .= '<style type="text/css">';
         $ret .= '*{margin:0;padding:0}';
-        $ret .= 'html,body {width:100%;height:100%}';
-        $ret .= 'body{font-family:Courier;font-size:small}';
-        $ret .= '.test_container_div{padding-left:20px}';
-        $ret .= '.return_button,.utest_input_form_container_div,.centered_div{clear:both; text-align:center; margin:8px}';
-        $ret .= '.return_button{font-size:large}';
-        $ret .= '.utest_input_div{width:50%;text-align:left;margin-left:auto;margin-right:auto}';
-        $ret .= '.utest_input_textarea{padding:4px;color:#339;border:1px solid #339}';
-        $ret .= '.mobile_list_div { text-align:center }';
-        $ret .= '.mobile_list_div_line { width: 250px;margin-top:4px;margin-bottom:4px;text-align:left;margin-left:auto;margin-right:auto }';
-        $ret .= '.mobile_list_div_line label { margin-left: 8px }';
-        $ret .= '.language_div_line { text-align:center; clear:both; display:block; margin-top: 1em; margin-bottom: 1em }';
-        $ret .= '.language_div_wrapper { margin-left:auto;margin-right:auto;display:table }';
-        $ret .= '@media print { div#head_stuff { display:none; } }';
+        $ret .= ' html,body {width:100%;height:100%}';
+        $ret .= ' body{font-family:Courier;font-size:small}';
+        $ret .= ' .test_container_div{padding-left:20px}';
+        $ret .= ' .return_button,.utest_input_form_container_div,.centered_div{clear:both; text-align:center; margin:8px}';
+        $ret .= ' .return_button{font-size:large}';
+        $ret .= ' .utest_input_div{width:50%;text-align:left;margin-left:auto;margin-right:auto}';
+        $ret .= ' .utest_input_textarea{padding:4px;color:#339;border:1px solid #339}';
+        $ret .= ' .mobile_list_div { text-align:center }';
+        $ret .= ' .mobile_list_div_line { width: 250px;margin-top:4px;margin-bottom:4px;text-align:left;margin-left:auto;margin-right:auto }';
+        $ret .= ' .mobile_list_div_line label { margin-left: 8px }';
+        $ret .= ' .language_div_line { text-align:center; clear:both; display:block; margin-top: 1em; margin-bottom: 1em }';
+        $ret .= ' .language_div_wrapper { margin-left:auto;margin-right:auto;display:table }';
+        $ret .= ' @media print { div#head_stuff { display:none; } }';
         $ret .= '</style>';
         $ret .= '<script type="text/javascript">';
-        $ret .= "function utest_onsubmit(){var elem=document.getElementById('wml_d');if(document.getElementById('mobile_simulation_smartphone').checked){elem.value='1';elem.name='simulate_smartphone'}else{if(document.getElementById('mobile_simulation_wml_1').checked){elem.value='1';elem.name='WML'}else{if(document.getElementById('mobile_simulation_wml_2').checked){elem.value='2';elem.name='WML'}}};return true}";
-        $ret .= "function utest_preset_text(in_value){document.getElementById('utest_string').innerHTML=in_value;if(/.*?bmlt_mobile/.exec(in_value)){document.getElementById('mobile_simulation_smartphone').checked=true}}";
+        $ret .= "function utest_onsubmit(){var elem=document.getElementById('wml_d');if(document.getElementById('mobile_simulation_smartphone').checked){elem.value='1';elem.name='simulate_smartphone'}else{if(document.getElementById('mobile_simulation_wml_1').checked){elem.value='1';elem.name='WML'}else{if(document.getElementById('mobile_simulation_wml_2').checked){elem.value='2';elem.name='WML'}}};return true};";
+        $ret .= "function utest_preset_text(in_value){document.getElementById('utest_string').innerHTML=in_value;if(/.*?bmlt_mobile/.exec(in_value)){document.getElementById('mobile_simulation_smartphone').checked=true}};";
         $ret .= '</script>';
         $ret .= '</head><body>';    // Open the page
         $ret .= '<div id="head_stuff"><div class="return_button"><a href="'.htmlspecialchars($_SERVER['PHP_SELF']).'">Return to Start</a></div>';

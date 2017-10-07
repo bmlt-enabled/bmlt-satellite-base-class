@@ -21,6 +21,10 @@ The instructions for employment of this class are on [this page](http://bmlt.mag
 
 CHANGELIST
 ----------
+***Version 3.8.0* ** *- TBD*
+
+- Addressed some issues with the classic [[bmlt]] shortcode -made it more responsive.
+
 ***Version 3.7.1* ** *- September 24, 2017*
 
 - Addressed an issue where string searches were not being done properly with certain non-Roman character sets.

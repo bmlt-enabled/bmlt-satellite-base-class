@@ -662,16 +662,23 @@ abstract class BMLTPlugin
                 {
                 $in_options['id'] = strval ( time() + intval(rand(0, 999)));   // This gives the option a unique slug
                 $admin2Options = array ('num_servers' => intval( $in_option_number ));
+                $gKey = '';
+
+                if ( isset ( $in_options['google_api_key'] ) && ('' != $in_options['google_api_key']) && ('INVALID' != $in_options['google_api_key']) )
+                    {
+                    $gKey = $in_options['google_api_key'];
+                    }
+
                 for ( $c = 0; $c < count ( $in_options ); $c++ )
                     {
                     if ( $num != $in_option_number )
                         {
                         $option = $this->getBMLTOptions ( $c );
-                        $option['google_api_key'] = $in_options['google_api_key'];
+                        $option['google_api_key'] = $gKey;
                         }
                     }
 
-                $admin2Options = array ('num_servers' => intval( $in_option_number ), 'google_api_key' => $in_options['google_api_key'] );
+                $admin2Options = array ('num_servers' => intval( $in_option_number ), 'google_api_key' => $gKey );
                 $this->setAdmin2Options ( $admin2Options );
                 }
             
@@ -1187,7 +1194,14 @@ abstract class BMLTPlugin
                         $id = 'BMLTPlugin_google_api_label_'.$in_options_index;
                         $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( $this->my_current_language->local_options_google_api_label ).'</label>';
                         $id = 'BMLTPlugin_google_api_text_'.$in_options_index;
-                        $ret .= '<input class="BMLTPlugin_google_api_text" id="'.htmlspecialchars ( $id ).'" type="text" value="'.htmlspecialchars ( $options['google_api_key'] ).'" onchange="BMLTPlugin_DirtifyOptionSheet(); BMLTPlugin_PropagateAPIKey( this.value )" onkeyup="BMLTPlugin_DirtifyOptionSheet(); BMLTPlugin_PropagateAPIKey( this.value )">';
+                        $gKey = '';
+
+                        if ( isset ( $options['google_api_key'] ) && ('' != $options['google_api_key']) && ('INVALID' != $options['google_api_key']) )
+                            {
+                            $gKey = $options['google_api_key'];
+                            }
+
+                        $ret .= '<input class="BMLTPlugin_google_api_text" id="'.htmlspecialchars ( $id ).'" type="text" value="'.htmlspecialchars ( $gKey ).'" onchange="BMLTPlugin_DirtifyOptionSheet(); BMLTPlugin_PropagateAPIKey( this.value )" onkeyup="BMLTPlugin_DirtifyOptionSheet(); BMLTPlugin_PropagateAPIKey( this.value )">';
                     $ret .= '</div>';
                     $ret .= '<div class="BMLTPlugin_option_sheet_line_div">';
                         $id = 'BMLTPlugin_option_sheet_distance_units_'.$in_options_index;
@@ -2562,13 +2576,15 @@ abstract class BMLTPlugin
         {
         $options = $this->getBMLTOptions_by_id ( $in_options_id );
         $this->adapt_to_lang ( $options['lang'] );
-        if ( !isset ( $options['google_api_key'] ) || ('' == $options['google_api_key']) )
+        $gKey = '';
+
+        if ( isset ( $options['google_api_key'] ) && ('' != $options['google_api_key']) && ('INVALID' != $options['google_api_key']) )
             {
-            $options['google_api_key'] = 'INVALID';
+            $gKey = $options['google_api_key'];
             }
 
         // Include the Google Maps API files.
-        $ret = '</script><script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key='.$options['google_api_key'];
+        $ret = '</script><script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key='.$gKey;
         if ( isset ( $options['region_bias'] ) && $options['region_bias'] )
             {     
             $ret .= '&region='.strtoupper ( $options['region_bias'] );
@@ -2619,7 +2635,14 @@ abstract class BMLTPlugin
         $options = $this->getBMLTOptions_by_id ( $in_options_id );
         $this->adapt_to_lang ( $options['lang'] );
         // Include the Google Maps API V3 files.
-        $ret = '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key='.$options['google_api_key'];
+        $gKey = '';
+
+        if ( isset ( $options['google_api_key'] ) && ('' != $options['google_api_key']) && ('INVALID' != $options['google_api_key']) )
+            {
+            $gKey = $options['google_api_key'];
+            }
+
+        $ret = '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key='.$gKey;
         if ( isset ( $options['region_bias'] ) && $options['region_bias'] )
             {  
             $ret .= '&region='.strtoupper ( $options['region_bias'] );
@@ -2919,15 +2942,17 @@ abstract class BMLTPlugin
         $options = $this->getBMLTOptions_by_id ( $this->my_http_vars['bmlt_settings_id'] );
         
         $this->adapt_to_lang ( $options['lang'] );
-        if ( !isset ( $options['google_api_key'] ) || ('' == $options['google_api_key']) )
+        $gKey = '';
+
+        if ( isset ( $options['google_api_key'] ) && ('' != $options['google_api_key']) && ('INVALID' != $options['google_api_key']) )
             {
-            $options['google_api_key'] = 'INVALID';
+            $gKey = $options['google_api_key'];
             }
-            
+
         $ret = '';
 
         // Include the Google Maps API V3 files.
-        $ret .= '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key='.$options['google_api_key'].'&region='.strtoupper ( $options['region_bias'] ).'"></script>';
+        $ret .= '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key='.$gKey.'&region='.strtoupper ( $options['region_bias'] ).'"></script>';
         
         // Declare the various globals and display strings. This is how we pass strings to the JavaScript, as opposed to the clunky way we do it in the root server.
         $ret .= '<script type="text/javascript">' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
@@ -2959,7 +2984,7 @@ abstract class BMLTPlugin
         $img_url = htmlspecialchars ( $this->get_plugin_path()."google_map_images" );
         
         $ret .= "var c_g_BMLTPlugin_images = '$img_url';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-        $ret .= 'var c_g_googleURI = \'https://maps.google.com/maps/api/js?key='.$options['google_api_key'].'&region='.strtoupper ( $options['region_bias'] ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+        $ret .= 'var c_g_googleURI = \'https://maps.google.com/maps/api/js?key='.$key.'&region='.strtoupper ( $options['region_bias'] ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $ret .= '</script>';
        
         $ret .= '<script src="'.htmlspecialchars ( $this->get_plugin_path() ).'fast_mobile_lookup.js" type="text/javascript"></script>';
@@ -3600,7 +3625,14 @@ abstract class BMLTPlugin
                                                         $url .= ($comma ? ',+' : '').urlencode($meeting['location_province']);
                                                         }
                                                     
-                                                    $url = 'https://maps.google.com/maps?key='.$options['google_api_key'].'&region='.strtoupper ( $options['region_bias'] ).'&q='.urlencode($meeting['latitude']).','.urlencode($meeting['longitude']) . '+(%22'.str_replace ( "%28", '-', str_replace ( "%29", '-', $url )).'%22)';
+                                                    $gKey = '';
+        
+                                                    if ( isset ( $options['google_api_key'] ) && ('' != $options['google_api_key']) && ('INVALID' != $options['google_api_key']) )
+                                                        {
+                                                        $gKey = $options['google_api_key'];
+                                                        }
+
+                                                    $url = 'https://maps.google.com/maps?key='.$gKey.'&region='.strtoupper ( $options['region_bias'] ).'&q='.urlencode($meeting['latitude']).','.urlencode($meeting['longitude']) . '+(%22'.str_replace ( "%28", '-', str_replace ( "%29", '-', $url )).'%22)';
                                                     $url .= '&ll='.urlencode($meeting['latitude']).','.urlencode($meeting['longitude']);
                                                     $ret .= '<a rel="external nofollow" accesskey="'.$index.'" href="'.htmlspecialchars ( $url ).'" title="'.htmlspecialchars($meeting['meeting_name']).'">'.$this->process_text ( $this->my_current_language->local_map_link ).'</a>';
                                                     $ret .= '<script type="text/javascript">document.getElementById(\'maplink_'.intval($meeting['id_bigint']).'\').style.display=\'block\';var c_BMLTPlugin_settings_id = '.htmlspecialchars ( $this->my_http_vars['bmlt_settings_id'] ).';</script>';

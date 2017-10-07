@@ -9,7 +9,7 @@
 *   little is done before execution time. A great deal of care has been taken to allow      *
 *   robust, complete CSS presentation management.                                           *
 *                                                                                           *
-*   \version 3.7.1                                                                          *
+*   \version 3.8.0                                                                          *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -1481,6 +1481,9 @@ function NouveauMapSearch ( in_unique_id,           ///< The UID of the containe
 
             more_details_a.appendChild ( more_details_a_span );
             td_element.appendChild ( more_details_a );            
+            var breaker_div = document.createElement ( 'div' );
+            breaker_div.className = "bmlt_nouveau_clear_both";
+            td_element.appendChild ( breaker_div );            
             tr_element.appendChild ( td_element );
         
             this.m_list_search_results_table_body.appendChild ( tr_element );

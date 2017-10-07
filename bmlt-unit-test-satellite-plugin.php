@@ -3,7 +3,7 @@
 *   \file   bmlt-unit-test-satellite-plugin.php                                             *
 *                                                                                           *
 *   \brief  This is a standalone unit test plugin of a BMLT satellite client.               *
-*   \version 3.7.1                                                                          *
+*   \version 3.8.0                                                                          *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -47,7 +47,7 @@ class BMLTUTestPlugin extends BMLTPlugin
     function __construct ()
         {
         // This line is customized for the developer's test environment. If you are debugging on a local machine, you may want to change the first choice.
-        self::$default_rootserver = 'http://bmlt.newyorkna.org/main_server';
+        self::$default_rootserver = 'https://bmlt.newyorkna.org/main_server';
         self::$default_map_center_latitude = 40.780281;
         self::$default_map_center_longitude = -73.965497;
         self::$default_map_zoom = 12;
@@ -316,7 +316,7 @@ class BMLTUTestPlugin extends BMLTPlugin
         {
         $this->ajax_router ( );
         $load_head = false;   // This is a throwback. It prevents the GM JS from being loaded if there is no directly specified settings ID.
-        $head_content = "<!-- Added by the BMLT plugin 3.0. -->\n<meta http-equiv=\"X-UA-Compatible\" content=\"IE=EmulateIE7\" />\n<meta http-equiv=\"Content-Style-Type\" content=\"text/css\" />\n<meta http-equiv=\"Content-Script-Type\" content=\"text/javascript\" />\n";
+        $head_content = "<!-- Added by the BMLT plugin 3.0. -->\n<meta http-equiv=\"X-UA-Compatible\" content=\"IE=EmulateIE7\" />\n<meta http-equiv=\"Content-Style-Type\" content=\"text/css\" />\n<meta http-equiv=\"Content-Script-Type\" content=\"text/javascript\" />\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n";
         
         $support_mobile = $this->cms_get_page_settings_id ( $in_text, true );
         
@@ -401,6 +401,15 @@ class BMLTUTestPlugin extends BMLTPlugin
                     }
                 }
             }
+        
+        $head_content .= '</style>';
+        $head_content .= "\n".'<style type="text/css">'."\n";
+            
+        $head_content .= "\n/* Responsiveness */\n";
+        
+        $head_content .= self::stripFile ( 'responsiveness.css' );
+        
+        $head_content .= '</style>'."\n";
 
         if ( $root_server_root )
             {
