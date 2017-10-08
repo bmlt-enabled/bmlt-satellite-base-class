@@ -3,7 +3,7 @@
 *   \file   bmlt-cms-satellite-plugin.php                                                   *
 *                                                                                           *
 *   \brief  This is a generic CMS plugin class for a BMLT satellite client.                 *
-*   \version 3.8.0                                                                          *
+*   \version 3.8.1                                                                          *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -1959,8 +1959,8 @@ abstract class BMLTPlugin
                         if ( $params )
                             {
                             $pArray = explode ( ',', $params );
-                            $func = function ( $value ) { return strtolower ( trim ( $value ) ); };
-                            $pString = implode ( '","', array_map ( $func, $pArray ) );
+                            function lowerTrim ( $value ) { return strtolower ( trim ( $value ) ); };
+                            $pString = implode ( '","', array_map ( "lowerTrim", $pArray ) );
                             $display .= ', ["'.$pString.'"]';
                             }
                         else
