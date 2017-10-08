@@ -51,6 +51,7 @@
     div#bmlt_page_items.bmlt_page_items div.bmlt_nouveau_search_results_div tr.bmlt_nouveau_search_results_list_body_tr td
     {
         display: block;
+        border: none;
     }
     
     div#bmlt_page_items.bmlt_page_items div.bmlt_nouveau_search_results_div tr.bmlt_nouveau_search_results_list_body_tr
