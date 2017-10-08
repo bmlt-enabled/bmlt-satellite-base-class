@@ -170,7 +170,7 @@ abstract class BMLTPlugin
     static  $default_military_time = false;                                 ///< If this is true, then time displays will be in military time.
     static  $default_startWeekday = 1;                                      ///< The default starting weekday (Sunday)
     static  $default_duration = '1:30';                                     ///< The default duration of meetings.
-    static  $default_geo_width = -10;                                       ///< The default geo width for searches.
+    static  $default_geo_width = '-10';                                     ///< The default geo width for searches.
     
     /************************************************************************************//**
     *                               STATIC DATA MEMBERS (MISC)                              *
@@ -625,6 +625,11 @@ abstract class BMLTPlugin
         if ( !isset ( $BMLTOptions['lang'] ) || !$BMLTOptions['lang'] )
             {
             $BMLTOptions['lang'] = self::$default_language;
+            }
+        
+        if ( !isset ( $BMLTOptions['default_geo_width'] ) || !$BMLTOptions['default_geo_width'] )
+            {
+            $BMLTOptions['default_geo_width'] = self::$default_geo_width;
             }
         
         return $BMLTOptions;
@@ -2088,6 +2093,7 @@ abstract class BMLTPlugin
                 }
         
             $options = $this->getBMLTOptions_by_id ( $options_id );
+
             $this->adapt_to_lang ( $options['lang'] );
             $uid = htmlspecialchars ( 'bmlt_nouveau_'.uniqid() );
         
@@ -2218,7 +2224,7 @@ abstract class BMLTPlugin
                 $the_new_content .= 'var g_Nouveau_weekday_short_array = new Array ( "'.join ( '","', $this->my_current_language->local_nouveau_weekday_short_array ).'");';
                 $the_new_content .= "var g_Nouveau_lookup_location_failed = '".$this->process_text ( $this->my_current_language->local_nouveau_lookup_location_failed ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");              
                 $the_new_content .= "var g_Nouveau_lookup_location_server_error = '".$this->process_text ( $this->my_current_language->local_nouveau_lookup_location_server_error ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");              
-                $the_new_content .= "var g_Nouveau_default_geo_width = ".strval ( $options['default_geo_width'] ).";";
+                $the_new_content .= "var g_Nouveau_default_geo_width = ".$options['default_geo_width'].";";
                 $the_new_content .= "var g_Nouveau_default_details_map_zoom = ".self::$default_details_map_zoom.';';
                 $the_new_content .= "var g_Nouveau_default_marker_aggregation_threshold_in_pixels = 8;";
 
@@ -3480,7 +3486,7 @@ abstract class BMLTPlugin
                             }
                         else
                             {
-                            $this->my_driver->set_current_transaction_parameter ( 'SearchStringRadius', $options['default_geo_width'] );
+                            $this->my_driver->set_current_transaction_parameter ( 'SearchStringRadius', intval ( $options['default_geo_width'] ) );
                             $error_message = $this->my_driver->get_m_error_message();
                             if ( $error_message )
                                 {
