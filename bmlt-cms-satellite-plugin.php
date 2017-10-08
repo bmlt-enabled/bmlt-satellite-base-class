@@ -3,6 +3,7 @@
 *   \file   bmlt-cms-satellite-plugin.php                                                   *
 *                                                                                           *
 *   \brief  This is a generic CMS plugin class for a BMLT satellite client.                 *
+*   \version 3.8.0                                                                          *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -169,6 +170,7 @@ abstract class BMLTPlugin
     static  $default_military_time = false;                                 ///< If this is true, then time displays will be in military time.
     static  $default_startWeekday = 1;                                      ///< The default starting weekday (Sunday)
     static  $default_duration = '1:30';                                     ///< The default duration of meetings.
+    static  $default_geo_width = -10;                                       ///< The default geo width for searches.
     
     /************************************************************************************//**
     *                               STATIC DATA MEMBERS (MISC)                              *
@@ -488,7 +490,8 @@ abstract class BMLTPlugin
                         'startWeekday' => self::$default_startWeekday,
                         'google_api_key' => 'INVALID',
                         'region_bias' => 'us',
-                        'lang' => $bmlt_localization
+                        'lang' => $bmlt_localization,
+                        'default_geo_width' => self::$default_geo_width
                         );
             
             return $ret;
@@ -2215,7 +2218,7 @@ abstract class BMLTPlugin
                 $the_new_content .= 'var g_Nouveau_weekday_short_array = new Array ( "'.join ( '","', $this->my_current_language->local_nouveau_weekday_short_array ).'");';
                 $the_new_content .= "var g_Nouveau_lookup_location_failed = '".$this->process_text ( $this->my_current_language->local_nouveau_lookup_location_failed ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");              
                 $the_new_content .= "var g_Nouveau_lookup_location_server_error = '".$this->process_text ( $this->my_current_language->local_nouveau_lookup_location_server_error ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");              
-                $the_new_content .= "var g_Nouveau_default_geo_width = -10;";
+                $the_new_content .= "var g_Nouveau_default_geo_width = ".strval ( $options['default_geo_width'] ).";";
                 $the_new_content .= "var g_Nouveau_default_details_map_zoom = ".self::$default_details_map_zoom.';';
                 $the_new_content .= "var g_Nouveau_default_marker_aggregation_threshold_in_pixels = 8;";
 
@@ -3477,7 +3480,7 @@ abstract class BMLTPlugin
                             }
                         else
                             {
-                            $this->my_driver->set_current_transaction_parameter ( 'SearchStringRadius', -10 );
+                            $this->my_driver->set_current_transaction_parameter ( 'SearchStringRadius', $options['default_geo_width'] );
                             $error_message = $this->my_driver->get_m_error_message();
                             if ( $error_message )
                                 {
