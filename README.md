@@ -21,9 +21,10 @@ The instructions for employment of this class are on [this page](http://bmlt.mag
 
 CHANGELIST
 ----------
-***Version 3.8.0* ** *- TBD*
+***Version 3.8.0* ** *- October 8, 2017*
 
 - Addressed some issues with the classic [[bmlt]] shortcode -made it more responsive.
+- Added some internal infrastructure for possible future capability to select different default auto-search radius.
 
 ***Version 3.7.1* ** *- September 24, 2017*
 
