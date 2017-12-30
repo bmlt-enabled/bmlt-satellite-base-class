@@ -204,6 +204,17 @@ function BMLTPlugin_SaveOptions()
                 }
             }
         
+        if ( document.getElementById ( 'BMLTPlugin_option_sheet_auto_search_radius_'+option_index ) )
+            {
+            var radius_select = document.getElementById ( 'BMLTPlugin_option_sheet_auto_search_radius_'+option_index );
+        
+             if ( radius_select )
+                {
+                var radius = radius_select.options[radius_select.selectedIndex].value;
+                url += '&BMLTPlugin_option_sheet_auto_search_radius_'+option_index+'='+encodeURIComponent ( radius );
+                }
+            }
+        
         if ( document.getElementById ( 'BMLTPlugin_option_sheet_region_bias_'+option_index ) )
             {
             var region_bias = document.getElementById ( 'BMLTPlugin_option_sheet_region_bias_'+option_index ).value.toString();

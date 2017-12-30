@@ -95,6 +95,15 @@ class BMLT_Localized_BaseClass_sv extends BMLT_Localized_BaseClass
         $this->local_options_time_format_military = 'HH:MM';          ///< Military Time Format Option
     
         $this->local_options_google_api_label = 'Google Maps API Key:';       ///< The label for the Google Maps API Key Text Entry.
+        
+        $this->local_options_auto_search_radius_prompt = 'Auto Search Density:';    ///< The label for the Auto Search Density popup.
+        $this->local_options_auto_search_radius_display_names = array (             ///< The values for the auto-search density popup.
+                                                                        'Minimum'   => -2,
+                                                                        'Less'      => -5,
+                                                                        'Normal'    => -10,
+                                                                        'More'      => -15,
+                                                                        'Maximum'   => -30,
+                                                                        );
     
         $this->local_options_week_begins_on_prompt = 'Veckor börjar på:';       ///< This is the label for the week start popup menu.
     

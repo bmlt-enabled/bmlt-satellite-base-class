@@ -1323,6 +1323,21 @@ abstract class BMLTPlugin
                                 }
                         $ret .= '</select>';
                     $ret .= '</div>';
+                    $ret .= '<div class="BMLTPlugin_option_sheet_line_div">';
+                        $id = 'BMLTPlugin_option_sheet_auto_search_radius_'.$in_options_index;
+                        $ret .= '<label for="'.htmlspecialchars ( $id ).'">'.$this->process_text ( $this->my_current_language->local_options_auto_search_radius_prompt ).'</label>';
+                        $ret .= '<select id="'.htmlspecialchars ( $id ).'" onchange="BMLTPlugin_DirtifyOptionSheet()">';
+                            foreach ( $this->my_current_language->local_options_auto_search_radius_display_names as $prompt => $value )
+                                {
+                                $ret .= '<option value="'.htmlspecialchars ( $value ).'"';
+                                if ( $value == $options['default_geo_width'] )
+                                    {
+                                    $ret .= ' selected="selected"';
+                                    }
+                                $ret .= '>'.$this->process_text ( $prompt ).'</option>';
+                                }
+                        $ret .= '</select>';
+                    $ret .= '</div>';
                     $ret .= '<div class="BMLTPlugin_option_sheet_line_div BMLTPlugin_location_checkbox_line">';
                         $id = 'BMLTPlugin_location_selected_checkbox_'.$in_options_index;
                         $ret .= '<div class="BMLTPlugin_option_sheet_checkbox_div"><input class="BMLTPlugin_option_sheet_line_location_checkbox" onchange="BMLTPlugin_DirtifyOptionSheet()" id="'.htmlspecialchars ( $id ).'" type="checkbox"'.($options['bmlt_location_checked'] == 1 ? ' checked="checked"' : '' ).'"></div>';
@@ -1548,6 +1563,11 @@ abstract class BMLTPlugin
                         if ( isset ( $this->my_http_vars['BMLTPlugin_option_sheet_lang_'.$i] ) )
                             {
                             $options['lang'] = $this->my_http_vars['BMLTPlugin_option_sheet_lang_'.$i];
+                            }
+                        
+                        if ( isset ( $this->my_http_vars['BMLTPlugin_option_sheet_auto_search_radius_'.$i] ) )
+                            {
+                            $options['default_geo_width'] = $this->my_http_vars['BMLTPlugin_option_sheet_auto_search_radius_'.$i];
                             }
                         
                         if ( isset ( $this->my_http_vars['BMLTPlugin_option_sheet_time_offset_'.$i] ) )
