@@ -4,7 +4,7 @@
 *   \file   lang_it.php                                                                     *
 *                                                                                           *
 *   \brief  This file contains Italian localizations.                                       *
-*   \version 3.8.4                                                                          *
+*   \version 3.9.0                                                                          *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -96,13 +96,13 @@ class BMLT_Localized_BaseClass_it extends BMLT_Localized_BaseClass
     
         $this->local_options_google_api_label = 'Google Maps API Key:';       ///< The label for the Google Maps API Key Text Entry.
         
-        $this->local_options_auto_search_radius_prompt = 'Auto Search Density:';    ///< The label for the Auto Search Density popup.
+        $this->local_options_auto_search_radius_prompt = 'Densità automatica (della ricerca):';    ///< The label for the Auto Search Density popup.
         $this->local_options_auto_search_radius_display_names = array (             ///< The values for the auto-search density popup.
-                                                                        'Minimum'   => -2,
-                                                                        'Less'      => -5,
-                                                                        'Normal'    => -10,
-                                                                        'More'      => -15,
-                                                                        'Maximum'   => -30,
+                                                                        'Minimo'            => -2,
+                                                                        'Minore (Less)'     => -5,
+                                                                        'Normale'           => -10,
+                                                                        'Maggiore (More)'   => -15,
+                                                                        'Massimo'           => -30,
                                                                         );
     
         $this->local_options_week_begins_on_prompt = 'Weeks begin on:';       ///< This is the label for the week start popup menu.
@@ -237,7 +237,7 @@ class BMLT_Localized_BaseClass_it extends BMLT_Localized_BaseClass
         $this->local_nouveau_location_sprintf_format_duration_hours_only_title = 'Questa riunione dura %s ore.'; ///< 'This meeting is %s hours long.'
         $this->local_nouveau_lookup_location_failed = "La ricerca dell\'indirizzo non è stata completata con successo."; ///< "The address lookup was not completed successfully."
         $this->local_nouveau_lookup_location_server_error = "La ricerca dell\'indirizzo non è stata completata con successo a causa di un errore del server."; ///< "The address lookup was not completed successfully, due to a server error."
-       $this->local_nouveau_time_sprintf_format = '%d:%02d %s';
+        $this->local_nouveau_time_sprintf_format = '%d:%02d %s';
         $this->local_nouveau_am = 'AM';
         $this->local_nouveau_pm = 'PM';
         $this->local_nouveau_noon = 'Mezzogiorno'; ///< 'Noon'
@@ -273,15 +273,15 @@ class BMLT_Localized_BaseClass_it extends BMLT_Localized_BaseClass
         /************************************************************************************//**
         *                   TABLE SHORTCODE STATIC DATA MEMBERS (LOCALIZABLE)                    *
         ****************************************************************************************/
-        $this->local_table_tab_loading_title_format        = 'Getting meetings for %s';
-        $this->local_table_header_time_label              = 'Time';
-        $this->local_table_header_meeting_name_label      = 'Meeting Name';
-        $this->local_table_header_town_label              = 'Town';
-        $this->local_table_header_address_label           = 'Address';
-        $this->local_table_header_format_label            = 'Format';
-        $this->local_table_header_tab_title_format        = 'Display meetings for %s';
-        $this->local_table_ante_meridian                  = '"AM","PM","Noon","Midnight"';
-        $this->local_table_no_meetings_format             = 'No meetings on %s';
+        $this->local_table_tab_loading_title_format     = 'Getting meetings for %s';
+        $this->local_table_header_time_label            = 'Time';
+        $this->local_table_header_meeting_name_label    = 'Meeting Name';
+        $this->local_table_header_town_label            = 'Town';
+        $this->local_table_header_address_label         = 'Address';
+        $this->local_table_header_format_label          = 'Format';
+        $this->local_table_header_tab_title_format      = 'Display meetings for %s';
+        $this->local_table_ante_meridian                = '"AM","PM","Noon","Midnight"';
+        $this->local_table_no_meetings_format           = 'No meetings on %s';
                                                
         /************************************************************************************//**
         *                      STATIC DATA MEMBERS (SPECIAL LOCALIZABLE)                        *
