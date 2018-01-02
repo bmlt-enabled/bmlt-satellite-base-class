@@ -77,7 +77,10 @@ class BMLT_Localized_BaseClass_es extends BMLT_Localized_BaseClass
         $this->local_options_mobile_region_bias_label = 'Region Bias:';       ///< The label for the Region Bias Selector.
         $this->local_options_mobile_time_offset_label = 'Diferencia de Uso Horario para el Root Server:';       ///< This may have an offset (time zone difference) from the main server.
         $this->local_options_initial_view = array (                           ///< The list of choices for presentation in the popup.
-                                                    'map' => 'Mapa', 'text' => 'Texto', 'advanced_map' => 'Mapa Avanzado', 'advanced_text' => 'Texto Avanzado'
+                                                    'map' => 'Mapa',
+                                                    'text' => 'Texto',
+                                                    'advanced_map' => 'Mapa Avanzado',
+                                                    'advanced_text' => 'Texto Avanzado'
                                                     );
         $this->local_options_initial_view_prompt = 'Tipo de Búsqueda Inicial:';    ///< The label for the initial view popup.
         $this->local_options_theme_prompt = 'Seleccione un Color para el Tema:';          ///< The label for the theme selection popup.

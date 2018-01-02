@@ -22,6 +22,10 @@ The instructions for employment of this class are on [this page](http://bmlt.mag
 CHANGELIST
 ----------
 
+***Version 3.9.1* ** *- TBD*
+
+- Fixed an issue where some translated versions had bad settings in the BMLT options initial map type.
+
 ***Version 3.9.0* ** *- December 31, 2017*
 
 - There was a minor bug in the [[bmlt_table]] CSS for the GreenAndGold theme.

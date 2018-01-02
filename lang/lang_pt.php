@@ -4,7 +4,7 @@
 *   \file   lang_br.php                                                                     *
 *                                                                                           *
 *   \brief  This file contains Brazilian Portuguese localizations.                          *
-*   \version 3.9.0                                                                          *
+*   \version 3.9.1                                                                          *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -77,7 +77,10 @@ class BMLT_Localized_BaseClass_pt extends BMLT_Localized_BaseClass
         $this->local_options_mobile_region_bias_label = 'Region Bias:';       ///< The label for the Region Bias Selector.
         $this->local_options_mobile_time_offset_label = 'Diferença de Fuso Horário para o Servidor Raiz:';       ///< This may have an offset (time zone difference) from the main server.
         $this->local_options_initial_view = array (                           ///< The list of choices for presentation in the popup.
-                                                    'map' => 'Mapa', 'text' => 'Texto', 'advanced_map' => 'Mapa Avançado', 'advanced_text' => 'Texto Avançado'
+                                                    'map' => 'Mapa',
+                                                    'text' => 'Texto',
+                                                    'advanced_map' => 'Mapa Avançado',
+                                                    'advanced_text' => 'Texto Avançado'
                                                     );
         $this->local_options_initial_view_prompt = 'Tipo de Busca Inicial:';    ///< The label for the initial view popup.
         $this->local_options_theme_prompt = 'Selecione o Tema de Cores:';          ///< The label for the theme selection popup.

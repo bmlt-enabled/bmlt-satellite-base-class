@@ -4,7 +4,7 @@
 *   \file   lang_en.php                                                                     *
 *                                                                                           *
 *   \brief  This file contains English localizations.                                       *
-*   \version 3.9.0                                                                          *
+*   \version 3.9.1                                                                          *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -77,7 +77,10 @@ class BMLT_Localized_BaseClass_en extends BMLT_Localized_BaseClass
         $this->local_options_mobile_region_bias_label = 'Region Bias:';       ///< The label for the Region Bias Selector.
         $this->local_options_mobile_time_offset_label = 'Time Offset:';       ///< This may have an offset (time zone difference) from the main server.
         $this->local_options_initial_view = array (                           ///< The list of choices for presentation in the popup.
-                                                    'map' => 'Map', 'text' => 'Text', 'advanced_map' => 'Advanced Map', 'advanced_text' => 'Advanced Text'
+                                                    'map' => 'Map',
+                                                    'text' => 'Text',
+                                                    'advanced_map' => 'Advanced Map',
+                                                    'advanced_text' => 'Advanced Text'
                                                     );
         $this->local_options_initial_view_prompt = 'Initial Search Type:';    ///< The label for the initial view popup.
         $this->local_options_theme_prompt = 'Select a Color Theme:';          ///< The label for the theme selection popup.

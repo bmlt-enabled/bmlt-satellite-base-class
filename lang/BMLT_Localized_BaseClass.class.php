@@ -4,7 +4,7 @@
 *   \file   BMLT_Localized_BaseClass.class.php                                              *
 *                                                                                           *
 *   \brief  This file contains The base localizations c;ass                                 *
-*   \version 3.9.0                                                                          *
+*   \version 3.9.1                                                                          *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -89,7 +89,8 @@ abstract class BMLT_Localized_BaseClass
     var $local_options_time_format_military;       ///< Military Time Format Option
 
     var $local_options_google_api_label;       ///< The label for the Google Maps API Key Text Entry.
-
+    var $local_options_auto_search_radius_prompt;    ///< The label for the Auto Search Density popup.
+    var $local_options_auto_search_radius_display_names;             ///< The values for the auto-search density popup.
     var $local_options_week_begins_on_prompt;       ///< This is the label for the week start popup menu.
 
     var $local_no_root_server;    ///< Displayed if there was no root server provided.
