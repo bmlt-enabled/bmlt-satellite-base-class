@@ -4,7 +4,7 @@
 *   \file   lang_it.php                                                                     *
 *                                                                                           *
 *   \brief  This file contains Italian localizations.                                       *
-*   \version 3.9.1                                                                          *
+*   \version 3.8.4                                                                          *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -38,8 +38,8 @@ class BMLT_Localized_BaseClass_it extends BMLT_Localized_BaseClass
         ****************************************************************************************/
     
         /// These are all for the admin pages.
-        $this->local_options_lang_prompt = 'Language:';                       ///< The label for the Language Selector.
-        $this->local_options_title = 'Basic Meeting List Toolbox Options';    ///< This is the title that is displayed over the options.
+        $this->local_options_lang_prompt = 'Lingua:';                       ///< The label for the Language Selector.
+        $this->local_options_title = 'Opzioni del Basic Meeting List Toolbox';    ///< This is the title that is displayed over the options.
         $this->local_menu_string = 'Opzioni BMLT';                            ///< 'BMLT Options' - The name of the menu item.
         $this->local_options_prefix = 'Seleziona impostazioni ';              ///< 'Select Setting ' - The string displayed before each number in the options popup.
         $this->local_options_add_new = 'Aggiungi una nuova impostazione';     ///< 'Add A new Setting' - The string displayed in the "Add New Option" button.
@@ -52,81 +52,78 @@ class BMLT_Localized_BaseClass_it extends BMLT_Localized_BaseClass
         $this->local_options_create_success = 'Impostazione creata con successo.';   ///< 'The setting was created successfully.' - The string displayed upon successful creation of an option page.
         $this->local_options_save_success = 'Le impostazioni sono state aggiornate con successo.';   ///< 'The settings were created successfully.' - The string displayed upon successful update of an option page.
         $this->local_options_save_failure = 'Le impostazioni non sono state aggiornate.';     ///< 'The settings were not updated.' - The string displayed upon unsuccessful update of an option page.
-        $this->local_options_url_bad = 'This root server URL will not work for this plugin.';        ///< The string displayed if a root server URI fails to point to a valid root server.
+        $this->local_options_url_bad = 'Questa URL root server non funzionerà per questo plugin.';        ///< The string displayed if a root server URI fails to point to a valid root server.
         $this->local_options_access_failure = 'Non hai i permessi per compiere questa operazione.';  ///< 'You are not allowed to perform this operation.' - This is displayed if a user attempts a no-no.
         $this->local_options_unsaved_message = 'Hai modifiche non salvate. Sei sicuro di voler uscire senza salvarle?';   ///< 'You have unsaved changes. Are you sure you want to leave without saving them?' - This is displayed if a user attempts to leave a page without saving the options.
         $this->local_options_settings_id_prompt = 'L\'ID per questa impostazione è ';    ///< 'The ID for this Setting is ' - This is so that users can see the ID for the setting.
-        $this->local_options_settings_location_checkbox_label = 'Text Searches Start Off with the "Location" Checkbox On.';   ///< This is so that users can see the ID for the setting.
+        $this->local_options_settings_location_checkbox_label = 'La ricerca testuale inizia con la casella "Località" attiva.';   ///< 'Text Searches Start Off with the "Location" Checkbox On.' This is so that users can see the ID for the setting.
     
         /// These are all for the admin page option sheets.
-        $this->local_options_name_label = 'Setting Name:';                    ///< The Label for the setting name item.
+        $this->local_options_name_label = 'Nome dell\'impostazione:';                    /// 'Setting Name:' < The Label for the setting name item.
         $this->local_options_rootserver_label = 'Root Server:';               ///< The Label for the root server item.
-        $this->local_options_new_search_label = 'New Search URL:';            ///< The Label for the new search item.
-        $this->local_options_gkey_label = 'Google Maps API Key:';             ///< The Label for the Google Maps API Key item.
-        $this->local_options_no_name_string = 'Enter Setting Name';           ///< The Value to use for a name field for a setting with no name.
-        $this->local_options_no_root_server_string = 'Enter a Root Server URL';                               ///< The Value to use for a root with no URL.
-        $this->local_options_no_new_search_string = 'Enter a New Search URL'; ///< The Value to use for a new search with no URL.
-        $this->local_options_no_gkey_string = 'Enter a New API Key';          ///< The Value to use for a new search with no URL.
-        $this->local_options_test_server = 'Test';                            ///< This is the title for the "test server" button.
-        $this->local_options_test_server_success = 'Version ';                ///< This is a prefix for the version, on success.
-        $this->local_options_test_server_failure = 'This Root Server URL is not Valid';                       ///< This is a prefix for the version, on failure.
-        $this->local_options_test_server_tooltip = 'This tests the root server, to see if it is OK.';         ///< This is the tooltip text for the "test server" button.
-        $this->local_options_map_label = 'Select a Center Point and Zoom Level for Map Displays';             ///< The Label for the map.
-        $this->local_options_mobile_legend = 'These affect the Various Interactive Searches (such as Map, Mobile and Advanced)';  ///< This indicates that the enclosed settings are for the fast mobile lookup.
-        $this->local_options_mobile_grace_period_label = 'Grace Period:';     ///< When you do a "later today" search, you get a "Grace Period."
-        $this->local_options_mobile_region_bias_label = 'Region Bias:';       ///< The label for the Region Bias Selector.
-        $this->local_options_mobile_time_offset_label = 'Time Offset:';       ///< This may have an offset (time zone difference) from the main server.
+        $this->local_options_new_search_label = 'URL della nuova ricerca:';            ///'New Search URL:' < The Label for the new search item.
+        $this->local_options_gkey_label = 'Chiave (key) delle API di Google Maps:';             /// 'Google Maps API Key:' < The Label for the Google Maps API Key item.
+        $this->local_options_no_name_string = 'Inserisci il nome dell\'impostazione';           /// 'Enter Setting Name' < The Value to use for a name field for a setting with no name.
+        $this->local_options_no_root_server_string = 'Inserisci un indirizzo per il Root Server';                               /// 'Enter a Root Server URL' < The Value to use for a root with no URL.
+        $this->local_options_no_new_search_string = 'Inserisci un nuovo indirizzo di ricerca'; /// 'Enter a New Search URL' < The Value to use for a new search with no URL.
+        $this->local_options_no_gkey_string = 'Inserisci una nuova chiave (key) API';          /// 'Enter a New API Key' < The Value to use for a new search with no URL.
+        $this->local_options_test_server = 'Test';                            /// 'Test' < This is the title for the "test server" button.
+        $this->local_options_test_server_success = 'Versione ';                /// 'Version ' < This is a prefix for the version, on success.
+        $this->local_options_test_server_failure = 'Questo indirizzo del Root Server non è valido';                       /// 'This Root Server URL is not Valid' < This is a prefix for the version, on failure.
+        $this->local_options_test_server_tooltip = 'Questo testa il Root server, per vedere se è a posto (OK).';         /// 'This tests the root server, to see if it is OK.'< This is the tooltip text for the "test server" button.
+        $this->local_options_map_label = 'Scegli un punto centrale e un livello di zoom per le visualizzazioni della mappa';             /// 'Select a Center Point and Zoom Level for Map Displays'< The Label for the map.
+        $this->local_options_mobile_legend = 'Questi riguardano le diverse ricerche interattive (come Mappa, Mobile e Avanzate)';  /// 'These affect the Various Interactive Searches (such as Map, Mobile and Advanced)'< This indicates that the enclosed settings are for the fast mobile lookup.
+        $this->local_options_mobile_grace_period_label = 'Periodo di grazia:';     /// 'Grace Period:'< When you do a "later today" search, you get a "Grace Period."
+        $this->local_options_mobile_region_bias_label = 'Discrimina regione:';       /// 'Region Bias:'< The label for the Region Bias Selector.
+        $this->local_options_mobile_time_offset_label = 'Sbilanciamento (offset) temporale:';       /// 'Time Offset:'< This may have an offset (time zone difference) from the main server.
         $this->local_options_initial_view = array (                           ///< The list of choices for presentation in the popup.
-                                                    'map' => 'Map',
-                                                    'text' => 'Text',
-                                                    'advanced_map' => 'Advanced Map',
-                                                    'advanced_text' => 'Advanced Text'
+                                                    'map' => 'Mappa', 'text' => 'Testo', 'advanced_map' => 'Mappa (avanzata)', 'advanced_text' => 'Testo (avanzato)' /// 'map' => 'Map', 'text' => 'Text', 'advanced_map' => 'Advanced Map', 'advanced_text' => 'Advanced Text'
                                                     );
-        $this->local_options_initial_view_prompt = 'Initial Search Type:';    ///< The label for the initial view popup.
-        $this->local_options_theme_prompt = 'Select a Color Theme:';          ///< The label for the theme selection popup.
-        $this->local_options_more_styles_label = 'Add CSS Styles to the Plugin:';                             ///< The label for the Additional CSS textarea.
-        $this->local_options_distance_prompt = 'Distance Units:';             ///< This is for the distance units select.
-        $this->local_options_distance_disclaimer = 'This will not affect all of the displays.';               ///< This tells the admin that only some stuff will be affected.
-        $this->local_options_grace_period_disclaimer = 'Minutes Elapsed Before A Meeting is Considered "Past" (For the fast Lookup Searches).';      ///< This explains what the grace period means.
-        $this->local_options_time_offset_disclaimer = 'Hours of Difference From the Main Server (This is usually not necessary).';            ///< This explains what the time offset means.
-        $this->local_options_miles = 'Miles';                                 ///< The string for miles.
-        $this->local_options_kilometers = 'Kilometers';                       ///< The string for kilometers.
-        $this->local_options_selectLocation_checkbox_text = 'Only Display Location Services for Mobile Devices';  ///< The label for the location services checkbox.
+        $this->local_options_initial_view_prompt = 'Tipo iniziale di ricerca:';    /// 'Initial Search Type:' < The label for the initial view popup.
+        $this->local_options_theme_prompt = 'Scegli il tema in base al colore:';          /// 'Select a Color Theme:' < The label for the theme selection popup.
+        $this->local_options_more_styles_label = 'Aggiungi stili CSS al plugin:';                             ///< The label for the Additional CSS textarea.
+        $this->local_options_distance_prompt = 'Unità di distanza:';             /// 'Distance Units:' < This is for the distance units select.
+        $this->local_options_distance_disclaimer = 'Questo non riguarda tutte le visualizzazioni.';               /// 'This will not affect all of the displays.' < This tells the admin that only some stuff will be affected.
+        $this->local_options_grace_period_disclaimer = 'Minuti rimanenti prima che una riunione sia da considerarsi passata (per ricerche veloci).';      /// 'Minutes Elapsed Before A Meeting is Considered "Past" (For the fast Lookup Searches).' < This explains what the grace period means.
+        $this->local_options_time_offset_disclaimer = 'Ore di differenza dal Main server (dato di solito non necessario).';            /// 'Hours of Difference From the Main Server (This is usually not necessary).' < This explains what the time offset means.
+        $this->local_options_miles = 'miglia';                                 /// 'Miles' < The string for miles.
+        $this->local_options_kilometers = 'chilometri';                       /// 'Kilometers' < The string for kilometers.
+        $this->local_options_selectLocation_checkbox_text = 'Mostra servizi di localizzazione solo per dispositivi mobili';  /// 'Only Display Location Services for Mobile Devices' < The label for the location services checkbox.
     
-        $this->local_options_time_format_prompt = 'Time Format:';             ///< The label for the time format selection popup.
-        $this->local_options_time_format_ampm = 'Ante Meridian (HH:MM AM/PM)';    ///< Ante Meridian Format Option
-        $this->local_options_time_format_military = 'Military (HH:MM)';           ///< Military Time Format Option
+        $this->local_options_time_format_prompt = 'Formato orario:';             /// 'Time Format:' < The label for the time format selection popup.
+        $this->local_options_time_format_ampm = 'Antimeridiano (HH:MM AM/PM)';    /// 'Ante Meridian (HH:MM AM/PM)' < Ante Meridian Format Option
+        $this->local_options_time_format_military = 'Militare (HH:MM)';           /// 'Military (HH:MM)' < Military Time Format Option
     
-        $this->local_options_google_api_label = 'Google Maps API Key:';       ///< The label for the Google Maps API Key Text Entry.
+        $this->local_options_google_api_label = 'Chiave (key) delle API di Google Maps:';       ///< The label for the Google Maps API Key Text Entry.
         
         $this->local_options_auto_search_radius_prompt = 'Densità automatica (della ricerca):';    ///< The label for the Auto Search Density popup.
         $this->local_options_auto_search_radius_display_names = array (             ///< The values for the auto-search density popup.
                                                                         'Minimo'            => -2,
-                                                                        'Minore (Less)'     => -5,
+                                                                        'Minore'     => -5,
                                                                         'Normale'           => -10,
-                                                                        'Maggiore (More)'   => -15,
+                                                                        'Maggiore'   => -15,
                                                                         'Massimo'           => -30,
                                                                         );
     
-        $this->local_options_week_begins_on_prompt = 'Weeks begin on:';       ///< This is the label for the week start popup menu.
+        $this->local_options_week_begins_on_prompt = 'La settimana inizia di:';       /// 'Weeks begin on:' < This is the label for the week start popup menu.
 
-        $this->local_no_root_server = 'You need to provide a root server URI in order for this to work.';    ///< Displayed if there was no root server provided.
+        $this->local_no_root_server = 'Devi fornire l\'indirizzo di un root server affinché questo funzioni.';    /// 'You need to provide a root server URI in order for this to work.' < Displayed if there was no root server provided.
 
         /// These are for the actual search displays
         $this->local_select_search = 'Seleziona ricerca veloce';              ///< 'Select a Quick Search'; Used for the "filler" in the quick search popup.
         $this->local_clear_search = 'Cancella i risultati della ricerca';     ///< Clear Search Results; Used for the "Clear" item in the quick search popup.
         $this->local_menu_new_search_text = 'Nuova ricerca';                  ///< For the new search menu in the old-style BMLT search.
-        $this->local_cant_find_meetings_display = 'Nessuna riunione trovata in questa ricerca'; ///< 'No Meetings Found In This Search'; When the new map search cannot find any meetings.
-        $this->local_single_meeting_tooltip = 'Segui questo link per dettagli su questa riunione.'; ///< 'Follow This Link for Details About This Meeting.';The tooltip shown for a single meeting.
+        $this->local_cant_find_meetings_display = 'Nessuna riunione trovata con questa ricerca'; ///< 'No Meetings Found In This Search'; When the new map search cannot find any meetings.
+        $this->local_single_meeting_tooltip = 'Segui questo link per i dettagli su questa riunione.'; ///< 'Follow This Link for Details About This Meeting.';The tooltip shown for a single meeting.
         $this->local_gm_link_tooltip = 'Segui questo link per visualizzare questa riunione su Google Maps.';    ///< 'Follow This Link to be Taken to A Google Maps Location for This Meeting.'; The tooltip shown for the Google Maps link.
     
         /// These are for the change display
         $this->local_change_label_date =  'Cambio data:';                     ///< 'Change Date:'; The date when the change was made.
-        $this->local_change_label_meeting_name =  'Gruppo';            ///< 'Meeting Name:'; The name of the changed meeting.
-        $this->local_change_label_service_body_name =  'Area:';               ///< 'Service Body:'; The name of the meeting's Service body.
+        $this->local_change_label_meeting_name =  'Nome della riunione';            ///< 'Meeting Name:'; The name of the changed meeting.
+        $this->local_change_label_service_body_name =  'Struttura di servizio:';               ///< 'Service Body:'; The name of the meeting's Service body.
         $this->local_change_label_admin_name =  'Modificato da:';             ///< 'Changed By:'; The name of the Service Body Admin that made the change.
         $this->local_change_label_description =  'Descrizione:';              ///< 'Description:'; The description of the change.
-        $this->local_change_date_format = 'F j Y, \a\t g:i A';                ///< The format in which the change date/time is displayed.
+        $this->local_change_date_format = 'F j Y, \a\t g:i A';                ///< 'F j Y, \a\t g:i A' The format in which the change date/time is displayed.
     
         /// A simple message for most <noscript> elements. We have a different one for the older interactive search (below).
         $this->local_noscript = 'Questo non funzionerà, perché non hai JavaScript attivo.';             ///< 'This will not work, because you do not have JavaScript active.'; The string displayed in a <noscript> element.
@@ -156,7 +153,7 @@ class BMLT_Localized_BaseClass_it extends BMLT_Localized_BaseClass
         $this->local_nouveau_cant_lookup_display = 'Non è possibile determinare la tua posizione.';          ///< Displayed if the app is unable to determine the location.
         $this->local_nouveau_display_map_results_text = 'Mostra i risultati della ricerca sulla mappa';    ///< The text for the display map results disclosure link.
         $this->local_nouveau_display_list_results_text = 'Mostra i risultati della ricerca in una lista';  ///< The text for the display list results disclosure link.
-        $this->local_nouveau_table_header_array = array ( 'Nazione', 'Stato', 'County', 'Città', 'Gruppo', 'Giorno', 'Orario', 'Località', 'Formato', 'Dettagli' );
+        $this->local_nouveau_table_header_array = array ( 'Nazione', 'Regione', 'Provincia', 'Città', 'Gruppo', 'Giorno', 'Orario', 'Località', 'Formato', 'Dettagli' );
         $this->local_nouveau_weekday_long_array = array ( 'Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato' );
         $this->local_nouveau_weekday_short_array = array ( 'Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab' );
     
@@ -240,7 +237,7 @@ class BMLT_Localized_BaseClass_it extends BMLT_Localized_BaseClass
         $this->local_nouveau_location_sprintf_format_duration_hours_only_title = 'Questa riunione dura %s ore.'; ///< 'This meeting is %s hours long.'
         $this->local_nouveau_lookup_location_failed = "La ricerca dell\'indirizzo non è stata completata con successo."; ///< "The address lookup was not completed successfully."
         $this->local_nouveau_lookup_location_server_error = "La ricerca dell\'indirizzo non è stata completata con successo a causa di un errore del server."; ///< "The address lookup was not completed successfully, due to a server error."
-        $this->local_nouveau_time_sprintf_format = '%d:%02d %s';
+       $this->local_nouveau_time_sprintf_format = '%d:%02d %s';
         $this->local_nouveau_am = 'AM';
         $this->local_nouveau_pm = 'PM';
         $this->local_nouveau_noon = 'Mezzogiorno'; ///< 'Noon'
@@ -263,11 +260,11 @@ class BMLT_Localized_BaseClass_it extends BMLT_Localized_BaseClass
                                                     'meeting_name' => 'Gruppo', /// 'Meeting Name',
                                                     'location_text' => 'Nome della struttura', /// 'Location Name'
                                                     'location_street' => 'Indirizzo', /// Street Address
-                                                    'location_city_subsection' => 'Borough', ///< 'Borough'
+                                                    'location_city_subsection' => 'Frazione', ///< 'Borough'
                                                     'location_neighborhood' => 'Quartiere', ///< 'Neighborhood'
                                                     'location_municipality' => 'Città', ///< Town'
-                                                    'location_sub_province' => 'County', ///< 'County'
-                                                    'location_province' => 'State', ///< 'State'
+                                                    'location_sub_province' => 'Provincia', ///< 'County'
+                                                    'location_province' => 'Regione', ///< 'State'
                                                     'location_nation' => 'Nazione', ///< 'Nation'
                                                     'location_postal_code_1' => 'CAP', ///< 'Zip Code'
                                                     'location_info' => 'Informazioni extra' ///< Extra Information'
@@ -276,15 +273,15 @@ class BMLT_Localized_BaseClass_it extends BMLT_Localized_BaseClass
         /************************************************************************************//**
         *                   TABLE SHORTCODE STATIC DATA MEMBERS (LOCALIZABLE)                    *
         ****************************************************************************************/
-        $this->local_table_tab_loading_title_format     = 'Getting meetings for %s';
-        $this->local_table_header_time_label            = 'Time';
-        $this->local_table_header_meeting_name_label    = 'Meeting Name';
-        $this->local_table_header_town_label            = 'Town';
-        $this->local_table_header_address_label         = 'Address';
-        $this->local_table_header_format_label          = 'Format';
-        $this->local_table_header_tab_title_format      = 'Display meetings for %s';
-        $this->local_table_ante_meridian                = '"AM","PM","Noon","Midnight"';
-        $this->local_table_no_meetings_format           = 'No meetings on %s';
+        $this->local_table_tab_loading_title_format       = 'Trova riunioni per %s'; /// 'Getting meetings for %s';
+        $this->local_table_header_time_label              = 'Orario'; /// 'Time';
+        $this->local_table_header_meeting_name_label      = 'Nome del gruppo'; /// 'Meeting Name';
+        $this->local_table_header_town_label              = 'Città'; /// 'Town';
+        $this->local_table_header_address_label           = 'Indirizzo'; /// 'Address';
+        $this->local_table_header_format_label            = 'Formato'; /// 'Format';
+        $this->local_table_header_tab_title_format        = 'Mostra riunioni per %s'; /// 'Display meetings for %s';
+        $this->local_table_ante_meridian                  = '"AM","PM","Mezzogiorno","Mezzanotte"'; /// '"AM","PM","Noon","Midnight"';
+        $this->local_table_no_meetings_format             = 'Nessuna riunione il %s'; /// 'No meetings on %s';
                                                
         /************************************************************************************//**
         *                      STATIC DATA MEMBERS (SPECIAL LOCALIZABLE)                        *
@@ -296,7 +293,7 @@ class BMLT_Localized_BaseClass_it extends BMLT_Localized_BaseClass
         /************************************************************************************//**
         *                       STATIC DATA MEMBERS (NEW MAP LOCALIZABLE)                       *
         ****************************************************************************************/
-        $this->local_new_map_option_1_label = 'Opzioni di Ricerca (Non si applica a meno che questa sezione non sia aperta):'; // 'Search Options (Not Applied Unless This Section Is Open):'
+        $this->local_new_map_option_1_label = 'Opzioni di ricerca (non si applica a meno che questa sezione non sia aperta):'; // 'Search Options (Not Applied Unless This Section Is Open):'
         $this->local_new_map_weekdays = 'Le riunioni avvengono in questi giorni della settimana:'; ///< 'Meetings Gather on These Weekdays:'
         $this->local_new_map_all_weekdays = 'Tutti i giorni della settimana'; ///<  'All'
         $this->local_new_map_all_weekdays_title = 'Trova riunioni per ogni giorno.'; ///< 'Find meetings for every day.'
@@ -331,11 +328,11 @@ class BMLT_Localized_BaseClass_it extends BMLT_Localized_BaseClass
         $this->local_mobile_distance = 'Distanza';  ///< Distance (the string)
    
         /// The page titles.
-        $this->local_mobile_results_page_title = 'Risultati Ricerca Veloce'; ///< 'Quick Meeting Search Results'
-        $this->local_mobile_results_form_title = 'Ricerca Veloce di riunioni vicine'; ///< 'Find Nearby Meetings Quickly'    
+        $this->local_mobile_results_page_title = 'Risultati della ricerca Vvloce'; ///< 'Quick Meeting Search Results'
+        $this->local_mobile_results_form_title = 'Ricerca veloce delle riunioni vicine'; ///< 'Find Nearby Meetings Quickly'    
         /// The fast GPS lookup links.
         $this->local_GPS_banner = 'Seleziona ricerca veloce'; ///<'Select A Fast Meeting Lookup'
-        $this->local_GPS_banner_subtext = 'Aggiungi ai preferiti questi link per ricerche ancora più veloci in futuro.'; ///<'Bookmark these links for even faster searches in the future.'
+        $this->local_GPS_banner_subtext = 'Aggiungi questi link ai preferiti per ricerche ancora più veloci in futuro.'; ///<'Bookmark these links for even faster searches in the future.'
         $this->local_search_all = 'Cerca tutte le riunioni vicine alla mia attuale località'; ///< 'Search for all meetings near my present location.';
         $this->local_search_today = 'Oggi, più tardi'; ///< 'Later Today'
         $this->local_search_tomorrow = 'Domani';    
@@ -378,7 +375,7 @@ class BMLT_Localized_BaseClass_it extends BMLT_Localized_BaseClass
         *                          STATIC DATA MEMBERS (QUICKSEARCH)                            *
         ****************************************************************************************/
         $this->local_quicksearch_select_option_0 = 'Cerca Ovunque';
-        $this->local_quicksearch_display_too_large = 'Too many results. Please narrow your search.';
+        $this->local_quicksearch_display_too_large = 'Troppi risultati. Per favore, restringi la tua ricerca.';
         }
     };
 ?>
