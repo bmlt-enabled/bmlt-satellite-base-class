@@ -26,7 +26,7 @@
 *   along with this code.  If not, see <http://www.gnu.org/licenses/>.                      *
 ********************************************************************************************/
 
-// define ( '_DEBUG_MODE_', 1 ); //Uncomment for easier JavaScript debugging.
+define ( '_DEBUG_MODE_', 1 ); //Uncomment for easier JavaScript debugging.
 
 // Include the satellite driver class.
 require_once ( dirname ( __FILE__ ).'/BMLT-Satellite-Driver/bmlt_satellite_controller.class.php' );
@@ -1071,19 +1071,19 @@ abstract class BMLTPlugin
                         $html .= "BMLTPlugin_DirtifyOptionSheet(true);" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');    // This sets up the "Save Changes" button as disabled.
                         // This is a trick I use to hide irrelevant content from non-JS browsers. The element is drawn, hidden, then uses JS to show. No JS, no element.
                         $html .= "document.getElementById('BMLTPlugin_options_container').style.display='block';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-                        $html .= "var c_g_BMLTPlugin_no_name = '".$this->process_text ( $this->my_current_language->local_options_no_name_string )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-                        $html .= "var c_g_BMLTPlugin_no_root = '".$this->process_text ( $this->my_current_language->local_options_no_root_server_string )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+                        $html .= "var c_g_BMLTPlugin_no_name = '".$this->process_text ( str_replace ("'", "\\'", $this->my_current_language->local_options_no_name_string ) )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+                        $html .= "var c_g_BMLTPlugin_no_root = '".$this->process_text ( str_replace ("'", "\\'", $this->my_current_language->local_options_no_root_server_string ) )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
                         $html .= "var c_g_BMLTPlugin_root_canal = '".$this->my_current_language->local_options_url_bad.(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-                        $html .= "var c_g_BMLTPlugin_success_message = '".$this->process_text ( $this->my_current_language->local_options_save_success )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-                        $html .= "var c_g_BMLTPlugin_failure_message = '".$this->process_text ( $this->my_current_language->local_options_save_failure )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+                        $html .= "var c_g_BMLTPlugin_success_message = '".$this->process_text ( str_replace ("'", "\\'", $this->my_current_language->local_options_save_success ) )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+                        $html .= "var c_g_BMLTPlugin_failure_message = '".$this->process_text ( str_replace ("'", "\\'", $this->my_current_language->local_options_save_failure ) )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
                         $html .= "var c_g_BMLTPlugin_success_time = ".intval ( self::$local_options_success_time ).";" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
                         $html .= "var c_g_BMLTPlugin_failure_time = ".intval ( self::$local_options_failure_time ).";" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-                        $html .= "var c_g_BMLTPlugin_unsaved_prompt = '".$this->process_text ( $this->my_current_language->local_options_unsaved_message )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-                        $html .= "var c_g_BMLTPlugin_test_server_success = '".$this->process_text ( $this->my_current_language->local_options_test_server_success )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-                        $html .= "var c_g_BMLTPlugin_test_server_failure = '".$this->process_text ( $this->my_current_language->local_options_test_server_failure )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+                        $html .= "var c_g_BMLTPlugin_unsaved_prompt = '".$this->process_text ( str_replace ("'", "\\'", $this->my_current_language->local_options_unsaved_message ) )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+                        $html .= "var c_g_BMLTPlugin_test_server_success = '".$this->process_text ( str_replace ("'", "\\'", $this->my_current_language->local_options_test_server_success ) )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+                        $html .= "var c_g_BMLTPlugin_test_server_failure = '".$this->process_text ( str_replace ("'", "\\'", $this->my_current_language->local_options_test_server_failure ) )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
                         $html .= "var c_g_BMLTPlugin_coords = new Array();" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
                         $html .= "var g_BMLTPlugin_TimeToFade = ".intval ( self::$local_options_success_time ).";" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-                        $html .= "var g_BMLTPlugin_no_gkey_string = '".$this->process_text ( $this->my_current_language->local_options_no_gkey_string)."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+                        $html .= "var g_BMLTPlugin_no_gkey_string = '".$this->process_text ( str_replace ("'", "\\'", $this->my_current_language->local_options_no_gkey_string) )."';" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
                         if ( is_array ( $options_coords ) && count ( $options_coords ) )
                             {
                             foreach ( $options_coords as $value )

@@ -25,6 +25,7 @@ CHANGELIST
 ***Version 3.9.1* ** *- TBD*
 
 - Fixed an issue where some translated versions had bad settings in the BMLT options initial map type.
+- New Italian Translation.
 
 ***Version 3.9.0* ** *- December 31, 2017*
 

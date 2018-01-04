@@ -4,7 +4,7 @@
 *   \file   lang_it.php                                                                     *
 *                                                                                           *
 *   \brief  This file contains Italian localizations.                                       *
-*   \version 3.8.4                                                                          *
+*   \version 3.9.1                                                                          *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -77,7 +77,10 @@ class BMLT_Localized_BaseClass_it extends BMLT_Localized_BaseClass
         $this->local_options_mobile_region_bias_label = 'Discrimina regione:';       /// 'Region Bias:'< The label for the Region Bias Selector.
         $this->local_options_mobile_time_offset_label = 'Sbilanciamento (offset) temporale:';       /// 'Time Offset:'< This may have an offset (time zone difference) from the main server.
         $this->local_options_initial_view = array (                           ///< The list of choices for presentation in the popup.
-                                                    'map' => 'Mappa', 'text' => 'Testo', 'advanced_map' => 'Mappa (avanzata)', 'advanced_text' => 'Testo (avanzato)' /// 'map' => 'Map', 'text' => 'Text', 'advanced_map' => 'Advanced Map', 'advanced_text' => 'Advanced Text'
+                                                    'map'           => 'Mappa',
+                                                    'text'          => 'Testo',
+                                                    'advanced_map'  => 'Mappa (avanzata)',
+                                                    'advanced_text' => 'Testo (avanzato)' /// 'map' => 'Map', 'text' => 'Text', 'advanced_map' => 'Advanced Map', 'advanced_text' => 'Advanced Text'
                                                     );
         $this->local_options_initial_view_prompt = 'Tipo iniziale di ricerca:';    /// 'Initial Search Type:' < The label for the initial view popup.
         $this->local_options_theme_prompt = 'Scegli il tema in base al colore:';          /// 'Select a Color Theme:' < The label for the theme selection popup.
@@ -98,11 +101,11 @@ class BMLT_Localized_BaseClass_it extends BMLT_Localized_BaseClass
         
         $this->local_options_auto_search_radius_prompt = 'Densità automatica (della ricerca):';    ///< The label for the Auto Search Density popup.
         $this->local_options_auto_search_radius_display_names = array (             ///< The values for the auto-search density popup.
-                                                                        'Minimo'            => -2,
-                                                                        'Minore'     => -5,
-                                                                        'Normale'           => -10,
-                                                                        'Maggiore'   => -15,
-                                                                        'Massimo'           => -30,
+                                                                        'Minimo'    => -2,
+                                                                        'Minore'    => -5,
+                                                                        'Normale'   => -10,
+                                                                        'Maggiore'  => -15,
+                                                                        'Massimo'   => -30
                                                                         );
     
         $this->local_options_week_begins_on_prompt = 'La settimana inizia di:';       /// 'Weeks begin on:' < This is the label for the week start popup menu.
@@ -237,7 +240,7 @@ class BMLT_Localized_BaseClass_it extends BMLT_Localized_BaseClass
         $this->local_nouveau_location_sprintf_format_duration_hours_only_title = 'Questa riunione dura %s ore.'; ///< 'This meeting is %s hours long.'
         $this->local_nouveau_lookup_location_failed = "La ricerca dell\'indirizzo non è stata completata con successo."; ///< "The address lookup was not completed successfully."
         $this->local_nouveau_lookup_location_server_error = "La ricerca dell\'indirizzo non è stata completata con successo a causa di un errore del server."; ///< "The address lookup was not completed successfully, due to a server error."
-       $this->local_nouveau_time_sprintf_format = '%d:%02d %s';
+        $this->local_nouveau_time_sprintf_format = '%d:%02d %s';
         $this->local_nouveau_am = 'AM';
         $this->local_nouveau_pm = 'PM';
         $this->local_nouveau_noon = 'Mezzogiorno'; ///< 'Noon'
