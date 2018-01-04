@@ -22,10 +22,11 @@ The instructions for employment of this class are on [this page](http://bmlt.mag
 CHANGELIST
 ----------
 
-***Version 3.9.1* ** *- TBD*
+***Version 3.9.1* ** *- January 4, 2018*
 
 - Fixed an issue where some translated versions had bad settings in the BMLT options initial map type.
 - New Italian Translation.
+- Fixed a bug in the admin screen where it was possible to cause problems with translated strings containing apostrophes.
 
 ***Version 3.9.0* ** *- December 31, 2017*
 
