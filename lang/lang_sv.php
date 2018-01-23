@@ -4,7 +4,7 @@
 * \file lang_sv.php                                                                         *
 *                                                                                           *
 * \brief This file contains Swedish localizations.                                          *
-* \version 3.9.1                                                                           *
+* \version                                                                            *
 *                                                                                           *
 * This file is part of the BMLT Common Satellite Base Class Project. The project GitHub     *
 * page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class          *
@@ -380,7 +380,7 @@ class BMLT_Localized_BaseClass_sv extends BMLT_Localized_BaseClass
         /************************************************************************************//**
         *                          STATIC DATA MEMBERS (QUICKSEARCH)                            *
         ****************************************************************************************/
-        $this->local_quicksearch_select_option_0 = 'Sök Överallt';
+        $this->local_quicksearch_select_option_0 = 'Välj län';
         $this->local_quicksearch_display_too_large = 'För många resultat. Var vänlig begränsa sökningen.';
         }
     };

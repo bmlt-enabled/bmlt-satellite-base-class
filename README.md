@@ -22,6 +22,10 @@ The instructions for employment of this class are on [this page](http://bmlt.mag
 CHANGELIST
 ----------
 
+***Version 3.9.2* ** *- TBD*
+
+- Minor adjustments to the Swedish localization.
+
 ***Version 3.9.1* ** *- January 4, 2018*
 
 - Fixed an issue where some translated versions had bad settings in the BMLT options initial map type.

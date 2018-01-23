@@ -4,7 +4,7 @@
 *   \file   lang_fr.php                                                                     *
 *                                                                                           *
 *   \brief  This file contains French localizations.                                        *
-*   \version 3.9.1                                                                          *
+*   \version 3.9.2                                                                          *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
