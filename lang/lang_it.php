@@ -105,7 +105,8 @@ class BMLT_Localized_BaseClass_it extends BMLT_Localized_BaseClass
                                                                         'Minore'    => -5,
                                                                         'Normale'   => -10,
                                                                         'Maggiore'  => -15,
-                                                                        'Massimo'   => -30
+                                                                        'Massimo'   => -30,
+                                                                        'Super Massimo' => -100
                                                                         );
     
         $this->local_options_week_begins_on_prompt = 'La settimana inizia di:';       /// 'Weeks begin on:' < This is the label for the week start popup menu.

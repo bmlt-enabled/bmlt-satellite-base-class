@@ -25,6 +25,7 @@ CHANGELIST
 ***Version 3.9.2* ** *- TBD*
 
 - Minor adjustments to the Swedish localization.
+- Added a new "Supermax" option to the auto-radius settings.
 
 ***Version 3.9.1* ** *- January 4, 2018*
 
