@@ -1888,12 +1888,12 @@ abstract class BMLTPlugin
                 $ajax_url = $this->get_ajax_base_uri();
                 $throbber_loc = htmlspecialchars ( $url.'themes/'.$theme.'/images/Throbber.gif' );
                 
-                if ( 0 == $my_form_next_id )
-                    {
-                    $display .= '<script type="text/javascript">' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-                    $display .= self::stripFile ( 'quicksearch.js' ) . "\n";
-                    $display .= '</script>' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-                    }
+//                 if ( 0 == $my_form_next_id )
+//                     {
+//                     $display .= '<script type="text/javascript">' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+//                     $display .= self::stripFile ( 'quicksearch.js' ) . "\n";
+//                     $display .= '</script>' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+//                     }
                 
                 $display .= '<div id="quicksearch_div_'.$my_form_next_id.'" class="quicksearch_div quicksearch_theme_'.$theme.'" style="display:none">' . "\n";
                     $display .= '<div class="quicksearch_print_header" id="quicksearch_print_header_'.$my_form_next_id.'" style="display:none"></div>';

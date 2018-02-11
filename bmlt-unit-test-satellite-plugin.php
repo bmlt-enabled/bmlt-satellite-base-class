@@ -348,8 +348,6 @@ class BMLTUTestPlugin extends BMLTPlugin
             die ( );
             }
         
-        $load_server_header = $this->get_shortcode ( $in_text, 'bmlt');   // No GMAP API key or no "bmlt" shortcode, no BMLT window.
-        
         $this->my_http_vars['start_view'] = $options['bmlt_initial_view'];
         
         $this->load_params ( );
@@ -429,10 +427,23 @@ class BMLTUTestPlugin extends BMLTPlugin
             }
             
         $head_content .= '<script type="text/javascript">';
-    
+        
         $head_content .= self::stripFile ( 'javascript.js' );
-        $head_content .= self::stripFile ( 'map_search.js' );
-        $head_content .= self::stripFile ( 'fast_mobile_lookup.js' );
+
+        if ( $this->get_shortcode ( $in_text, 'bmlt_quicksearch' ) )
+            {
+            $head_content .= self::stripFile ( 'quicksearch.js' ) . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
+            }
+        
+        if ( $this->get_shortcode ( $in_text, 'bmlt_map' ) )
+            {
+            $head_content .= self::stripFile ( 'map_search.js' );
+            }
+        
+        if ( $this->get_shortcode ( $in_text, 'bmlt_mobile' ) )
+            {
+            $head_content .= self::stripFile ( 'fast_mobile_lookup.js' );
+            }
     
         $head_content .= '</script>';
         
