@@ -22,6 +22,10 @@ The instructions for employment of this class are on [this page](http://bmlt.mag
 CHANGELIST
 ----------
 
+***Version 3.9.3* ** *- TBD*
+
+- Minor warning fix for missing lang.
+
 ***Version 3.9.2* ** *- February 11, 2018*
 
 - Minor adjustments to the Swedish localization.
