@@ -1661,7 +1661,7 @@ abstract class BMLTPlugin
         // If this is a basic AJAX call, we drop out quickly (We're really just a router).
         if ( isset ( $this->my_http_vars['BMLTPlugin_mobile_ajax_router'] ) )
             {
-            $options = $this->getBMLTOptions_by_id ( $this->my_http_vars['bmlt_settings_id'] ); // This is for security. We don't allow URIs to be directly specified. They must come from the settings.
+            $options = $this->getBMLTOptions_by_id ( intval($this->my_http_vars['bmlt_settings_id']) ); // This is for security. We don't allow URIs to be directly specified. They must come from the settings.
             $uri = $options['root_server'].'/'.$this->my_http_vars['request'];
             if ( ob_get_level () ) ob_end_clean(); // Just in case we are in an OB
             die ( bmlt_satellite_controller::call_curl ( $uri ) );
@@ -1693,7 +1693,7 @@ abstract class BMLTPlugin
                     $this->my_http_vars['bmlt_settings_id'] = null; // Just to squash a warning.
                     }
                     
-                $options = $this->getBMLTOptions_by_id ( $this->my_http_vars['bmlt_settings_id'] );
+                $options = $this->getBMLTOptions_by_id ( intval($this->my_http_vars['bmlt_settings_id']) );
                 
                 $this->load_params ( );
                 
@@ -1810,7 +1810,7 @@ abstract class BMLTPlugin
         // Simple searches can be mixed in with other content.
         $in_the_content = $this->display_table_search ( $in_the_content );
         
-        $options = $this->getBMLTOptions_by_id ( $this->my_http_vars['bmlt_settings_id'] );
+        $options = $this->getBMLTOptions_by_id ( intval($this->my_http_vars['bmlt_settings_id']) );
         if ( file_exists ( dirname ( __FILE__ ).'/themes/'.$options['theme'].'/styles.css' ) && file_exists ( dirname ( __FILE__ ).'/themes/'.$options['theme'].'/nouveau_map_styles.css' ) )
             {
             $in_the_content = $this->display_simple_search ( $in_the_content );
@@ -2050,7 +2050,7 @@ abstract class BMLTPlugin
                     $line['prompt'] = trim($text_ar[$lines++]);
                     if ( $line['parameters'] && $line['prompt'] )
                         {
-                        $uri = $this->get_ajax_base_uri().'?bmlt_settings_id='.$options_id.'&amp;direct_simple&amp;search_parameters='.urlencode ( $line['parameters'] );
+                        $uri = $this->get_ajax_base_uri().'?bmlt_settings_id='.intval($options_id).'&amp;direct_simple&amp;search_parameters='.urlencode ( $line['parameters'] );
                         $display .= '<option value="'.$uri.'">'.__($line['prompt']).'</option>';
                         }
                     }
@@ -2273,7 +2273,7 @@ abstract class BMLTPlugin
                                                                                                                                                                             .$options['map_zoom'].",'"
                                                                                                                                                                             .$options['distance_units']."','"
                                                                                                                                                                             .$this->get_plugin_path()."themes/".$options['theme']."','"
-                                                                                                                                                                            .htmlspecialchars ( $this->get_ajax_base_uri() )."?bmlt_settings_id=$in_options_id&redirect_ajax_json=', '', ".($options['bmlt_location_checked'] ? 'true' : 'false').", "
+                                                                                                                                                                            .htmlspecialchars ( $this->get_ajax_base_uri() )."?bmlt_settings_id=".intval($in_options_id)."&redirect_ajax_json=', '', ".($options['bmlt_location_checked'] ? 'true' : 'false').", "
                                                                                                                                                                             .($options['bmlt_location_services'] == 0 || ($options['bmlt_location_services'] == 1 && BMLTPlugin_weAreMobile($this->my_http_vars)) ? 'true' : 'false').", "
                                                                                                                                                                             .$single_meeting_id.", "
                                                                                                                                                                             .$options['grace_period'].");" . (defined ( '_DEBUG_MODE_' ) ? "\n" : '')."</script>";
@@ -2693,7 +2693,7 @@ abstract class BMLTPlugin
         $ret .= 'var c_g_distance_units_are_km_'.$in_uid.' = '.((strtolower ($options['distance_units']) == 'km' ) ? 'true' : 'false').';';
         $ret .= 'var c_g_distance_units_'.$in_uid.' = \''.((strtolower ($options['distance_units']) == 'km' ) ? $this->process_text ( $this->my_current_language->local_mobile_kilometers ) : $this->process_text ( $this->my_current_language->local_mobile_miles ) ).'\';';
         $ret .= 'var c_g_BMLTPlugin_throbber_img_src_'.$in_uid." = '".htmlspecialchars ( $this->get_plugin_path().'themes/'.$options['theme'].'/images/Throbber.gif' ).(defined ( '_DEBUG_MODE_' ) ? "';\n" : "';");
-        $ret .= 'var c_g_BMLTRoot_URI_JSON_SearchResults_'.$in_uid." = '".htmlspecialchars ( $this->get_ajax_base_uri() )."?redirect_ajax_json=".urlencode ( 'switcher=GetSearchResults' )."&bmlt_settings_id=$in_options_id';\n";
+        $ret .= 'var c_g_BMLTRoot_URI_JSON_SearchResults_'.$in_uid." = '".htmlspecialchars ( $this->get_ajax_base_uri() )."?redirect_ajax_json=".urlencode ( 'switcher=GetSearchResults' )."&bmlt_settings_id=".intval($in_options_id)."';\n";
         $ret .= '</script>';
 
         return $ret;
@@ -2960,7 +2960,7 @@ abstract class BMLTPlugin
     ****************************************************************************************/
     function BMLTPlugin_fast_mobile_lookup_javascript_stuff( )
         {
-        $options = $this->getBMLTOptions_by_id ( $this->my_http_vars['bmlt_settings_id'] );
+        $options = $this->getBMLTOptions_by_id ( intval($this->my_http_vars['bmlt_settings_id']) );
         
         $this->adapt_to_lang ( $options['lang'] );
         $gKey = '';
@@ -3000,7 +3000,7 @@ abstract class BMLTPlugin
         $ret .= 'var c_g_distance_units_are_km = '.((strtolower ($options['distance_units']) == 'km' ) ? 'true' : 'false').';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $ret .= 'var c_g_distance_units = \''.((strtolower ($options['distance_units']) == 'km' ) ? $this->process_text ( $this->my_current_language->local_mobile_kilometers ) : $this->process_text ( $this->my_current_language->local_mobile_miles ) ).'\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
         $ret .= 'var c_BMLTPlugin_files_uri = \''.htmlspecialchars ( $this->get_ajax_mobile_base_uri() ).'?\';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');
-        $ret .= 'var c_bmlt_settings_id='.intVal ( ((isset( $this->my_http_vars['bmlt_settings_id'] ) && $this->my_http_vars['bmlt_settings_id']) ? $this->my_http_vars['bmlt_settings_id'] : '')) .';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');       
+        $ret .= 'var c_bmlt_settings_id='.intVal ( ((isset( $this->my_http_vars['bmlt_settings_id'] ) && $this->my_http_vars['bmlt_settings_id']) ? intval($this->my_http_vars['bmlt_settings_id']) : '')) .';' . (defined ( '_DEBUG_MODE_' ) ? "\n" : '');       
 
         $img_url = htmlspecialchars ( $this->get_plugin_path()."google_map_images" );
         
@@ -3036,7 +3036,7 @@ abstract class BMLTPlugin
             
             $url = $this->get_plugin_path();
             
-            $options = $this->getBMLTOptions_by_id ( $this->my_http_vars['bmlt_settings_id'] );
+            $options = $this->getBMLTOptions_by_id ( intval($this->my_http_vars['bmlt_settings_id']) );
             
             $this->adapt_to_lang ( $options['lang'] );
             $url = htmlspecialchars ( $url.'themes/'.$options['theme'].'/' );
@@ -3077,9 +3077,9 @@ abstract class BMLTPlugin
         $ret = '<div class="search_intro" id="hidden_until_js" style="display:none">';
             $ret .= '<h1 class="banner_h1">'.$this->process_text ( $this->my_current_language->local_GPS_banner ).'</h1>';
             $ret .= '<h2 class="banner_h2">'.$this->process_text ( $this->my_current_language->local_GPS_banner_subtext ).'</h2>';
-            $ret .= '<div class="link_one_line"><a rel="nofollow" accesskey="1" href="'.htmlspecialchars ( $this->get_ajax_mobile_base_uri() ).'?BMLTPlugin_mobile&amp;do_search&amp;bmlt_settings_id='.$this->my_http_vars['bmlt_settings_id'].((isset ( $this->my_http_vars['base_url'] ) && $this->my_http_vars['base_url']) ? '&amp;base_url='.urlencode($this->my_http_vars['base_url']) : '').'">'.$this->process_text ( $this->my_current_language->local_search_all ).'</a></div>';
-            $ret .= '<div class="link_one_line"><a rel="nofollow" accesskey="2" href="'.htmlspecialchars ( $this->get_ajax_mobile_base_uri() ).'?BMLTPlugin_mobile&amp;do_search&amp;qualifier=today&amp;bmlt_settings_id='.$this->my_http_vars['bmlt_settings_id'].((isset ( $this->my_http_vars['base_url'] ) && $this->my_http_vars['base_url']) ? '&amp;base_url='.urlencode($this->my_http_vars['base_url']) : '').'">'.$this->process_text ( $this->my_current_language->local_search_today ).'</a></div>';
-            $ret .= '<div class="link_one_line"><a rel="nofollow" accesskey="3" href="'.htmlspecialchars ( $this->get_ajax_mobile_base_uri() ).'?BMLTPlugin_mobile&amp;do_search&amp;qualifier=tomorrow&amp;bmlt_settings_id='.$this->my_http_vars['bmlt_settings_id'].((isset ( $this->my_http_vars['base_url'] ) && $this->my_http_vars['base_url']) ? '&amp;base_url='.urlencode($this->my_http_vars['base_url']) : '').'">'.$this->process_text ( $this->my_current_language->local_search_tomorrow ).'</a></div>';
+            $ret .= '<div class="link_one_line"><a rel="nofollow" accesskey="1" href="'.htmlspecialchars ( $this->get_ajax_mobile_base_uri() ).'?BMLTPlugin_mobile&amp;do_search&amp;bmlt_settings_id='.intval($this->my_http_vars['bmlt_settings_id']).((isset ( $this->my_http_vars['base_url'] ) && $this->my_http_vars['base_url']) ? '&amp;base_url='.urlencode($this->my_http_vars['base_url']) : '').'">'.$this->process_text ( $this->my_current_language->local_search_all ).'</a></div>';
+            $ret .= '<div class="link_one_line"><a rel="nofollow" accesskey="2" href="'.htmlspecialchars ( $this->get_ajax_mobile_base_uri() ).'?BMLTPlugin_mobile&amp;do_search&amp;qualifier=today&amp;bmlt_settings_id='.intval($this->my_http_vars['bmlt_settings_id']).((isset ( $this->my_http_vars['base_url'] ) && $this->my_http_vars['base_url']) ? '&amp;base_url='.urlencode($this->my_http_vars['base_url']) : '').'">'.$this->process_text ( $this->my_current_language->local_search_today ).'</a></div>';
+            $ret .= '<div class="link_one_line"><a rel="nofollow" accesskey="3" href="'.htmlspecialchars ( $this->get_ajax_mobile_base_uri() ).'?BMLTPlugin_mobile&amp;do_search&amp;qualifier=tomorrow&amp;bmlt_settings_id='.intval($this->my_http_vars['bmlt_settings_id']).((isset ( $this->my_http_vars['base_url'] ) && $this->my_http_vars['base_url']) ? '&amp;base_url='.urlencode($this->my_http_vars['base_url']) : '').'">'.$this->process_text ( $this->my_current_language->local_search_tomorrow ).'</a></div>';
             $ret .= '<hr class="meeting_divider_hr" />';
         $ret .= '</div>';
         
@@ -3113,7 +3113,7 @@ abstract class BMLTPlugin
                 $ret .= '<input type="hidden" name="base_url" value="'.htmlspecialchars($this->my_http_vars['base_url']).'" />';
                 }
                 
-            $ret .= '<input type="hidden" name="bmlt_settings_id" value="'.$this->my_http_vars['bmlt_settings_id'].'" />';
+            $ret .= '<input type="hidden" name="bmlt_settings_id" value="'.intval($this->my_http_vars['bmlt_settings_id']).'" />';
             $ret .= '<input type="hidden" name="do_search" id="do_search" value="the hard way" />';
             $ret .= '<h1 class="banner_h2">'.$this->process_text ( $this->my_current_language->local_search_address_single ).'</h1>';
             if ( !isset ( $this->my_http_vars['WML'] ) )  // This is here to prevent WAI warnings.
@@ -3225,7 +3225,7 @@ abstract class BMLTPlugin
                 {
                 $ret .= '<postfield type="hidden" name="base_url" value="'.htmlspecialchars($this->my_http_vars['base_url']).'" />';
                 }
-            $ret .= '<postfield name="bmlt_settings_id" value="'.$this->my_http_vars['bmlt_settings_id'].'" />';
+            $ret .= '<postfield name="bmlt_settings_id" value="'.intval($this->my_http_vars['bmlt_settings_id']).'" />';
             $ret .= '</go>';
             $ret .= $this->process_text ( $local_search_submit_button );
             $ret .= '</anchor>';
@@ -3402,7 +3402,7 @@ abstract class BMLTPlugin
             }
         $ret = self::BMLTPlugin_select_doctype($this->my_http_vars);
         $ret .= $this->BMLTPlugin_fast_mobile_lookup_header_stuff();   // Add styles and/or JS, depending on the UA.
-        $options = $this->getBMLTOptions_by_id ( $this->my_http_vars['bmlt_settings_id'] );
+        $options = $this->getBMLTOptions_by_id ( intval($this->my_http_vars['bmlt_settings_id']) );
         $this->adapt_to_lang ( $options['lang'] );
         
         // If we are running XHTML, then JavaScript works. Let's see if we can figure out where we are...
@@ -3656,7 +3656,7 @@ abstract class BMLTPlugin
                                                     $url = 'https://maps.google.com/maps?key='.$gKey.'&region='.strtoupper ( $options['region_bias'] ).'&q='.urlencode($meeting['latitude']).','.urlencode($meeting['longitude']) . '+(%22'.str_replace ( "%28", '-', str_replace ( "%29", '-', $url )).'%22)';
                                                     $url .= '&ll='.urlencode($meeting['latitude']).','.urlencode($meeting['longitude']);
                                                     $ret .= '<a rel="external nofollow" accesskey="'.$index.'" href="'.htmlspecialchars ( $url ).'" title="'.htmlspecialchars($meeting['meeting_name']).'">'.$this->process_text ( $this->my_current_language->local_map_link ).'</a>';
-                                                    $ret .= '<script type="text/javascript">document.getElementById(\'maplink_'.intval($meeting['id_bigint']).'\').style.display=\'block\';var c_BMLTPlugin_settings_id = '.htmlspecialchars ( $this->my_http_vars['bmlt_settings_id'] ).';</script>';
+                                                    $ret .= '<script type="text/javascript">document.getElementById(\'maplink_'.intval($meeting['id_bigint']).'\').style.display=\'block\';var c_BMLTPlugin_settings_id = '.intval ( $this->my_http_vars['bmlt_settings_id'] ).';</script>';
 
                                                     $ret .= '</p>';
                                                     }
@@ -3809,7 +3809,7 @@ abstract class BMLTPlugin
             {
             self::$g_s_there_can_only_be_one = $this;
             
-            $options = $this->getBMLTOptions_by_id ( $this->my_http_vars['bmlt_settings_id'] );
+            $options = $this->getBMLTOptions_by_id ( intval($this->my_http_vars['bmlt_settings_id']) );
             
             $this->my_http_vars = array_merge_recursive ( $_GET, $_POST );
                 
