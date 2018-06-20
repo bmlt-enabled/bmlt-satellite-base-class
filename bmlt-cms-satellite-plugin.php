@@ -3113,7 +3113,7 @@ abstract class BMLTPlugin
                 $ret .= '<input type="hidden" name="base_url" value="'.htmlspecialchars($this->my_http_vars['base_url']).'" />';
                 }
                 
-            $ret .= '<input type="hidden" name="bmlt_settings_id" value="'.$this->my_http_vars['bmlt_settings_id'].'" />';
+            $ret .= '<input type="hidden" name="bmlt_settings_id" value="'.htmlspecialchars($this->my_http_vars['bmlt_settings_id']).'" />';
             $ret .= '<input type="hidden" name="do_search" id="do_search" value="the hard way" />';
             $ret .= '<h1 class="banner_h2">'.$this->process_text ( $this->my_current_language->local_search_address_single ).'</h1>';
             if ( !isset ( $this->my_http_vars['WML'] ) )  // This is here to prevent WAI warnings.
