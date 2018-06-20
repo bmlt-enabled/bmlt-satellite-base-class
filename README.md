@@ -26,6 +26,7 @@ CHANGELIST
 
 - Minor warning fix for missing lang.
 - Added a line to the AJAX URI calculator to allow the server admin to "hardcode" an HTTPS port, in case the server is misconfigured.
+- Added fix for possible XSS hijack in the fast mobile form.
 
 ***Version 3.9.2* ** *- February 11, 2018*
 
