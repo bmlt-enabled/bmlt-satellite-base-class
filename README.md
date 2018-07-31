@@ -22,7 +22,7 @@ The instructions for employment of this class are on [this page](http://bmlt.mag
 CHANGELIST
 ----------
 
-***Version 3.9.3* ** *- TBD*
+***Version 3.9.3* ** *- July 31, 2018*
 
 - Minor warning fix for missing lang.
 - Added a line to the AJAX URI calculator to allow the server admin to "hardcode" an HTTPS port, in case the server is misconfigured.
