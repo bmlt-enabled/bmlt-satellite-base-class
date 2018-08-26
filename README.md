@@ -22,6 +22,10 @@ The instructions for employment of this class are on [this page](http://bmlt.mag
 CHANGELIST
 ----------
 
+***Version 3.9.4* ** *- TBD*
+
+- Added the "BlackWiteAndRed" theme.
+
 ***Version 3.9.3* ** *- July 31, 2018*
 
 - Minor warning fix for missing lang.
