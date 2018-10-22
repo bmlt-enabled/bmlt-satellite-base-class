@@ -1,5 +1,5 @@
 /*    
-    \version 3.9.4
+    \version 3.9.3
     
     This file is part of the BMLT Common Satellite Base Class Project. The project GitHub
     page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class
@@ -31,19 +31,19 @@
 /************************************************************/
 /*                      Most tabs                           */
 /************************************************************/
-div.bmlt_table_display_div_theme_BlackWiteAndRed ul.bmlt_table_header_weekday_list li
+div.bmlt_table_display_div_theme_BlackWhiteAndRed ul.bmlt_table_header_weekday_list li
 {
     background-color:#BE202D;
     color:white;
 }
 
-div.bmlt_table_display_div_theme_BlackWiteAndRed ul.bmlt_table_header_weekday_list li,
-div.bmlt_table_display_div_theme_BlackWiteAndRed .bmlt_table_header_weekday_list li span.bmlt_table_weekday_span
+div.bmlt_table_display_div_theme_BlackWhiteAndRed ul.bmlt_table_header_weekday_list li,
+div.bmlt_table_display_div_theme_BlackWhiteAndRed .bmlt_table_header_weekday_list li span.bmlt_table_weekday_span
 {
     border-color: white;
 }
 
-div.bmlt_table_display_div_theme_BlackWiteAndRed ul.bmlt_table_header_weekday_list li.bmlt_table_mouseover
+div.bmlt_table_display_div_theme_BlackWhiteAndRed ul.bmlt_table_header_weekday_list li.bmlt_table_mouseover
 {
     color: black;
 }
@@ -51,7 +51,7 @@ div.bmlt_table_display_div_theme_BlackWiteAndRed ul.bmlt_table_header_weekday_li
 /************************************************************/
 /*          The selected tab reverses the colors.           */
 /************************************************************/
-div.bmlt_table_display_div_theme_BlackWiteAndRed ul.bmlt_table_header_weekday_list li.is_selected
+div.bmlt_table_display_div_theme_BlackWhiteAndRed ul.bmlt_table_header_weekday_list li.is_selected
 {
     background-color: white;
     border-color: #BE202D;
@@ -64,20 +64,20 @@ div.bmlt_table_display_div_theme_BlackWiteAndRed ul.bmlt_table_header_weekday_li
 /************************************************************/
 /*                      The table header                    */
 /************************************************************/
-div.bmlt_table_display_div_theme_BlackWiteAndRed ul.bmlt_table_header_ul,
-div.bmlt_table_display_div_theme_BlackWiteAndRed ul.bmlt_table_header_ul li
+div.bmlt_table_display_div_theme_BlackWhiteAndRed ul.bmlt_table_header_ul,
+div.bmlt_table_display_div_theme_BlackWhiteAndRed ul.bmlt_table_header_ul li
 {
     border-color: white;
 }
 
-div.bmlt_table_display_div_theme_BlackWiteAndRed ul.bmlt_table_header_ul li
+div.bmlt_table_display_div_theme_BlackWhiteAndRed ul.bmlt_table_header_ul li
 {
     background-color:#BE202D;
     border-color: white;
     color:white;
 }
 
-div.bmlt_table_display_div_theme_BlackWiteAndRed ul.bmlt_table_header_ul li.bmlt_table_header_li span.bmlt_table_mouseover
+div.bmlt_table_display_div_theme_BlackWhiteAndRed ul.bmlt_table_header_ul li.bmlt_table_header_li span.bmlt_table_mouseover
 {
     color: black;
 }
@@ -85,22 +85,22 @@ div.bmlt_table_display_div_theme_BlackWiteAndRed ul.bmlt_table_header_ul li.bmlt
 /************************************************************/
 /*           Selected Element Sort Direction Image          */
 /************************************************************/
-div.bmlt_table_display_div_theme_BlackWiteAndRed ul.bmlt_table_header_ul li.bmlt_table_header_li span.bmlt_table_header_selected.bmlt_table_header_selected_sort_direction_asc
+div.bmlt_table_display_div_theme_BlackWhiteAndRed ul.bmlt_table_header_ul li.bmlt_table_header_li span.bmlt_table_header_selected.bmlt_table_header_selected_sort_direction_asc
 {
     background-image:url("##-IMAGEDIR-##TableSortAsc.gif");
 }
 
-div.bmlt_table_display_div_theme_BlackWiteAndRed ul.bmlt_table_header_ul li.bmlt_table_header_li span.bmlt_table_header_selected.bmlt_table_header_selected_sort_direction_asc.bmlt_table_mouseover
+div.bmlt_table_display_div_theme_BlackWhiteAndRed ul.bmlt_table_header_ul li.bmlt_table_header_li span.bmlt_table_header_selected.bmlt_table_header_selected_sort_direction_asc.bmlt_table_mouseover
 {
     background-image:url("##-IMAGEDIR-##TableSortAsc_mouseover.gif");
 }
 
-div.bmlt_table_display_div_theme_BlackWiteAndRed ul.bmlt_table_header_ul li.bmlt_table_header_li span.bmlt_table_header_selected.bmlt_table_header_selected_sort_direction_desc
+div.bmlt_table_display_div_theme_BlackWhiteAndRed ul.bmlt_table_header_ul li.bmlt_table_header_li span.bmlt_table_header_selected.bmlt_table_header_selected_sort_direction_desc
 {
     background-image:url("##-IMAGEDIR-##TableSortDesc.gif");
 }
 
-div.bmlt_table_display_div_theme_BlackWiteAndRed ul.bmlt_table_header_ul li.bmlt_table_header_li span.bmlt_table_header_selected.bmlt_table_header_selected_sort_direction_desc.bmlt_table_mouseover
+div.bmlt_table_display_div_theme_BlackWhiteAndRed ul.bmlt_table_header_ul li.bmlt_table_header_li span.bmlt_table_header_selected.bmlt_table_header_selected_sort_direction_desc.bmlt_table_mouseover
 {
     background-image:url("##-IMAGEDIR-##TableSortDesc_mouseover.gif");
 }
@@ -109,16 +109,16 @@ div.bmlt_table_display_div_theme_BlackWiteAndRed ul.bmlt_table_header_ul li.bmlt
 /*                       The table Data                     */
 /************************************************************/
 
-div.bmlt_table_display_div_theme_BlackWiteAndRed ul.bmlt_table_data_ul li.bmlt_table_data_ul_li
+div.bmlt_table_display_div_theme_BlackWhiteAndRed ul.bmlt_table_data_ul li.bmlt_table_data_ul_li
 {
 }
 
-div.bmlt_table_display_div_theme_BlackWiteAndRed ul.bmlt_table_data_ul li.bmlt_table_data_ul_li.bmlt_row_even
+div.bmlt_table_display_div_theme_BlackWhiteAndRed ul.bmlt_table_data_ul li.bmlt_table_data_ul_li.bmlt_row_even
 {
     background-color:rgba(0, 0, 0, 0.1);
 }
 
-div.bmlt_table_display_div_theme_BlackWiteAndRed ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_formats div.bmlt_formats_div span
+div.bmlt_table_display_div_theme_BlackWhiteAndRed ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_formats div.bmlt_formats_div span
 {
     background-color:#BE202D;
     color:white;
@@ -126,12 +126,12 @@ div.bmlt_table_display_div_theme_BlackWiteAndRed ul.bmlt_table_data_ul li.bmlt_t
     cursor:pointer;
 }
 
-div.bmlt_table_display_div_theme_BlackWiteAndRed ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_formats div.bmlt_formats_div span.bmlt_table_mouseover
+div.bmlt_table_display_div_theme_BlackWhiteAndRed ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_formats div.bmlt_formats_div span.bmlt_table_mouseover
 {
     color:black;
 }
 
-div.bmlt_table_display_div_theme_BlackWiteAndRed ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_comments span
+div.bmlt_table_display_div_theme_BlackWhiteAndRed ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_comments span
 {
     font-style:italic;
 }
