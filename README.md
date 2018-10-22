@@ -24,7 +24,7 @@ CHANGELIST
 
 ***Version 3.9.4* ** *- TBD*
 
-- Added the "BlackWiteAndRed" theme.
+- Added the "BlackWhiteAndRed" theme.
 
 ***Version 3.9.3* ** *- July 31, 2018*
 
