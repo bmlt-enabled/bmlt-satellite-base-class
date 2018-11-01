@@ -15,5 +15,6 @@
     }],
     "require": {
         "bmlt/bmlt-satellite-driver": "dev-master"
-    }
+    },
+    "minimum-stability": "dev"
 }
