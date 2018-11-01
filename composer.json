@@ -1,5 +1,5 @@
 {
-    "name": "danny/bmlt-satellite-base-class",
+    "name": "bmlt/bmlt-satellite-base-class",
     "description": "This is a generic CMS plugin class for a BMLT satellite client.",
     "type": "library",
     "license": "GPL",
