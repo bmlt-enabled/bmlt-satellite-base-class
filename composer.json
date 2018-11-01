@@ -1,0 +1,19 @@
+{
+    "name": "danny/bmlt-satellite-base-class",
+    "description": "This is a generic CMS plugin class for a BMLT satellite client.",
+    "type": "library",
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "Chris Marshall",
+            "email": "cmarshall@mac.com"
+        }
+    ],
+    "repositories": [{
+        "url": "https://bitbucket.org/radius314/bmlt-satellite-driver",
+        "type": "git"
+    }],
+    "require": {
+        "bmlt/bmlt-satellite-driver": "dev-master"
+    }
+}
