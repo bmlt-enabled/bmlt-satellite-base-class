@@ -29,7 +29,7 @@
 // define ( '_DEBUG_MODE_', 1 ); //Uncomment for easier JavaScript debugging.
 
 // Include the satellite driver class.
-require_once ( dirname ( __FILE__ ).'/vendor/bmlt/bmlt-satellite-driver/bmlt_satellite_controller.class.php' );
+require_once ( __DIR__ .'/vendor/bmlt/bmlt-satellite-driver/bmlt_satellite_controller.class.php' );
 
 global $g_lang_keys;
 global $g_my_languages;
