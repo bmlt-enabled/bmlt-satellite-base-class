@@ -14,6 +14,8 @@ It requires PHP 5.0 or above.
 
 This class uses the BMLT Satellite "Driver" Class, which is available [on BitBucket, here](https://bitbucket.org/bmlt/bmlt-satellite-driver.git).
 
+To pull the latest driver run `composer install`.
+
 INSTALLATION
 ------------
 
@@ -25,6 +27,7 @@ CHANGELIST
 ***Version 3.9.4* ** *- TBD*
 
 - Added the "BlackWhiteAndRed" theme.
+- Migrated to composer and removed git submodules.
 
 ***Version 3.9.3* ** *- July 31, 2018*
 
