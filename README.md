@@ -8,7 +8,7 @@ This project is a CMS "base." It has a lot of functionality built into it, such 
 REQUIREMENTS
 ------------
 
-The project requires a functioning [BMLT root server](http://magshare.org/blog/installing-the-root-server/).
+The project requires a functioning [BMLT root server](https://bmlt.app/blog/installing-the-root-server/).
 It does not implement a root server, but connects to an existing one.
 It requires PHP 5.0 or above.
 
@@ -19,7 +19,7 @@ To pull the latest driver run `composer install`.
 INSTALLATION
 ------------
 
-The instructions for employment of this class are on [this page](http://bmlt.magshare.net/specific-topics/bmlt-satellite-base-class/).
+The instructions for employment of this class are on [this page](https://bmlt.app/specific-topics/bmlt-satellite-base-class/).
 
 CHANGELIST
 ----------
@@ -144,7 +144,7 @@ CHANGELIST
 ***Version 3.3.7* ** *- May 2, 2016*
 
 - Fixed a very minor issue with the table styles, where they were not being properly optimized (makes the page load a teensy-tiny bit slower).
-- Added the ability to load only a selected theme for the [bmlt_table](http://bmlt.magshare.net/satellites/the-fast-table-display/) shortcode (only used by BMLT Basic).
+- Added the ability to load only a selected theme for the [bmlt_table](https://bmlt.appsatellites/the-fast-table-display/) shortcode (only used by BMLT Basic).
 - Changed the README markdown to adjust for Atlassian's new format.
 
 ***Version 3.3.6* ** *- April 21, 2016*
@@ -158,18 +158,18 @@ CHANGELIST
 
 - Refactored to make the code more straightforward and reusable.
 - Refactored this file for better markdown display.
-- Fixed a bug, in which the proper throbber was not being displayed where multiple themes are on the same page for the [bmlt_table](http://bmlt.magshare.net/satellites/the-fast-table-display/) shortcode.
-- Added a "Complex Table" preset to the unit test (Displays multiple [bmlt_table](http://bmlt.magshare.net/satellites/the-fast-table-display/) shortcodes).
+- Fixed a bug, in which the proper throbber was not being displayed where multiple themes are on the same page for the [bmlt_table](https://bmlt.app/satellites/the-fast-table-display/) shortcode.
+- Added a "Complex Table" preset to the unit test (Displays multiple [bmlt_table](https://bmlt.app/satellites/the-fast-table-display/) shortcodes).
 
 ***Version 3.3.3* ** *- April 9, 2016*
 
-- Fixed a bug that could bork the [bmlt_table](http://bmlt.magshare.net/satellites/the-fast-table-display/) shortcode when there are no parameters specified.
+- Fixed a bug that could bork the [bmlt_table](https://bmlt.app/satellites/the-fast-table-display/) shortcode when there are no parameters specified.
 
 ***Version 3.3.2* ** *- April 9, 2016*
 
-- Added a "breaker" div element to the [bmlt_table](http://bmlt.magshare.net/satellites/the-fast-table-display/) display.
+- Added a "breaker" div element to the [bmlt_table](https://bmlt.app/satellites/the-fast-table-display/) display.
 - Work on improving code quality.
-- Added more style hooks to the [bmlt_table](http://bmlt.magshare.net/satellites/the-fast-table-display/) shortcode display.
+- Added more style hooks to the [bmlt_table](https://bmlt.app/satellites/the-fast-table-display/) shortcode display.
 - Fixed a bug in the simple and table shortcodes that didn't honor just the settings ID (without the "##-##" splitter).
 
 ***Version 3.3.1* ** *- April 6, 2016*
@@ -177,14 +177,14 @@ CHANGELIST
 - Made the weekday tab overflow hidden.
 - The format circles now float to the right.
 - Added a display for days with no meetings.
-- Fixed a bug in the [bmlt_table](http://bmlt.magshare.net/satellites/the-fast-table-display/) shortcode, where the loading throbber would get replaced too quickly when selecting weekday tabs.
+- Fixed a bug in the [bmlt_table](https://bmlt.app/satellites/the-fast-table-display/) shortcode, where the loading throbber would get replaced too quickly when selecting weekday tabs.
 - Corrected a bug that allowed "00:00" times (should be "Midnight").
 - Fixed a bug in the "simple map search" that displayed the info windows offset.
 
 ***Version 3.3.0* ** *- April 4, 2016*
 
 - Made it so that we can have specialized themes, amied at only certain shortcodes.
-- Complete rewrite of the [bmlt_table](http://bmlt.magshare.net/satellites/the-fast-table-display/) shortcode. Made it so that it can have simpler theming and be more responsive.
+- Complete rewrite of the [bmlt_table](https://bmlt.app/satellites/the-fast-table-display/) shortcode. Made it so that it can have simpler theming and be more responsive.
 
 ***Version 3.2.4* ** *- April 1, 2016 (Happy April Fools'!)*
 
@@ -213,7 +213,7 @@ CHANGELIST
 - Fixed the "Google Maps included two or more times" warning.
 - Removed unnecessary new search and duration items from admin page.
 - Fixed an issue where WordPress would sometimes HTML-entity the ampersand (&) character.
-- Added a very significant new shortcode: [bmlt_table](http://bmlt.magshare.net/satellites/the-fast-table-display/).
+- Added a very significant new shortcode: [bmlt_table](https://bmlt.app/satellites/the-fast-table-display/).
 
 ***Version 3.1.1* ** *- March 16, 2016*
 
@@ -274,7 +274,7 @@ CHANGELIST
 
 - Minor German localization corrections.
 - Removed the useless "New Search URL" text box from the admin.
-- Fixed a number of JavaScript issues with the [bmlt_mobile](http://bmlt.magshare.net/satellites/cms-plugins/shortcodes/) shortcode.
+- Fixed a number of JavaScript issues with the [bmlt_mobile](https://bmlt.app/satellites/cms-plugins/shortcodes/) shortcode.
 
 ***Version 3.0.17* ** *- July 1, 2013*
 
@@ -299,7 +299,7 @@ CHANGELIST
 
 ***Version 3.0.11* ** *- May 13, 2013*
 
-- Reduced the number of times that the marker redraw is called in the standard [bmlt](http://bmlt.magshare.net/what-is-the-bmlt/sample-bmlt-searches/the-standard-bmlt-shortcode/) shortcode handler.
+- Reduced the number of times that the marker redraw is called in the standard [bmlt](https://bmlt.app/what-is-the-bmlt/sample-bmlt-searches/the-standard-bmlt-shortcode/) shortcode handler.
 - Fixed an issue with CSS that caused displayed maps to get funky.
 
 ***Version 3.0.10* ** *- May 5, 2013*
@@ -369,7 +369,7 @@ CHANGELIST
 ***Version 1.2.1* ** *- December 31, 2011*
 
 - Removed some errant CSS.
-- Now strip out the [bmlt_mobile](http://bmlt.magshare.net/satellites/cms-plugins/shortcodes/) shortcode if the page is not a mobile page. This allows the shortcode to be used, as the comment version is stripped by "code cleaners."
+- Now strip out the [bmlt_mobile](https://bmlt.app/satellites/cms-plugins/shortcodes/) shortcode if the page is not a mobile page. This allows the shortcode to be used, as the comment version is stripped by "code cleaners."
 
 ***Version 1.2.0** -November 22, 2011
 
