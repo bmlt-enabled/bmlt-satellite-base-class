@@ -10,7 +10,7 @@
         }
     ],
     "repositories": [{
-        "url": "https://bitbucket.org/radius314/bmlt-satellite-driver",
+        "url": "https://bitbucket.org/bmlt/bmlt-satellite-driver",
         "type": "git"
     }],
     "require": {
