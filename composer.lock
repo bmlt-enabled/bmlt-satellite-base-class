@@ -4,15 +4,15 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5d2a17078d62f2c1ce05a582ba761618",
+    "content-hash": "2c3d90f16d8c966a706f1a6b09857459",
     "packages": [
         {
             "name": "bmlt/bmlt-satellite-driver",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://bitbucket.org/radius314/bmlt-satellite-driver",
-                "reference": "fdb4f517178464b82cf4080018e54eeca7051454"
+                "url": "https://bitbucket.org/bmlt/bmlt-satellite-driver",
+                "reference": "f7e928579dde1179180438a5fc4bc51ad6fdd52f"
             },
             "type": "library",
             "license": [
@@ -20,17 +20,19 @@
             ],
             "authors": [
                 {
-                    "name": "Chris Marshall",
-                    "email": "cmarshall@mac.com"
+                    "name": "littlegreenviper"
+                },
+                {
+                    "name": "radius314"
                 }
             ],
             "description": "Provides low-level communication to the BMLT Root Server.",
-            "time": "2018-11-01T00:12:44+00:00"
+            "time": "2018-11-14T17:14:57+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": {
         "bmlt/bmlt-satellite-driver": 20
     },

@@ -10,7 +10,7 @@
   }],
   "repositories": [{
     "url": "https://bitbucket.org/bmlt/bmlt-satellite-driver",
-    "type": "git",
+    "type": "git"
   }],
   "require": {
     "bmlt/bmlt-satellite-driver": "dev-master"
