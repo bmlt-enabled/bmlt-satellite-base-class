@@ -4,15 +4,15 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2c3d90f16d8c966a706f1a6b09857459",
+    "content-hash": "11948272d48d04813bd259be99d2d8a1",
     "packages": [
         {
             "name": "bmlt/bmlt-satellite-driver",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://bitbucket.org/bmlt/bmlt-satellite-driver",
-                "reference": "f7e928579dde1179180438a5fc4bc51ad6fdd52f"
+                "url": "https://github.com/bmlt-enabled/bmlt-satellite-driver",
+                "reference": "1fcad76015c0d620cf2a38e9fb77822e15c9fa3c"
             },
             "type": "library",
             "license": [
@@ -27,7 +27,7 @@
                 }
             ],
             "description": "Provides low-level communication to the BMLT Root Server.",
-            "time": "2018-11-14T17:14:57+00:00"
+            "time": "2018-11-14T17:09:17+00:00"
         }
     ],
     "packages-dev": [],
