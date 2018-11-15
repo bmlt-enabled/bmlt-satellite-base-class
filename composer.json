@@ -9,7 +9,7 @@
     "name": "radius314"
   }],
   "repositories": [{
-    "url": "https://bitbucket.org/bmlt/bmlt-satellite-driver",
+    "url": "https://github.com/bmlt-enabled/bmlt-satellite-driver",
     "type": "git"
   }],
   "require": {
