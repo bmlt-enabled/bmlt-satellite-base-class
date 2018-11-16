@@ -9,7 +9,6 @@
     "name": "radius314"
   }],
   "require": {
-    "bmlt/bmlt-satellite-driver": "dev-master"
-  },
-  "minimum-stability": "dev"
+    "bmlt/bmlt-satellite-driver": "1.0.19"
+  }
 }
