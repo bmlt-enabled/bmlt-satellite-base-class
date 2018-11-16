@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/bmlt-enabled/bmlt-satellite-driver.git",
-                "reference": "ab70fb31f24243d1ffd7738c4c6c4e5c9ad7da6f"
+                "reference": "92389e83b6f3620fe4cc92538e588e2742826c83"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bmlt-enabled/bmlt-satellite-driver/zipball/ab70fb31f24243d1ffd7738c4c6c4e5c9ad7da6f",
-                "reference": "ab70fb31f24243d1ffd7738c4c6c4e5c9ad7da6f",
+                "url": "https://api.github.com/repos/bmlt-enabled/bmlt-satellite-driver/zipball/92389e83b6f3620fe4cc92538e588e2742826c83",
+                "reference": "92389e83b6f3620fe4cc92538e588e2742826c83",
                 "shasum": ""
             },
             "type": "library",
@@ -34,7 +34,7 @@
                 }
             ],
             "description": "Provides low-level communication to the BMLT Root Server.",
-            "time": "2018-11-16T02:35:23+00:00"
+            "time": "2018-11-16T04:23:53+00:00"
         }
     ],
     "packages-dev": [],
