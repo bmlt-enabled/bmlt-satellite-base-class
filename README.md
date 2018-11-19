@@ -24,10 +24,20 @@ The instructions for employment of this class are on [this page](https://bmlt.ap
 CHANGELIST
 ----------
 
-***Version 3.9.4* ** *- TBD*
+***Version 3.9.7* ** *- TBD*
 
-- Added the "BlackWhiteAndRed" theme.
-- Migrated to composer and removed git submodules.
+- Added the "NERNA" theme.
+
+***Version 3.9.6* ** *- November 16, 2018*
+
+- Fixed dependency issues.
+
+***Version 3.9.4* ** *- November 15, 2018*
+
+- Moved the home Git repo to GitHub.
+- Added the BlackWhiteAndRed theme.
+- Migrated to use composer instead of submodules.
+- Compatibility tested for WP 5.0.0.
 
 ***Version 3.9.3* ** *- July 31, 2018*
 

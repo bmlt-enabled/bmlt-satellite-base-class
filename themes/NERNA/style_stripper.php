@@ -1,9 +1,7 @@
 <?php
 /***********************************************************************/
-/**     \file   loadTable_StyleFiles.php
+/**     \file   style_stripper.php
 
-    \version 3.9.7
-    
     \brief  This file reads in a CSS file, and optimizes it by stripping
     out comments and whitespace. It will also try to GZ compress the output
     using the standard OB functions. It can make a HUGE difference in size.
@@ -18,9 +16,12 @@
     This file is part of the BMLT Common Satellite Base Class Project. The project GitHub
     page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class
     
+    This file is part of the BMLT Common Satellite Base Class Project. The project GitHub
+    page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class
+    
     This file is part of the Basic Meeting List Toolbox (BMLT).
     
-    Find out more at: https://bmlt.app
+    Find out more at: http://bmlt.magshare.org
     
     BMLT is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -35,46 +36,36 @@
     You should have received a copy of the GNU General Public License
     along with this code.  If not, see <http://www.gnu.org/licenses/>.
 */
-
-function loadTable_StyleFile ( $in_theme_dirname )
-    {
-    $pathname = dirname ( __FILE__ )."$in_theme_dirname/table_styles.css";
-    $opt = file_get_contents ( $pathname );
-    $opt = preg_replace( "|\/\*.*?\*\/|s", "", $opt );
-    $opt = preg_replace( "|\s+|s", " ", $opt );
-    return $opt;
-    }
-
-$opt = loadTable_StyleFile ( "" );
-
-$dir_res = opendir ( dirname ( __FILE__ ).'/themes' );
-
-if ( $dir_res )
-    {
-    while ( false !== ( $dir_name = readdir ( $dir_res ) ) )
+    $pathname = $_GET['filename'];
+    if ( !preg_match ( "|/|", $pathname ) )
         {
-        if ( !preg_match ( '/^\./', $dir_name ) && is_dir ( dirname ( __FILE__ ).'/themes/'.$dir_name ) && file_exists ( dirname ( __FILE__ ).'/themes/'.$dir_name.'/table_styles.css' ) )
+        if ( preg_match ( "|.*?\.css$|", $pathname ) )
             {
-            $theme = isset ( $_GET['theme'] ) ? $_GET['theme'] : '';
+            $pathname = dirname ( __FILE__ )."/$pathname";
+            $opt = file_get_contents ( $pathname );
+            $opt = preg_replace( "|\/\*.*?\*\/|s", "", $opt );
+            $opt = preg_replace( "|\s+|s", " ", $opt );
             
-            if ( !$theme || ($dir_name == $theme) )
+            header ( "Content-type: text/css" );
+            
+            $handler = null;
+            
+            if ( zlib_get_coding_type() === false )
                 {
-                $opt .= loadTable_StyleFile ( "/themes/$dir_name" );
+                $handler = 'ob_gzhandler';
                 }
+            
+            ob_start($handler);
+            echo $opt;
+            ob_end_flush();
+            }
+        else
+            {
+            echo "FILE MUST BE A .CSS FILE!";
             }
         }
-
-    header ( "Content-type: text/css;charset=utf-8" );
-
-    $handler = null;
-
-    if ( zlib_get_coding_type() === false )
+    else
         {
-        $handler = 'ob_gzhandler';
+        echo "YOU CANNOT LEAVE THE DIRECTORY!";
         }
-        
-    ob_start($handler);
-    echo $opt;
-    ob_end_flush();
-    }
 ?>
