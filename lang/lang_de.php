@@ -26,12 +26,12 @@
 *   along with this code.  If not, see <http://www.gnu.org/licenses/>.                      *
 ********************************************************************************************/
 
-require_once ( dirname ( __FILE__ ) . '/BMLT_Localized_BaseClass.class.php' );
+require_once(dirname(__FILE__) . '/BMLT_Localized_BaseClass.class.php');
 
 class BMLT_Localized_BaseClass_de extends BMLT_Localized_BaseClass
+{
+    function __construct()
     {
-    function __construct ()
-        {
         /************************************************************************************//**
         *                           STATIC DATA MEMBERS (LOCALIZABLE)                           *
         ****************************************************************************************/
@@ -381,6 +381,5 @@ class BMLT_Localized_BaseClass_de extends BMLT_Localized_BaseClass
         ****************************************************************************************/
         $this->local_quicksearch_select_option_0 = 'Suche Überall';
         $this->local_quicksearch_display_too_large = 'Too many results. Please narrow your search.';
-        }
-    };
-?>
+    }
+};
