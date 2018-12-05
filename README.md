@@ -24,9 +24,10 @@ The instructions for employment of this class are on [this page](https://bmlt.ap
 CHANGELIST
 ----------
 
-***Version 3.9.7* ** *- TBD*
+***Version 3.9.7* ** *- December 5, 2018*
 
 - Added the "NERNA" theme.
+- Minor adjustments to the German localization.
 
 ***Version 3.9.6* ** *- November 16, 2018*
 
