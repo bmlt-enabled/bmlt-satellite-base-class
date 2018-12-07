@@ -24,6 +24,9 @@ The instructions for employment of this class are on [this page](https://bmlt.ap
 CHANGELIST
 ----------
 
+***Version 3.9.8* ** *- December 7, 2018*
+- Only define ROOTPATH if not defined already.
+
 ***Version 3.9.7* ** *- December 5, 2018*
 
 - Added the "NERNA" theme.
