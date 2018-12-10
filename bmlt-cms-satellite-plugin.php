@@ -3939,9 +3939,35 @@ abstract class BMLTPlugin
     protected function get_ajax_base_uri()
         {
         // We try to account for SSL and unusual TCP ports.
-        $port = $_SERVER['SERVER_PORT'];
-        // IIS puts "off" in the HTTPS field, so we need to test for that.
-        $https = (!empty ( $_SERVER['HTTPS'] ) && (($_SERVER['HTTPS'] !== 'off') || ($port == 443))); 
+        $port = null;
+        $https = false;
+        $from_proxy = array_key_exists("HTTP_X_FORWARDED_PROTO", $_SERVER);
+        if ($from_proxy)
+            {
+            // If the port is specified in the header, use it. If not, default to 80
+            // for http and 443 for https. We can't trust what's in $_SERVER['SERVER_PORT']
+            // because something in front of the server is fielding the request.
+            if (array_key_exists("HTTP_X_FORWARDED_PORT", $_SERVER))
+                {
+                $port = $_SERVER['HTTP_X_FORWARDED_PORT'];
+                }
+            elseif ($https)
+                {
+                $port = 443;
+                }
+            else
+                {
+                $port = 80;
+                }
+            $https = $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https';
+            }
+        else
+            {
+            $port = $_SERVER['SERVER_PORT'];
+            // IIS puts "off" in the HTTPS field, so we need to test for that.
+            $https = (!empty ($_SERVER['HTTPS']) && (($_SERVER['HTTPS'] !== 'off') || ($port == 443)));
+            }
+
         // This implements an "emergency" override" of the standard port system.
         // In some servers, a misconfiguration could report an improper port for HTTPS.
         // In this case, the server admin could define BMLT_HTTPS_PORT to be the integer TCP port to use for HTTPS.
@@ -3950,6 +3976,7 @@ abstract class BMLTPlugin
         // define ( 'BMLT_HTTPS_PORT', 443 );
         // in the wp-config file.
         $port = ($https && defined ( BMLT_HTTPS_PORT ) && BMLT_HTTPS_PORT) ? BMLT_HTTPS_PORT : $port;
+
         $server_path = $_SERVER['SERVER_NAME'];
         $my_path = $_SERVER['PHP_SELF'];
         $server_path .= trim ( (($https && ($port != 443)) || (!$https && ($port != 80))) ? ':'.$port : '', '/' );
