@@ -3949,7 +3949,7 @@ abstract class BMLTPlugin
             // because something in front of the server is fielding the request.
             if (array_key_exists("HTTP_X_FORWARDED_PORT", $_SERVER))
                 {
-                $port = $_SERVER['HTTP_X_FORWARDED_PORT'];
+                $port = intval($_SERVER['HTTP_X_FORWARDED_PORT']);
                 }
             elseif ($https)
                 {
