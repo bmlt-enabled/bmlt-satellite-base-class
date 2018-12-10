@@ -3947,6 +3947,7 @@ abstract class BMLTPlugin
             // If the port is specified in the header, use it. If not, default to 80
             // for http and 443 for https. We can't trust what's in $_SERVER['SERVER_PORT']
             // because something in front of the server is fielding the request.
+            $https = $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https';
             if (array_key_exists("HTTP_X_FORWARDED_PORT", $_SERVER))
                 {
                 $port = intval($_SERVER['HTTP_X_FORWARDED_PORT']);
@@ -3959,7 +3960,6 @@ abstract class BMLTPlugin
                 {
                 $port = 80;
                 }
-            $https = $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https';
             }
         else
             {
