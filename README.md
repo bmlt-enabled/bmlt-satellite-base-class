@@ -24,6 +24,9 @@ The instructions for employment of this class are on [this page](https://bmlt.ap
 CHANGELIST
 ----------
 
+***Version 3.9.9* ** *- December 14, 2018*
+- Form javascript URLs correctly when behind a firewall or load balancer.
+
 ***Version 3.9.8* ** *- December 7, 2018*
 - Only define ROOTPATH if not defined already.
 
