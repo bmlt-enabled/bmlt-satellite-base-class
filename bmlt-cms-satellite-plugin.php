@@ -3,7 +3,7 @@
 *   \file   bmlt-cms-satellite-plugin.php                                                   *
 *                                                                                           *
 *   \brief  This is a generic CMS plugin class for a BMLT satellite client.                 *
-*   \version 3.9.9                                                                          *
+*   \version 3.9.10                                                                          *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -633,6 +633,11 @@ abstract class BMLTPlugin
         if ( !isset ( $BMLTOptions['default_geo_width'] ) || !$BMLTOptions['default_geo_width'] )
             {
             $BMLTOptions['default_geo_width'] = self::$default_geo_width;
+            }
+
+        if ( !isset ( $BMLTOptions['root_server'] ) || !$BMLTOptions['root_server'] )
+            {
+                $BMLTOptions['root_server'] = self::$default_rootserver;
             }
         
         return $BMLTOptions;
@@ -3049,17 +3054,17 @@ abstract class BMLTPlugin
             // If we have a shortcut icon, set it here.
             if ( defined ('_SHORTCUT_LOC_' ) )
                 {
-                $ret .= '<link rel="SHORTCUT ICON" href="'.$this->process_text ( _SHORTCUT_LOC_ ).'" />';
+                $ret .= '<link rel="SHORTCUT ICON" href="'.$this->process_text ( '_SHORTCUT_LOC_' ).'" />';
                 }
             
             // Set the appropriate page title.
             if ( isset ( $this->my_http_vars['do_search'] ) )
                 {
-                $ret .= '<title>'.$this->process_text ( $local_mobile_results_page_title ).'</title>';
+                $ret .= '<title>'.$this->process_text ( $this->my_current_language->local_mobile_results_page_title ).'</title>';
                 }
             else
                 {
-                $ret .= '<title>'.$this->process_text ( $local_mobile_results_form_title ).'</title>';
+                $ret .= '<title>'.$this->process_text ( $this->my_current_language->local_mobile_results_page_title ).'</title>';
                 }
             }
         
@@ -3195,7 +3200,7 @@ abstract class BMLTPlugin
             $ret .= '<div class="link_one_line_submit">';
             if ( !isset ( $this->my_http_vars['WML'] ) )  // This silly thing is to prevent WAI warnings.
                 {
-                $ret .= '<label for="submit_button" style="display:none">'.$this->process_text ( _SEARCH_SUBMIT_ ).'</label>';
+                $ret .= '<label for="submit_button" style="display:none">'.$this->process_text ( $this->my_current_language->local_search_submit_button ).'</label>';
                 }
             $ret .= '<input id="submit_button" type="submit" value="'.$this->process_text ( $this->my_current_language->local_search_submit_button ).'"';
             if ( !isset ( $this->my_http_vars['WML'] ) )
@@ -3217,6 +3222,8 @@ abstract class BMLTPlugin
             $ret .= '<option value="today">'.$this->process_text ( $this->my_current_language->local_search_today ).'</option>';
             $ret .= '<option value="tomorrow">'.$this->process_text ( $this->my_current_language->local_search_tomorrow ).'</option>';
             $ret .= '</select>';
+            $ret .= '</p>';
+            $ret .= '<p>';
             $ret .= '<anchor>';
             $ret .= '<go href="'.htmlspecialchars ( $this->get_ajax_mobile_base_uri() ).'" method="get">';
             $ret .= '<postfield name="address" value="$(address)"/>';
@@ -3230,7 +3237,7 @@ abstract class BMLTPlugin
                 }
             $ret .= '<postfield name="bmlt_settings_id" value="'.$this->my_http_vars['bmlt_settings_id'].'" />';
             $ret .= '</go>';
-            $ret .= $this->process_text ( $local_search_submit_button );
+            $ret .= $this->process_text ( $this->my_current_language->local_search_submit_button );
             $ret .= '</anchor>';
             $ret .= '</p>';
             }
@@ -3774,7 +3781,7 @@ abstract class BMLTPlugin
                 }
             else
                 {
-                $ret .= '<card title="'.$this->process_text (_FORM_TITLE_).'">';
+                $ret .= '<card title="'.$this->process_text ($this->my_current_language->local_mobile_results_form_title).'">';
                 $ret .= $this->BMLTPlugin_draw_address_search_form();
                 $ret .= '</card>';
                 }
