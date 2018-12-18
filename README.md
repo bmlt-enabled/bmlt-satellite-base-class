@@ -24,7 +24,7 @@ The instructions for employment of this class are on [this page](https://bmlt.ap
 CHANGELIST
 ----------
 
-***Version 4.0.0* ** *- UNRELEASED*
+***Version 3.9.10* ** *- UNRELEASED*
 - Fix for the BMLT_CHANGES shortcode.
 
 ***Version 3.9.9* ** *- December 14, 2018*
