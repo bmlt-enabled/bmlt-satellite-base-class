@@ -634,13 +634,6 @@ abstract class BMLTPlugin
             {
             $BMLTOptions['default_geo_width'] = self::$default_geo_width;
             }
-
-        if ( !isset ( $BMLTOptions['root_server'] ) || !$BMLTOptions['root_server'] )
-            {
-                $BMLTOptions['root_server'] = self::$default_rootserver;
-            }
-        
-        return $BMLTOptions;
         }
     
     /************************************************************************************//**
