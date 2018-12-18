@@ -2818,7 +2818,7 @@ abstract class BMLTPlugin
     *                                                                                       *
     *   \returns A string. The DOCTYPE to be displayed.                                     *
     ****************************************************************************************/
-    static function setup_one_change (  $in_change_array,       ///< One change record
+    function setup_one_change (  $in_change_array,       ///< One change record
                                         $in_single_uri = null   ///< If there was a specific single meeting URI, we pass it in here.
                                         )
         {
