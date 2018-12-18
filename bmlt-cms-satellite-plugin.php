@@ -634,6 +634,8 @@ abstract class BMLTPlugin
             {
             $BMLTOptions['default_geo_width'] = self::$default_geo_width;
             }
+
+        return $BMLTOptions;
         }
     
     /************************************************************************************//**
