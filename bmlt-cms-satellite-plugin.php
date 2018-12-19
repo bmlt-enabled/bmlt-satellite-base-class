@@ -3,7 +3,7 @@
 *   \file   bmlt-cms-satellite-plugin.php                                                   *
 *                                                                                           *
 *   \brief  This is a generic CMS plugin class for a BMLT satellite client.                 *
-*   \version 3.9.9                                                                          *
+*   \version 3.9.10                                                                          *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -2800,7 +2800,7 @@ abstract class BMLTPlugin
                         $the_new_content = '<div class="bmlt_change_record_div">';
                         foreach ( $changes as $change )
                             {
-                            $the_new_content .= self::setup_one_change ( $change, $single_uri );
+                            $the_new_content .= $this->setup_one_change ( $change, $single_uri );
                             }
                         
                         $the_new_content .= '</div>';
@@ -2818,7 +2818,7 @@ abstract class BMLTPlugin
     *                                                                                       *
     *   \returns A string. The DOCTYPE to be displayed.                                     *
     ****************************************************************************************/
-    static function setup_one_change (  $in_change_array,       ///< One change record
+    function setup_one_change (  $in_change_array,       ///< One change record
                                         $in_single_uri = null   ///< If there was a specific single meeting URI, we pass it in here.
                                         )
         {
