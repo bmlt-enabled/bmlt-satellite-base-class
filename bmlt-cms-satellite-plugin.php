@@ -2367,7 +2367,7 @@ abstract class BMLTPlugin
                     }
                 
                 // See if there is an options ID in the parameter list.
-                if ( (is_array ( count ( $param_array ) ) && (count ( $param_array ) > 1)) || (intval ( $param_array[0] ) && preg_match ( '/^\d+$/', $param_array[0] )) )
+                if ( (is_array ( $param_array ) && (count ( $param_array ) > 1)) || (intval ( $param_array[0] ) && preg_match ( '/^\d+$/', $param_array[0] )) )
                     {
                     $options_id = intval ( $param_array[0] );
                     if ( count ( $param_array ) == 1 )
