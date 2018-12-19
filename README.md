@@ -26,6 +26,7 @@ CHANGELIST
 
 ***Version 3.9.10* ** *- UNRELEASED*
 - Fix for the BMLT_CHANGES shortcode.
+- WML 1.1 fix for BMLT_MOBILE shortcode.
 
 ***Version 3.9.9* ** *- December 14, 2018*
 - Form javascript URLs correctly when behind a firewall or load balancer.
