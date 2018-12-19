@@ -30,9 +30,10 @@
 
 // Include the satellite driver class.
 if (!defined('ROOTPATH')) {
-    define('ROOTPATH', __DIR__);
+    require_once ( __DIR__.'/../bmlt-satellite-driver/bmlt_satellite_controller.class.php' );
+} else {
+    require_once ( ROOTPATH .'/vendor/bmlt/bmlt-satellite-driver/bmlt_satellite_controller.class.php' );
 }
-require_once ( ROOTPATH .'/vendor/bmlt/bmlt-satellite-driver/bmlt_satellite_controller.class.php' );
 
 global $g_lang_keys;
 global $g_my_languages;
