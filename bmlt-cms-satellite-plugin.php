@@ -2800,7 +2800,7 @@ abstract class BMLTPlugin
                         $the_new_content = '<div class="bmlt_change_record_div">';
                         foreach ( $changes as $change )
                             {
-                            $the_new_content .= self::setup_one_change ( $change, $single_uri );
+                            $the_new_content .= $this->setup_one_change ( $change, $single_uri );
                             }
                         
                         $the_new_content .= '</div>';
