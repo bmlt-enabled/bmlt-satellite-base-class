@@ -30,9 +30,10 @@
 
 // Include the satellite driver class.
 if (!defined('ROOTPATH')) {
-    define('ROOTPATH', __DIR__);
+    require_once ( __DIR__.'/../bmlt-satellite-driver/bmlt_satellite_controller.class.php' );
+} else {
+    require_once ( ROOTPATH .'/vendor/bmlt/bmlt-satellite-driver/bmlt_satellite_controller.class.php' );
 }
-require_once ( ROOTPATH .'/vendor/bmlt/bmlt-satellite-driver/bmlt_satellite_controller.class.php' );
 
 global $g_lang_keys;
 global $g_my_languages;
@@ -2366,7 +2367,7 @@ abstract class BMLTPlugin
                     }
                 
                 // See if there is an options ID in the parameter list.
-                if ( (is_array ( count ( $param_array ) ) && (count ( $param_array ) > 1)) || (intval ( $param_array[0] ) && preg_match ( '/^\d+$/', $param_array[0] )) )
+                if ( (is_array ( $param_array ) && (count ( $param_array ) > 1)) || (intval ( $param_array[0] ) && preg_match ( '/^\d+$/', $param_array[0] )) )
                     {
                     $options_id = intval ( $param_array[0] );
                     if ( count ( $param_array ) == 1 )
