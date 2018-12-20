@@ -24,7 +24,7 @@ The instructions for employment of this class are on [this page](https://bmlt.ap
 CHANGELIST
 ----------
 
-***Version 3.9.10* ** *- UNRELEASED*
+***Version 3.9.10* ** *- December 20, 2018*
 - Fix for the BMLT_CHANGES shortcode.
 - WML 1.1 fix for BMLT_MOBILE shortcode.
 - ROOTPATH must ALWAYS be defined, but if its not we must account for that properly.
