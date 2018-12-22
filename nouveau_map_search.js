@@ -4852,7 +4852,8 @@ NouveauMapSearch.prototype.sFromLatLngToPixel = function (  in_Latng,
 /*******************************************************************************************/
 NouveauMapSearch.prototype.sortByKey = function (array, key) {
     return array.sort(function(a, b) {
-        var x = a[key].toLowerCase(); var y = b[key].toLowerCase();
+        var x = a[key] === undefined ? '' : a[key].toLowerCase();
+        var y = b[key] === undefined ? '' : b[key].toLowerCase();
         return ((x < y) ? -1 : ((x > y) ? 1 : 0));
     });
 };
