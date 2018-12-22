@@ -944,7 +944,8 @@ function NouveauMapSearch ( in_unique_id,           ///< The UID of the containe
         inner.className = 'bmlt_nouveau_advanced_formats_content_inner_div';
         
         this.m_advanced_format_checkboxes_array = new Array;
-        
+        this.sortByKey(this.m_format_descriptions, 'key_string');
+
         for ( var c = 0; this.m_format_descriptions && (c < this.m_format_descriptions.length); c++ )
             {
             var format_id = this.m_format_descriptions[c].id;
@@ -1069,6 +1070,7 @@ function NouveauMapSearch ( in_unique_id,           ///< The UID of the containe
                                                             )
         {
         var main_dl = null;
+        this.sortByKey(this.m_service_bodies, 'name');
         
         for ( var c = 0; c < this.m_service_bodies.length; c++ )
             {
@@ -4842,3 +4844,15 @@ NouveauMapSearch.prototype.sFromLatLngToPixel = function (  in_Latng,
 
     return ret;
     };
+
+/*******************************************************************************************/
+/**
+ \brief Sort By Key
+ */
+/*******************************************************************************************/
+NouveauMapSearch.prototype.sortByKey = function (array, key) {
+    return array.sort(function(a, b) {
+        var x = a[key].toLowerCase(); var y = b[key].toLowerCase();
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+    });
+};
