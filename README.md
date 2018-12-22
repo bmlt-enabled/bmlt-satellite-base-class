@@ -24,7 +24,7 @@ The instructions for employment of this class are on [this page](https://bmlt.ap
 CHANGELIST
 ----------
 
-***Version 3.9.11* ** *- December 20, 2018*
+***Version 3.9.11* ** *- UNRELEASED*
 - Added sorting to map search for service bodies and formats.
 
 ***Version 3.9.10* ** *- December 20, 2018*
