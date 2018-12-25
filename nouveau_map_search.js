@@ -236,7 +236,7 @@ function NouveauMapSearch ( in_unique_id,           ///< The UID of the containe
         this.m_display_div.className = 'bmlt_nouveau_div';
         this.m_display_div.id = this.m_uid;
         var id = this.m_uid;
-        this.m_display_div.onkeypress = function () { NouveauMapSearch.prototype.sKeyDown ( id ); };
+        this.m_display_div.onkeypress = function (event) { NouveauMapSearch.prototype.sKeyDown ( id, event ); };
         
         // Next, create the spec/results switch.
         this.buildDOMTree_ResultsSpec_Switch();
@@ -4505,8 +4505,7 @@ NouveauMapSearch.prototype.sRadiusChanged = function (  in_uid          ///< The
 /****************************************************************************************//**
 *	\brief This just traps the enter key for the text entry.                                *
 ********************************************************************************************/
-NouveauMapSearch.prototype.sKeyDown = function (    in_id       ///< The unique ID of the object (establishes context).
-                                                )
+NouveauMapSearch.prototype.sKeyDown = function ( in_id, event )     ///< The unique ID of the object (establishes context).
     {
     if ( event.keyCode == 13 )
         {

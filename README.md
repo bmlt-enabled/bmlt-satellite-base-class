@@ -24,6 +24,9 @@ The instructions for employment of this class are on [this page](https://bmlt.ap
 CHANGELIST
 ----------
 
+***Version 3.9.12* ** *- UNRELEASED*
+- Fixed an issue where the Enter key would not submit the meeting search form when using Firefox on standard [[BMLT]] shortcode.
+
 ***Version 3.9.11* ** *- December 24, 2018*
 - Added sorting to map search for service bodies and formats.
 
