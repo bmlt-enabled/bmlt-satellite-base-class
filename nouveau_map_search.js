@@ -4105,12 +4105,8 @@ NouveauMapSearch.prototype.sGeoCallback = function ( in_geocode_response,	///< T
 	{
     eval ('var context = g_instance_' + in_uid + '_js_handler');
 	context.lookupCompleteHandler ( in_geocode_response );
-	
-	var old_geocoder = context.m_geocoder;
 
     context.m_geocoder = null;
-    
-    google.maps.event.removeListener ( old_geocoder );
 	};
 
 /****************************************************************************************//**
