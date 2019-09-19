@@ -24,6 +24,9 @@ The instructions for employment of this class are on [this page](https://bmlt.ap
 CHANGELIST
 ----------
 
+***Version 3.9.13* ** *- UNRELEASED*
+- Added the "Australia" theme.
+
 ***Version 3.9.12* ** *- December 24, 2018*
 - Fixed an issue where the Enter key would not submit the meeting search form when using Firefox on standard [[BMLT]] shortcode.
 - Fixed an issue with Google Map API being called wrong.
