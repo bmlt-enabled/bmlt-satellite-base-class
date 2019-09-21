@@ -208,10 +208,15 @@ BMLTQuickSearch.prototype.domBuilder_PopulateWeekdayBody_one_meeting = function 
     var rowElement = document.createElement ( 'ul' );
     rowElement.className = 'bmlt_quicksearch_data_ul';
     var comments = null;
-    
+    var location_info = null;
+
     if ( in_json_data.comments )
         {
         comments = in_json_data.comments;
+        };
+    if ( in_json_data.location_info )
+        {
+        location_info = in_json_data.location_info;
         };
     
     var latitude = in_json_data.latitude;
@@ -235,6 +240,11 @@ BMLTQuickSearch.prototype.domBuilder_PopulateWeekdayBody_one_meeting = function 
         {
         var comments_column = this.domBuilder_PopulateWeekdayBody_one_column ( 'comments', in_json_data.comments.toString(), 0, 0 );
         rowElement.appendChild ( comments_column );
+        };
+    if ( in_json_data.location_info )
+        {
+        var location_info_column = this.domBuilder_PopulateWeekdayBody_one_column ( 'location_info', in_json_data.location_info.toString(), 0, 0 );
+        rowElement.appendChild ( location_info_column );
         };
     
     var div = document.createElement ( 'div' );

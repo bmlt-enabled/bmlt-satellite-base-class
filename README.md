@@ -26,6 +26,7 @@ CHANGELIST
 
 ***Version 3.9.13* ** *- UNRELEASED*
 - Added the "Australia" theme.
+- Added location_info field to [[bmlt_table]] shortcode, this can be hidden with css.
 
 ***Version 3.9.12* ** *- December 24, 2018*
 - Fixed an issue where the Enter key would not submit the meeting search form when using Firefox on standard [[BMLT]] shortcode.
