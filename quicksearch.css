@@ -149,6 +149,7 @@ div#bmlt_page_items.bmlt_page_items div.quicksearch_div ul.bmlt_quicksearch_data
 
 div#bmlt_page_items.bmlt_page_items div.quicksearch_div ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_weekday span.first_span,
 div#bmlt_page_items.bmlt_page_items div.quicksearch_div ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_comments span.first_span,
+div#bmlt_page_items.bmlt_page_items div.quicksearch_div ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_location_info span.first_span,
 div#bmlt_page_items.bmlt_page_items div.quicksearch_div ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_formats span.first_span
 {
     padding-left: 0;
@@ -185,6 +186,12 @@ div#bmlt_page_items.bmlt_page_items div.quicksearch_div ul.bmlt_quicksearch_data
 }
 
 div#bmlt_page_items.bmlt_page_items div.quicksearch_div ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_comments
+{
+    clear:left;
+    width: 100%;
+}
+
+div#bmlt_page_items.bmlt_page_items div.quicksearch_div ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_location_info
 {
     clear:left;
     width: 100%;

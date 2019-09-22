@@ -145,3 +145,8 @@ div.bmlt_table_display_div_theme_GNYR2 ul.bmlt_table_data_ul li.bmlt_table_data_
 {
     font-style:italic;
 }
+
+div.bmlt_table_display_div_theme_GNYR2 ul.bmlt_table_data_ul li.bmlt_table_data_ul_li_ul_li_location_info span
+{
+    font-style:italic;
+}
