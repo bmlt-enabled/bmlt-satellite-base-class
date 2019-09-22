@@ -4113,19 +4113,25 @@ NouveauMapSearch.prototype.sGeoCallback = function ( in_geocode_response,	///< T
 *	\brief This reacts to a Service body container checkbox being hit.                      *
 *          It will either completely select, or completely unselect its members.            *
 ********************************************************************************************/
-NouveauMapSearch.prototype.sServiceBodyContainerCheckHit = function (   in_checkbox_object,
-                                                                        in_uid  ///< The unique ID of the object (establishes context).
-                                                                    )
-    {
+NouveauMapSearch.prototype.sServiceBodyContainerCheckHit = function (in_checkbox_object, in_uid) {
     eval ('var context = g_instance_' + in_uid + '_js_handler');
-    for ( var c = 0; c < context.m_advanced_service_bodies_checkboxes_array.length; c++ )
-        {
-        if ( in_checkbox_object.value == context.m_advanced_service_bodies_checkboxes_array[c].parent_service_body_id )
-            {
+    if (context) {
+        this.checkOrUncheckChildren(context, in_checkbox_object, in_uid);
+    }
+}
+
+/****************************************************************************************//**
+ *	\brief This reacts to a checking or unchecking.                                          *
+ *          It will either completely select, or completely unselect its members.            *
+ ********************************************************************************************/
+NouveauMapSearch.prototype.checkOrUncheckChildren = function (context, in_checkbox_object, in_uid) {
+    for (var c = 0; c < context.m_advanced_service_bodies_checkboxes_array.length; c++) {
+        if (in_checkbox_object.value == context.m_advanced_service_bodies_checkboxes_array[c].parent_service_body_id) {
             context.m_advanced_service_bodies_checkboxes_array[c].checked = in_checkbox_object.checked;
-            };
-        };
-    };
+            this.checkOrUncheckChildren(context, context.m_advanced_service_bodies_checkboxes_array[c], context.m_advanced_service_bodies_checkboxes_array[c].id);
+        }
+    }
+}
 
 /****************************************************************************************//**
 *	\brief This reacts to the location checkbox changing. It validates the go buttons.      *
