@@ -12,7 +12,7 @@ The project requires a functioning [BMLT root server](https://bmlt.app/blog/inst
 It does not implement a root server, but connects to an existing one.
 It requires PHP 5.0 or above.
 
-This class uses the BMLT Satellite "Driver" Class, which is available [on BitBucket, here](https://bitbucket.org/bmlt/bmlt-satellite-driver.git).
+This class uses the BMLT Satellite "Driver" Class, which is available [on GitHub, here](https://github.com/bmlt-enabled/bmlt-satellite-driver.git).
 
 To pull the latest driver run `composer install`.
 
