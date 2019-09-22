@@ -24,7 +24,7 @@ The instructions for employment of this class are on [this page](https://bmlt.ap
 CHANGELIST
 ----------
 
-***Version 3.10.0* ** *- September 21, 2019*
+***Version 3.10.0* ** *- UNRELEASED*
 - Added the "Australia" theme.
 - Added location_info field to [[bmlt_table]] and [[bmlt_quicksearch]] shortcodes.
 
