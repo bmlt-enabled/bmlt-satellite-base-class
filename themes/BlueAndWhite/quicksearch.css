@@ -78,6 +78,11 @@ div#bmlt_page_items.bmlt_page_items div.quicksearch_div.quicksearch_theme_BlueAn
     font-style:italic;
 }
 
+div#bmlt_page_items.bmlt_page_items div.quicksearch_div.quicksearch_theme_BlueAndWhite ul.bmlt_quicksearch_data_ul li.bmlt_quicksearch_data_ul_li_location_info
+{
+    font-style:italic;
+}
+
 div#bmlt_page_items.bmlt_page_items div.quicksearch_div.quicksearch_theme_BlueAndWhite input.quicksearch_form_submit_button
 {
     background-color: white;
