@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['load_5fparams',['load_params',['../d5/dc1/class_b_m_l_t_plugin.html#a2398955b048505900af213faad244bbb',1,'BMLTPlugin']]],
-  ['lookuplocation',['lookupLocation',['../de/dd3/map__search_8js.html#a32aa258a2242554833115e2078ad547a',1,'map_search.js']]]
+  ['replace_5fshortcode_317',['replace_shortcode',['../d5/dc1/class_b_m_l_t_plugin.html#af960dde870b3ff53e61d8e73c24deece',1,'BMLTPlugin']]],
+  ['return_5fadmin_5fpage_318',['return_admin_page',['../d5/dc1/class_b_m_l_t_plugin.html#ae8650a90f37d8edc5dd7c82aed927af8',1,'BMLTPlugin']]]
 ];

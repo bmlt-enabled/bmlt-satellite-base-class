@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['javascript_2ejs',['javascript.js',['../d7/de3/javascript_8js.html',1,'']]],
-  ['js_5fstripper_2ephp',['js_stripper.php',['../d2/dfc/js__stripper_8php.html',1,'']]]
+  ['style_5fstripper_2ephp_258',['style_stripper.php',['../d6/dee/style__stripper_8php.html',1,'(Global Namespace)'],['../d1/db9/themes_2_australia_2style__stripper_8php.html',1,'(Global Namespace)'],['../dd/d0a/themes_2_black_white_and_red_2style__stripper_8php.html',1,'(Global Namespace)'],['../d9/d0e/themes_2_blue_and_red_2images_2style__stripper_8php.html',1,'(Global Namespace)'],['../de/de4/themes_2_blue_and_red_2style__stripper_8php.html',1,'(Global Namespace)'],['../d6/dd8/themes_2_blue_and_white_2style__stripper_8php.html',1,'(Global Namespace)'],['../d3/dc7/themes_2default_2style__stripper_8php.html',1,'(Global Namespace)'],['../d2/d1d/themes_2_g_n_y_r_2style__stripper_8php.html',1,'(Global Namespace)'],['../dd/d17/themes_2_g_n_y_r2_2style__stripper_8php.html',1,'(Global Namespace)'],['../db/dfa/themes_2_green_and_gold_2style__stripper_8php.html',1,'(Global Namespace)'],['../df/d80/themes_2_grey_and_maroon_2style__stripper_8php.html',1,'(Global Namespace)'],['../db/de3/themes_2_n_e_r_n_a_2style__stripper_8php.html',1,'(Global Namespace)']]]
 ];

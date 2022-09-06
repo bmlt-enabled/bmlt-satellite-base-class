@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['javascript_2ejs',['javascript.js',['../d7/de3/javascript_8js.html',1,'']]],
-  ['js_5fstripper_2ephp',['js_stripper.php',['../d2/dfc/js__stripper_8php.html',1,'']]]
+  ['replace_5fshortcode_217',['replace_shortcode',['../d5/dc1/class_b_m_l_t_plugin.html#af960dde870b3ff53e61d8e73c24deece',1,'BMLTPlugin']]],
+  ['return_5fadmin_5fpage_218',['return_admin_page',['../d5/dc1/class_b_m_l_t_plugin.html#ae8650a90f37d8edc5dd7c82aed927af8',1,'BMLTPlugin']]]
 ];
