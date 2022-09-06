@@ -120,8 +120,7 @@ class BMLTUTestPlugin extends BMLTPlugin
     *   \returns a string, processed by WP.                                                 *
     ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function process_text(  $in_string  ///< The string to be processed.
-                                    )
+    public function process_text($in_string) ///< The string to be processed.
     {
         // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
         $in_string = htmlspecialchars($in_string);
@@ -135,8 +134,7 @@ class BMLTUTestPlugin extends BMLTPlugin
     *   \returns an associative array, with the option settings.                            *
     ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    protected function cms_get_option( $in_option_key   ///< The name of the option
-                                        )
+    protected function cms_get_option($in_option_key)  ///< The name of the option
     {
         // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
         $ret = null;
@@ -202,8 +200,7 @@ class BMLTUTestPlugin extends BMLTPlugin
     *   \brief Deletes a stored option (allows CMS abstraction).                            *
     ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    protected function cms_delete_option( $in_option_key   ///< The name of the option
-                                        )
+    protected function cms_delete_option($in_option_key)  ///< The name of the option
     {
         // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
         $ret = false;
@@ -308,8 +305,7 @@ class BMLTUTestPlugin extends BMLTPlugin
     *   \brief returns any necessary head content.                                          *
     ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function standard_head( $in_text = null   ///< This is the page content text.
-                            )
+    public function standard_head($in_text = null)  ///< This is the page content text.
     {
         // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
         $this->ajax_router();
