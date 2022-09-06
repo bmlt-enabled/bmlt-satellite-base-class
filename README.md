@@ -24,6 +24,9 @@ The instructions for employment of this class are on [this page](https://bmlt.ap
 CHANGELIST
 ----------
 
+***Version 3.11.0* ** *- September 6, 2022*
+- Updates driver to use JSON instead of XML endpoints.
+
 ***Version 3.10.0* ** *- September 22, 2019*
 - Added the "Australia" theme.
 - Added location_info field to [[bmlt_table]] and [[bmlt_quicksearch]] shortcodes.

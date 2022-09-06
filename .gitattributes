@@ -3,4 +3,4 @@
 .gitignore export-ignore
 README.md export-ignore
 unit_test.php export-ignore
-.travis.yml export-ignore
+.github export-ignore

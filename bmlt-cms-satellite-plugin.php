@@ -206,8 +206,7 @@ abstract class BMLTPlugin
     *   \brief Adapts all the static data members to the selected language.                 *
     ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function adapt_to_lang( $in_lang = "en" ///< The language code. Default is English.
-                                    )
+    public function adapt_to_lang($in_lang = "en") ///< The language code. Default is English.
     {
         // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
         global $g_my_languages;
@@ -322,8 +321,7 @@ abstract class BMLTPlugin
     *   \returns A string. The supported type ('xhtml', 'xhtml_mp' or 'wml')                    *
     ********************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public static function mobile_sniff_ua(   $in_http_vars   ///< The query variables.
-                                    )
+    public static function mobile_sniff_ua($in_http_vars)  ///< The query variables.
     {
         // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
         if (isset($in_http_vars['WML']) && (intval($in_http_vars['WML']) == 1)) {
@@ -485,11 +483,11 @@ abstract class BMLTPlugin
     *                                                                                       *
     *   \returns an associative array, with the option settings.                            *
     ****************************************************************************************/
-    public function getBMLTOptions( $in_option_number = null  /**<    It is possible to store multiple options.
-                                                                If there is a number here (>=1), that will be used.
-                                                                If <0, a new option will be returned (not saved).
-                                                        */
-                            )
+    /**<    It is possible to store multiple options.
+    If there is a number here (>=1), that will be used.
+    If <0, a new option will be returned (not saved).
+     */
+    public function getBMLTOptions($in_option_number = null)
     {
         $BMLTOptions = $this->geDefaultBMLTOptions(); // Start off with the defaults.
         
@@ -686,8 +684,7 @@ abstract class BMLTPlugin
     *                                                                                       *
     *   \returns a boolean. true if success.                                                *
     ****************************************************************************************/
-    public function setAdmin2Options( $in_options ///< An array. The options to be stored.
-                                )
+    public function setAdmin2Options($in_options) ///< An array. The options to be stored.
     {
         $ret = false;
         
@@ -749,8 +746,7 @@ abstract class BMLTPlugin
     *   \returns a boolean. true if success.                                                *
     ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function delete_options_by_id( $in_option_id   ///< The ID of the option to delete.
-                                    )
+    public function delete_options_by_id($in_option_id)   ///< The ID of the option to delete.
     {
         // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
         $ret = false;
@@ -775,13 +771,13 @@ abstract class BMLTPlugin
     *                                                                                       *
     *   \returns a boolean. true if success.                                                *
     ****************************************************************************************/
+    /**<    The index of the option to delete.
+    It can be 1 -> the number of available options.
+    For safety's sake, this cannot be optional.
+    We cannot delete the first (primary) option if there are no others.
+     */
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function delete_options( $in_option_number /**<    The index of the option to delete.
-                                                        It can be 1 -> the number of available options.
-                                                        For safety's sake, this cannot be optional.
-                                                        We cannot delete the first (primary) option if there are no others.
-                                                */
-                            )
+    public function delete_options($in_option_number)
     {
         // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
         $first_num = intval($in_option_number);
@@ -841,8 +837,7 @@ abstract class BMLTPlugin
     *   \brief This does any admin actions necessary.                                       *
     ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function process_admin_page( &$out_option_number   ///< If an option number needs to be selected, it is set here.
-                                )
+    public function process_admin_page(&$out_option_number)   ///< If an option number needs to be selected, it is set here.
     {
         // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
         $out_option_number = 1;
@@ -1625,8 +1620,7 @@ abstract class BMLTPlugin
     *   \returns a string, containing the "massaged" content.                               *
     ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function content_filter( $in_the_content   ///< The content in need of filtering.
-                            )
+    public function content_filter($in_the_content)   ///< The content in need of filtering.
     {
         // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
         $old_content = $in_the_content; // We check to see if we added anything.
@@ -1663,8 +1657,7 @@ abstract class BMLTPlugin
     *   \returns a string, containing the content.                                          *
     ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function display_quicksearch( $in_content     ///< This is the content to be filtered.
-                                    )
+    public function display_quicksearch($in_content)     ///< This is the content to be filtered.
     {
         // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
         $my_form_next_id = 0;
@@ -1752,7 +1745,7 @@ abstract class BMLTPlugin
                         ||  ('location_municipality' == $params)
                         ||  ('location_city_subsection' == $params)
                         ||  ('location_nation' == $params)
-                        ||  ('location_neighborhood' == $params) ) {
+                        ||  ('location_neighborhood' == $params)) {
                         $field_key = $params;
                         $params = '';
                     } else {
@@ -1765,7 +1758,7 @@ abstract class BMLTPlugin
                                 ||  ('location_municipality' == $field_key)
                                 ||  ('location_city_subsection' == $field_key)
                                 ||  ('location_nation' == $field_key)
-                                ||  ('location_neighborhood' == $field_key)) ) {
+                                ||  ('location_neighborhood' == $field_key))) {
                                 $field_key = '';
                             }
                             $params = $pArray[1];
@@ -1883,8 +1876,7 @@ abstract class BMLTPlugin
     *   \returns a string, containing the content.                                          *
     ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function display_bmlt_nouveau($in_content      ///< This is the content to be filtered.
-                                    )
+    public function display_bmlt_nouveau($in_content)      ///< This is the content to be filtered.
     {
         // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
         $theshortcode = 'bmlt';
@@ -2086,8 +2078,7 @@ abstract class BMLTPlugin
     *   \returns a string, containing the content.                                          *
     ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function display_simple_search($in_content      ///< This is the content to be filtered.
-                                    )
+    public function display_simple_search($in_content)      ///< This is the content to be filtered.
     {
         // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
         $options_id = $this->cms_get_page_settings_id($in_content);
@@ -2129,8 +2120,7 @@ abstract class BMLTPlugin
     *   \returns a string, containing the content.                                          *
     ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function display_table_search($in_content      ///< This is the content to be filtered.
-                                    )
+    public function display_table_search($in_content)      ///< This is the content to be filtered.
     {
         // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
         $my_table_next_id = 0;
@@ -2210,8 +2200,7 @@ abstract class BMLTPlugin
     *   \returns a string, containing the content.                                          *
     ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function display_new_map_search($in_content      ///< This is the content to be filtered.
-                                    )
+    public function display_new_map_search($in_content)      ///< This is the content to be filtered.
     {
         // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
         $options_id = $this->cms_get_page_settings_id($in_content);
@@ -2373,8 +2362,7 @@ abstract class BMLTPlugin
     *   \returns A string. The XHTML to be displayed.                                       *
     ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function BMLTPlugin_map_search_global_javascript_stuff( $in_options_id  ///< The ID of our currently selected options.
-                                                            )
+    public function BMLTPlugin_map_search_global_javascript_stuff($in_options_id)  ///< The ID of our currently selected options.
     {
         // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
         $options = $this->getBMLTOptions_by_id($in_options_id);
@@ -2431,8 +2419,7 @@ abstract class BMLTPlugin
     *   \returns A string. The XHTML to be displayed.                                       *
     ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function BMLTPlugin_nouveau_map_search_global_javascript_stuff($in_options_id  ///< The ID of our currently selected options.
-                                                                    )
+    public function BMLTPlugin_nouveau_map_search_global_javascript_stuff($in_options_id) ///< The ID of our currently selected options.
     {
         // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
         $options = $this->getBMLTOptions_by_id($in_options_id);
@@ -2488,8 +2475,7 @@ abstract class BMLTPlugin
     *   \returns a string, containing the content.                                          *
     ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function display_changes(  $in_content      ///< This is the content to be filtered.
-                                )
+    public function display_changes($in_content)     ///< This is the content to be filtered.
     {
         // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
         $options_id = $this->cms_get_page_settings_id($in_content);
@@ -2644,8 +2630,7 @@ abstract class BMLTPlugin
     *   \returns A string. The DOCTYPE to be displayed.                                     *
     ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public static function BMLTPlugin_select_doctype(  $in_http_vars   ///< The query variables
-                                            )
+    public static function BMLTPlugin_select_doctype($in_http_vars)  ///< The query variables
     {
         // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
         $ret = '';
@@ -3540,8 +3525,7 @@ abstract class BMLTPlugin
     *   \returns a string, processed by the CMS.                                            *
     ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    protected function process_text(   $in_string  ///< The string to be processed.
-                                    )
+    protected function process_text($in_string) ///< The string to be processed.
     {
         // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
         return htmlspecialchars($in_string);
@@ -3776,8 +3760,7 @@ function array2json(
 *   \brief Very quick check for mobile client.                                          *
 *   \returns a Boolean. TRUE, if the client is mobile.                                  *
 ****************************************************************************************/
-function BMLTPlugin_weAreMobile($in_http_vars   ///< The HTTP query variables, as an associative array.
-                                )
+function BMLTPlugin_weAreMobile($in_http_vars)   ///< The HTTP query variables, as an associative array.
 {
     $language = BMLTPlugin::mobile_sniff_ua($in_http_vars);
     return ($language == 'wml') || ($language == 'xhtml_mp') || ($language == 'smartphone');
