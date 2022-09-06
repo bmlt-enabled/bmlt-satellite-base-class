@@ -742,7 +742,7 @@ static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="..
 <div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;                } elseif ($in_content = (isset($in_content) &amp;&amp; $in_content) ? $in_content : $in_text) {</div>
 <div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;                    $my_option_id_content = parent::cms_get_page_settings_id($in_content, $in_check_mobile);</div>
 <div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;                    </div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;                    $my_option_id = $my_option_id_content ? $my_option_id_content : isset($my_option_id) ? $my_option_id : <span class="keyword">null</span>;</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;                    $my_option_id = $my_option_id_content ? $my_option_id_content : (isset($my_option_id) ? $my_option_id : <span class="keyword">null</span>);</div>
 <div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;                }</div>
 <div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;                </div>
 <div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;                <span class="keywordflow">if</span> (!isset($my_option_id) || !$my_option_id) {   <span class="comment">// If nothing else gives, we go for the default (first) settings.</span></div>
