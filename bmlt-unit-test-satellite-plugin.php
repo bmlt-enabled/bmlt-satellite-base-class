@@ -274,7 +274,7 @@ class BMLTUTestPlugin extends BMLTPlugin
                 } elseif ($in_content = (isset($in_content) && $in_content) ? $in_content : $in_text) {
                     $my_option_id_content = parent::cms_get_page_settings_id($in_content, $in_check_mobile);
                     
-                    $my_option_id = $my_option_id_content ? $my_option_id_content : isset($my_option_id) ? $my_option_id : null;
+                    $my_option_id = $my_option_id_content ? $my_option_id_content : (isset($my_option_id) ? $my_option_id : null);
                 }
                 
                 if (!isset($my_option_id) || !$my_option_id) {   // If nothing else gives, we go for the default (first) settings.
