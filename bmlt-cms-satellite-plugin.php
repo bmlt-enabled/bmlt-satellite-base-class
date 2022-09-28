@@ -3571,7 +3571,7 @@ abstract class BMLTPlugin
         // Example:
         // define ( 'BMLT_HTTPS_PORT', 443 );
         // in the wp-config file.
-        $port = ($https && defined(BMLT_HTTPS_PORT) && BMLT_HTTPS_PORT) ? BMLT_HTTPS_PORT : $port;
+        $port = ($https && defined("BMLT_HTTPS_PORT") && BMLT_HTTPS_PORT) ? BMLT_HTTPS_PORT : $port;
 
         $server_path = $_SERVER['SERVER_NAME'];
         $my_path = $_SERVER['PHP_SELF'];
