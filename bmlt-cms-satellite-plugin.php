@@ -1824,7 +1824,7 @@ abstract class BMLTPlugin
                 $this->adapt_to_lang($options['lang']);
             }
                 
-            $display .= '';
+            $display = '';
 
             $text_ar = explode("\n", $in_text);
             
@@ -1852,7 +1852,7 @@ abstract class BMLTPlugin
                 $display .= 'document.getElementById(\'interactive_form_div\').style.display=\'block\';' . (defined('_DEBUG_MODE_') ? "\n" : '');
                 $display .= 'document.getElementById(\'meeting_search_select\').selectedIndex=0;' . (defined('_DEBUG_MODE_') ? "\n" : '');
                 $url = $this->get_plugin_path();
-                $img_url .= htmlspecialchars($url.'themes/'.$options['theme'].'/images/');
+                $img_url = htmlspecialchars($url.'themes/'.$options['theme'].'/images/');
                 
                 $display .= "var c_g_BMLTPlugin_images = '$img_url';" . (defined('_DEBUG_MODE_') ? "\n" : '');
                 $display .= '</script>';
@@ -2141,7 +2141,7 @@ abstract class BMLTPlugin
                 }
                 
                 // See if there is an options ID in the parameter list.
-                if ((is_array($param_array) && (count($param_array) > 1)) || (intval($param_array[0]) && preg_match('/^\d+$/', $param_array[0]))) {
+                if ((isset($param_array) && is_array($param_array) && (count($param_array) > 1)) || (isset($param_array) && intval($param_array[0] && preg_match('/^\d+$/', $param_array[0])))) {
                     $options_id = intval($param_array[0]);
                     if (count($param_array) == 1) {
                         $params = null;
@@ -3370,7 +3370,7 @@ abstract class BMLTPlugin
             
             $url = $this->get_plugin_path();
             
-            $throbber_loc .= htmlspecialchars($url.'themes/'.$options['theme'].'/images/Throbber.gif');
+            $throbber_loc = htmlspecialchars($url.'themes/'.$options['theme'].'/images/Throbber.gif');
             
             $ret .= '<div class="throbber_div"><img id="throbber" src="'.htmlspecialchars($throbber_loc).'" alt="AJAX Throbber" /></div>';
             $ret .= '</div>';
@@ -3427,8 +3427,8 @@ abstract class BMLTPlugin
     {
         if (!isset(self::$g_s_there_can_only_be_one) || (self::$g_s_there_can_only_be_one === null)) {
             self::$g_s_there_can_only_be_one = $this;
-            
-            $options = $this->getBMLTOptions_by_id($this->my_http_vars['bmlt_settings_id']);
+
+            $options = isset($this->my_http_vars['bmlt_settings_id']) && !empty($this->my_http_vars['bmlt_settings_id']) ? $this->getBMLTOptions_by_id($this->my_http_vars['bmlt_settings_id']) : null;
             
             $this->my_http_vars = array_merge_recursive($_GET, $_POST);
                 
