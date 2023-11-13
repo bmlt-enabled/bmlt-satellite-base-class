@@ -1,4 +1,5 @@
 <?php
+
 // English
 /****************************************************************************************//**
 *   \file   BMLT_Localized_BaseClass.class.php                                              *
@@ -252,18 +253,18 @@ abstract class BMLT_Localized_BaseClass
     var $local_table_header_tab_title_format       ;
     var $local_table_ante_meridian                 ;
     var $local_table_no_meetings_format            ;
-                                            
+
     /************************************************************************************//**
     *                      STATIC DATA MEMBERS (SPECIAL LOCALIZABLE)                        *
     ****************************************************************************************/
 
     /// This is the only localizable string that is not processed. This is because it contains HTML. However, it is also a "hidden" string that is only displayed when the browser does not support JS.
     var $local_no_js_warning; ///< This is the noscript presented for the old-style meeting search. It directs the user to the root server, which will support non-JS browsers.
-                                
+
     /************************************************************************************//**
     *                       STATIC DATA MEMBERS (NEW MAP LOCALIZABLE)                       *
     ****************************************************************************************/
-                                
+
     var $local_new_map_option_1_label;
     var $local_new_map_weekdays;
     var $local_new_map_all_weekdays;
@@ -342,6 +343,10 @@ abstract class BMLT_Localized_BaseClass
     /// This array has the weekdays, spelled out. Since weekdays start at 1 (Sunday), we consider 0 to be an error.
     var $local_weekdays;
     var $local_weekdays_short;
+
+    var $local_nouveau_default_duration;
+    var $local_quicksearch_select_option_0;
+    var $local_quicksearch_display_too_large;
 }
 // phpcs:enable PSR1.Classes.ClassDeclaration.MissingNamespace
 // phpcs:enable Squiz.Classes.ValidClassName.NotCamelCaps

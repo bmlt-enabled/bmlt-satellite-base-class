@@ -1,5 +1,7 @@
 <?php
+
 /***********************************************************************/
+
 /**     \file   js_stripper.php
 
     \brief  This file reads in a JavaScript file, and optimizes it by stripping
@@ -36,19 +38,19 @@
     $pathname = $_GET['filename'];
 if (!preg_match("|/|", $pathname)) {
     if (preg_match("|.*?\.js$|", $pathname)) {
-        $pathname = dirname(__FILE__)."/$pathname";
+        $pathname = dirname(__FILE__) . "/$pathname";
         $opt = file_get_contents($pathname);
         $opt = preg_replace("|\/\*.*?\*\/|s", "", $opt);
         $opt = preg_replace('#(?<!:)\/\/.*?\n#s', "", $opt);
         $opt = preg_replace("|\s+|s", " ", $opt);
         header("Content-type: text/javascript;charset=utf-8");
-            
+
         $handler = null;
-            
+
         if (zlib_get_coding_type() === false) {
             $handler = "ob_gzhandler";
         }
-            
+
         ob_start($handler);
         echo $opt;
         ob_end_flush();

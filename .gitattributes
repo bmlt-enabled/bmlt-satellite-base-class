@@ -4,3 +4,5 @@
 README.md export-ignore
 unit_test.php export-ignore
 .github export-ignore
+.phpcs export-ignore
+Makefile export-ignore

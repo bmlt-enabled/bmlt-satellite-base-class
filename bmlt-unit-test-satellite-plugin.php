@@ -1,5 +1,8 @@
 <?php
-/****************************************************************************************//**
+
+/****************************************************************************************/
+
+/**
 *   \file   bmlt-unit-test-satellite-plugin.php                                             *
 *                                                                                           *
 *   \brief  This is a standalone unit test plugin of a BMLT satellite client.               *
@@ -26,7 +29,7 @@
 ********************************************************************************************/
 
 // Include the satellite driver class.
-require_once(dirname(__FILE__).'/bmlt-cms-satellite-plugin.php');
+require_once(dirname(__FILE__) . '/bmlt-cms-satellite-plugin.php');
 
 /****************************************************************************************//**
 *   \class BMLTUTestPlugin                                                                  *
@@ -53,7 +56,7 @@ class BMLTUTestPlugin extends BMLTPlugin
         self::$default_map_zoom = 12;
         parent::__construct();
     }
-    
+
     /************************************************************************************//**
     *   \brief Return an HTTP path to the AJAX callback target.                             *
     *                                                                                       *
@@ -63,9 +66,9 @@ class BMLTUTestPlugin extends BMLTPlugin
     protected function get_admin_ajax_base_uri()
     {
         // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-        return $this->get_ajax_base_uri().'?utest_string=admin';
+        return $this->get_ajax_base_uri() . '?utest_string=admin';
     }
-    
+
     /************************************************************************************//**
     *   \brief Return an HTTP path to the basic admin form submit (action) URI              *
     *                                                                                       *
@@ -77,7 +80,7 @@ class BMLTUTestPlugin extends BMLTPlugin
         // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
         return $this->get_admin_ajax_base_uri();
     }
-    
+
     /************************************************************************************//**
     *   \brief Return an HTTP path to the AJAX callback target.                             *
     *                                                                                       *
@@ -92,11 +95,11 @@ class BMLTUTestPlugin extends BMLTPlugin
         $https = (!empty($_SERVER['HTTPS']) && (($_SERVER['HTTPS'] !== 'off') || ($port == 443)));
         $server_path = $_SERVER['SERVER_NAME'];
         $my_path = $_SERVER['PHP_SELF'];
-        $server_path .= trim((($https && ($port != 443)) || (!$https && ($port != 80))) ? ':'.$port : '', '/');
-        $server_path = 'http'.($https ? 's' : '').'://'.$server_path.$my_path;
+        $server_path .= trim((($https && ($port != 443)) || (!$https && ($port != 80))) ? ':' . $port : '', '/');
+        $server_path = 'http' . ($https ? 's' : '') . '://' . $server_path . $my_path;
         return $server_path;
     }
-    
+
     /************************************************************************************//**
     *   \brief Return an HTTP path to the plugin directory.                                 *
     *                                                                                       *
@@ -106,11 +109,11 @@ class BMLTUTestPlugin extends BMLTPlugin
     protected function get_plugin_path()
     {
         // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-        $ret = isset($this->my_http_vars['base_url']) ? $this->my_http_vars['base_url'] : dirname($this->get_ajax_base_uri()).'/';
-    
+        $ret = isset($this->my_http_vars['base_url']) ? $this->my_http_vars['base_url'] : dirname($this->get_ajax_base_uri()) . '/';
+
         return $ret;
     }
-    
+
     /************************************************************************************//**
     *   \brief This uses the CMS text processor (t) to process the given string.            *
     *                                                                                       *
@@ -124,7 +127,7 @@ class BMLTUTestPlugin extends BMLTPlugin
     {
         // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
         $in_string = htmlspecialchars($in_string);
-            
+
         return $in_string;
     }
 
@@ -138,18 +141,18 @@ class BMLTUTestPlugin extends BMLTPlugin
     {
         // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
         $ret = null;
-        
+
         session_start();
-        
+
         if (isset($_SESSION) && isset($_SESSION ['bmlt_settings'])) {
             $row = unserialize($_SESSION ['bmlt_settings']);
         } else {
             $row = array ( $this->geDefaultBMLTOptions() );
         }
-        
+
         if ($in_option_key != self::$admin2OptionsName) {
-            $index = max(1, intval(str_replace(self::$adminOptionsName.'_', '', $in_option_key)));
-            
+            $index = max(1, intval(str_replace(self::$adminOptionsName . '_', '', $in_option_key)));
+
             $ret = isset($row[$index - 1]) ? $row[$index - 1] : $defaults[$index - 1];
         } else {
             $ret = array ( 'num_servers' => count($row) );
@@ -157,7 +160,7 @@ class BMLTUTestPlugin extends BMLTPlugin
 
         return $ret;
     }
-    
+
     /************************************************************************************//**
     *   \brief This gets the admin options from the database (allows CMS abstraction).      *
     ****************************************************************************************/
@@ -168,34 +171,34 @@ class BMLTUTestPlugin extends BMLTPlugin
     ) {
         // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
         $ret = false;
-        
+
         $index = 0;
-        
+
         if ($in_option_key != self::$admin2OptionsName) {
-            $index = max(1, intval(str_replace(self::$adminOptionsName.'_', '', $in_option_key)));
+            $index = max(1, intval(str_replace(self::$adminOptionsName . '_', '', $in_option_key)));
 
             session_start();
-    
+
             if (isset($_SESSION) && isset($_SESSION ['bmlt_settings'])) {
                 $row_data = unserialize($_SESSION ['bmlt_settings']);
             } else {
                 $row_data = array ( $this->geDefaultBMLTOptions() );
             }
-            
+
             if (isset($row_data) && is_array($row_data) && count($row_data)) {
                 $row_data[$index - 1] = $in_option_value;
                 unset($_SESSION ['bmlt_settings']);
                 $_SESSION ['bmlt_settings'] = serialize($row_data);
-    
+
                 $ret = true;
             }
         } else {
             $ret = true; // Fake it, till you make it.
         }
-        
+
         return $ret;
     }
-    
+
     /************************************************************************************//**
     *   \brief Deletes a stored option (allows CMS abstraction).                            *
     ****************************************************************************************/
@@ -204,23 +207,23 @@ class BMLTUTestPlugin extends BMLTPlugin
     {
         // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
         $ret = false;
-        
+
         session_start();
-        
+
         if (isset($_SESSION ['bmlt_settings'])) {
             $row = unserialize($_SESSION ['bmlt_settings']);
-            
+
             if ($in_option_key != self::$admin2OptionsName) {
-                $index = max(1, intval(str_replace(self::$adminOptionsName.'_', '', $in_option_key)));
-                
+                $index = max(1, intval(str_replace(self::$adminOptionsName . '_', '', $in_option_key)));
+
                 unset($row[$index - 1]);
-                
+
                 $_SESSION ['bmlt_settings'] = serialize($row);
-    
+
                 $ret = true;
             }
         }
-        
+
         return $ret;
     }
 
@@ -236,7 +239,7 @@ class BMLTUTestPlugin extends BMLTPlugin
     ) {
         // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
         $ret = null;
-        
+
         return $ret;
     }
 
@@ -255,12 +258,12 @@ class BMLTUTestPlugin extends BMLTPlugin
     ) {
         // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
         $my_option_id = null;
-        
+
         if (!$in_check_mobile && isset($this->my_http_vars['bmlt_settings_id']) && is_array($this->getBMLTOptions($this->my_http_vars['bmlt_settings_id']))) {
             $my_option_id = $this->my_http_vars['bmlt_settings_id'];
         } else {
             $support_mobile = self::get_shortcode($in_text, 'bmlt_mobile');
-            
+
             if ($support_mobile === true) {
                 $options = $this->getBMLTOptions(1);
                 $support_mobile = strval($options['id']);
@@ -273,24 +276,24 @@ class BMLTUTestPlugin extends BMLTPlugin
                     $my_option_id = intval($this->my_http_vars['bmlt_settings_id']);
                 } elseif ($in_content = (isset($in_content) && $in_content) ? $in_content : $in_text) {
                     $my_option_id_content = parent::cms_get_page_settings_id($in_content, $in_check_mobile);
-                    
+
                     $my_option_id = $my_option_id_content ? $my_option_id_content : (isset($my_option_id) ? $my_option_id : null);
                 }
-                
+
                 if (!isset($my_option_id) || !$my_option_id) {   // If nothing else gives, we go for the default (first) settings.
                     $options = $this->getBMLTOptions(1);
                     $my_option_id = $options['id'];
                 }
             }
         }
-        
+
         return $my_option_id ;
     }
-        
+
     /************************************************************************************//**
     *                                   THE CMS CALLBACKS                                   *
     ****************************************************************************************/
-        
+
     /************************************************************************************//**
     *   \brief Presents the admin page.                                                     *
     ****************************************************************************************/
@@ -300,7 +303,7 @@ class BMLTUTestPlugin extends BMLTPlugin
         echo $this->return_admin_page();
     }
     // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-        
+
     /************************************************************************************//**
     *   \brief returns any necessary head content.                                          *
     ****************************************************************************************/
@@ -311,22 +314,22 @@ class BMLTUTestPlugin extends BMLTPlugin
         $this->ajax_router();
         $load_head = false;   // This is a throwback. It prevents the GM JS from being loaded if there is no directly specified settings ID.
         $head_content = "<!-- Added by the BMLT plugin 3.0. -->\n<meta http-equiv=\"X-UA-Compatible\" content=\"IE=EmulateIE7\" />\n<meta http-equiv=\"Content-Style-Type\" content=\"text/css\" />\n<meta http-equiv=\"Content-Script-Type\" content=\"text/javascript\" />\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n";
-        
+
         $support_mobile = $this->cms_get_page_settings_id($in_text, true);
-        
+
         if ($support_mobile) {
             $mobile_options = $this->getBMLTOptions_by_id($support_mobile);
         } else {
             $support_mobile = null;
         }
-        
+
         $options = $this->getBMLTOptions_by_id($this->cms_get_page_settings_id($in_text));
 
         if ($support_mobile && is_array($mobile_options) && count($mobile_options)) {
-            $mobile_url = $_SERVER['PHP_SELF'].'?BMLTPlugin_mobile&bmlt_settings_id='.$support_mobile;
+            $mobile_url = $_SERVER['PHP_SELF'] . '?BMLTPlugin_mobile&bmlt_settings_id=' . $support_mobile;
 
             if (isset($this->my_http_vars['WML'])) {
-                $mobile_url .= '&WML='.intval($this->my_http_vars['WML']);
+                $mobile_url .= '&WML=' . intval($this->my_http_vars['WML']);
             }
             if (isset($this->my_http_vars['simulate_smartphone'])) {
                 $mobile_url .= '&simulate_smartphone';
@@ -335,16 +338,16 @@ class BMLTUTestPlugin extends BMLTPlugin
             header("location: $mobile_url");
             die();
         }
-        
+
         $this->my_http_vars['start_view'] = $options['bmlt_initial_view'];
-        
+
         $this->load_params();
-        
+
         $root_server_root = $options['root_server'];
-        
+
         $url = $this->get_plugin_path();
-        
-        $head_content .= "\n".'<style type="text/css">'."\n";
+
+        $head_content .= "\n" . '<style type="text/css">' . "\n";
         $temp = self::stripFile('styles.css', $options['theme']);
         if ($temp) {
             $image_dir_path = $this->get_plugin_path() . '/themes/' . $options['theme'] . '/images/';
@@ -357,10 +360,10 @@ class BMLTUTestPlugin extends BMLTPlugin
             $temp = str_replace('##-IMAGEDIR-##', $image_dir_path, $temp);
             $head_content .= "\t$temp\n";
         }
-        
+
         $head_content .= self::stripFile('table_styles.css') . "\n";
         $head_content .= self::stripFile('quicksearch.css') . "\n";
-    
+
         $dirname = dirname(__FILE__) . '/themes';
         $dir = new DirectoryIterator($dirname);
 
@@ -374,58 +377,58 @@ class BMLTUTestPlugin extends BMLTPlugin
                     $temp = str_replace('##-IMAGEDIR-##', $image_dir_path, $temp);
                     $head_content .= "\t$temp\n";
                 }
-                
+
                 $temp = self::stripFile("quicksearch.css", $fName);
                 if ($temp) {
                     $head_content .= "\t$temp\n";
                 }
             }
         }
-        
+
         $head_content .= '</style>';
-        $head_content .= "\n".'<style type="text/css">'."\n";
-            
+        $head_content .= "\n" . '<style type="text/css">' . "\n";
+
         $head_content .= "\n/* Responsiveness */\n";
-        
+
         $head_content .= self::stripFile('responsiveness.css');
-        
-        $head_content .= '</style>'."\n";
+
+        $head_content .= '</style>' . "\n";
 
         if ($root_server_root) {
-            $root_server = $root_server_root."/client_interface/xhtml/index.php";
-            
+            $root_server = $root_server_root . "/client_interface/xhtml/index.php";
+
             $additional_css = '.bmlt_container * {margin:0;padding:0;text-align:center }';
-            
+
             if ($options['additional_css']) {
                 $additional_css .= $options['additional_css'];
             }
-            
+
             if ($additional_css) {
-                $head_content .= '<style type="text/css">'.preg_replace("|\s+|", " ", $additional_css).'</style>';
+                $head_content .= '<style type="text/css">' . preg_replace("|\s+|", " ", $additional_css) . '</style>';
             }
         }
-            
+
         $head_content .= '<script type="text/javascript">';
-        
+
         $head_content .= self::stripFile('javascript.js');
 
         if ($this->get_shortcode($in_text, 'bmlt_quicksearch')) {
             $head_content .= self::stripFile('quicksearch.js') . (defined('_DEBUG_MODE_') ? "\n" : '');
         }
-        
+
         if ($this->get_shortcode($in_text, 'bmlt_map')) {
             $head_content .= self::stripFile('map_search.js');
         }
-        
+
         if ($this->get_shortcode($in_text, 'bmlt_mobile')) {
             $head_content .= self::stripFile('fast_mobile_lookup.js');
         }
-    
+
         $head_content .= '</script>';
-        
+
         return $head_content;
     }
-        
+
     /************************************************************************************//**
     *   \brief Returns any necessary head content for the admin.                            *
     ****************************************************************************************/
@@ -434,29 +437,29 @@ class BMLTUTestPlugin extends BMLTPlugin
     {
         // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
         $this->admin_ajax_handler();
-        
+
         $head_content = $this->standard_head();   // We start with the standard stuff.
-        
+
         $head_content .= '<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>';  // Load the Google Maps stuff for our map.
-        
+
         $head_content .= '<link rel="stylesheet" type="text/css" href="';
-        
+
         $url = $this->get_plugin_path();
-        
+
         $head_content .= htmlspecialchars($url);
-        
+
         $head_content .= 'admin_styles.css" />';
-        
+
         $head_content .= '<script type="text/javascript" src="';
-        
+
         $head_content .= htmlspecialchars($url);
-        
+
         if (!defined('_DEBUG_MODE_')) {
             $head_content .= 'js_stripper.php?filename=';
         }
-        
+
         $head_content .= 'admin_javascript.js"></script>';
-            
+
         return $head_content;
     }
 }

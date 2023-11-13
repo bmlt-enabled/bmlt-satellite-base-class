@@ -1,4 +1,5 @@
 <?php
+
 /***********************************************************************/
 /**     \file   loadTable_StyleFiles.php
 
@@ -36,7 +37,7 @@
 
 function loadTable_StyleFile($in_theme_dirname)
 {
-    $pathname = dirname(__FILE__)."$in_theme_dirname/table_styles.css";
+    $pathname = dirname(__FILE__) . "$in_theme_dirname/table_styles.css";
     $opt = file_get_contents($pathname);
     $opt = preg_replace("|\/\*.*?\*\/|s", "", $opt);
     $opt = preg_replace("|\s+|s", " ", $opt);
@@ -45,13 +46,13 @@ function loadTable_StyleFile($in_theme_dirname)
 
 $opt = loadTable_StyleFile("");
 
-$dir_res = opendir(dirname(__FILE__).'/themes');
+$dir_res = opendir(dirname(__FILE__) . '/themes');
 
 if ($dir_res) {
     while (false !== ( $dir_name = readdir($dir_res) )) {
-        if (!preg_match('/^\./', $dir_name) && is_dir(dirname(__FILE__).'/themes/'.$dir_name) && file_exists(dirname(__FILE__).'/themes/'.$dir_name.'/table_styles.css')) {
+        if (!preg_match('/^\./', $dir_name) && is_dir(dirname(__FILE__) . '/themes/' . $dir_name) && file_exists(dirname(__FILE__) . '/themes/' . $dir_name . '/table_styles.css')) {
             $theme = isset($_GET['theme']) ? $_GET['theme'] : '';
-            
+
             if (!$theme || ($dir_name == $theme)) {
                 $opt .= loadTable_StyleFile("/themes/$dir_name");
             }
@@ -65,7 +66,7 @@ if ($dir_res) {
     if (zlib_get_coding_type() === false) {
         $handler = 'ob_gzhandler';
     }
-        
+
     ob_start($handler);
     echo $opt;
     ob_end_flush();

@@ -1,4 +1,5 @@
 <?php
+
 // English
 /****************************************************************************************//**
 *   \file   lang_en.php                                                                     *
@@ -38,7 +39,7 @@ class BMLT_Localized_BaseClass_en extends BMLT_Localized_BaseClass
         /************************************************************************************//**
         *                           STATIC DATA MEMBERS (LOCALIZABLE)                           *
         ****************************************************************************************/
-    
+
         /// These are all for the admin pages.
         $this->local_options_lang_prompt = 'Language:';                       ///< The label for the Language Selector.
         $this->local_options_title = 'Basic Meeting List Toolbox Options';    ///< This is the title that is displayed over the options.
@@ -59,7 +60,7 @@ class BMLT_Localized_BaseClass_en extends BMLT_Localized_BaseClass
         $this->local_options_unsaved_message = 'You have unsaved changes. Are you sure you want to leave without saving them?';   ///< This is displayed if a user attempts to leave a page without saving the options.
         $this->local_options_settings_id_prompt = 'The ID for this Setting is ';                              ///< This is so that users can see the ID for the setting.
         $this->local_options_settings_location_checkbox_label = 'Text Searches Start Off with the "Location" Checkbox On.';                              ///< This is so that users can see the ID for the setting.
-    
+
         /// These are all for the admin page option sheets.
         $this->local_options_name_label = 'Setting Name:';                    ///< The Label for the setting name item.
         $this->local_options_rootserver_label = 'Root Server:';               ///< The Label for the root server item.
@@ -94,13 +95,13 @@ class BMLT_Localized_BaseClass_en extends BMLT_Localized_BaseClass
         $this->local_options_miles = 'Miles';                                 ///< The string for miles.
         $this->local_options_kilometers = 'Kilometers';                       ///< The string for kilometers.
         $this->local_options_selectLocation_checkbox_text = 'Only Display Location Services for Mobile Devices';  ///< The label for the location services checkbox.
-    
+
         $this->local_options_time_format_prompt = 'Time Format:';             ///< The label for the time format selection popup.
         $this->local_options_time_format_ampm = 'Ante Meridian (HH:MM AM/PM)';    ///< Ante Meridian Format Option
         $this->local_options_time_format_military = 'Military (HH:MM)';       ///< Military Time Format Option
-    
+
         $this->local_options_google_api_label = 'Google Maps API Key:';       ///< The label for the Google Maps API Key Text Entry.
-        
+
         $this->local_options_auto_search_radius_prompt = 'Auto Search Density:';    ///< The label for the Auto Search Density popup.
         $this->local_options_auto_search_radius_display_names = array (             ///< The values for the auto-search density popup.
                                                                         'Minimum'   => -2,
@@ -110,7 +111,7 @@ class BMLT_Localized_BaseClass_en extends BMLT_Localized_BaseClass
                                                                         'Maximum'   => -30,
                                                                         'Super Maximum' => -100
                                                                         );
-    
+
         $this->local_options_week_begins_on_prompt = 'Weeks begin on:';       ///< This is the label for the week start popup menu.
 
         $this->local_no_root_server = 'You need to provide a root server URI in order for this to work.';    ///< Displayed if there was no root server provided.
@@ -122,7 +123,7 @@ class BMLT_Localized_BaseClass_en extends BMLT_Localized_BaseClass
         $this->local_cant_find_meetings_display = 'No Meetings Found In This Search'; ///< When the new map search cannot find any meetings.
         $this->local_single_meeting_tooltip = 'Follow This Link for Details About This Meeting.'; ///< The tooltip shown for a single meeting.
         $this->local_gm_link_tooltip = 'Follow This Link to be Taken to A Google Maps Location for This Meeting.';    ///< The tooltip shown for the Google Maps link.
-    
+
         /// These are for the change display
         $this->local_change_label_date =  'Change Date:';                     ///< The date when the change was made.
         $this->local_change_label_meeting_name =  'Meeting Name:';            ///< The name of the changed meeting.
@@ -130,14 +131,14 @@ class BMLT_Localized_BaseClass_en extends BMLT_Localized_BaseClass
         $this->local_change_label_admin_name =  'Changed By:';                ///< The name of the Service Body Admin that made the change.
         $this->local_change_label_description =  'Description:';              ///< The description of the change.
         $this->local_change_date_format = 'F j Y, \a\t g:i A';                ///< The format in which the change date/time is displayed.
-    
+
         /// A simple message for most <noscript> elements. We have a different one for the older interactive search (below).
         $this->local_noscript = 'This will not work, because you do not have JavaScript active.';             ///< The string displayed in a <noscript> element.
-    
+
         /************************************************************************************//**
         *                   NEW SHORTCODE STATIC DATA MEMBERS (LOCALIZABLE)                     *
         ****************************************************************************************/
-    
+
         /// These are all for the [[bmlt_nouveau]] shortcode.
         $this->local_nouveau_advanced_button = 'More Options';                ///< The button name for the advanced search in the nouveau search.
         $this->local_nouveau_map_button = 'Search By Map Instead of Text';    ///< The button name for the map search in the nouveau search.
@@ -162,7 +163,7 @@ class BMLT_Localized_BaseClass_en extends BMLT_Localized_BaseClass
         $this->local_nouveau_table_header_array = array ( 'Nation', 'State', 'County', 'Town', 'Meeting Name', 'Weekday', 'Start Time', 'Location', 'Format', ' ' );
         $this->local_nouveau_weekday_long_array = array ( 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday' );
         $this->local_nouveau_weekday_short_array = array ( 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' );
-    
+
         $this->local_nouveau_meeting_results_count_sprintf_format = '%s Meetings Found';
         $this->local_nouveau_meeting_results_selection_count_sprintf_format = '%s Meetings Selected, From %s Meetings Found';
         $this->local_nouveau_meeting_results_single_selection_count_sprintf_format = '1 Meeting Selected, From %s Meetings Found';
@@ -172,7 +173,7 @@ class BMLT_Localized_BaseClass_en extends BMLT_Localized_BaseClass
         $this->local_nouveau_single_duration_sprintf_format_hrs = '%s hours';
         $this->local_nouveau_single_duration_sprintf_format_hr_mins = '1 hour and %s minutes';
         $this->local_nouveau_single_duration_sprintf_format_hrs_mins = '%s hours and %s minutes';
-    
+
         /// These are all variants of the text that explains the location of a single meeting (Details View).
         $this->local_nouveau_location_sprintf_format_loc_street_info = '%s, %s (%s)';
         $this->local_nouveau_location_sprintf_format_loc_street = '%s, %s';
@@ -180,63 +181,63 @@ class BMLT_Localized_BaseClass_en extends BMLT_Localized_BaseClass
         $this->local_nouveau_location_sprintf_format_loc_info = '%s (%s)';
         $this->local_nouveau_location_sprintf_format_street = '%s';
         $this->local_nouveau_location_sprintf_format_loc = '%s';
-    
+
         $this->local_nouveau_location_sprintf_format_single_loc_street_info_town_province_zip = '%s, %s (%s), %s, %s %s';
         $this->local_nouveau_location_sprintf_format_single_loc_street_town_province_zip = '%s, %s, %s, %s %s';
         $this->local_nouveau_location_sprintf_format_single_street_info_town_province_zip = '%s (%s), %s, %s %s';
         $this->local_nouveau_location_sprintf_format_single_loc_info_town_province_zip = '%s (%s), %s, %s %s';
         $this->local_nouveau_location_sprintf_format_single_street_town_province_zip = '%s, %s, %s %s';
         $this->local_nouveau_location_sprintf_format_single_loc_town_province_zip = '%s, %s, %s %s';
-    
+
         $this->local_nouveau_location_sprintf_format_single_loc_street_info_town_province = '%s, %s (%s), %s %s';
         $this->local_nouveau_location_sprintf_format_single_loc_street_town_province = '%s, %s, %s, %s';
         $this->local_nouveau_location_sprintf_format_single_street_info_town_province = '%s (%s), %s %s';
         $this->local_nouveau_location_sprintf_format_single_loc_info_town_province = '%s (%s), %s %s';
         $this->local_nouveau_location_sprintf_format_single_street_town_province = '%s, %s %s';
         $this->local_nouveau_location_sprintf_format_single_loc_town_province = '%s, %s %s';
-    
+
         $this->local_nouveau_location_sprintf_format_single_loc_street_info_town_zip = '%s, %s (%s), %s %s';
         $this->local_nouveau_location_sprintf_format_single_loc_street_town_zip = '%s, %s, %s %s';
         $this->local_nouveau_location_sprintf_format_single_street_info_town_zip = '%s (%s), %s %s';
         $this->local_nouveau_location_sprintf_format_single_loc_info_town_zip = '%s (%s), %s %s';
         $this->local_nouveau_location_sprintf_format_single_street_town_zip = '%s, %s %s';
         $this->local_nouveau_location_sprintf_format_single_loc_town_zip = '%s, %s %s';
-    
+
         $this->local_nouveau_location_sprintf_format_single_loc_street_info_province_zip = '%s, %s (%s), %s, %s';
         $this->local_nouveau_location_sprintf_format_single_loc_street_province_zip = '%s, %s, %s, %s';
         $this->local_nouveau_location_sprintf_format_single_street_info_province_zip = '%s (%s), %s, %s';
         $this->local_nouveau_location_sprintf_format_single_loc_info_province_zip = '%s (%s), %s, %s';
         $this->local_nouveau_location_sprintf_format_single_street_province_zip = '%s, %s, %s';
         $this->local_nouveau_location_sprintf_format_single_loc_province_zip = '%s, %s, %s';
-    
+
         $this->local_nouveau_location_sprintf_format_single_loc_street_info_province = '%s, %s (%s), %s';
         $this->local_nouveau_location_sprintf_format_single_loc_street_province = '%s, %s, %s';
         $this->local_nouveau_location_sprintf_format_single_street_info_province = '%s (%s), %s';
         $this->local_nouveau_location_sprintf_format_single_loc_info_province = '%s (%s), %s';
         $this->local_nouveau_location_sprintf_format_single_street_province = '%s, %s';
         $this->local_nouveau_location_sprintf_format_single_loc_province = '%s, %s';
-    
+
         $this->local_nouveau_location_sprintf_format_single_loc_street_info_zip = '%s, %s (%s), %s';
         $this->local_nouveau_location_sprintf_format_single_loc_street_zip = '%s, %s, %s';
         $this->local_nouveau_location_sprintf_format_single_street_info_zip = '%s (%s), %s';
         $this->local_nouveau_location_sprintf_format_single_loc_info_zip = '%s (%s), %s';
         $this->local_nouveau_location_sprintf_format_single_street_zip = '%s, %s';
         $this->local_nouveau_location_sprintf_format_single_loc_zip = '%s, %s';
-    
+
         $this->local_nouveau_location_sprintf_format_single_loc_street_info = '%s, %s (%s)';
         $this->local_nouveau_location_sprintf_format_single_loc_street = '%s, %s,';
         $this->local_nouveau_location_sprintf_format_single_street_info = '%s (%s)';
         $this->local_nouveau_location_sprintf_format_single_loc_info = '%s (%s)';
         $this->local_nouveau_location_sprintf_format_single_street = '%s';
         $this->local_nouveau_location_sprintf_format_single_loc = '%s';
-    
+
         $this->local_nouveau_location_sprintf_format_wtf = 'No Location Given';
-    
+
         $this->local_nouveau_location_services_set_my_location_advanced_button = 'Set the Marker to My Current Location';
         $this->local_nouveau_location_services_find_all_meetings_nearby_button = 'Find Meetings Near Me';
         $this->local_nouveau_location_services_find_all_meetings_nearby_later_today_button = 'Find Meetings Near Me Later Today';
         $this->local_nouveau_location_services_find_all_meetings_nearby_tomorrow_button = 'Find Meetings Near Me Tomorrow';
-    
+
         $this->local_nouveau_location_sprintf_format_duration_title = 'This meeting is %s hours and %s minutes long.';
         $this->local_nouveau_location_sprintf_format_duration_hour_only_title = 'This meeting is 1 hour long.';
         $this->local_nouveau_location_sprintf_format_duration_hour_only_and_minutes_title = 'This meeting is 1 hour and %s minutes long.';
@@ -275,7 +276,7 @@ class BMLT_Localized_BaseClass_en extends BMLT_Localized_BaseClass
                                                     'location_postal_code_1' => 'Zip Code',
                                                     'location_info' => 'Extra Information'
                                                     );
-    
+
         /************************************************************************************//**
         *                   TABLE SHORTCODE STATIC DATA MEMBERS (LOCALIZABLE)                    *
         ****************************************************************************************/
@@ -288,18 +289,18 @@ class BMLT_Localized_BaseClass_en extends BMLT_Localized_BaseClass
         $this->local_table_header_tab_title_format        = 'Display meetings for %s';
         $this->local_table_ante_meridian                  = '"AM","PM","Noon","Midnight"';
         $this->local_table_no_meetings_format             = 'No meetings on %s';
-                                                
+
         /************************************************************************************//**
         *                      STATIC DATA MEMBERS (SPECIAL LOCALIZABLE)                        *
         ****************************************************************************************/
-    
+
         /// This is the only localizable string that is not processed. This is because it contains HTML. However, it is also a "hidden" string that is only displayed when the browser does not support JS.
         $this->local_no_js_warning = '<noscript class="no_js">This Meeting Search will not work because your browser does not support JavaScript. However, you can use the <a rel="external nofollow" href="###ROOT_SERVER###">main server</a> to do the search.</noscript>'; ///< This is the noscript presented for the old-style meeting search. It directs the user to the root server, which will support non-JS browsers.
-                                    
+
         /************************************************************************************//**
         *                       STATIC DATA MEMBERS (NEW MAP LOCALIZABLE)                       *
         ****************************************************************************************/
-                                    
+
         $this->local_new_map_option_1_label = 'Search Options (Not Applied Unless This Section Is Open):';
         $this->local_new_map_weekdays = 'Meetings Gather on These Weekdays:';
         $this->local_new_map_all_weekdays = 'All';
@@ -324,61 +325,61 @@ class BMLT_Localized_BaseClass_en extends BMLT_Localized_BaseClass
         $this->local_new_map_text_entry_fieldset_label = 'Enter an Address, Postcode or Location';
         $this->local_new_map_text_entry_default_text = 'Enter an Address, Postcode or Location';
         $this->local_new_map_location_submit_button_text = 'Search for Meetings Near This Location';
-    
+
         /************************************************************************************//**
         *                       STATIC DATA MEMBERS (MOBILE LOCALIZABLE)                        *
         ****************************************************************************************/
-    
+
         /// The units for distance.
         $this->local_mobile_kilometers = 'Kilometers';
         $this->local_mobile_miles = 'Miles';
         $this->local_mobile_distance = 'Distance';  ///< Distance (the string)
-    
+
         /// The page titles.
         $this->local_mobile_results_page_title = 'Quick Meeting Search Results';
         $this->local_mobile_results_form_title = 'Find Nearby Meetings Quickly';
-    
+
         /// The fast GPS lookup links.
         $this->local_GPS_banner = 'Select A Fast Meeting Lookup';
         $this->local_GPS_banner_subtext = 'Bookmark these links for even faster searches in the future.';
         $this->local_search_all = 'Search for all meetings near my present location.';
         $this->local_search_today = 'Later Today';
         $this->local_search_tomorrow = 'Tomorrow';
-    
+
         /// The search for an address form.
         $this->local_list_check = 'If you are experiencing difficulty with the interactive map, or wish to have the results returned as a list, check this box and enter an address.';
         $this->local_search_address_single = 'Search for Meetings Near An Address';
-    
+
         /// Used instead of "near my present location."
         $this->local_search_all_address = 'Search for all meetings near this address.';
         $this->local_search_submit_button = 'Search For Meetings';
-    
+
         /// This is what is entered into the text box.
         $this->local_enter_an_address = 'Enter An Address';
-    
+
         /// Error messages.
         $this->local_mobile_fail_no_meetings = 'No Meetings Found!';
         $this->local_server_fail = 'The search failed because the server encountered an error!';
         $this->local_cant_find_address = 'Cannot Determine the Location From the Address Information!';
         $this->local_cannot_determine_location = 'Cannot Determine Your Current Location!';
         $this->local_enter_address_alert = 'Please enter an address!';
-    
+
         /// The text for the "Map to Meeting" links
         $this->local_map_link = 'Map to Meeting';
-    
+
         /// Only used for WML pages
         $this->local_next_card = 'Next Meeting >>';
         $this->local_prev_card = '<< Previous Meeting';
-    
+
         /// Used for the info and list windows.
         $this->local_formats = 'Formats';
         $this->local_noon = 'Noon';
         $this->local_midnight = 'Midnight';
-    
+
         /// This array has the weekdays, spelled out. Since weekdays start at 1 (Sunday), we consider 0 to be an error.
         $this->local_weekdays = array ( 'ERROR', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday' );
         $this->local_weekdays_short = array ( 'ERR', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' );
-    
+
         /************************************************************************************//**
         *                          STATIC DATA MEMBERS (QUICKSEARCH)                            *
         ****************************************************************************************/

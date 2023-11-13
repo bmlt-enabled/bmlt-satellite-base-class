@@ -1,5 +1,7 @@
 <?php
+
 /***********************************************************************/
+
 /**     \file   style_stripper.php
 
     \brief  This file reads in a CSS file, and optimizes it by stripping
@@ -39,19 +41,19 @@
     $pathname = $_GET['filename'];
 if (!preg_match("|/|", $pathname)) {
     if (preg_match("|.*?\.css$|", $pathname)) {
-        $pathname = dirname(__FILE__)."/$pathname";
+        $pathname = dirname(__FILE__) . "/$pathname";
         $opt = file_get_contents($pathname);
         $opt = preg_replace("|\/\*.*?\*\/|s", "", $opt);
         $opt = preg_replace("|\s+|s", " ", $opt);
-            
+
         header("Content-type: text/css");
-            
+
         $handler = null;
-            
+
         if (zlib_get_coding_type() === false) {
             $handler = 'ob_gzhandler';
         }
-            
+
         ob_start($handler);
         echo $opt;
         ob_end_flush();

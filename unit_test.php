@@ -1,5 +1,8 @@
 <?php
-/****************************************************************************************//**
+
+/****************************************************************************************/
+
+/**
 * \file unit_test.php                                                                       *
 * \brief A unit test harness for the BMLTPlugin class.                                      *
 *   \version 3.9.7                                                                          *
@@ -58,9 +61,9 @@ function getCleanBaseURI()
     $https = (!empty($_SERVER['HTTPS']) && (($_SERVER['HTTPS'] !== 'off') || ($port == 443)));
     $server_path = $_SERVER['SERVER_NAME'];
     $my_path = $_SERVER['PHP_SELF'];
-    $server_path .= trim((($https && ($port != 443)) || (!$https && ($port != 80))) ? ':'.$port : '', '/');
-    $server_path = 'http'.($https ? 's' : '').'://'.$server_path.$my_path;
-    
+    $server_path .= trim((($https && ($port != 443)) || (!$https && ($port != 80))) ? ':' . $port : '', '/');
+    $server_path = 'http' . ($https ? 's' : '') . '://' . $server_path . $my_path;
+
     return $server_path;
 }
 
@@ -72,7 +75,7 @@ function getCleanBaseURI()
 function u_test()
 {
     $header = u_test_header();  // Gives the program a chance to "die out".
-    
+
     if ($header) {
         // We return a fully-qualified XHTML 1.0 Strict page.
         $ret = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8" />';
@@ -98,12 +101,12 @@ function u_test()
         $ret .= "function utest_preset_text(in_value){document.getElementById('utest_string').innerHTML=in_value;if(/.*?bmlt_mobile/.exec(in_value)){document.getElementById('mobile_simulation_smartphone').checked=true}};";
         $ret .= '</script>';
         $ret .= '</head><body>';    // Open the page
-        $ret .= '<div id="head_stuff"><div class="return_button"><a href="'.htmlspecialchars($_SERVER['PHP_SELF']).'">Return to Start</a></div>';
-        $ret .= '<div class="return_button"><a href="'.htmlspecialchars($_SERVER['PHP_SELF']).'?utest_string=clear_session">Restart Session</a></div></div>';
+        $ret .= '<div id="head_stuff"><div class="return_button"><a href="' . htmlspecialchars($_SERVER['PHP_SELF']) . '">Return to Start</a></div>';
+        $ret .= '<div class="return_button"><a href="' . htmlspecialchars($_SERVER['PHP_SELF']) . '?utest_string=clear_session">Restart Session</a></div></div>';
         $ret .= u_test_body();
         $ret .= '</body></html>';   // Wrap up the page.
     }
-    
+
     return $ret;
 }
 
@@ -115,11 +118,11 @@ function u_test()
 function u_test_operation()
 {
     $ret = null;
-    
+
     global $BMLTPluginOp;
-    
+
     $oper_text = u_test_get_string();
-    
+
     if (strtolower($oper_text) == 'admin') {
         $ret = 'admin';
     } elseif (strtolower($oper_text) == 'clear_session' || (strtolower($oper_text) == 'clear_session_start')) {
@@ -133,7 +136,7 @@ function u_test_operation()
     } elseif (isset($oper_text) || count($_GET) || count($_POST)) {
         $ret = 'render-new';
     }
-    
+
     return $ret;
 }
 
@@ -145,7 +148,7 @@ function u_test_operation()
 function u_test_get_string()
 {
     $ret = isset($_GET['utest_string']) ? trim($_GET['utest_string']) : (isset($_POST['utest_string']) ? trim($_POST['utest_string']) : null);
-    
+
     return $ret;
 }
 
@@ -158,32 +161,32 @@ function u_test_header()
 {
     $ret = '';
     global $BMLTPluginOp;
-    
+
     switch (u_test_operation()) {
         case 'admin':
             $ret .= '<title>Unit Test: Administration</title>';
             $ret .= $BMLTPluginOp->admin_head();
             break;
-        
+
         case 'render-old':
         case 'render-new':
             $parse_string = u_test_get_string();
             $ret .= '<title>Unit Test: Display</title>';
             $ret .= $BMLTPluginOp->standard_head($parse_string);
             break;
-        
+
         case 'clear_session':
             session_unset();
             session_destroy();
             setcookie(_LANG_COOKIE_NAME, null, -1, '/');
             $ret .= '<title>BMLTPlugin Class Unit Test</title>';
             break;
-        
+
         default:
             $ret .= '<title>BMLTPlugin Class Unit Test</title>';
             break;
     }
-    
+
     return $ret;
 }
 
@@ -200,17 +203,17 @@ function u_test_body()
         case 'admin':
             $ret = u_test_admin();
             break;
-        
+
         case 'render-old':
         case 'render-new':
             $ret = u_test_render();
             break;
-        
+
         default:
             $ret = u_test_form();
             break;
     }
-    
+
     return $ret;
 }
 
@@ -223,9 +226,9 @@ function u_test_form()
 {
     global $BMLTPluginOp;
 
-    $ret = '<div class="return_button"><a href="'.getCleanBaseURI().'?utest_string=admin">Admin Page</a></div>';
+    $ret = '<div class="return_button"><a href="' . getCleanBaseURI() . '?utest_string=admin">Admin Page</a></div>';
     $ret .= '<div class="utest_input_form_container_div">';
-        $ret .= '<form onsubmit="utest_onsubmit()" class="utest_input_form" method="get" action="'.getCleanBaseURI().'">';
+        $ret .= '<form onsubmit="utest_onsubmit()" class="utest_input_form" method="get" action="' . getCleanBaseURI() . '">';
             $ret .= '<div class="utest_input_div">';
                 $ret .= '<div class="centered_div">';
                 $ret .= '<h1>Enter the Test String</h1>';
@@ -251,10 +254,10 @@ function u_test_form()
 &lt;td width=&quot;50%&quot;&gt;[[BMLT_TABLE(meeting_key=location_city_subsection&meeting_key_value=Bronx)]]&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/table&gt;">BMLT_TABLE (Brackets -Complex Table)</option>';
-                        $ret .= '<option value="[[bmlt_changes(switcher=GetChanges&start_date='.date('Y-m-d', time()-(60 * 60 * 24 * 90)).')]]">BMLT Changes (Brackets -Last 90 days)</option>';
-                        $ret .= '<option value="&lt;!-- bmlt_changes(switcher=GetChanges&start_date='.date('Y-m-d', time()-(60 * 60 * 24 * 180)).'&end_date='.date('Y-m-d', time()-(60 * 60 * 24 * 90)).') --&gt;">BMLT Changes (Comments -Last 180 - 90 days)</option>';
-                        $ret .= '<option value="[[bmlt_changes(switcher=GetChanges&start_date='.date('Y-m-d', time()-(60 * 60 * 24 * 365)).'&service_body_id=1001)]]">BMLT Changes (Brackets -Last year in Suffolk Area Service)</option>';
-                        $ret .= '<option value="&lt;!--BMLT_CHANGES(switcher=GetChanges&start_date='.date('Y-m-d', time()-(60 * 60 * 24 * 90)).'&service_body_id=1)--&gt;">BMLT Changes (Comments -Last 90 days in Greater New York Regional Service)</option>';
+                        $ret .= '<option value="[[bmlt_changes(switcher=GetChanges&start_date=' . date('Y-m-d', time() - (60 * 60 * 24 * 90)) . ')]]">BMLT Changes (Brackets -Last 90 days)</option>';
+                        $ret .= '<option value="&lt;!-- bmlt_changes(switcher=GetChanges&start_date=' . date('Y-m-d', time() - (60 * 60 * 24 * 180)) . '&end_date=' . date('Y-m-d', time() - (60 * 60 * 24 * 90)) . ') --&gt;">BMLT Changes (Comments -Last 180 - 90 days)</option>';
+                        $ret .= '<option value="[[bmlt_changes(switcher=GetChanges&start_date=' . date('Y-m-d', time() - (60 * 60 * 24 * 365)) . '&service_body_id=1001)]]">BMLT Changes (Brackets -Last year in Suffolk Area Service)</option>';
+                        $ret .= '<option value="&lt;!--BMLT_CHANGES(switcher=GetChanges&start_date=' . date('Y-m-d', time() - (60 * 60 * 24 * 90)) . '&service_body_id=1)--&gt;">BMLT Changes (Comments -Last 90 days in Greater New York Regional Service)</option>';
                         $ret .= '<option value="[[bmlt_map]]">BMLT Map -New Implementation (Brackets)</option>';
                         $ret .= '<option value="&lt;!--bmlt_map--&gt;">BMLT Map -New Implementation (Comments)</option>';
                         $ret .= '<option value="[[bmlt_quicksearch]]">BMLT Quicksearch (Brackets)</option>';
@@ -358,7 +361,7 @@ function u_test_form()
             $ret .= '</div>';
         $ret .= '</form>';
     $ret .= '</div>';
-    
+
     return $ret;
 }
 
@@ -370,7 +373,7 @@ function u_test_form()
 function u_test_admin()
 {
     global $BMLTPluginOp;
-        
+
     return $BMLTPluginOp->return_admin_page();
 }
 
@@ -382,15 +385,15 @@ function u_test_admin()
 function u_test_render()
 {
     global $BMLTPluginOp;
-    
+
     $ret = '<div class="utest_render_container_div">';
-    
+
     $str = u_test_get_string();
-    
+
     $ret .= $BMLTPluginOp->content_filter(u_test_get_string());
-    
+
     $ret .= '</div>';
-    
+
     return $ret;
 }
 
