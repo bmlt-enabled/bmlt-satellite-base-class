@@ -2163,7 +2163,10 @@ abstract class BMLTPlugin
                 // The first time through, we import our JS file. After that, we no longer need it.
                 if (!$my_table_next_id) {
                     $the_new_content .= "<script type=\"text/javascript\">".(defined('_DEBUG_MODE_') ? "\n" : "");
-//                    $the_new_content .= self::stripFile('table_display.js'); this gets added in wordpress plugin
+                    // WordPress plugin loads this file, so we only want to load it if its not running in WordPress
+                    if (!defined('WPINC')) {
+                        $the_new_content .= self::stripFile('table_display.js');
+                    }
                     $the_new_content .= 'var g_table_weekday_name_array = new Array ( "'.join('","', $this->my_current_language->local_nouveau_weekday_short_array).'" );'.(defined('_DEBUG_MODE_') ? "\n" : "");
                     $the_new_content .= 'var g_table_weekday_long_name_array = new Array ( "'.join('","', $this->my_current_language->local_nouveau_weekday_long_array).'" );'.(defined('_DEBUG_MODE_') ? "\n" : "");
                     $the_new_content .= "var g_table_throbber_img_src = '".htmlspecialchars($this->get_plugin_path().'themes/default/images/TableThrobber.gif').(defined('_DEBUG_MODE_') ? "';\n" : "';");
