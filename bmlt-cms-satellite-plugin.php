@@ -2149,6 +2149,7 @@ abstract class BMLTPlugin
                 }
                 $options = $this->getBMLTOptions_by_id($options_id);
                 $this->adapt_to_lang($options['lang']);
+                $params = $params ?? '';
                 // This strips weekday selectors out. We will be dealing with this ourselves.
                 $params = preg_replace('|(\&){0,1}weekdays(\[\]){0,1}=[0-9]{0,1}|', '', $params);
                 // We ignore the block_mode and sort key selectors as well. We'll be doing our own thing. It will be table-based, and sorted by time (to start).
