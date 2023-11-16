@@ -342,6 +342,10 @@ abstract class BMLT_Localized_BaseClass
     /// This array has the weekdays, spelled out. Since weekdays start at 1 (Sunday), we consider 0 to be an error.
     var $local_weekdays;
     var $local_weekdays_short;
+
+    var $local_nouveau_default_duration;
+    var $local_quicksearch_select_option_0;
+    var $local_quicksearch_display_too_large;
 }
 // phpcs:enable PSR1.Classes.ClassDeclaration.MissingNamespace
 // phpcs:enable Squiz.Classes.ValidClassName.NotCamelCaps
