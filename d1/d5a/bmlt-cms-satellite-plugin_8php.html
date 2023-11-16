@@ -123,7 +123,7 @@ foreach($dir as $fileinfo) if(!defined('_LANG_COOKIE_NAME')) global&#160;</td><t
 <div class="textblock"><p>This is a generic CMS plugin class for a BMLT satellite client. *. </p>
 <ul>
 <li><ul>
-<li><dl class="section version"><dt>Version</dt><dd>3.11.6 *</dd></dl>
+<li><dl class="section version"><dt>Version</dt><dd>3.10.0 *</dd></dl>
 </li>
 </ul>
 </li>
@@ -170,66 +170,66 @@ in the documentation and/or other materials provided with the distribution.
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/d5a/bmlt-cms-satellite-plugin_8php_source.html#l03702">3702</a> of file <a class="el" href="../../d1/d5a/bmlt-cms-satellite-plugin_8php_source.html">bmlt-cms-satellite-plugin.php</a>.</p>
-<div class="fragment"><div class="line"><a name="l03704"></a><span class="lineno"> 3704</span>&#160;  {</div>
-<div class="line"><a name="l03705"></a><span class="lineno"> 3705</span>&#160;    <span class="keywordflow">if</span> (function_exists(<span class="stringliteral">&#39;json_encode&#39;</span>)) {</div>
-<div class="line"><a name="l03706"></a><span class="lineno"> 3706</span>&#160;        <span class="keywordflow">return</span> json_encode($arr); <span class="comment">//Lastest versions of PHP already has this functionality.</span></div>
-<div class="line"><a name="l03707"></a><span class="lineno"> 3707</span>&#160;    }</div>
-<div class="line"><a name="l03708"></a><span class="lineno"> 3708</span>&#160;    </div>
-<div class="line"><a name="l03709"></a><span class="lineno"> 3709</span>&#160;    $parts = array();</div>
-<div class="line"><a name="l03710"></a><span class="lineno"> 3710</span>&#160;    $is_list = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l03711"></a><span class="lineno"> 3711</span>&#160; </div>
-<div class="line"><a name="l03712"></a><span class="lineno"> 3712</span>&#160;    <span class="comment">//Find out if the given array is a numerical array</span></div>
-<div class="line"><a name="l03713"></a><span class="lineno"> 3713</span>&#160;    $keys = array_keys($arr);</div>
-<div class="line"><a name="l03714"></a><span class="lineno"> 3714</span>&#160;    $max_length = count($arr)-1;</div>
-<div class="line"><a name="l03715"></a><span class="lineno"> 3715</span>&#160;    <span class="keywordflow">if</span> (($keys[0] == 0) and ($keys[$max_length] == $max_length)) {<span class="comment">//See if the first key is 0 and last key is length - 1</span></div>
-<div class="line"><a name="l03716"></a><span class="lineno"> 3716</span>&#160;        $is_list = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l03717"></a><span class="lineno"> 3717</span>&#160;        <span class="keywordflow">for</span> ($i=0; $i&lt;count($keys); $i++) { <span class="comment">//See if each key correspondes to its position</span></div>
-<div class="line"><a name="l03718"></a><span class="lineno"> 3718</span>&#160;            <span class="keywordflow">if</span> ($i != $keys[$i]) { <span class="comment">//A key fails at position check.</span></div>
-<div class="line"><a name="l03719"></a><span class="lineno"> 3719</span>&#160;                $is_list = <span class="keyword">false</span>; <span class="comment">//It is an associative array.</span></div>
-<div class="line"><a name="l03720"></a><span class="lineno"> 3720</span>&#160;                <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l03721"></a><span class="lineno"> 3721</span>&#160;            }</div>
-<div class="line"><a name="l03722"></a><span class="lineno"> 3722</span>&#160;        }</div>
-<div class="line"><a name="l03723"></a><span class="lineno"> 3723</span>&#160;    }</div>
-<div class="line"><a name="l03724"></a><span class="lineno"> 3724</span>&#160; </div>
-<div class="line"><a name="l03725"></a><span class="lineno"> 3725</span>&#160;    <span class="keywordflow">foreach</span> ($arr as $key =&gt; $value) {</div>
-<div class="line"><a name="l03726"></a><span class="lineno"> 3726</span>&#160;        <span class="keywordflow">if</span> (is_array($value)) { <span class="comment">//Custom handling for arrays</span></div>
-<div class="line"><a name="l03727"></a><span class="lineno"> 3727</span>&#160;            <span class="keywordflow">if</span> ($is_list) {</div>
-<div class="line"><a name="l03728"></a><span class="lineno"> 3728</span>&#160;                $parts[] = <a class="code" href="../../d1/d5a/bmlt-cms-satellite-plugin_8php.html#a4f3b79fa543abc31ad742043cde753cc">array2json</a>($value); <span class="comment">/* :RECURSION: */</span></div>
-<div class="line"><a name="l03729"></a><span class="lineno"> 3729</span>&#160;            } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l03730"></a><span class="lineno"> 3730</span>&#160;                $parts[] = <span class="charliteral">&#39;&quot;&#39;</span> . $key . <span class="stringliteral">&#39;&quot;:&#39;</span> . <a class="code" href="../../d1/d5a/bmlt-cms-satellite-plugin_8php.html#a4f3b79fa543abc31ad742043cde753cc">array2json</a>($value); <span class="comment">/* :RECURSION: */</span></div>
-<div class="line"><a name="l03731"></a><span class="lineno"> 3731</span>&#160;            }</div>
-<div class="line"><a name="l03732"></a><span class="lineno"> 3732</span>&#160;        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l03733"></a><span class="lineno"> 3733</span>&#160;            $str = <span class="stringliteral">&#39;&#39;</span>;</div>
-<div class="line"><a name="l03734"></a><span class="lineno"> 3734</span>&#160;            <span class="keywordflow">if</span> (!$is_list) {</div>
-<div class="line"><a name="l03735"></a><span class="lineno"> 3735</span>&#160;                $str = <span class="charliteral">&#39;&quot;&#39;</span> . $key . <span class="stringliteral">&#39;&quot;:&#39;</span>;</div>
-<div class="line"><a name="l03736"></a><span class="lineno"> 3736</span>&#160;            }</div>
-<div class="line"><a name="l03737"></a><span class="lineno"> 3737</span>&#160; </div>
-<div class="line"><a name="l03738"></a><span class="lineno"> 3738</span>&#160;            <span class="comment">//Custom handling for multiple data types</span></div>
-<div class="line"><a name="l03739"></a><span class="lineno"> 3739</span>&#160;            <span class="keywordflow">if</span> (is_numeric($value)) {</div>
-<div class="line"><a name="l03740"></a><span class="lineno"> 3740</span>&#160;                $str .= $value; <span class="comment">//Numbers</span></div>
-<div class="line"><a name="l03741"></a><span class="lineno"> 3741</span>&#160;            } elseif ($value === <span class="keyword">false</span>) {</div>
-<div class="line"><a name="l03742"></a><span class="lineno"> 3742</span>&#160;                $str .= <span class="stringliteral">&#39;false&#39;</span>; <span class="comment">//The booleans</span></div>
-<div class="line"><a name="l03743"></a><span class="lineno"> 3743</span>&#160;            } elseif ($value === <span class="keyword">true</span>) {</div>
-<div class="line"><a name="l03744"></a><span class="lineno"> 3744</span>&#160;                $str .= <span class="stringliteral">&#39;true&#39;</span>;</div>
-<div class="line"><a name="l03745"></a><span class="lineno"> 3745</span>&#160;            } elseif (isset($value) &amp;&amp; $value) {</div>
-<div class="line"><a name="l03746"></a><span class="lineno"> 3746</span>&#160;                $str .= <span class="charliteral">&#39;&quot;&#39;</span> . addslashes($value) . <span class="charliteral">&#39;&quot;&#39;</span>; <span class="comment">//All other things</span></div>
-<div class="line"><a name="l03747"></a><span class="lineno"> 3747</span>&#160;            }</div>
-<div class="line"><a name="l03748"></a><span class="lineno"> 3748</span>&#160;            <span class="comment">// :TODO: Is there any more datatype we should be in the lookout for? (Object?)</span></div>
-<div class="line"><a name="l03749"></a><span class="lineno"> 3749</span>&#160; </div>
-<div class="line"><a name="l03750"></a><span class="lineno"> 3750</span>&#160;            $parts[] = $str;</div>
-<div class="line"><a name="l03751"></a><span class="lineno"> 3751</span>&#160;        }</div>
-<div class="line"><a name="l03752"></a><span class="lineno"> 3752</span>&#160;    }</div>
-<div class="line"><a name="l03753"></a><span class="lineno"> 3753</span>&#160;    </div>
-<div class="line"><a name="l03754"></a><span class="lineno"> 3754</span>&#160;    $json = implode(<span class="charliteral">&#39;,&#39;</span>, $parts);</div>
-<div class="line"><a name="l03755"></a><span class="lineno"> 3755</span>&#160;    </div>
-<div class="line"><a name="l03756"></a><span class="lineno"> 3756</span>&#160;    <span class="keywordflow">if</span> ($is_list) {</div>
-<div class="line"><a name="l03757"></a><span class="lineno"> 3757</span>&#160;        <span class="keywordflow">return</span> <span class="charliteral">&#39;[&#39;</span> . $json . <span class="charliteral">&#39;]&#39;</span>; <span class="comment">//Return numerical JSON</span></div>
-<div class="line"><a name="l03758"></a><span class="lineno"> 3758</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l03759"></a><span class="lineno"> 3759</span>&#160;        <span class="keywordflow">return</span> <span class="charliteral">&#39;{&#39;</span> . $json . <span class="charliteral">&#39;}&#39;</span>; <span class="comment">//Return associative JSON</span></div>
-<div class="line"><a name="l03760"></a><span class="lineno"> 3760</span>&#160;    }</div>
-<div class="line"><a name="l03761"></a><span class="lineno"> 3761</span>&#160;}</div>
-<div class="ttc" id="abmlt-cms-satellite-plugin_8php_html_a4f3b79fa543abc31ad742043cde753cc"><div class="ttname"><a href="../../d1/d5a/bmlt-cms-satellite-plugin_8php.html#a4f3b79fa543abc31ad742043cde753cc">array2json</a></div><div class="ttdeci">array2json( $arr)</div><div class="ttdoc">This is an open-source JSON encoder that allows us to support older versions of PHP (before the json_...</div><div class="ttdef"><b>Definition:</b> <a href="../../d1/d5a/bmlt-cms-satellite-plugin_8php_source.html#l03702">bmlt-cms-satellite-plugin.php:3702</a></div></div>
+<p class="definition">Definition at line <a class="el" href="../../d1/d5a/bmlt-cms-satellite-plugin_8php_source.html#l03698">3698</a> of file <a class="el" href="../../d1/d5a/bmlt-cms-satellite-plugin_8php_source.html">bmlt-cms-satellite-plugin.php</a>.</p>
+<div class="fragment"><div class="line"><a name="l03700"></a><span class="lineno"> 3700</span>&#160;  {</div>
+<div class="line"><a name="l03701"></a><span class="lineno"> 3701</span>&#160;    <span class="keywordflow">if</span> (function_exists(<span class="stringliteral">&#39;json_encode&#39;</span>)) {</div>
+<div class="line"><a name="l03702"></a><span class="lineno"> 3702</span>&#160;        <span class="keywordflow">return</span> json_encode($arr); <span class="comment">//Lastest versions of PHP already has this functionality.</span></div>
+<div class="line"><a name="l03703"></a><span class="lineno"> 3703</span>&#160;    }</div>
+<div class="line"><a name="l03704"></a><span class="lineno"> 3704</span>&#160;    </div>
+<div class="line"><a name="l03705"></a><span class="lineno"> 3705</span>&#160;    $parts = array();</div>
+<div class="line"><a name="l03706"></a><span class="lineno"> 3706</span>&#160;    $is_list = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l03707"></a><span class="lineno"> 3707</span>&#160; </div>
+<div class="line"><a name="l03708"></a><span class="lineno"> 3708</span>&#160;    <span class="comment">//Find out if the given array is a numerical array</span></div>
+<div class="line"><a name="l03709"></a><span class="lineno"> 3709</span>&#160;    $keys = array_keys($arr);</div>
+<div class="line"><a name="l03710"></a><span class="lineno"> 3710</span>&#160;    $max_length = count($arr)-1;</div>
+<div class="line"><a name="l03711"></a><span class="lineno"> 3711</span>&#160;    <span class="keywordflow">if</span> (($keys[0] == 0) and ($keys[$max_length] == $max_length)) {<span class="comment">//See if the first key is 0 and last key is length - 1</span></div>
+<div class="line"><a name="l03712"></a><span class="lineno"> 3712</span>&#160;        $is_list = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l03713"></a><span class="lineno"> 3713</span>&#160;        <span class="keywordflow">for</span> ($i=0; $i&lt;count($keys); $i++) { <span class="comment">//See if each key correspondes to its position</span></div>
+<div class="line"><a name="l03714"></a><span class="lineno"> 3714</span>&#160;            <span class="keywordflow">if</span> ($i != $keys[$i]) { <span class="comment">//A key fails at position check.</span></div>
+<div class="line"><a name="l03715"></a><span class="lineno"> 3715</span>&#160;                $is_list = <span class="keyword">false</span>; <span class="comment">//It is an associative array.</span></div>
+<div class="line"><a name="l03716"></a><span class="lineno"> 3716</span>&#160;                <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l03717"></a><span class="lineno"> 3717</span>&#160;            }</div>
+<div class="line"><a name="l03718"></a><span class="lineno"> 3718</span>&#160;        }</div>
+<div class="line"><a name="l03719"></a><span class="lineno"> 3719</span>&#160;    }</div>
+<div class="line"><a name="l03720"></a><span class="lineno"> 3720</span>&#160; </div>
+<div class="line"><a name="l03721"></a><span class="lineno"> 3721</span>&#160;    <span class="keywordflow">foreach</span> ($arr as $key =&gt; $value) {</div>
+<div class="line"><a name="l03722"></a><span class="lineno"> 3722</span>&#160;        <span class="keywordflow">if</span> (is_array($value)) { <span class="comment">//Custom handling for arrays</span></div>
+<div class="line"><a name="l03723"></a><span class="lineno"> 3723</span>&#160;            <span class="keywordflow">if</span> ($is_list) {</div>
+<div class="line"><a name="l03724"></a><span class="lineno"> 3724</span>&#160;                $parts[] = <a class="code" href="../../d1/d5a/bmlt-cms-satellite-plugin_8php.html#a4f3b79fa543abc31ad742043cde753cc">array2json</a>($value); <span class="comment">/* :RECURSION: */</span></div>
+<div class="line"><a name="l03725"></a><span class="lineno"> 3725</span>&#160;            } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l03726"></a><span class="lineno"> 3726</span>&#160;                $parts[] = <span class="charliteral">&#39;&quot;&#39;</span> . $key . <span class="stringliteral">&#39;&quot;:&#39;</span> . <a class="code" href="../../d1/d5a/bmlt-cms-satellite-plugin_8php.html#a4f3b79fa543abc31ad742043cde753cc">array2json</a>($value); <span class="comment">/* :RECURSION: */</span></div>
+<div class="line"><a name="l03727"></a><span class="lineno"> 3727</span>&#160;            }</div>
+<div class="line"><a name="l03728"></a><span class="lineno"> 3728</span>&#160;        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l03729"></a><span class="lineno"> 3729</span>&#160;            $str = <span class="stringliteral">&#39;&#39;</span>;</div>
+<div class="line"><a name="l03730"></a><span class="lineno"> 3730</span>&#160;            <span class="keywordflow">if</span> (!$is_list) {</div>
+<div class="line"><a name="l03731"></a><span class="lineno"> 3731</span>&#160;                $str = <span class="charliteral">&#39;&quot;&#39;</span> . $key . <span class="stringliteral">&#39;&quot;:&#39;</span>;</div>
+<div class="line"><a name="l03732"></a><span class="lineno"> 3732</span>&#160;            }</div>
+<div class="line"><a name="l03733"></a><span class="lineno"> 3733</span>&#160; </div>
+<div class="line"><a name="l03734"></a><span class="lineno"> 3734</span>&#160;            <span class="comment">//Custom handling for multiple data types</span></div>
+<div class="line"><a name="l03735"></a><span class="lineno"> 3735</span>&#160;            <span class="keywordflow">if</span> (is_numeric($value)) {</div>
+<div class="line"><a name="l03736"></a><span class="lineno"> 3736</span>&#160;                $str .= $value; <span class="comment">//Numbers</span></div>
+<div class="line"><a name="l03737"></a><span class="lineno"> 3737</span>&#160;            } elseif ($value === <span class="keyword">false</span>) {</div>
+<div class="line"><a name="l03738"></a><span class="lineno"> 3738</span>&#160;                $str .= <span class="stringliteral">&#39;false&#39;</span>; <span class="comment">//The booleans</span></div>
+<div class="line"><a name="l03739"></a><span class="lineno"> 3739</span>&#160;            } elseif ($value === <span class="keyword">true</span>) {</div>
+<div class="line"><a name="l03740"></a><span class="lineno"> 3740</span>&#160;                $str .= <span class="stringliteral">&#39;true&#39;</span>;</div>
+<div class="line"><a name="l03741"></a><span class="lineno"> 3741</span>&#160;            } elseif (isset($value) &amp;&amp; $value) {</div>
+<div class="line"><a name="l03742"></a><span class="lineno"> 3742</span>&#160;                $str .= <span class="charliteral">&#39;&quot;&#39;</span> . addslashes($value) . <span class="charliteral">&#39;&quot;&#39;</span>; <span class="comment">//All other things</span></div>
+<div class="line"><a name="l03743"></a><span class="lineno"> 3743</span>&#160;            }</div>
+<div class="line"><a name="l03744"></a><span class="lineno"> 3744</span>&#160;            <span class="comment">// :TODO: Is there any more datatype we should be in the lookout for? (Object?)</span></div>
+<div class="line"><a name="l03745"></a><span class="lineno"> 3745</span>&#160; </div>
+<div class="line"><a name="l03746"></a><span class="lineno"> 3746</span>&#160;            $parts[] = $str;</div>
+<div class="line"><a name="l03747"></a><span class="lineno"> 3747</span>&#160;        }</div>
+<div class="line"><a name="l03748"></a><span class="lineno"> 3748</span>&#160;    }</div>
+<div class="line"><a name="l03749"></a><span class="lineno"> 3749</span>&#160;    </div>
+<div class="line"><a name="l03750"></a><span class="lineno"> 3750</span>&#160;    $json = implode(<span class="charliteral">&#39;,&#39;</span>, $parts);</div>
+<div class="line"><a name="l03751"></a><span class="lineno"> 3751</span>&#160;    </div>
+<div class="line"><a name="l03752"></a><span class="lineno"> 3752</span>&#160;    <span class="keywordflow">if</span> ($is_list) {</div>
+<div class="line"><a name="l03753"></a><span class="lineno"> 3753</span>&#160;        <span class="keywordflow">return</span> <span class="charliteral">&#39;[&#39;</span> . $json . <span class="charliteral">&#39;]&#39;</span>; <span class="comment">//Return numerical JSON</span></div>
+<div class="line"><a name="l03754"></a><span class="lineno"> 3754</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l03755"></a><span class="lineno"> 3755</span>&#160;        <span class="keywordflow">return</span> <span class="charliteral">&#39;{&#39;</span> . $json . <span class="charliteral">&#39;}&#39;</span>; <span class="comment">//Return associative JSON</span></div>
+<div class="line"><a name="l03756"></a><span class="lineno"> 3756</span>&#160;    }</div>
+<div class="line"><a name="l03757"></a><span class="lineno"> 3757</span>&#160;}</div>
+<div class="ttc" id="abmlt-cms-satellite-plugin_8php_html_a4f3b79fa543abc31ad742043cde753cc"><div class="ttname"><a href="../../d1/d5a/bmlt-cms-satellite-plugin_8php.html#a4f3b79fa543abc31ad742043cde753cc">array2json</a></div><div class="ttdeci">array2json( $arr)</div><div class="ttdoc">This is an open-source JSON encoder that allows us to support older versions of PHP (before the json_...</div><div class="ttdef"><b>Definition:</b> <a href="../../d1/d5a/bmlt-cms-satellite-plugin_8php_source.html#l03698">bmlt-cms-satellite-plugin.php:3698</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -258,11 +258,11 @@ in the documentation and/or other materials provided with the distribution.
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/d5a/bmlt-cms-satellite-plugin_8php_source.html#l03767">3767</a> of file <a class="el" href="../../d1/d5a/bmlt-cms-satellite-plugin_8php_source.html">bmlt-cms-satellite-plugin.php</a>.</p>
-<div class="fragment"><div class="line"><a name="l03768"></a><span class="lineno"> 3768</span>&#160;{</div>
-<div class="line"><a name="l03769"></a><span class="lineno"> 3769</span>&#160;    $language = <a class="code" href="../../d5/dc1/class_b_m_l_t_plugin.html#aa9692cb961016e56fb3f601358690402">BMLTPlugin::mobile_sniff_ua</a>($in_http_vars);</div>
-<div class="line"><a name="l03770"></a><span class="lineno"> 3770</span>&#160;    <span class="keywordflow">return</span> ($language == <span class="stringliteral">&#39;wml&#39;</span>) || ($language == <span class="stringliteral">&#39;xhtml_mp&#39;</span>) || ($language == <span class="stringliteral">&#39;smartphone&#39;</span>);</div>
-<div class="line"><a name="l03771"></a><span class="lineno"> 3771</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="../../d1/d5a/bmlt-cms-satellite-plugin_8php_source.html#l03763">3763</a> of file <a class="el" href="../../d1/d5a/bmlt-cms-satellite-plugin_8php_source.html">bmlt-cms-satellite-plugin.php</a>.</p>
+<div class="fragment"><div class="line"><a name="l03764"></a><span class="lineno"> 3764</span>&#160;{</div>
+<div class="line"><a name="l03765"></a><span class="lineno"> 3765</span>&#160;    $language = <a class="code" href="../../d5/dc1/class_b_m_l_t_plugin.html#aa9692cb961016e56fb3f601358690402">BMLTPlugin::mobile_sniff_ua</a>($in_http_vars);</div>
+<div class="line"><a name="l03766"></a><span class="lineno"> 3766</span>&#160;    <span class="keywordflow">return</span> ($language == <span class="stringliteral">&#39;wml&#39;</span>) || ($language == <span class="stringliteral">&#39;xhtml_mp&#39;</span>) || ($language == <span class="stringliteral">&#39;smartphone&#39;</span>);</div>
+<div class="line"><a name="l03767"></a><span class="lineno"> 3767</span>&#160;}</div>
 <div class="ttc" id="aclass_b_m_l_t_plugin_html_aa9692cb961016e56fb3f601358690402"><div class="ttname"><a href="../../d5/dc1/class_b_m_l_t_plugin.html#aa9692cb961016e56fb3f601358690402">BMLTPlugin\mobile_sniff_ua</a></div><div class="ttdeci">static mobile_sniff_ua($in_http_vars)</div><div class="ttdoc">Checks the UA of the caller, to see if it should return XHTML Strict or WML. *NOTE: This is very,...</div><div class="ttdef"><b>Definition:</b> <a href="../../d1/d5a/bmlt-cms-satellite-plugin_8php_source.html#l00324">bmlt-cms-satellite-plugin.php:324</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="../../d5/dc1/class_b_m_l_t_plugin.html#aa9692cb961016e56fb3f601358690402">BMLTPlugin\mobile_sniff_ua()</a>.</p>
