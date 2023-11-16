@@ -1,5 +1,4 @@
 <?php
-
 // English
 /****************************************************************************************//**
 *   \file   BMLT_Localized_BaseClass.class.php                                              *
@@ -253,18 +252,18 @@ abstract class BMLT_Localized_BaseClass
     var $local_table_header_tab_title_format       ;
     var $local_table_ante_meridian                 ;
     var $local_table_no_meetings_format            ;
-
+                                            
     /************************************************************************************//**
     *                      STATIC DATA MEMBERS (SPECIAL LOCALIZABLE)                        *
     ****************************************************************************************/
 
     /// This is the only localizable string that is not processed. This is because it contains HTML. However, it is also a "hidden" string that is only displayed when the browser does not support JS.
     var $local_no_js_warning; ///< This is the noscript presented for the old-style meeting search. It directs the user to the root server, which will support non-JS browsers.
-
+                                
     /************************************************************************************//**
     *                       STATIC DATA MEMBERS (NEW MAP LOCALIZABLE)                       *
     ****************************************************************************************/
-
+                                
     var $local_new_map_option_1_label;
     var $local_new_map_weekdays;
     var $local_new_map_all_weekdays;

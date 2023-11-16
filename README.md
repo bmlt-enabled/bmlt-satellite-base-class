@@ -24,6 +24,9 @@ The instructions for employment of this class are on [this page](https://bmlt.ap
 CHANGELIST
 ----------
 
+***Version 3.11.6* ** *- November 16, 2023*
+- Fix various php warnings.
+
 ***Version 3.11.5* ** *- November 12, 2023*
 - Fix various php warnings.
 
