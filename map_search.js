@@ -668,8 +668,10 @@ function MapSearch (
 						{
 						if ( included_weekdays[c] == weekday_int )
 							{
-							marker_html += '<li id="'+g_main_map.uid+'_'+meeting_id+'_'+included_weekdays[c].toString()+'_li" class="'+((c == 0) ? 'bmlt_selected_weekday_info' : 'bmlt_unselected_weekday_info')+'">';
-							marker_html += '<a class="bmlt_info_win_day_a" href="javascript:expose_weekday(document.getElementById(\'wd_'+g_main_map.uid+'_'+meeting_id+'_div\'),'+included_weekdays[c].toString()+',\''+meeting_id+'\',\''+g_main_map.uid+'\')">'+c_g_weekdays_short[included_weekdays[c]]+'</a></li>';
+								var trimmedWeekdaysString = c_g_weekdays_short[0].replace(/&#039;/g, '');
+								var weekDays = trimmedWeekdaysString.split(',');
+								marker_html += '<li id="'+g_main_map.uid+'_'+meeting_id+'_'+included_weekdays[c].toString()+'_li" class="'+((c == 0) ? 'bmlt_selected_weekday_info' : 'bmlt_unselected_weekday_info')+'">';
+								marker_html += '<a class="bmlt_info_win_day_a" href="javascript:expose_weekday(document.getElementById(\'wd_'+g_main_map.uid+'_'+meeting_id+'_div\'),'+included_weekdays[c].toString()+',\''+meeting_id+'\',\''+g_main_map.uid+'\')">'+weekDays[included_weekdays[c]]+'</a></li>';
 							};
 						};
 					};
