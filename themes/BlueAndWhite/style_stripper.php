@@ -1,6 +1,7 @@
 <?php
 /***********************************************************************/
-/**     \file   style_stripper.php
+/**
+ * \file   style_stripper.php
 
     \brief  This file reads in a CSS file, and optimizes it by stripping
     out comments and whitespace. It will also try to GZ compress the output
@@ -35,7 +36,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this code.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
     $pathname = $_GET['filename'];
 if (!preg_match("|/|", $pathname)) {
     if (preg_match("|.*?\.css$|", $pathname)) {

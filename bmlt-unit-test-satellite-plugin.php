@@ -1,49 +1,49 @@
 <?php
 /****************************************************************************************//**
-*   \file   bmlt-unit-test-satellite-plugin.php                                             *
-*                                                                                           *
-*   \brief  This is a standalone unit test plugin of a BMLT satellite client.               *
-*
-*   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
-*   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
-*                                                                                           *
-*   This file is part of the Basic Meeting List Toolbox (BMLT).                             *
-*                                                                                           *
-*   Find out more at: https://bmlt.app                                                      *
-*                                                                                           *
-*   BMLT is free software: you can redistribute it and/or modify                            *
-*   it under the terms of the GNU General Public License as published by                    *
-*   the Free Software Foundation, either version 3 of the License, or                       *
-*   (at your option) any later version.                                                     *
-*                                                                                           *
-*   BMLT is distributed in the hope that it will be useful,                                 *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of                          *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                           *
-*   GNU General Public License for more details.                                            *
-*                                                                                           *
-*   You should have received a copy of the GNU General Public License                       *
-*   along with this code.  If not, see <http://www.gnu.org/licenses/>.                      *
-********************************************************************************************/
+                                                                                           *   \file   bmlt-unit-test-satellite-plugin.php                                             *
+                                                                                           *                                                                                           *
+                                                                                           *   \brief  This is a standalone unit test plugin of a BMLT satellite client.               *
+                                                                                           *
+                                                                                           *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
+                                                                                           *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
+                                                                                           *                                                                                           *
+                                                                                           *   This file is part of the Basic Meeting List Toolbox (BMLT).                             *
+                                                                                           *                                                                                           *
+                                                                                           *   Find out more at: https://bmlt.app                                                      *
+                                                                                           *                                                                                           *
+                                                                                           *   BMLT is free software: you can redistribute it and/or modify                            *
+                                                                                           *   it under the terms of the GNU General Public License as published by                    *
+                                                                                           *   the Free Software Foundation, either version 3 of the License, or                       *
+                                                                                           *   (at your option) any later version.                                                     *
+                                                                                           *                                                                                           *
+                                                                                           *   BMLT is distributed in the hope that it will be useful,                                 *
+                                                                                           *   but WITHOUT ANY WARRANTY; without even the implied warranty of                          *
+                                                                                           *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                           *
+                                                                                           *   GNU General Public License for more details.                                            *
+                                                                                           *                                                                                           *
+                                                                                           *   You should have received a copy of the GNU General Public License                       *
+                                                                                           *   along with this code.  If not, see <http://www.gnu.org/licenses/>.                      *
+                                                                                           ********************************************************************************************/
 
 // Include the satellite driver class.
-require_once(dirname(__FILE__).'/bmlt-cms-satellite-plugin.php');
+require_once dirname(__FILE__).'/bmlt-cms-satellite-plugin.php';
 
 /****************************************************************************************//**
-*   \class BMLTUTestPlugin                                                                  *
-*                                                                                           *
-*   \brief This is the class that implements and encapsulates the plugin functionality.     *
-*   A single instance of this is created, and manages the plugin.                           *
-*                                                                                           *
-*   This plugin registers errors by echoing HTML comments, so look at the source code of    *
-*   the page if things aren't working right.                                                *
-********************************************************************************************/
+                                                                                           *   \class BMLTUTestPlugin                                                                  *
+                                                                                           *                                                                                           *
+                                                                                           *   \brief This is the class that implements and encapsulates the plugin functionality.     *
+                                                                                           *   A single instance of this is created, and manages the plugin.                           *
+                                                                                           *                                                                                           *
+                                                                                           *   This plugin registers errors by echoing HTML comments, so look at the source code of    *
+                                                                                           *   the page if things aren't working right.                                                *
+                                                                                           ********************************************************************************************/
 // phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 class BMLTUTestPlugin extends BMLTPlugin
 // phpcs:enable PSR1.Classes.ClassDeclaration.MissingNamespace
 {
     /************************************************************************************//**
-    *   \brief Constructor.                                                                 *
-    ****************************************************************************************/
+                                                                                           *   \brief Constructor.                                                                 *
+                                                                                           ****************************************************************************************/
     public function __construct()
     {
         // This line is customized for the developer's test environment. If you are debugging on a local machine, you may want to change the first choice.
@@ -55,10 +55,10 @@ class BMLTUTestPlugin extends BMLTPlugin
     }
     
     /************************************************************************************//**
-    *   \brief Return an HTTP path to the AJAX callback target.                             *
-    *                                                                                       *
-    *   \returns a string, containing the path.                                             *
-    ****************************************************************************************/
+                                                                                           *   \brief Return an HTTP path to the AJAX callback target.                             *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns a string, containing the path.                                             *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     protected function get_admin_ajax_base_uri()
     {
@@ -67,10 +67,10 @@ class BMLTUTestPlugin extends BMLTPlugin
     }
     
     /************************************************************************************//**
-    *   \brief Return an HTTP path to the basic admin form submit (action) URI              *
-    *                                                                                       *
-    *   \returns a string, containing the path.                                             *
-    ****************************************************************************************/
+                                                                                           *   \brief Return an HTTP path to the basic admin form submit (action) URI              *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns a string, containing the path.                                             *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     protected function get_admin_form_uri()
     {
@@ -79,10 +79,10 @@ class BMLTUTestPlugin extends BMLTPlugin
     }
     
     /************************************************************************************//**
-    *   \brief Return an HTTP path to the AJAX callback target.                             *
-    *                                                                                       *
-    *   \returns a string, containing the path.                                             *
-    ****************************************************************************************/
+                                                                                           *   \brief Return an HTTP path to the AJAX callback target.                             *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns a string, containing the path.                                             *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     protected function get_ajax_base_uri()
     {
@@ -98,10 +98,10 @@ class BMLTUTestPlugin extends BMLTPlugin
     }
     
     /************************************************************************************//**
-    *   \brief Return an HTTP path to the plugin directory.                                 *
-    *                                                                                       *
-    *   \returns a string, containing the path.                                             *
-    ****************************************************************************************/
+                                                                                           *   \brief Return an HTTP path to the plugin directory.                                 *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns a string, containing the path.                                             *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     protected function get_plugin_path()
     {
@@ -112,13 +112,13 @@ class BMLTUTestPlugin extends BMLTPlugin
     }
     
     /************************************************************************************//**
-    *   \brief This uses the CMS text processor (t) to process the given string.            *
-    *                                                                                       *
-    *   This allows easier translation of displayed strings. All strings displayed by the   *
-    *   plugin should go through this function.                                             *
-    *                                                                                       *
-    *   \returns a string, processed by WP.                                                 *
-    ****************************************************************************************/
+                                                                                           *   \brief This uses the CMS text processor (t) to process the given string.            *
+                                                                                           *                                                                                       *
+                                                                                           *   This allows easier translation of displayed strings. All strings displayed by the   *
+                                                                                           *   plugin should go through this function.                                             *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns a string, processed by WP.                                                 *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function process_text($in_string) ///< The string to be processed.
     {
@@ -129,10 +129,10 @@ class BMLTUTestPlugin extends BMLTPlugin
     }
 
     /************************************************************************************//**
-    *   \brief This gets the admin options from the database (allows CMS abstraction).      *
-    *                                                                                       *
-    *   \returns an associative array, with the option settings.                            *
-    ****************************************************************************************/
+                                                                                           *   \brief This gets the admin options from the database (allows CMS abstraction).      *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns an associative array, with the option settings.                            *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     protected function cms_get_option($in_option_key)  ///< The name of the option
     {
@@ -159,8 +159,8 @@ class BMLTUTestPlugin extends BMLTPlugin
     }
     
     /************************************************************************************//**
-    *   \brief This gets the admin options from the database (allows CMS abstraction).      *
-    ****************************************************************************************/
+                                                                                           *   \brief This gets the admin options from the database (allows CMS abstraction).      *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     protected function cms_set_option(
         $in_option_key,   ///< The name of the option
@@ -197,8 +197,8 @@ class BMLTUTestPlugin extends BMLTPlugin
     }
     
     /************************************************************************************//**
-    *   \brief Deletes a stored option (allows CMS abstraction).                            *
-    ****************************************************************************************/
+                                                                                           *   \brief Deletes a stored option (allows CMS abstraction).                            *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     protected function cms_delete_option($in_option_key)  ///< The name of the option
     {
@@ -225,10 +225,10 @@ class BMLTUTestPlugin extends BMLTPlugin
     }
 
     /************************************************************************************//**
-    *   \brief This gets the page meta for the given page. (allows CMS abstraction).        *
-    *                                                                                       *
-    *   \returns a mixed type, with the meta data                                           *
-    ****************************************************************************************/
+                                                                                           *   \brief This gets the page meta for the given page. (allows CMS abstraction).        *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns a mixed type, with the meta data                                           *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     protected function cms_get_post_meta(
         $in_page_id,    ///< The ID of the page/post
@@ -241,13 +241,13 @@ class BMLTUTestPlugin extends BMLTPlugin
     }
 
     /************************************************************************************//**
-    *   \brief This function fetches the settings ID for a page (if there is one).          *
-    *                                                                                       *
-    *   If $in_check_mobile is set to true, then ONLY a check for mobile support will be    *
-    *   made, and no other shortcodes will be checked.                                      *
-    *                                                                                       *
-    *   \returns a mixed type, with the settings ID.                                        *
-    ****************************************************************************************/
+                                                                                           *   \brief This function fetches the settings ID for a page (if there is one).          *
+                                                                                           *                                                                                       *
+                                                                                           *   If $in_check_mobile is set to true, then ONLY a check for mobile support will be    *
+                                                                                           *   made, and no other shortcodes will be checked.                                      *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns a mixed type, with the settings ID.                                        *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     protected function cms_get_page_settings_id(
         $in_text,                  ///< Required (for the base version) content to check.
@@ -288,12 +288,12 @@ class BMLTUTestPlugin extends BMLTPlugin
     }
         
     /************************************************************************************//**
-    *                                   THE CMS CALLBACKS                                   *
-    ****************************************************************************************/
+                                                                                           *                                   THE CMS CALLBACKS                                   *
+                                                                                           ****************************************************************************************/
         
     /************************************************************************************//**
-    *   \brief Presents the admin page.                                                     *
-    ****************************************************************************************/
+                                                                                           *   \brief Presents the admin page.                                                     *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function admin_page()
     {
@@ -302,8 +302,8 @@ class BMLTUTestPlugin extends BMLTPlugin
     // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
         
     /************************************************************************************//**
-    *   \brief returns any necessary head content.                                          *
-    ****************************************************************************************/
+                                                                                           *   \brief returns any necessary head content.                                          *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function standard_head($in_text = null)  ///< This is the page content text.
     {
@@ -427,8 +427,8 @@ class BMLTUTestPlugin extends BMLTPlugin
     }
         
     /************************************************************************************//**
-    *   \brief Returns any necessary head content for the admin.                            *
-    ****************************************************************************************/
+                                                                                           *   \brief Returns any necessary head content for the admin.                            *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function admin_head()
     {

@@ -1,6 +1,6 @@
 /****************************************************************************************//**
-* \file javascript.js                                                                       *
-* \brief The javascript for the BMLTPlugin class.                                           *
+                                                                                           * \file javascript.js                                                                       *
+                                                                                           * \brief The javascript for the BMLTPlugin class.                                           *
     
     This file is part of the BMLT Common Satellite Base Class Project. The project GitHub
     page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class
@@ -21,39 +21,42 @@
     
     You should have received a copy of the GNU General Public License
     along with this code.  If not, see <http://www.gnu.org/licenses/>.
-********************************************************************************************/
+                                                                                           ********************************************************************************************/
 
 /****************************************************************************************//**
-*                                       AJAX HANDLER                                        *
-********************************************************************************************/
+                                                                                           *                                       AJAX HANDLER                                        *
+                                                                                           ********************************************************************************************/
 
 /****************************************************************************************//**
-*   \brief A simple, generic AJAX request function.                                         *
-*                                                                                           *
-*   \returns a new XMLHTTPRequest object.                                                   *
-********************************************************************************************/
+                                                                                           *   \brief A simple, generic AJAX request function.                                         *
+                                                                                           *                                                                                           *
+                                                                                           *   \returns a new XMLHTTPRequest object.                                                   *
+                                                                                           ********************************************************************************************/
     
-function BMLTPlugin_AjaxRequest (   url,        ///< The URI to be called
-                                    callback,   ///< The success callback
-                                    method,     ///< The method ('get' or 'post')
-                                    extra_data  ///< If supplied, extra data to be delivered to the callback.
-                                    )
-{
+function BMLTPlugin_AjaxRequest(   url,        ///< The URI to be called
+    callback,   ///< The success callback
+    method,     ///< The method ('get' or 'post')
+    extra_data  ///< If supplied, extra data to be delivered to the callback.
+) {
     /************************************************************************************//**
-    *   \brief Create a generic XMLHTTPObject.                                              *
-    *                                                                                       *
-    *   This will account for the various flavors imposed by different browsers.            *
-    *                                                                                       *
-    *   \returns a new XMLHTTPRequest object.                                               *
-    ****************************************************************************************/
+                                                                                           *   \brief Create a generic XMLHTTPObject.                                              *
+                                                                                           *                                                                                       *
+                                                                                           *   This will account for the various flavors imposed by different browsers.            *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns a new XMLHTTPRequest object.                                               *
+                                                                                           ****************************************************************************************/
     
     function createXMLHTTPObject()
     {
         var XMLHttpArray = [
-            function() {return new XMLHttpRequest()},
-            function() {return new ActiveXObject("Msxml2.XMLHTTP")},
-            function() {return new ActiveXObject("Msxml2.XMLHTTP")},
-            function() {return new ActiveXObject("Microsoft.XMLHTTP")}
+            function () {
+                return new XMLHttpRequest()},
+            function () {
+                return new ActiveXObject("Msxml2.XMLHTTP")},
+            function () {
+                return new ActiveXObject("Msxml2.XMLHTTP")},
+            function () {
+                return new ActiveXObject("Microsoft.XMLHTTP")}
             ];
             
         var xmlhttp = false;
@@ -63,13 +66,13 @@ function BMLTPlugin_AjaxRequest (   url,        ///< The URI to be called
             try
                 {
                 xmlhttp = XMLHttpArray[i]();
-                }
+            }
             catch(e)
                 {
                 continue;
-                };
-            break;
             };
+            break;
+        };
         
         return xmlhttp;
     };
@@ -81,74 +84,68 @@ function BMLTPlugin_AjaxRequest (   url,        ///< The URI to be called
     var drupal_kludge = '';
     
     // Split the URL up, if this is a POST.
-    if ( method == "POST" )
-        {
-        var rmatch = /^([^\?]*)\?(.*)$/.exec ( url );
+    if (method == "POST" ) {
+        var rmatch = /^([^\?]*)\?(.*)$/.exec(url);
         url = rmatch[1];
         sVars = rmatch[2];
         // This horrible, horrible kludge, is because Drupal insists on having its q parameter in the GET list only.
-        var rmatch_kludge = /(q=admin\/settings\/bmlt)&?(.*)/.exec ( rmatch[2] );
-        if ( rmatch_kludge && rmatch_kludge[1] )
-            {
+        var rmatch_kludge = /(q=admin\/settings\/bmlt)&?(.*)/.exec(rmatch[2]);
+        if (rmatch_kludge && rmatch_kludge[1] ) {
             url += '?'+rmatch_kludge[1];
             sVars = rmatch_kludge[2];
-            };
         };
-    if ( extra_data )
-        {
+    };
+    if (extra_data ) {
         req.extra_data = extra_data;
-        };
-    req.open ( method, url, true );
-	if ( method == "POST" )
-        {
+    };
+    req.open(method, url, true);
+    if (method == "POST" ) {
         req.setRequestHeader("Method", "POST "+url+" HTTP/1.1");
         req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        };
-    req.onreadystatechange = function ( )
-        {
-        if ( req.readyState != 4 ) return;
-        if( req.status != 200 ) return;
-        callback ( req, req.extra_data );
+    };
+    req.onreadystatechange = function ( ) {
+        if (req.readyState != 4 ) { return;
+        }
+        if(req.status != 200 ) { return;
+        }
+        callback(req, req.extra_data);
         req = null;
-        };
-    req.send ( sVars );
+    };
+    req.send(sVars);
     
     return req;
 };
 
 /****************************************************************************************//**
-*   \brief Call to initiate a simple popup search.                                          *
-********************************************************************************************/
-function BMLTPlugin_simple_div_filler ( in_uri,     ///< The URI to call.
-                                        in_header   ///< The text for the header.
-                                    )
-{
-    if ( !in_uri )
-        {
-        var option_list=document.getElementById ( 'meeting_search_select' ).options;
-        document.getElementById ( 'simple_search_container' ).innerHTML='';
-        document.getElementById ( 'meeting_search_select' ).selectedIndex=0;
+                                                                                           *   \brief Call to initiate a simple popup search.                                          *
+                                                                                           ********************************************************************************************/
+function BMLTPlugin_simple_div_filler( in_uri,     ///< The URI to call.
+    in_header   ///< The text for the header.
+) {
+    if (!in_uri ) {
+        var option_list=document.getElementById('meeting_search_select').options;
+        document.getElementById('simple_search_container').innerHTML='';
+        document.getElementById('meeting_search_select').selectedIndex=0;
         option_list[option_list.length-1].disabled=true;
-        }
+    }
     else
         {
         document.getElementById('simple_search_container').innerHTML='<div class="BMLTPlugin_simple_throbber_container_div"><div class="BMLTPlugin_simple_throbber_div"><img class="bmlt_simple_throbber_img" alt="throbber" src="'+c_g_BMLTPlugin_images+'Throbber.gif" /></div></div>';
-        BMLTPlugin_AjaxRequest ( in_uri, BMLTPlugin_simple_div_filler_callback, 'get', in_header );
-        };
+        BMLTPlugin_AjaxRequest(in_uri, BMLTPlugin_simple_div_filler_callback, 'get', in_header);
+    };
 };
 
 /****************************************************************************************//**
-*   \brief AJAX callback for the simple popup search.                                       *
-********************************************************************************************/
-function BMLTPlugin_simple_div_filler_callback ( in_req ///< The HTTPRequest object for this call.
-                                                )
-{
+                                                                                           *   \brief AJAX callback for the simple popup search.                                       *
+                                                                                           ********************************************************************************************/
+function BMLTPlugin_simple_div_filler_callback( in_req ///< The HTTPRequest object for this call.
+) {
     document.getElementById('simple_search_container').innerHTML='<h2 class="bmlt_simple_header">'+in_req.extra_data+'</h2>'+in_req.responseText;
 };
 
 /********************************************************************************************
-*###################################### THIRD-PARTY CODE ###################################*
-********************************************************************************************/
+ * ###################################### THIRD-PARTY CODE ###################################*
+ ********************************************************************************************/
 /**
 sprintf() for JavaScript 0.6
 
@@ -157,12 +154,12 @@ All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
-    * Redistributions of source code must retain the above copyright
+ * Redistributions of source code must retain the above copyright
       notice, this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright
+ * Redistributions in binary form must reproduce the above copyright
       notice, this list of conditions and the following disclaimer in the
       documentation and/or other materials provided with the distribution.
-    * Neither the name of sprintf() for JavaScript nor the
+ * Neither the name of sprintf() for JavaScript nor the
       names of its contributors may be used to endorse or promote products
       derived from this software without specific prior written permission.
 
@@ -197,14 +194,16 @@ Changelog:
  Thanks to Raphael Pigulla <raph (at] n3rd [dot) org> (http://www.n3rd.org/)
  who warned me about a bug in 0.5, I discovered that the last update was
  a regress. I appologize for that.
-**/
+ **/
 
-function str_repeat(i, m) {
+function str_repeat(i, m)
+{
     for (var o = []; m > 0; o[--m] = i);
     return o.join('');
 };
 
-function sprintf() {
+function sprintf()
+{
     var i = 0, a, f = arguments[i++], o = [], m, p, c, x, s = '';
     while (f) {
         if (m = /^[^\x25]+/.exec(f)) {
@@ -221,16 +220,16 @@ function sprintf() {
                 throw('Expecting number but found ' + typeof(a));
             };
             switch (m[7]) {
-                case 'b': a = a.toString(2); break;
-                case 'c': a = String.fromCharCode(a); break;
-                case 'd': a = parseInt(a,10); break;
-                case 'e': a = m[6] ? a.toExponential(m[6]) : a.toExponential(); break;
-                case 'f': a = m[6] ? parseFloat(a).toFixed(m[6]) : parseFloat(a); break;
-                case 'o': a = a.toString(8); break;
-                case 's': a = ((a = String(a)) && m[6] ? a.substring(0, m[6]) : a); break;
-                case 'u': a = Math.abs(a); break;
-                case 'x': a = a.toString(16); break;
-                case 'X': a = a.toString(16).toUpperCase(); break;
+            case 'b': a = a.toString(2); break;
+            case 'c': a = String.fromCharCode(a); break;
+            case 'd': a = parseInt(a,10); break;
+            case 'e': a = m[6] ? a.toExponential(m[6]) : a.toExponential(); break;
+            case 'f': a = m[6] ? parseFloat(a).toFixed(m[6]) : parseFloat(a); break;
+            case 'o': a = a.toString(8); break;
+            case 's': a = ((a = String(a)) && m[6] ? a.substring(0, m[6]) : a); break;
+            case 'u': a = Math.abs(a); break;
+            case 'x': a = a.toString(16); break;
+            case 'X': a = a.toString(16).toUpperCase(); break;
             };
             a = (/[def]/.test(m[7]) && m[2] && a >= 0 ? '+'+ a : a);
             c = m[3] ? m[3] == '0' ? '0' : m[3].charAt(1) : ' ';

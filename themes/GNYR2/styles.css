@@ -96,13 +96,13 @@ table#bmlt_container div#c_comdef_search_specification_map_div
 table#bmlt_container div#c_comdef_search_specification_map_div,
 table#bmlt_container div.c_comdef_search_results_map_container_div
 {
-	width: 100%;
+    width: 100%;
     height: 640px;
 }
 
 table#bmlt_container div.c_comdef_search_results_map_container_div
 {
-	position: relative;
+    position: relative;
 }
 
 table#bmlt_container a.c_comdef_search_specification_map_invis_a,
@@ -506,8 +506,8 @@ div.bmlt_map_container_div .bmlt_map_throbber_div
 {
     border: 1px solid #0C71C3;
     border-radius: 3px;
-	-moz-border-radius:3px;
-	-webkit-border-radius: 3px;
+    -moz-border-radius:3px;
+    -webkit-border-radius: 3px;
 }
 
 div.bmlt_map_container_div .bmlt_map_container_div_location_options_div fieldset
@@ -590,25 +590,25 @@ div.bmlt_map_container_div .bmlt_map_options_loc a:active span
 div.bmlt_map_container_div a.bmlt_map_reveal_options,
 div.bmlt_map_container_div a.bmlt_map_reveal_options:visited
 {
-    background-image:url(##-IMAGEDIR-##/invisible_disclosure.gif);
+    background-image:url(#-IMAGEDIR-#invisible_disclosure.gif);
 }
 
 div.bmlt_map_container_div a.bmlt_map_reveal_options:active,
 div.bmlt_map_container_div a.bmlt_map_reveal_options:hover
 {
-    background-image:url(##-IMAGEDIR-##/invisible_disclosure_mouseover.gif);
+    background-image:url(#-IMAGEDIR-#invisible_disclosure_mouseover.gif);
 }
 
 div.bmlt_map_container_div a.bmlt_map_hide_options,
 div.bmlt_map_container_div a.bmlt_map_hide_options:visited
 {
-    background-image:url(##-IMAGEDIR-##/visible_disclosure.gif);
+    background-image:url(#-IMAGEDIR-#visible_disclosure.gif);
 }
 
 div.bmlt_map_container_div a.bmlt_map_hide_options:active,
 div.bmlt_map_container_div a.bmlt_map_hide_options:hover
 {
-    background-image:url(##-IMAGEDIR-##/visible_disclosure_mouseover.gif);
+    background-image:url(#-IMAGEDIR-#visible_disclosure_mouseover.gif);
 }
 
 div.bmlt_map_container_div .bmlt_search_map_new_search_div a,
@@ -665,8 +665,8 @@ div.bmlt_map_container_div .location_text_input_div input
     width:90%;
     margin-bottom: 8px;
     border-radius: 4px;
-	-moz-border-radius:4px;
-	-webkit-border-radius: 4px;
+    -moz-border-radius:4px;
+    -webkit-border-radius: 4px;
 }
 
 div.bmlt_map_container_div .location_text_input_item_focused
@@ -684,8 +684,8 @@ div.bmlt_map_container_div .bmlt_info_win_container
     border: 1px solid #0C71C3;
     background-color:#eef;
     border-radius: 5px;
-	-moz-border-radius:5px;
-	-webkit-border-radius: 5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius: 5px;
 }
 
 div.bmlt_map_container_div .bmlt_info_win_container .bmlt_day_tabs
@@ -764,8 +764,8 @@ div.bmlt_nouveau_details_extra_element_outer_container_div
 div.bmlt_nouveau_details_hidden_element_outer_container_div
 {
     border-radius: 5px;
-	-moz-border-radius:5px;
-	-webkit-border-radius: 5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius: 5px;
     background-color:#ffefef;
     border:1px solid #555;
     color:#555;

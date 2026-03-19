@@ -24,6 +24,9 @@ The instructions for employment of this class are on [this page](https://bmlt.ap
 CHANGELIST
 ----------
 
+***Version 3.11.13* ** *- March 19, 2026*
+- Remove index.php from json endpoint.
+
 ***Version 3.11.12* ** *- November 17, 2023*
 - Various PHP and JS fixes.
 

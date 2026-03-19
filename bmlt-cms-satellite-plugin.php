@@ -1,38 +1,38 @@
 <?php
 /****************************************************************************************//**
-*   \file   bmlt-cms-satellite-plugin.php                                                   *
-*                                                                                           *
-*   \brief  This is a generic CMS plugin class for a BMLT satellite client.                 *
-*   \version 3.11.12                                                                        *
-*                                                                                           *
-*   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
-*   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
-*                                                                                           *
-*   This file is part of the Basic Meeting List Toolbox (BMLT).                             *
-*                                                                                           *
-*   Find out more at: https://bmlt.app                                                      *
-*                                                                                           *
-*   BMLT is free software: you can redistribute it and/or modify                            *
-*   it under the terms of the GNU General Public License as published by                    *
-*   the Free Software Foundation, either version 3 of the License, or                       *
-*   (at your option) any later version.                                                     *
-*                                                                                           *
-*   BMLT is distributed in the hope that it will be useful,                                 *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of                          *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                           *
-*   GNU General Public License for more details.                                            *
-*                                                                                           *
-*   You should have received a copy of the GNU General Public License                       *
-*   along with this code.  If not, see <http://www.gnu.org/licenses/>.                      *
-********************************************************************************************/
+                                                                                           *   \file   bmlt-cms-satellite-plugin.php                                                   *
+                                                                                           *                                                                                           *
+                                                                                           *   \brief  This is a generic CMS plugin class for a BMLT satellite client.                 *
+                                                                                           *   \version 3.11.12                                                                        *
+                                                                                           *                                                                                           *
+                                                                                           *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
+                                                                                           *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
+                                                                                           *                                                                                           *
+                                                                                           *   This file is part of the Basic Meeting List Toolbox (BMLT).                             *
+                                                                                           *                                                                                           *
+                                                                                           *   Find out more at: https://bmlt.app                                                      *
+                                                                                           *                                                                                           *
+                                                                                           *   BMLT is free software: you can redistribute it and/or modify                            *
+                                                                                           *   it under the terms of the GNU General Public License as published by                    *
+                                                                                           *   the Free Software Foundation, either version 3 of the License, or                       *
+                                                                                           *   (at your option) any later version.                                                     *
+                                                                                           *                                                                                           *
+                                                                                           *   BMLT is distributed in the hope that it will be useful,                                 *
+                                                                                           *   but WITHOUT ANY WARRANTY; without even the implied warranty of                          *
+                                                                                           *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                           *
+                                                                                           *   GNU General Public License for more details.                                            *
+                                                                                           *                                                                                           *
+                                                                                           *   You should have received a copy of the GNU General Public License                       *
+                                                                                           *   along with this code.  If not, see <http://www.gnu.org/licenses/>.                      *
+                                                                                           ********************************************************************************************/
 
 // define ( '_DEBUG_MODE_', 1 ); //Uncomment for easier JavaScript debugging.
 
 // Include the satellite driver class.
 if (!defined('ROOTPATH')) {
-    require_once(__DIR__.'/../bmlt-satellite-driver/bmlt_satellite_controller.class.php');
+    include_once __DIR__.'/../bmlt-satellite-driver/bmlt_satellite_controller.class.php';
 } else {
-    require_once(ROOTPATH .'/vendor/bmlt/bmlt-satellite-driver/bmlt_satellite_controller.class.php');
+    include_once ROOTPATH .'/vendor/bmlt/bmlt-satellite-driver/bmlt_satellite_controller.class.php';
 }
 
 global $g_lang_keys;
@@ -55,7 +55,7 @@ foreach ($dir as $fileinfo) {
                 $lang_name = trim(substr($line1, 3));
                 $lang_key = trim(substr($fName, 5, -4));
                 if ($lang_name && $lang_key) {
-                    include_once($fPath);
+                    include_once $fPath;
 
                     $lang_class = 'BMLT_Localized_BaseClass_' . $lang_key;
                     $lang_instance = new $lang_class();
@@ -113,32 +113,32 @@ if (!$tmp_local) {
 $bmlt_localization = $tmp_local;
 
 /****************************************************************************************//**
-*   \class BMLTPlugin                                                                       *
-*                                                                                           *
-*   \brief This is the class that implements and encapsulates the plugin functionality.     *
-*   A single instance of this is created, and manages the plugin.                           *
-*                                                                                           *
-*   This plugin registers errors by echoing HTML comments, so look at the source code of    *
-*   the page if things aren't working right.                                                *
-********************************************************************************************/
+                                                                                           *   \class BMLTPlugin                                                                       *
+                                                                                           *                                                                                           *
+                                                                                           *   \brief This is the class that implements and encapsulates the plugin functionality.     *
+                                                                                           *   A single instance of this is created, and manages the plugin.                           *
+                                                                                           *                                                                                           *
+                                                                                           *   This plugin registers errors by echoing HTML comments, so look at the source code of    *
+                                                                                           *   the page if things aren't working right.                                                *
+                                                                                           ********************************************************************************************/
 // phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 abstract class BMLTPlugin
 // phpcs:enable PSR1.Classes.ClassDeclaration.MissingNamespace
 {
     /************************************************************************************//**
-    *                           STATIC DATA MEMBERS (SINGLETON)                             *
-    ****************************************************************************************/
+                                                                                           *                           STATIC DATA MEMBERS (SINGLETON)                             *
+                                                                                           ****************************************************************************************/
     
     /// This is a SINGLETON pattern. There can only be one...
     public static $g_s_there_can_only_be_one = null;                              ///< This is a static variable that holds the single instance.
     
     /************************************************************************************//**
-    *                           STATIC DATA MEMBERS (DEFAULTS)                              *
-    *   In Version 2, these are all ignored:                                                *
-    *       $default_bmlt_fullscreen                                                        *
-    *       $default_support_old_browsers                                                   *
-    *       $default_sb_array                                                               *
-    ****************************************************************************************/
+                                                                                           *                           STATIC DATA MEMBERS (DEFAULTS)                              *
+                                                                                           *   In Version 2, these are all ignored:                                                *
+                                                                                           *       $default_bmlt_fullscreen                                                        *
+                                                                                           *       $default_support_old_browsers                                                   *
+                                                                                           *       $default_sb_array                                                               *
+                                                                                           ****************************************************************************************/
 
     public static $adminOptionsName = "BMLTAdminOptions";                         ///< The name, in the database, for the version 1 options for this plugin.
     public static $admin2OptionsName = "BMLT2AdminOptions";                       ///< These options are for version 2.
@@ -166,15 +166,15 @@ abstract class BMLTPlugin
     public static $default_geo_width = '-10';                                     ///< The default geo width for searches.
     
     /************************************************************************************//**
-    *                               STATIC DATA MEMBERS (MISC)                              *
-    ****************************************************************************************/
+                                                                                           *                               STATIC DATA MEMBERS (MISC)                              *
+                                                                                           ****************************************************************************************/
     
     public static $local_options_success_time = 2000;                             ///< The number of milliseconds a success message is displayed.
     public static $local_options_failure_time = 5000;                             ///< The number of milliseconds a failure message is displayed.
 
     /************************************************************************************//**
-    *                                  DYNAMIC DATA MEMBERS                                 *
-    ****************************************************************************************/
+                                                                                           *                                  DYNAMIC DATA MEMBERS                                 *
+                                                                                           ****************************************************************************************/
 
     public $my_driver = null;              ///< This will contain an instance of the BMLT satellite driver class.
     public $my_params = null;              ///< This will contain the $this->my_http_vars and $_POST query variables.
@@ -183,14 +183,14 @@ abstract class BMLTPlugin
     public $my_current_language;           ///< This contains whatever the current localization object is.
     
     /************************************************************************************//**
-    *                                    FUNCTIONS/METHODS                                  *
-    ****************************************************************************************/
+                                                                                           *                                    FUNCTIONS/METHODS                                  *
+                                                                                           ****************************************************************************************/
         
     /************************************************************************************//**
-    *   \brief Get the instance                                                             *
-    *                                                                                       *
-    *   \return An instance  of BMLTPlugin                                                  *
-    ****************************************************************************************/
+                                                                                           *   \brief Get the instance                                                             *
+                                                                                           *                                                                                       *
+                                                                                           *   \return An instance  of BMLTPlugin                                                  *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function get_plugin_object()
     {
@@ -199,12 +199,12 @@ abstract class BMLTPlugin
     }
         
     /************************************************************************************//**
-    *                           ACCESSORS AND INTERNAL FUNCTIONS                            *
-    ****************************************************************************************/
+                                                                                           *                           ACCESSORS AND INTERNAL FUNCTIONS                            *
+                                                                                           ****************************************************************************************/
     
     /************************************************************************************//**
-    *   \brief Adapts all the static data members to the selected language.                 *
-    ****************************************************************************************/
+                                                                                           *   \brief Adapts all the static data members to the selected language.                 *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function adapt_to_lang($in_lang = "en") ///< The language code. Default is English.
     {
@@ -215,10 +215,10 @@ abstract class BMLTPlugin
     }
     
     /************************************************************************************//**
-    *   \brief Accessor: This gets the driver object.                                       *
-    *                                                                                       *
-    *   \returns a reference to the bmlt_satellite_controller driver object                 *
-    ****************************************************************************************/
+                                                                                           *   \brief Accessor: This gets the driver object.                                       *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns a reference to the bmlt_satellite_controller driver object                 *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function &get_my_driver()
     {
@@ -227,8 +227,8 @@ abstract class BMLTPlugin
     }
 
     /************************************************************************************//**
-    *   \brief Loads the parameter list.                                                    *
-    ****************************************************************************************/
+                                                                                           *   \brief Loads the parameter list.                                                    *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function load_params()
     {
@@ -237,10 +237,10 @@ abstract class BMLTPlugin
     }
     
     /************************************************************************************//**
-    *   \brief Loads a parameter list.                                                      *
-    *                                                                                       *
-    *   \returns a string, containing the joined parameters.                                *
-    ****************************************************************************************/
+                                                                                           *   \brief Loads a parameter list.                                                      *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns a string, containing the joined parameters.                                *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function get_params($in_array)
     {
@@ -290,9 +290,9 @@ abstract class BMLTPlugin
     }
         
     /************************************************************************************//**
-    *   This will strip the cruft out of CSS and JS files.                                  *
-    *   \returns a string, with the stripped CSS.                                           *
-    ****************************************************************************************/
+                                                                                           *   This will strip the cruft out of CSS and JS files.                                  *
+                                                                                           *   \returns a string, with the stripped CSS.                                           *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function stripFile(
         $in_filename,               ///< The filename to open and optimize. If in a subdirectory (other than themes), then that should be part of the string.
@@ -314,12 +314,12 @@ abstract class BMLTPlugin
     }
     
     /****************************************************************************************//**
-    *   \brief Checks the UA of the caller, to see if it should return XHTML Strict or WML.     *
-    *                                                                                           *
-    *   NOTE: This is very, very basic. It is not meant to be a studly check, like WURFL.       *
-    *                                                                                           *
-    *   \returns A string. The supported type ('xhtml', 'xhtml_mp' or 'wml')                    *
-    ********************************************************************************************/
+                                                                                               *   \brief Checks the UA of the caller, to see if it should return XHTML Strict or WML.     *
+                                                                                               *                                                                                           *
+                                                                                               *   NOTE: This is very, very basic. It is not meant to be a studly check, like WURFL.       *
+                                                                                               *                                                                                           *
+                                                                                               *   \returns A string. The supported type ('xhtml', 'xhtml_mp' or 'wml')                    *
+                                                                                               ********************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function mobile_sniff_ua($in_http_vars)  ///< The query variables.
     {
@@ -359,7 +359,7 @@ abstract class BMLTPlugin
                     ||  preg_match('/blackberry/i', $_SERVER['HTTP_USER_AGENT'])
                     ||  preg_match("/opera\s+mini/i", $_SERVER['HTTP_USER_AGENT'])
                     ||  isset($in_http_vars['simulate_smartphone'])
-                    ) {
+                ) {
                     $language = 'smartphone';
                 }
             }
@@ -368,15 +368,15 @@ abstract class BMLTPlugin
     }
 
     /************************************************************************************//**
-    *   \brief This will parse the given text, to see if it contains the submitted code.    *
-    *                                                                                       *
-    *   The code can be contained in EITHER an HTML comment (<!--CODE-->), OR a double-[[]] *
-    *   notation.                                                                           *
-    *                                                                                       *
-    *   \returns Boolean true if the code is found (1 or more instances), OR an associative *
-    *   array of data that is associated with the code (anything within parentheses). Null  *
-    *   is returned if there is no shortcode detected.                                      *
-    ****************************************************************************************/
+                                                                                           *   \brief This will parse the given text, to see if it contains the submitted code.    *
+                                                                                           *                                                                                       *
+                                                                                           *   The code can be contained in EITHER an HTML comment (<!--CODE-->), OR a double-[[]] *
+                                                                                           *   notation.                                                                           *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns Boolean true if the code is found (1 or more instances), OR an associative *
+                                                                                           *   array of data that is associated with the code (anything within parentheses). Null  *
+                                                                                           *   is returned if there is no shortcode detected.                                      *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function get_shortcode(
         $in_text_to_parse,  ///< The text to search for shortcodes
@@ -400,13 +400,13 @@ abstract class BMLTPlugin
     }
 
     /************************************************************************************//**
-    *   \brief This will parse the given text, to see if it contains the submitted code.    *
-    *                                                                                       *
-    *   The code can be contained in EITHER an HTML comment (<!--CODE-->), OR a double-[[]] *
-    *   notation.                                                                           *
-    *                                                                                       *
-    *   \returns A string, consisting of the new text.                                      *
-    ****************************************************************************************/
+                                                                                           *   \brief This will parse the given text, to see if it contains the submitted code.    *
+                                                                                           *                                                                                       *
+                                                                                           *   The code can be contained in EITHER an HTML comment (<!--CODE-->), OR a double-[[]] *
+                                                                                           *   notation.                                                                           *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns A string, consisting of the new text.                                      *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function replace_shortcode(
         $in_text_to_parse,      ///< The text to search for shortcodes
@@ -424,31 +424,31 @@ abstract class BMLTPlugin
     }
     
     /************************************************************************************//**
-    *                               OPTIONS MANAGEMENT                                      *
-    *****************************************************************************************
-    *   This takes some 'splainin'.                                                         *
-    *                                                                                       *
-    *   The admin2 options track how many servers we're tracking, and allow the admin to    *
-    *   increment by 1. The first options don't have a number. "Numbered" options begin at  *
-    *   2. You are allowed to save new options at 1 past the current number of options. You *
-    *   delete options by decrementing the number in the admin2 options (the index). If you *
-    *   re-increment the options, you will see the old values. It is possible to reset to   *
-    *   default, and you do that by specifying an option number less than 0 (-1).           *
-    *                                                                                       *
-    *   The reason for this funky, complex game, is so we can have multiple options, and we *
-    *   don't ignore old options from previous versions.                                    *
-    *                                                                                       *
-    *   I considered setting up an abstracted, object-based system for managing these, but  *
-    *   it's complex enough without the added overhead, and, besides, that would give a lot *
-    *   more room for bugs. It's kinda hairy already, and the complexity is not great       *
-    *   enough to justify designing a whole object subsystem for it.                        *
-    ****************************************************************************************/
+                                                                                           *                               OPTIONS MANAGEMENT                                      *
+                                                                                           * ****************************************************************************************
+                                                                                           *   This takes some 'splainin'.                                                         *
+                                                                                           *                                                                                       *
+                                                                                           *   The admin2 options track how many servers we're tracking, and allow the admin to    *
+                                                                                           *   increment by 1. The first options don't have a number. "Numbered" options begin at  *
+                                                                                           *   2. You are allowed to save new options at 1 past the current number of options. You *
+                                                                                           *   delete options by decrementing the number in the admin2 options (the index). If you *
+                                                                                           *   re-increment the options, you will see the old values. It is possible to reset to   *
+                                                                                           *   default, and you do that by specifying an option number less than 0 (-1).           *
+                                                                                           *                                                                                       *
+                                                                                           *   The reason for this funky, complex game, is so we can have multiple options, and we *
+                                                                                           *   don't ignore old options from previous versions.                                    *
+                                                                                           *                                                                                       *
+                                                                                           *   I considered setting up an abstracted, object-based system for managing these, but  *
+                                                                                           *   it's complex enough without the added overhead, and, besides, that would give a lot *
+                                                                                           *   more room for bugs. It's kinda hairy already, and the complexity is not great       *
+                                                                                           *   enough to justify designing a whole object subsystem for it.                        *
+                                                                                           ****************************************************************************************/
         
     /************************************************************************************//**
-    *   \brief This gets the default admin options from the object (not the DB).            *
-    *                                                                                       *
-    *   \returns an associative array, with the default option settings.                    *
-    ****************************************************************************************/
+                                                                                           *   \brief This gets the default admin options from the object (not the DB).            *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns an associative array, with the default option settings.                    *
+                                                                                           ****************************************************************************************/
     protected function geDefaultBMLTOptions()
     {
         global $bmlt_localization;
@@ -479,11 +479,12 @@ abstract class BMLTPlugin
     }
     
     /************************************************************************************//**
-    *   \brief This gets the admin options from the database.                               *
-    *                                                                                       *
-    *   \returns an associative array, with the option settings.                            *
-    ****************************************************************************************/
-    /**<    It is possible to store multiple options.
+                                                                                           *   \brief This gets the admin options from the database.                               *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns an associative array, with the option settings.                            *
+                                                                                           ****************************************************************************************/
+    /**
+     * <    It is possible to store multiple options.
     If there is a number here (>=1), that will be used.
     If <0, a new option will be returned (not saved).
      */
@@ -528,10 +529,10 @@ abstract class BMLTPlugin
     }
     
     /************************************************************************************//**
-    *   \brief This gets the admin options from the database, but by using the option id.   *
-    *                                                                                       *
-    *   \returns an associative array, with the option settings.                            *
-    ****************************************************************************************/
+                                                                                           *   \brief This gets the admin options from the database, but by using the option id.   *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns an associative array, with the option settings.                            *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getBMLTOptions_by_id(
         $in_option_id,              ///< The option ID. It cannot be optional.
@@ -597,10 +598,10 @@ abstract class BMLTPlugin
     }
     
     /************************************************************************************//**
-    *   \brief This updates the database with the given options.                            *
-    *                                                                                       *
-    *   \returns a boolean. true if success.                                                *
-    ****************************************************************************************/
+                                                                                           *   \brief This updates the database with the given options.                            *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns a boolean. true if success.                                                *
+                                                                                           ****************************************************************************************/
     public function setBMLTOptions(
         $in_options,            ///< An array. The options to be stored. If no number is supplied in the next parameter, the ID is used.
         $in_option_number = 1   ///< It is possible to store multiple options. If there is a number here, that will be used.
@@ -655,11 +656,10 @@ abstract class BMLTPlugin
     }
         
     /************************************************************************************//**
-
-    *   \brief This gets the admin 2 options from the database.                             *
-    *                                                                                       *
-    *   \returns an associative array, with the option settings.                            *
-    ****************************************************************************************/
+                                                                                           *   \brief This gets the admin 2 options from the database.                             *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns an associative array, with the option settings.                            *
+                                                                                           ****************************************************************************************/
     public function getAdmin2Options()
     {
         $bmlt2_BMLTOptions = null;
@@ -680,10 +680,10 @@ abstract class BMLTPlugin
     }
     
     /************************************************************************************//**
-    *   \brief This updates the database with the given options (Admin2 options).           *
-    *                                                                                       *
-    *   \returns a boolean. true if success.                                                *
-    ****************************************************************************************/
+                                                                                           *   \brief This updates the database with the given options (Admin2 options).           *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns a boolean. true if success.                                                *
+                                                                                           ****************************************************************************************/
     public function setAdmin2Options($in_options) ///< An array. The options to be stored.
     {
         $ret = false;
@@ -696,10 +696,10 @@ abstract class BMLTPlugin
     }
     
     /************************************************************************************//**
-    *   \brief Gets the number of active options.                                           *
-    *                                                                                       *
-    *   \returns an integer. The number of options.                                         *
-    ****************************************************************************************/
+                                                                                           *   \brief Gets the number of active options.                                           *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns an integer. The number of options.                                         *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_num_options()
     {
@@ -717,11 +717,11 @@ abstract class BMLTPlugin
     }
     
     /************************************************************************************//**
-    *   \brief Makes a new set of options, set as default.                                  *
-    *                                                                                       *
-    *   \returns An integer. The index of the options (It will always be the number of      *
-    *   initial options, plus 1. Null if failed.                                            *
-    ****************************************************************************************/
+                                                                                           *   \brief Makes a new set of options, set as default.                                  *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns An integer. The index of the options (It will always be the number of      *
+                                                                                           *   initial options, plus 1. Null if failed.                                            *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function make_new_options()
     {
@@ -741,10 +741,10 @@ abstract class BMLTPlugin
     }
     
     /************************************************************************************//**
-    *   \brief Deletes the options by ID.                                                   *
-    *                                                                                       *
-    *   \returns a boolean. true if success.                                                *
-    ****************************************************************************************/
+                                                                                           *   \brief Deletes the options by ID.                                                   *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns a boolean. true if success.                                                *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function delete_options_by_id($in_option_id)   ///< The ID of the option to delete.
     {
@@ -762,16 +762,17 @@ abstract class BMLTPlugin
     }
     
     /************************************************************************************//**
-    *   \brief Deletes the indexed options.                                                 *
-    *                                                                                       *
-    *   This is a bit of a delicate operation, because we need to re-index all of the other *
-    *   options, beyond the one being deleted.                                              *
-    *                                                                                       *
-    *   You cannot delete the first options (1), if they are the only ones.                 *
-    *                                                                                       *
-    *   \returns a boolean. true if success.                                                *
-    ****************************************************************************************/
-    /**<    The index of the option to delete.
+                                                                                           *   \brief Deletes the indexed options.                                                 *
+                                                                                           *                                                                                       *
+                                                                                           *   This is a bit of a delicate operation, because we need to re-index all of the other *
+                                                                                           *   options, beyond the one being deleted.                                              *
+                                                                                           *                                                                                       *
+                                                                                           *   You cannot delete the first options (1), if they are the only ones.                 *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns a boolean. true if success.                                                *
+                                                                                           ****************************************************************************************/
+    /**
+     * <    The index of the option to delete.
     It can be 1 -> the number of available options.
     For safety's sake, this cannot be optional.
     We cannot delete the first (primary) option if there are no others.
@@ -830,12 +831,12 @@ abstract class BMLTPlugin
     }
     
     /************************************************************************************//**
-    *                      ADMIN PAGE DISPLAY AND PROCESSING FUNCTIONS                      *
-    ****************************************************************************************/
+                                                                                           *                      ADMIN PAGE DISPLAY AND PROCESSING FUNCTIONS                      *
+                                                                                           ****************************************************************************************/
 
     /************************************************************************************//**
-    *   \brief This does any admin actions necessary.                                       *
-    ****************************************************************************************/
+                                                                                           *   \brief This does any admin actions necessary.                                       *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function process_admin_page(&$out_option_number)   ///< If an option number needs to be selected, it is set here.
     {
@@ -888,10 +889,10 @@ abstract class BMLTPlugin
     }
         
     /************************************************************************************//**
-    *   \brief Returns the HTML for the admin page.                                         *
-    *                                                                                       *
-    *   \returns a string. The XHTML for the page.                                          *
-    ****************************************************************************************/
+                                                                                           *   \brief Returns the HTML for the admin page.                                         *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns a string. The XHTML for the page.                                          *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function return_admin_page()
     {
@@ -1022,10 +1023,10 @@ abstract class BMLTPlugin
     }
             
     /************************************************************************************//**
-    *   \brief This will return the HTML for one sheet of options in the admin page.        *
-    *                                                                                       *
-    *   \returns The XHTML to be displayed.                                                 *
-    ****************************************************************************************/
+                                                                                           *   \brief This will return the HTML for one sheet of options in the admin page.        *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns The XHTML to be displayed.                                                 *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function display_options_sheet(
         $in_options_index = 1,  ///< The options index. If not given, the first (main) ones are used.
@@ -1255,9 +1256,10 @@ abstract class BMLTPlugin
     }
 
     /*******************************************************************/
-    /** \brief Creates the select element for the Region bias.
-    *   \returns a string, containing the select element HTML.
-    */
+    /**
+     * \brief Creates the select element for the Region bias.
+     *   \returns a string, containing the select element HTML.
+     */
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function bmlt_create_region_bias_select($in_id, $in_options)
     {
@@ -1287,12 +1289,12 @@ abstract class BMLTPlugin
     }
         
     /************************************************************************************//**
-    *                                   GENERIC HANDLERS                                    *
-    ****************************************************************************************/
+                                                                                           *                                   GENERIC HANDLERS                                    *
+                                                                                           ****************************************************************************************/
     
     /************************************************************************************//**
-    *   \brief This does any admin actions necessary.                                       *
-    ****************************************************************************************/
+                                                                                           *   \brief This does any admin actions necessary.                                       *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function admin_ajax_handler()
     {
@@ -1473,12 +1475,12 @@ abstract class BMLTPlugin
     }
       
     /************************************************************************************//**
-    *   \brief Handles some AJAX routes                                                     *
-    *                                                                                       *
-    *   This function is called after the page has loaded its custom fields, so we can      *
-    *   figure out which settings we're using. If the settings support mobiles, and the UA  *
-    *   indicates this is a mobile phone, we redirect the user to our fast mobile handler.  *
-    ****************************************************************************************/
+                                                                                           *   \brief Handles some AJAX routes                                                     *
+                                                                                           *                                                                                       *
+                                                                                           *   This function is called after the page has loaded its custom fields, so we can      *
+                                                                                           *   figure out which settings we're using. If the settings support mobiles, and the UA  *
+                                                                                           *   indicates this is a mobile phone, we redirect the user to our fast mobile handler.  *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function ajax_router()
     {
@@ -1520,7 +1522,7 @@ abstract class BMLTPlugin
                 $this->load_params();
                 
                 if (isset($this->my_http_vars['redirect_ajax']) && $this->my_http_vars['redirect_ajax']) {
-                    $url = $options['root_server']."/client_interface/xhtml/index.php?switcher=RedirectAJAX$this->my_params";
+                    $url = $options['root_server']."/client_interface/xhtml/?switcher=RedirectAJAX$this->my_params";
                     
                     if (ob_get_level()) {
                         ob_end_clean(); // Just in case we are in an OB
@@ -1539,7 +1541,7 @@ abstract class BMLTPlugin
                     ob_end_flush();
                     die();
                 } elseif (isset($this->my_http_vars['redirect_ajax_json'])) {
-                    $url = $options['root_server']."/client_interface/json/index.php?".$this->my_http_vars['redirect_ajax_json'].$this->my_params;
+                    $url = $options['root_server']."/client_interface/json/?".$this->my_http_vars['redirect_ajax_json'].$this->my_params;
 
                     if (ob_get_level()) {
                         ob_end_clean(); // Just in case we are in an OB
@@ -1559,7 +1561,7 @@ abstract class BMLTPlugin
                     die();
                 } elseif (isset($this->my_http_vars['direct_simple'])) {
                     $this->adapt_to_lang($options['lang']);
-                    $root_server = $options['root_server']."/client_interface/simple/index.php";
+                    $root_server = $options['root_server']."/client_interface/simple/";
                     $params = urldecode($this->my_http_vars['search_parameters']);
                     $url = "$root_server?switcher=GetSearchResults&".$params;
                     $result = bmlt_satellite_controller::call_curl($url);
@@ -1615,10 +1617,10 @@ abstract class BMLTPlugin
     }
     
     /************************************************************************************//**
-    *   \brief Massages the page content.                                                   *
-    *                                                                                       *
-    *   \returns a string, containing the "massaged" content.                               *
-    ****************************************************************************************/
+                                                                                           *   \brief Massages the page content.                                                   *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns a string, containing the "massaged" content.                               *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function content_filter($in_the_content)   ///< The content in need of filtering.
     {
@@ -1651,11 +1653,11 @@ abstract class BMLTPlugin
     }
     
     /************************************************************************************//**
-    *   \brief This is a function that filters the content, and replaces a portion with the *
-    *   "quick" search.                                                                     *
-    *                                                                                       *
-    *   \returns a string, containing the content.                                          *
-    ****************************************************************************************/
+                                                                                           *   \brief This is a function that filters the content, and replaces a portion with the *
+                                                                                           *   "quick" search.                                                                     *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns a string, containing the content.                                          *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function display_quicksearch($in_content)     ///< This is the content to be filtered.
     {
@@ -1745,7 +1747,8 @@ abstract class BMLTPlugin
                         ||  ('location_municipality' == $params)
                         ||  ('location_city_subsection' == $params)
                         ||  ('location_nation' == $params)
-                        ||  ('location_neighborhood' == $params)) {
+                        ||  ('location_neighborhood' == $params)
+                    ) {
                         $field_key = $params;
                         $params = '';
                     } else {
@@ -1758,7 +1761,8 @@ abstract class BMLTPlugin
                                 ||  ('location_municipality' == $field_key)
                                 ||  ('location_city_subsection' == $field_key)
                                 ||  ('location_nation' == $field_key)
-                                ||  ('location_neighborhood' == $field_key))) {
+                                ||  ('location_neighborhood' == $field_key))
+                            ) {
                                 $field_key = '';
                             }
                             $params = $pArray[1];
@@ -1794,11 +1798,11 @@ abstract class BMLTPlugin
     }
     
     /************************************************************************************//**
-    *   \brief This is a function that filters the content, and replaces a portion with the *
-    *   "popup" search, if provided by the 'bmlt_simple_searches' custom field.             *
-    *                                                                                       *
-    *   \returns a string, containing the content.                                          *
-    ****************************************************************************************/
+                                                                                           *   \brief This is a function that filters the content, and replaces a portion with the *
+                                                                                           *   "popup" search, if provided by the 'bmlt_simple_searches' custom field.             *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns a string, containing the content.                                          *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function display_popup_search(
         $in_content,    ///< This is the content to be filtered.
@@ -1870,11 +1874,11 @@ abstract class BMLTPlugin
     }
         
     /************************************************************************************//**
-    *   \brief This function implements the new, Maps API V. 3 version of the "classic"     *
-    *          BMLT search screen.                                                          *
-    *                                                                                       *
-    *   \returns a string, containing the content.                                          *
-    ****************************************************************************************/
+                                                                                           *   \brief This function implements the new, Maps API V. 3 version of the "classic"     *
+                                                                                           *          BMLT search screen.                                                          *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns a string, containing the content.                                          *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function display_bmlt_nouveau($in_content)      ///< This is the content to be filtered.
     {
@@ -2072,11 +2076,11 @@ abstract class BMLTPlugin
     }
         
     /************************************************************************************//**
-    *   \brief This is a function that filters the content, and replaces a portion with the *
-    *   "simple" search                                                                     *
-    *                                                                                       *
-    *   \returns a string, containing the content.                                          *
-    ****************************************************************************************/
+                                                                                           *   \brief This is a function that filters the content, and replaces a portion with the *
+                                                                                           *   "simple" search                                                                     *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns a string, containing the content.                                          *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function display_simple_search($in_content)      ///< This is the content to be filtered.
     {
@@ -2103,7 +2107,7 @@ abstract class BMLTPlugin
         
                 $params = (count($param_array) > 0) ? '?'.str_replace(array ( '&#038;', '&#038;#038;', '&#038;amp;', '&#038;amp;', '&amp;#038;', '&amp;', '&amp;amp;' ), '&', $param_array[count($param_array)-1]) : null;
         
-                $uri = $root_server_root."/client_interface/simple/index.php".$params;
+                $uri = $root_server_root."/client_interface/simple/".$params;
 
                 $the_new_content = bmlt_satellite_controller::call_curl($uri);
                 $in_content = self::replace_shortcode($in_content, 'bmlt_simple', $the_new_content);
@@ -2114,11 +2118,11 @@ abstract class BMLTPlugin
     }
         
     /************************************************************************************//**
-    *   \brief This is a function that filters the content, and replaces a portion with the *
-    *   new "table" search                                                                  *
-    *                                                                                       *
-    *   \returns a string, containing the content.                                          *
-    ****************************************************************************************/
+                                                                                           *   \brief This is a function that filters the content, and replaces a portion with the *
+                                                                                           *   new "table" search                                                                  *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns a string, containing the content.                                          *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function display_table_search($in_content)      ///< This is the content to be filtered.
     {
@@ -2198,11 +2202,11 @@ abstract class BMLTPlugin
     }
         
     /************************************************************************************//**
-    *   \brief This is a function that filters the content, and replaces a portion with the *
-    *   "new map" search                                                                    *
-    *                                                                                       *
-    *   \returns a string, containing the content.                                          *
-    ****************************************************************************************/
+                                                                                           *   \brief This is a function that filters the content, and replaces a portion with the *
+                                                                                           *   "new map" search                                                                    *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns a string, containing the content.                                          *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function display_new_map_search($in_content)      ///< This is the content to be filtered.
     {
@@ -2246,10 +2250,10 @@ abstract class BMLTPlugin
     }
 
     /************************************************************************************//**
-    *   \brief  This returns a div of location options to be applied to the map search.     *
-    *                                                                                       *
-    *   \returns A string. The XHTML to be displayed.                                       *
-    ****************************************************************************************/
+                                                                                           *   \brief  This returns a div of location options to be applied to the map search.     *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns A string. The XHTML to be displayed.                                       *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function BMLTPlugin_map_search_location_options(
         $in_options_id, ///< The ID for the options to use for this implementation.
@@ -2294,10 +2298,10 @@ abstract class BMLTPlugin
     }
     
     /************************************************************************************//**
-    *   \brief  This returns a div of search options to be applied to the map search.       *
-    *                                                                                       *
-    *   \returns A string. The XHTML to be displayed.                                       *
-    ****************************************************************************************/
+                                                                                           *   \brief  This returns a div of search options to be applied to the map search.       *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns A string. The XHTML to be displayed.                                       *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function BMLTPlugin_map_search_search_options(
         $in_options_id, ///< The ID for the options to use for this implementation.
@@ -2360,11 +2364,11 @@ abstract class BMLTPlugin
     }
 
     /************************************************************************************//**
-    *   \brief  This returns the global JavaScript stuff for the new map search that only   *
-    *           only needs to be loaded once.                                               *
-    *                                                                                       *
-    *   \returns A string. The XHTML to be displayed.                                       *
-    ****************************************************************************************/
+                                                                                           *   \brief  This returns the global JavaScript stuff for the new map search that only   *
+                                                                                           *           only needs to be loaded once.                                               *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns A string. The XHTML to be displayed.                                       *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function BMLTPlugin_map_search_global_javascript_stuff($in_options_id)  ///< The ID of our currently selected options.
     {
@@ -2417,11 +2421,11 @@ abstract class BMLTPlugin
     }
 
     /************************************************************************************//**
-    *   \brief  This returns the global JavaScript stuff for the new map search that only   *
-    *           only needs to be loaded once.                                               *
-    *                                                                                       *
-    *   \returns A string. The XHTML to be displayed.                                       *
-    ****************************************************************************************/
+                                                                                           *   \brief  This returns the global JavaScript stuff for the new map search that only   *
+                                                                                           *           only needs to be loaded once.                                               *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns A string. The XHTML to be displayed.                                       *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function BMLTPlugin_nouveau_map_search_global_javascript_stuff($in_options_id) ///< The ID of our currently selected options.
     {
@@ -2446,11 +2450,11 @@ abstract class BMLTPlugin
     }
 
     /************************************************************************************//**
-    *   \brief  This returns the JavaScript stuff that needs to be loaded into each of the  *
-    *           new map search instances.                                                   *
-    *                                                                                       *
-    *   \returns A string. The XHTML to be displayed.                                       *
-    ****************************************************************************************/
+                                                                                           *   \brief  This returns the JavaScript stuff that needs to be loaded into each of the  *
+                                                                                           *           new map search instances.                                                   *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns A string. The XHTML to be displayed.                                       *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function BMLTPlugin_map_search_local_javascript_stuff(
         $in_options_id, ///< The ID for the options to use for this implementation.
@@ -2473,11 +2477,11 @@ abstract class BMLTPlugin
     }
     
     /************************************************************************************//**
-    *   \brief This is a function that filters the content, and replaces a portion with the *
-    *   "changes" dump.                                                                     *
-    *                                                                                       *
-    *   \returns a string, containing the content.                                          *
-    ****************************************************************************************/
+                                                                                           *   \brief This is a function that filters the content, and replaces a portion with the *
+                                                                                           *   "changes" dump.                                                                     *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns a string, containing the content.                                          *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function display_changes($in_content)     ///< This is the content to be filtered.
     {
@@ -2574,10 +2578,10 @@ abstract class BMLTPlugin
     }
 
     /************************************************************************************//**
-    *   \brief Returns the XHTML for one single change record.                              *
-    *                                                                                       *
-    *   \returns A string. The DOCTYPE to be displayed.                                     *
-    ****************************************************************************************/
+                                                                                           *   \brief Returns the XHTML for one single change record.                              *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns A string. The DOCTYPE to be displayed.                                     *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function setup_one_change(
         $in_change_array,       ///< One change record
@@ -2620,19 +2624,19 @@ abstract class BMLTPlugin
     }
 
     /************************************************************************************//**
-    *                              FAST MOBILE LOOKUP ROUTINES                              *
-    *                                                                                       *
-    *   Our mobile support is based on the fast mobile client. It has been adapted to fit   *
-    *   into a WordPress environment.                                                       *
-    ****************************************************************************************/
+                                                                                           *                              FAST MOBILE LOOKUP ROUTINES                              *
+                                                                                           *                                                                                       *
+                                                                                           *   Our mobile support is based on the fast mobile client. It has been adapted to fit   *
+                                                                                           *   into a WordPress environment.                                                       *
+                                                                                           ****************************************************************************************/
 
     /************************************************************************************//**
-    *   \brief Checks the UA of the caller, to see if it should return XHTML Strict or WML. *
-    *                                                                                       *
-    *   NOTE: This is very, very basic. It is not meant to be a studly check, like WURFL.   *
-    *                                                                                       *
-    *   \returns A string. The DOCTYPE to be displayed.                                     *
-    ****************************************************************************************/
+                                                                                           *   \brief Checks the UA of the caller, to see if it should return XHTML Strict or WML. *
+                                                                                           *                                                                                       *
+                                                                                           *   NOTE: This is very, very basic. It is not meant to be a studly check, like WURFL.   *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns A string. The DOCTYPE to be displayed.                                     *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function BMLTPlugin_select_doctype($in_http_vars)  ///< The query variables
     {
@@ -2697,11 +2701,11 @@ abstract class BMLTPlugin
     }
     
     /************************************************************************************//**
-    *   \brief Output the necessary Javascript. This is only called for a "pure javascript" *
-    *   do_search invocation (smartphone interactive map).                                  *
-    *                                                                                       *
-    *   \returns A string. The XHTML to be displayed.                                       *
-    ****************************************************************************************/
+                                                                                           *   \brief Output the necessary Javascript. This is only called for a "pure javascript" *
+                                                                                           *   do_search invocation (smartphone interactive map).                                  *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns A string. The XHTML to be displayed.                                       *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function BMLTPlugin_fast_mobile_lookup_javascript_stuff()
     {
@@ -2759,10 +2763,10 @@ abstract class BMLTPlugin
     }
     
     /************************************************************************************//**
-    *   \brief Output whatever header stuff is necessary for the available UA               *
-    *                                                                                       *
-    *   \returns A string. The XHTML to be displayed.                                       *
-    ****************************************************************************************/
+                                                                                           *   \brief Output whatever header stuff is necessary for the available UA               *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns A string. The XHTML to be displayed.                                       *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function BMLTPlugin_fast_mobile_lookup_header_stuff()
     {
@@ -2808,12 +2812,12 @@ abstract class BMLTPlugin
     }
     
     /************************************************************************************//**
-    *   \brief Returns the XHTML/WML for the Map Search form. These are the three "fast     *
-    *   lookup" links displayed at the top (Note display:none" in the style).               *
-    *   This is to be revealed by JavaScript.                                               *
-    *                                                                                       *
-    *   \returns A string. The XHTML to be displayed.                                       *
-    ****************************************************************************************/
+                                                                                           *   \brief Returns the XHTML/WML for the Map Search form. These are the three "fast     *
+                                                                                           *   lookup" links displayed at the top (Note display:none" in the style).               *
+                                                                                           *   This is to be revealed by JavaScript.                                               *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns A string. The XHTML to be displayed.                                       *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function BMLTPlugin_draw_map_search_form()
     {
@@ -2831,10 +2835,10 @@ abstract class BMLTPlugin
     }
     
     /************************************************************************************//**
-    *   \brief Returns the XHTML/WML for the Address Entry form                             *
-    *                                                                                       *
-    *   \returns A string. The XHTML to be displayed.                                       *
-    ****************************************************************************************/
+                                                                                           *   \brief Returns the XHTML/WML for the Address Entry form                             *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns A string. The XHTML to be displayed.                                       *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function BMLTPlugin_draw_address_search_form()
     {
@@ -2962,10 +2966,10 @@ abstract class BMLTPlugin
     }
 
     /************************************************************************************//**
-    *   \brief Renders one WML card                                                         *
-    *                                                                                       *
-    *   \returns A string. The WML 1.1 to be displayed.                                     *
-    ****************************************************************************************/
+                                                                                           *   \brief Renders one WML card                                                         *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns A string. The WML 1.1 to be displayed.                                     *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function BMLTPlugin_render_card(
         $ret,                   ///< The current XHTML tally (so we can count it).
@@ -3068,22 +3072,22 @@ abstract class BMLTPlugin
     }
 
     /************************************************************************************//**
-    *   \brief Runs the lookup.                                                             *
-    *                                                                                       *
-    *   \returns A string. The XHTML to be displayed.                                       *
-    ****************************************************************************************/
+                                                                                           *   \brief Runs the lookup.                                                             *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns A string. The XHTML to be displayed.                                       *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function BMLTPlugin_fast_mobile_lookup()
     {
         // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
         /************************************************************************************//**
-        *   \brief Sorting Callback                                                             *
-        *                                                                                       *
-        *   This will sort meetings by weekday, then by distance, so the first meeting of any   *
-        *   given weekday is the closest one, etc.                                              *
-        *                                                                                       *
-        *   \returns -1 if a < b, 1, otherwise.                                                 *
-        ****************************************************************************************/
+                                                                                               *   \brief Sorting Callback                                                             *
+                                                                                               *                                                                                       *
+                                                                                               *   This will sort meetings by weekday, then by distance, so the first meeting of any   *
+                                                                                               *   given weekday is the closest one, etc.                                              *
+                                                                                               *                                                                                       *
+                                                                                               *   \returns -1 if a < b, 1, otherwise.                                                 *
+                                                                                               ****************************************************************************************/
         function mycmp(
             $in_a_meeting,  ///< These are meeting data arrays. The elements we'll be checking will be 'weekday_tinyint' and 'distance_in_XX'.
             $in_b_meeting
@@ -3421,12 +3425,12 @@ abstract class BMLTPlugin
     }
     
     /************************************************************************************//**
-    *                                    THE CONSTRUCTOR                                    *
-    *                                                                                       *
-    *   \brief Constructor. Enforces the SINGLETON, and sets up the callbacks.              *
-    *                                                                                       *
-    *   You will need to make sure that you call this with a parent::__construct() call.    *
-    ****************************************************************************************/
+                                                                                           *                                    THE CONSTRUCTOR                                    *
+                                                                                           *                                                                                       *
+                                                                                           *   \brief Constructor. Enforces the SINGLETON, and sets up the callbacks.              *
+                                                                                           *                                                                                       *
+                                                                                           *   You will need to make sure that you call this with a parent::__construct() call.    *
+                                                                                           ****************************************************************************************/
     public function __construct()
     {
         if (!isset(self::$g_s_there_can_only_be_one) || (self::$g_s_there_can_only_be_one === null)) {
@@ -3439,7 +3443,7 @@ abstract class BMLTPlugin
             if (!(isset($this->my_http_vars['search_form']) && $this->my_http_vars['search_form'] )
                 && !(isset($this->my_http_vars['do_search']) && $this->my_http_vars['do_search'] )
                 && !(isset($this->my_http_vars['single_meeting_id']) && $this->my_http_vars['single_meeting_id'] )
-                ) {
+            ) {
                 $this->my_http_vars['search_form'] = true;
             }
             
@@ -3466,19 +3470,19 @@ abstract class BMLTPlugin
     }
     
     /************************************************************************************//**
-    *                            THE CMS-SPECIFIC FUNCTIONS                                 *
-    *                                                                                       *
-    * These may be overridden by the subclasses. Some are required to be overridden.        *
-    ****************************************************************************************/
+                                                                                           *                            THE CMS-SPECIFIC FUNCTIONS                                 *
+                                                                                           *                                                                                       *
+                                                                                           * These may be overridden by the subclasses. Some are required to be overridden.        *
+                                                                                           ****************************************************************************************/
     
     /************************************************************************************//**
-    *   \brief This function fetches the settings ID for a page (if there is one).          *
-    *                                                                                       *
-    *   If $in_check_mobile is set to true, then ONLY a check for mobile support will be    *
-    *   made, and no other shortcodes will be checked.                                      *
-    *                                                                                       *
-    *   \returns a mixed type, with the settings ID.                                        *
-    ****************************************************************************************/
+                                                                                           *   \brief This function fetches the settings ID for a page (if there is one).          *
+                                                                                           *                                                                                       *
+                                                                                           *   If $in_check_mobile is set to true, then ONLY a check for mobile support will be    *
+                                                                                           *   made, and no other shortcodes will be checked.                                      *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns a mixed type, with the settings ID.                                        *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     protected function cms_get_page_settings_id(
         $in_content,               ///< Required (for the base version) content to check.
@@ -3519,15 +3523,15 @@ abstract class BMLTPlugin
     }
     
     /************************************************************************************//**
-    *   \brief  Process the given string.                                                   *
-    *           NOTE: A good start has been given, but there's a very good chance this will *
-    *           need to be overridden.                                                      *
-    *                                                                                       *
-    *   This allows easier translation of displayed strings. All strings displayed by the   *
-    *   plugin should go through this function.                                             *
-    *                                                                                       *
-    *   \returns a string, processed by the CMS.                                            *
-    ****************************************************************************************/
+                                                                                           *   \brief  Process the given string.                                                   *
+                                                                                           *           NOTE: A good start has been given, but there's a very good chance this will *
+                                                                                           *           need to be overridden.                                                      *
+                                                                                           *                                                                                       *
+                                                                                           *   This allows easier translation of displayed strings. All strings displayed by the   *
+                                                                                           *   plugin should go through this function.                                             *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns a string, processed by the CMS.                                            *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     protected function process_text($in_string) ///< The string to be processed.
     {
@@ -3536,12 +3540,12 @@ abstract class BMLTPlugin
     }
     
     /************************************************************************************//**
-    *   \brief  Return an HTTP path to the AJAX callback target.                            *
-    *           NOTE: A good start has been given, but there's a very good chance this will *
-    *           need to be overridden.                                                      *
-    *                                                                                       *
-    *   \returns a string, containing the path.                                             *
-    ****************************************************************************************/
+                                                                                           *   \brief  Return an HTTP path to the AJAX callback target.                            *
+                                                                                           *           NOTE: A good start has been given, but there's a very good chance this will *
+                                                                                           *           need to be overridden.                                                      *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns a string, containing the path.                                             *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     protected function get_ajax_base_uri()
     {
@@ -3585,21 +3589,21 @@ abstract class BMLTPlugin
     }
 
     /************************************************************************************//**
-    *   \brief  Sets up the admin and handler callbacks. Override this for your CMS.        *
-    *           NOTE: This may be ignored, but most CMSes have a system of callbacks, and   *
-    *           this function is a good place to establish those callbacks.                 *
-    *           It is called at the end of the base class constructor.                      *
-    ****************************************************************************************/
+                                                                                           *   \brief  Sets up the admin and handler callbacks. Override this for your CMS.        *
+                                                                                           *           NOTE: This may be ignored, but most CMSes have a system of callbacks, and   *
+                                                                                           *           this function is a good place to establish those callbacks.                 *
+                                                                                           *           It is called at the end of the base class constructor.                      *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     protected function set_callbacks()
     {
     }
     // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     /************************************************************************************//**
-    *   \brief Return an HTTP path to the AJAX callback target for the mobile handler.      *
-    *                                                                                       *
-    *   \returns a string, containing the path. Defaults to the base URI.                   *
-    ****************************************************************************************/
+                                                                                           *   \brief Return an HTTP path to the AJAX callback target for the mobile handler.      *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns a string, containing the path. Defaults to the base URI.                   *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     protected function get_ajax_mobile_base_uri()
     {
@@ -3607,10 +3611,10 @@ abstract class BMLTPlugin
     }
     // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     /************************************************************************************//**
-    *   \brief Return an HTTP path to the AJAX callback target.                             *
-    *                                                                                       *
-    *   \returns a string, containing the path.                                             *
-    ****************************************************************************************/
+                                                                                           *   \brief Return an HTTP path to the AJAX callback target.                             *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns a string, containing the path.                                             *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     protected function get_admin_ajax_base_uri()
     {
@@ -3618,10 +3622,10 @@ abstract class BMLTPlugin
     }
     // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     /************************************************************************************//**
-    *   \brief Return an HTTP path to the basic admin form submit (action) URI              *
-    *                                                                                       *
-    *   \returns a string, containing the path.                                             *
-    ****************************************************************************************/
+                                                                                           *   \brief Return an HTTP path to the basic admin form submit (action) URI              *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns a string, containing the path.                                             *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     protected function get_admin_form_uri()
     {
@@ -3629,12 +3633,12 @@ abstract class BMLTPlugin
     }
     // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     /************************************************************************************//**
-    *   \brief  Return an HTTP path to the plugin directory.                                *
-    *           NOTE: A good start has been given, but there's a very good chance this will *
-    *           need to be overridden.                                                      *
-    *                                                                                       *
-    *   \returns a string, containing the path.                                             *
-    ****************************************************************************************/
+                                                                                           *   \brief  Return an HTTP path to the plugin directory.                                *
+                                                                                           *           NOTE: A good start has been given, but there's a very good chance this will *
+                                                                                           *           need to be overridden.                                                      *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns a string, containing the path.                                             *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     protected function get_plugin_path()
     {
@@ -3642,20 +3646,20 @@ abstract class BMLTPlugin
     }
     // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     /************************************************************************************//**
-    *                      ABSTRACT (REQUIRED OVERRIDE) FUNCTIONS                           *
-    ****************************************************************************************/
+                                                                                           *                      ABSTRACT (REQUIRED OVERRIDE) FUNCTIONS                           *
+                                                                                           ****************************************************************************************/
 
     /************************************************************************************//**
-    *   \brief This gets the admin options from the database (allows CMS abstraction).      *
-    *                                                                                       *
-    *   \returns an associative array, with the option settings.                            *
-    ****************************************************************************************/
+                                                                                           *   \brief This gets the admin options from the database (allows CMS abstraction).      *
+                                                                                           *                                                                                       *
+                                                                                           *   \returns an associative array, with the option settings.                            *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     abstract protected function cms_get_option($in_option_key); ///< The key for the option
     // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     /************************************************************************************//**
-    *   \brief This gets the admin options from the database (allows CMS abstraction).      *
-    ****************************************************************************************/
+                                                                                           *   \brief This gets the admin options from the database (allows CMS abstraction).      *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     abstract protected function cms_set_option(
         $in_option_key,   ///< The name of the option
@@ -3663,14 +3667,15 @@ abstract class BMLTPlugin
     );
     // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     /************************************************************************************//**
-    *   \brief Deletes a stored option (allows CMS abstraction).                            *
-    ****************************************************************************************/
+                                                                                           *   \brief Deletes a stored option (allows CMS abstraction).                            *
+                                                                                           ****************************************************************************************/
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     abstract protected function cms_delete_option($in_option_key); ///< The key for the option
 }
 // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
 /***********************************************************************/
-/** \brief  This is an open-source JSON encoder that allows us to support
+/**
+ * \brief  This is an open-source JSON encoder that allows us to support
     older versions of PHP (before the <a href="http://us3.php.net/json_encode">json_encode()</a> function
     was implemented). It uses json_encode() if that function is available.
 
@@ -3687,8 +3692,8 @@ abstract class BMLTPlugin
     Redistribution and use in source and binary forms, with or without modification, are permitted provided
     that the following conditions are met:
 
-    *   Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-    *   Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer
+ *   Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+ *   Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer
         in the documentation and/or other materials provided with the distribution.
 
     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
@@ -3698,7 +3703,7 @@ abstract class BMLTPlugin
     PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
     OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
     EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 function array2json(
     $arr    ///< An associative string, to be encoded as JSON.
 ) {
@@ -3761,9 +3766,9 @@ function array2json(
 }
 
 /************************************************************************************//**
-*   \brief Very quick check for mobile client.                                          *
-*   \returns a Boolean. TRUE, if the client is mobile.                                  *
-****************************************************************************************/
+                                                                                       *   \brief Very quick check for mobile client.                                          *
+                                                                                       *   \returns a Boolean. TRUE, if the client is mobile.                                  *
+                                                                                       ****************************************************************************************/
 function BMLTPlugin_weAreMobile($in_http_vars)   ///< The HTTP query variables, as an associative array.
 {
     $language = BMLTPlugin::mobile_sniff_ua($in_http_vars);

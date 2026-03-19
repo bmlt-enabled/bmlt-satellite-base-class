@@ -1,6 +1,7 @@
 <?php
 /***********************************************************************/
-/**     \file   loadTable_StyleFiles.php
+/**
+ * \file   loadTable_StyleFiles.php
 
     \brief  This file reads in a CSS file, and optimizes it by stripping
     out comments and whitespace. It will also try to GZ compress the output
@@ -32,8 +33,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this code.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 function loadTable_StyleFile($in_theme_dirname)
 {
     $pathname = dirname(__FILE__)."$in_theme_dirname/table_styles.css";
