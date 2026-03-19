@@ -1,30 +1,30 @@
 <?php
 /****************************************************************************************//**
-                                                                                           *   \file   bmlt-cms-satellite-plugin.php                                                   *
-                                                                                           *                                                                                           *
-                                                                                           *   \brief  This is a generic CMS plugin class for a BMLT satellite client.                 *
-                                                                                           *   \version 3.11.12                                                                        *
-                                                                                           *                                                                                           *
-                                                                                           *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
-                                                                                           *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
-                                                                                           *                                                                                           *
-                                                                                           *   This file is part of the Basic Meeting List Toolbox (BMLT).                             *
-                                                                                           *                                                                                           *
-                                                                                           *   Find out more at: https://bmlt.app                                                      *
-                                                                                           *                                                                                           *
-                                                                                           *   BMLT is free software: you can redistribute it and/or modify                            *
-                                                                                           *   it under the terms of the GNU General Public License as published by                    *
-                                                                                           *   the Free Software Foundation, either version 3 of the License, or                       *
-                                                                                           *   (at your option) any later version.                                                     *
-                                                                                           *                                                                                           *
-                                                                                           *   BMLT is distributed in the hope that it will be useful,                                 *
-                                                                                           *   but WITHOUT ANY WARRANTY; without even the implied warranty of                          *
-                                                                                           *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                           *
-                                                                                           *   GNU General Public License for more details.                                            *
-                                                                                           *                                                                                           *
-                                                                                           *   You should have received a copy of the GNU General Public License                       *
-                                                                                           *   along with this code.  If not, see <http://www.gnu.org/licenses/>.                      *
-                                                                                           ********************************************************************************************/
+*   \file   bmlt-cms-satellite-plugin.php                                                   *
+*                                                                                           *
+*   \brief  This is a generic CMS plugin class for a BMLT satellite client.                 *
+*   \version 3.11.14                                                                        *
+*                                                                                           *
+*   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
+*   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
+*                                                                                           *
+*   This file is part of the Basic Meeting List Toolbox (BMLT).                             *
+*                                                                                           *
+*   Find out more at: https://bmlt.app                                                      *
+*                                                                                           *
+*   BMLT is free software: you can redistribute it and/or modify                            *
+*   it under the terms of the GNU General Public License as published by                    *
+*   the Free Software Foundation, either version 3 of the License, or                       *
+*   (at your option) any later version.                                                     *
+*                                                                                           *
+*   BMLT is distributed in the hope that it will be useful,                                 *
+*   but WITHOUT ANY WARRANTY; without even the implied warranty of                          *
+*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                           *
+*   GNU General Public License for more details.                                            *
+*                                                                                           *
+*   You should have received a copy of the GNU General Public License                       *
+*   along with this code.  If not, see <http://www.gnu.org/licenses/>.                      *
+********************************************************************************************/
 
 // define ( '_DEBUG_MODE_', 1 ); //Uncomment for easier JavaScript debugging.
 
@@ -846,6 +846,16 @@ abstract class BMLTPlugin
         $this->adapt_to_lang($bmlt_localization);
         $timing = self::$local_options_success_time;    // Success is a shorter fade, but failure is longer.
         $ret = '<div id="BMLTPlugin_Message_bar_div" class="BMLTPlugin_Message_bar_div">';
+        if ((isset($this->my_http_vars['BMLTPlugin_create_option']) || isset($this->my_http_vars['BMLTPlugin_delete_option']))
+            && !$this->cms_verify_admin_nonce()) {
+            $timing = self::$local_options_failure_time;
+            $ret .= '<h2 id="BMLTPlugin_Fader" class="BMLTPlugin_Message_bar_fail">';
+            $ret .= htmlspecialchars($this->process_text('Security check failed.'));
+            $ret .= '</h2>';
+            $ret .= '<script type="text/javascript">g_BMLTPlugin_TimeToFade = '.$timing.';BMLTPlugin_StartFader()</script>';
+            $ret .= '</div>';
+            return $ret;
+        }
         if (isset($this->my_http_vars['BMLTPlugin_create_option'])) {
             $out_option_number = $this->make_new_options();
             if ($out_option_number) {
@@ -966,6 +976,7 @@ abstract class BMLTPlugin
             $html .= '</div>';
         }
                             
+                            $html .= $this->cms_get_admin_nonce_html();
                             $html .= '<input type="submit" id="BMLTPlugin_toolbar_button_new" class="BMLTPlugin_create_button" name="BMLTPlugin_create_option" value="'.$this->process_text($this->my_current_language->local_options_add_new).'" />';
                             
                             $html .= '<div class="BMLTPlugin_toolbar_button_line_right">';
@@ -1300,6 +1311,15 @@ abstract class BMLTPlugin
     {
         // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
         // We only go here if we are in an AJAX call (This function dies out the session).
+        if ((isset($this->my_http_vars['BMLTPlugin_Save_Settings_AJAX_Call'])
+            || isset($this->my_http_vars['BMLTPlugin_AJAX_Call'])
+            || isset($this->my_http_vars['BMLTPlugin_Fetch_Langs_AJAX_Call']))
+            && !$this->cms_verify_admin_nonce()) {
+            if (ob_get_level()) {
+                ob_end_clean();
+            }
+            die('0');
+        }
         if (isset($this->my_http_vars['BMLTPlugin_Save_Settings_AJAX_Call'])) {
             $ret = 0;
             
@@ -3654,6 +3674,38 @@ abstract class BMLTPlugin
                                                                                            *                                                                                       *
                                                                                            *   \returns an associative array, with the option settings.                            *
                                                                                            ****************************************************************************************/
+    /************************************************************************************//**
+                                                                                       *   \brief Verifies the CSRF/nonce token for admin state-changing requests.            *
+                                                                                       *                                                                                       *
+                                                                                       *   CMS implementations should override this to perform nonce/CSRF validation.         *
+                                                                                       *   Return false to block the action; alternatively, call a CMS-specific               *
+                                                                                       *   die/redirect to terminate execution directly.                                       *
+                                                                                       *   Default returns true (no-op) for backwards compatibility.                          *
+                                                                                       *                                                                                       *
+                                                                                       *   \returns bool True if the request is valid, false to block the action.             *
+                                                                                       ****************************************************************************************/
+    // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
+    protected function cms_verify_admin_nonce()
+    {
+        // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
+        return true;
+    }
+
+    /************************************************************************************//**
+                                                                                       *   \brief Returns an HTML hidden input containing the CSRF/nonce token.               *
+                                                                                       *                                                                                       *
+                                                                                       *   CMS implementations should override this to return the appropriate hidden field.   *
+                                                                                       *   Default returns an empty string (no-op) for backwards compatibility.               *
+                                                                                       *                                                                                       *
+                                                                                       *   \returns string HTML for a hidden nonce/CSRF input field, or empty string.         *
+                                                                                       ****************************************************************************************/
+    // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
+    protected function cms_get_admin_nonce_html()
+    {
+        // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
+        return '';
+    }
+
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     abstract protected function cms_get_option($in_option_key); ///< The key for the option
     // phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
