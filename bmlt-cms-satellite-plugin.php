@@ -57,8 +57,8 @@ foreach ($dir as $fileinfo) {
                 if ($lang_name && $lang_key) {
                     include_once($fPath);
 
-                    $eval_string = '$lang_instance = new BMLT_Localized_BaseClass_' . $lang_key . '();';
-                    eval($eval_string);
+                    $lang_class = 'BMLT_Localized_BaseClass_' . $lang_key;
+                    $lang_instance = new $lang_class();
                     $g_my_languages[$lang_key] = $lang_instance;
                 }
             }
