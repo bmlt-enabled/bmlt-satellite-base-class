@@ -1,13 +1,10 @@
 var searchData=
 [
-  ['u_5ftest_226',['u_test',['../d3/d8a/unit__test_8php.html#a26bde76fedc557bfce2243a4257a76c4',1,'unit_test.php']]],
-  ['u_5ftest_5fadmin_227',['u_test_admin',['../d3/d8a/unit__test_8php.html#a4531a6d752aa2ed748d2795c6677b1ee',1,'unit_test.php']]],
-  ['u_5ftest_5fbody_228',['u_test_body',['../d3/d8a/unit__test_8php.html#af3e9f9914433cb81887eb4f9091cbf5d',1,'unit_test.php']]],
-  ['u_5ftest_5fform_229',['u_test_form',['../d3/d8a/unit__test_8php.html#aa70f428da8ef753e1ffbf8d9d9633eb9',1,'unit_test.php']]],
-  ['u_5ftest_5fget_5fstring_230',['u_test_get_string',['../d3/d8a/unit__test_8php.html#a913118bce0443e8991227c97898f64a4',1,'unit_test.php']]],
-  ['u_5ftest_5fheader_231',['u_test_header',['../d3/d8a/unit__test_8php.html#abd1ba078ba22781e4cc1b8e1929a7a15',1,'unit_test.php']]],
-  ['u_5ftest_5fmeeting_5fid_232',['U_TEST_MEETING_ID',['../d3/d8a/unit__test_8php.html#a9e7d67f7763215b63e553b0f6acf24b8',1,'unit_test.php']]],
-  ['u_5ftest_5foperation_233',['u_test_operation',['../d3/d8a/unit__test_8php.html#a24c2241af63368e1105de8b99fdfde79',1,'unit_test.php']]],
-  ['u_5ftest_5frender_234',['u_test_render',['../d3/d8a/unit__test_8php.html#a216aea8bbaeabcd76a614e07f7353d88',1,'unit_test.php']]],
-  ['unit_5ftest_2ephp_235',['unit_test.php',['../d3/d8a/unit__test_8php.html',1,'']]]
+  ['set_5fcallbacks_0',['set_callbacks',['../d5/dc1/class_b_m_l_t_plugin.html#a1eaa95952cb44563404135e5094cbe59',1,'BMLTPlugin']]],
+  ['setadmin2options_1',['setAdmin2Options',['../d5/dc1/class_b_m_l_t_plugin.html#aa388869ead7009a0a1dcc9695ebaf5c7',1,'BMLTPlugin']]],
+  ['setbmltoptions_2',['setBMLTOptions',['../d5/dc1/class_b_m_l_t_plugin.html#a34254745fa910e8b8fbff0a2059e8108',1,'BMLTPlugin']]],
+  ['setup_5fone_5fchange_3',['setup_one_change',['../d5/dc1/class_b_m_l_t_plugin.html#a0e0047901ac5577603ec2f2876551fcc',1,'BMLTPlugin']]],
+  ['standard_5fhead_4',['standard_head',['../d6/dc9/class_b_m_l_t_u_test_plugin.html#af8230c33f8bd20a9602928ce09cb9473',1,'BMLTUTestPlugin']]],
+  ['stripfile_5',['stripFile',['../d5/dc1/class_b_m_l_t_plugin.html#a698d69a99db18b03a83240d11ce52826',1,'BMLTPlugin']]],
+  ['style_5fstripper_2ephp_6',['style_stripper.php',['../db/dfa/themes_2_green_and_gold_2style__stripper_8php.html',1,'(Global Namespace)'],['../db/de3/themes_2_n_e_r_n_a_2style__stripper_8php.html',1,'(Global Namespace)'],['../df/d80/themes_2_grey_and_maroon_2style__stripper_8php.html',1,'(Global Namespace)'],['../d6/dee/style__stripper_8php.html',1,'(Global Namespace)'],['../dd/d17/themes_2_g_n_y_r2_2style__stripper_8php.html',1,'(Global Namespace)'],['../d2/d1d/themes_2_g_n_y_r_2style__stripper_8php.html',1,'(Global Namespace)'],['../d3/dc7/themes_2default_2style__stripper_8php.html',1,'(Global Namespace)'],['../d6/dd8/themes_2_blue_and_white_2style__stripper_8php.html',1,'(Global Namespace)'],['../de/de4/themes_2_blue_and_red_2style__stripper_8php.html',1,'(Global Namespace)'],['../d9/d0e/themes_2_blue_and_red_2images_2style__stripper_8php.html',1,'(Global Namespace)'],['../dd/d0a/themes_2_black_white_and_red_2style__stripper_8php.html',1,'(Global Namespace)'],['../d1/db9/themes_2_australia_2style__stripper_8php.html',1,'(Global Namespace)']]]
 ];

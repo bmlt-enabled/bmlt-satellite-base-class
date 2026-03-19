@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['process_5fadmin_5fpage_215',['process_admin_page',['../d5/dc1/class_b_m_l_t_plugin.html#a8cc64446449a52bb9fc8ff777d0bb501',1,'BMLTPlugin']]],
-  ['process_5ftext_216',['process_text',['../d5/dc1/class_b_m_l_t_plugin.html#abc2edf681c16556ae82002b2403eaef8',1,'BMLTPlugin\process_text()'],['../d6/dc9/class_b_m_l_t_u_test_plugin.html#abc2edf681c16556ae82002b2403eaef8',1,'BMLTUTestPlugin\process_text()']]]
+  ['make_5fnew_5foptions_0',['make_new_options',['../d5/dc1/class_b_m_l_t_plugin.html#ac237b680337d5b551c03b83ec771adb9',1,'BMLTPlugin']]],
+  ['mobile_5fsniff_5fua_1',['mobile_sniff_ua',['../d5/dc1/class_b_m_l_t_plugin.html#aa9692cb961016e56fb3f601358690402',1,'BMLTPlugin']]]
 ];

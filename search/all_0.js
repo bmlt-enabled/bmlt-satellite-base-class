@@ -2,7 +2,7 @@ var searchData=
 [
   ['_24admin2optionsname_0',['$admin2OptionsName',['../d5/dc1/class_b_m_l_t_plugin.html#ac232691e99baa691396dc46376d092ac',1,'BMLTPlugin']]],
   ['_24adminoptionsname_1',['$adminOptionsName',['../d5/dc1/class_b_m_l_t_plugin.html#a10900bb92ef1b14d0c40e43a5b075f56',1,'BMLTPlugin']]],
-  ['_24bmlt_5flocalization_2',['$bmlt_localization',['../d1/d5a/bmlt-cms-satellite-plugin_8php.html#a603d46cd049e09c6ded7caf5eb948055',1,'$bmlt_localization():&#160;bmlt-cms-satellite-plugin.php'],['../d3/d8a/unit__test_8php.html#a3aba266609e57ab55dd438e1c6ceadb5',1,'$bmlt_localization():&#160;unit_test.php']]],
+  ['_24bmlt_5flocalization_2',['$bmlt_localization',['../d1/d5a/bmlt-cms-satellite-plugin_8php.html#a14c41968d18a39ff23de823f4ce581c1',1,'$bmlt_localization:&#160;bmlt-cms-satellite-plugin.php'],['../d3/d8a/unit__test_8php.html#a3aba266609e57ab55dd438e1c6ceadb5',1,'$bmlt_localization:&#160;unit_test.php']]],
   ['_24bmltpluginop_3',['$BMLTPluginOp',['../dd/dae/bmlt-unit-test-satellite-plugin_8php.html#aa60b3d6a81b8ae3aacadb3568c72db9f',1,'bmlt-unit-test-satellite-plugin.php']]],
   ['_24default_5fadditional_5fcss_4',['$default_additional_css',['../d5/dc1/class_b_m_l_t_plugin.html#a6b8e0e4b83ca64047b912500fcd76727',1,'BMLTPlugin']]],
   ['_24default_5fdetails_5fmap_5fzoom_5',['$default_details_map_zoom',['../d5/dc1/class_b_m_l_t_plugin.html#a0594123d2924125ecf24e8b49ce91852',1,'BMLTPlugin']]],
