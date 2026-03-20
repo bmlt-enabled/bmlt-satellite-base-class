@@ -24,6 +24,9 @@ The instructions for employment of this class are on [this page](https://bmlt.ap
 CHANGELIST
 ----------
 
+***Version 3.11.15* ** *- March 20, 2026*
+- Fix php warning.
+
 ***Version 3.11.14* ** *- March 19, 2026*
 - Added CSRF mechanism.
 - 

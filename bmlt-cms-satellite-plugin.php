@@ -3,7 +3,7 @@
 *   \file   bmlt-cms-satellite-plugin.php                                                   *
 *                                                                                           *
 *   \brief  This is a generic CMS plugin class for a BMLT satellite client.                 *
-*   \version 3.11.14                                                                        *
+*   \version 3.11.15                                                                        *
 *                                                                                           *
 *   This file is part of the BMLT Common Satellite Base Class Project. The project GitHub   *
 *   page is available here: https://github.com/MAGSHARE/BMLT-Common-CMS-Plugin-Class        *
@@ -580,16 +580,20 @@ abstract class BMLTPlugin
             }
         }
             
+        if (!isset($BMLTOptions['root_server']) || !$BMLTOptions['root_server']) {
+            $BMLTOptions['root_server'] = self::$default_rootserver;
+        }
+
         if (!isset($BMLTOptions['lang']) || !$BMLTOptions['lang']) {
             global $bmlt_localization;
-        
+
             $BMLTOptions['lang'] = $bmlt_localization;
         }
-        
+
         if (!isset($BMLTOptions['lang']) || !$BMLTOptions['lang']) {
             $BMLTOptions['lang'] = self::$default_language;
         }
-        
+
         if (!isset($BMLTOptions['default_geo_width']) || !$BMLTOptions['default_geo_width']) {
             $BMLTOptions['default_geo_width'] = self::$default_geo_width;
         }
